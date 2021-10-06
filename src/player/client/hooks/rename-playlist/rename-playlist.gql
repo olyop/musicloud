@@ -1,0 +1,12 @@
+mutation renamePlaylist(
+	$playlistID: UUID!
+	$title: NonEmptyString!
+) {
+	renamePlaylist(
+		title: $title
+		playlistID: $playlistID
+	) {
+		title
+		playlistID
+	}
+}

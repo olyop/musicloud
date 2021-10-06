@@ -1,0 +1,14 @@
+query getUserPlaylists {
+	user {
+		userID
+		playlists {
+			title
+			playlistID
+			songsTotal
+			user {
+				name
+				userID
+			}
+		}
+	}
+}

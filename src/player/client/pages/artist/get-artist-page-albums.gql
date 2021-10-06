@@ -1,0 +1,17 @@
+query getArtistPageAlbums(
+	$artistID: UUID!
+	$albumsOrderBy: AlbumsOrderByInput!
+) {
+	artist(artistID: $artistID) {
+		artistID
+		albums(orderBy: $albumsOrderBy) {
+			title
+			albumID
+			released
+			artists {
+				artistID
+				name
+			}
+		}
+	}
+}

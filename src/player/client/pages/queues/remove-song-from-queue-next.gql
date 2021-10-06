@@ -1,0 +1,32 @@
+mutation removeSongFromQueueNext($index: NonNegativeInt!) {
+	removeSongFromQueueNext(index: $index) {
+		userID
+		queueNext {
+      mix
+      title
+      songID
+      duration
+      queueIndex
+      featuring {
+        artistID
+        name
+      }
+      remixers {
+        artistID
+        name
+      }
+      artists {
+        artistID
+        name
+      }
+      genres {
+        genreID
+        name
+      }
+      album {
+        albumID
+        title
+      }
+    }
+	}
+}

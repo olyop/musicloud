@@ -1,0 +1,6 @@
+{
+	"quiet": true,
+	"verbose": false,
+	"ignore": ["src"],
+	"ext": "js,sql,gql,env"
+}

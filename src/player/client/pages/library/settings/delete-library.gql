@@ -1,0 +1,5 @@
+mutation deleteLibrary {
+	deleteLibrary {
+		userID
+	}
+}

@@ -1,0 +1,37 @@
+query getGenrePage(
+  $genreID: UUID!
+  $songsOrderBy: SongsOrderByInput!
+) {
+  genre(genreID: $genreID) {
+    name
+    genreID
+    songs(orderBy: $songsOrderBy) {
+      mix
+      title
+      songID
+      duration
+      inLibrary
+      playsTotal
+      featuring {
+        artistID
+        name
+      }
+      remixers {
+        artistID
+        name
+      }
+      artists {
+        artistID
+        name
+      }
+      album {
+        albumID
+        title
+      }
+      genres {
+        genreID
+        name
+      }
+    }
+  }
+}

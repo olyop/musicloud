@@ -1,0 +1,34 @@
+import { createElement, FC } from "react"
+
+import Songs from "../../components/songs"
+import { Disc as DiscType } from "../../types"
+
+const Disc: FC<PropTypes> = ({
+	isSingle,
+	className,
+	disc: { songs, number, hideLabel },
+}) => (
+	<div className={className}>
+		{hideLabel || (
+			<h4
+				children={`Disc ${number}`}
+				className="BodyTwo MarginBottomHalf UpperCase"
+			/>
+		)}
+		<Songs
+			hideCover
+			hideIndex
+			hideOrderBy
+			songs={songs}
+			hideTrackNumber={isSingle}
+		/>
+	</div>
+)
+
+interface PropTypes {
+	disc: DiscType,
+	isSingle: boolean,
+	className: string,
+}
+
+export default Disc

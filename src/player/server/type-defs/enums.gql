@@ -1,0 +1,38 @@
+enum OrderByDirection {
+	ASC
+	DESC
+}
+
+enum SongsOrderByField {
+	TITLE
+	ALBUM
+	DURATION
+	RELEASED
+}
+
+enum GenresOrderByField {
+	NAME
+}
+
+enum AlbumsOrderByField {
+	TITLE
+	RELEASED
+}
+
+enum LibrarySongsOrderByField {
+	TITLE
+	ALBUM
+	DURATION
+	RELEASED
+	DATE_ADDED
+}
+
+enum LibraryArtistsOrderByField {
+	NAME
+	DATE_ADDED
+}
+
+enum LibraryPlaylistsOrderByField {
+	TITLE
+	DATE_ADDED
+}

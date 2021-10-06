@@ -1,0 +1,6 @@
+query getAlbumData($albumID: UUID!) {
+	album(albumID: $albumID) {
+		title
+		albumID
+	}
+}

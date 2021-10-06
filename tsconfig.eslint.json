@@ -1,0 +1,14 @@
+{
+	"extends": "./tsconfig.json",
+	"include": [
+		"src",
+		"jest.config.ts",
+		"webpack.base.ts",
+		"webpack.player.ts",
+		"webpack.upload.ts"
+	],
+	"exclude": [
+		"build",
+		"node_modules"
+	]
+}

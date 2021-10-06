@@ -1,0 +1,28 @@
+import { createBEM } from "@oly_op/bem"
+import Button from "@oly_op/react-button"
+import { createElement, FC } from "react"
+
+import "./index.scss"
+
+const musicloudURL =
+	`http://${process.env.HOST!}:${process.env.PLAYER_CLIENT_PORT!}`
+
+const bem =
+	createBEM("Footer")
+
+const Footer: FC = () => (
+	<a
+		href={musicloudURL}
+		className={bem("", "Elevated")}
+		children={(
+			<Button
+				transparent
+				text="Musicloud"
+				icon="arrow_back"
+				className={bem("button")}
+			/>
+		)}
+	/>
+)
+
+export default Footer

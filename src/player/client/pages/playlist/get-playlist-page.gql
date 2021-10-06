@@ -1,0 +1,44 @@
+query getPlaylistPage($playlistID: UUID!) {
+	playlist(playlistID: $playlistID) {
+		title
+		inLibrary
+		songsTotal
+		playlistID
+		dateCreated
+		user {
+			name
+			userID
+		}
+		songs {
+			mix
+			title
+			songID
+			duration
+			inLibrary
+			playsTotal
+			discNumber
+			trackNumber
+			playlistIndex(playlistID: $playlistID)
+			featuring {
+				name
+				artistID
+			}
+			remixers {
+				name
+				artistID
+			}
+			artists {
+				name
+				artistID
+			}
+			genres {
+				name
+				genreID
+			}
+			album {
+				title
+				albumID
+			}
+		}
+	}
+}

@@ -1,0 +1,4 @@
+DELETE FROM songs;
+DELETE FROM albums;
+DELETE FROM genres;
+DELETE FROM artists;

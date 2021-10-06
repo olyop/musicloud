@@ -1,0 +1,10 @@
+.Header {
+	width: 100%;
+	display: grid;
+	height: var(--layout-bar-height);
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	&__button {
+		height: 100%;
+		border-radius: 0;
+		&-active {
+			background-color: var(--border-color) !important; } } }

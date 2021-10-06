@@ -1,0 +1,17 @@
+{
+	"license": "MIT",
+	"version": "6.7.25",
+	"description": "music-app-common",
+	"name": "@oly_op/music-app-common",
+	"bugs": "https://github.com/olyop/music-app/issues",
+	"homepage": "https://github.com/olyop/music-app/blob/master/README.md",
+	"author": {
+		"name": "Oliver Plummer",
+		"email": "oliver.plummer@outlook.com"
+	},
+	"repository": {
+		"type": "git",
+		"directory": "src/common",
+		"url": "https://github.com/olyop/music-app.git"
+	}
+}

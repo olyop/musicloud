@@ -1,0 +1,18 @@
+type Album {
+	# base
+	albumID: UUID!
+	released: Date!
+	title: NonEmptyString!
+	duration: PositiveInt!
+
+	# relationships
+	songs: [Song!]!
+	genres: [Genre!]!
+	artists: [Artist!]!
+	songsTotal: NonNegativeInt!
+	playsTotal: NonNegativeInt!
+
+	# user
+	userPlays: [Play!]!
+	userPlaysTotal: NonNegativeInt!
+}

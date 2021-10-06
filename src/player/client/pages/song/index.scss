@@ -1,0 +1,4 @@
+.SongPage {
+	display: grid;
+	gap: var(--space);
+	grid-template-columns: var(--content-image-width) minmax(0, 1fr); }

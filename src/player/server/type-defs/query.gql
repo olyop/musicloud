@@ -1,0 +1,22 @@
+type Query {
+	# object
+	user(userID: UUID): User!
+	play(playID: UUID!): Play!
+	song(songID: UUID!): Song!
+	album(albumID: UUID!): Album!
+	genre(genreID: UUID!): Genre!
+	artist(artistID: UUID!): Artist!
+	playlist(playlistID: UUID!): Playlist!
+	
+	# other
+	topTenSongs: [Song!]!
+	topOneHundredSongs: [Song!]!
+	# trendingSongs: [Song!]!
+	trendingAlbums: [Album!]!
+	# trendingArtists: [Artist!]!
+
+	search(
+		value: String!
+		length: NonNegativeInt!
+	): [Search!]!
+}

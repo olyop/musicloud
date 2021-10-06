@@ -1,0 +1,32 @@
+query getQueueLater {
+  user {
+    userID
+    queueLater {
+      mix
+      title
+      songID
+      duration
+      queueIndex
+      featuring {
+        artistID
+        name
+      }
+      remixers {
+        artistID
+        name
+      }
+      artists {
+        artistID
+        name
+      }
+      genres {
+        genreID
+        name
+      }
+      album {
+        albumID
+        title
+      }
+    }
+  }
+}

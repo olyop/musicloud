@@ -1,0 +1,11 @@
+.LibraryEmpty {
+	&__heading {
+		font-size: 22rem; }
+	&__text {
+		font-weight: 500;
+		font-size: 16rem; }
+	&__link {
+		color: #1a73e8;
+		&:hover,
+		&:focus {
+			text-decoration: underline; } } }

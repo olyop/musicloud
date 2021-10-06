@@ -1,0 +1,11 @@
+query getUserNowPlaying {
+	user {
+		userID
+		nowPlaying {
+			songID
+			album {
+				albumID
+			}
+		}
+	}
+}

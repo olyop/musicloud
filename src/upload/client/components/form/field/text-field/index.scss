@@ -1,0 +1,40 @@
+.TextField {
+	padding: 0;
+	position: relative;
+	&:hover &__label {
+		color: var(--primary-color); }
+	&__outline {
+		opacity: 0;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		pointer-events: none;
+		background-color: transparent;
+		border: 2rem solid var(--primary-color);
+		transition: var(--transition-duration) opacity;
+		transition: var(--transition-duration) border-radius; }
+	&__label {
+		top: -8rem;
+		z-index: 10;
+		left: 12rem;
+		padding: 3rem;
+		font-size: 12rem;
+		font-weight: 600;
+		position: absolute;
+		border-radius: 5rem;
+		background-color: #fff;
+		text-transform: uppercase;
+		transition: var(--transition-duration) color; }
+	&__input {
+		width: 100%;
+		outline: none;
+		font-size: 16rem;
+		padding-top: 18rem;
+		padding-left: 14rem;
+		padding-right: 14rem;
+		padding-bottom: 18rem;
+		letter-spacing: 0.15rem;
+		border: 1rem solid var(--border-color);
+		background-color: var(--elevated-color);
+		transition: var(--transition-duration) border-color;
+		transition: var(--transition-duration) border-radius; } }

@@ -1,0 +1,6 @@
+query getPlaylistInLibrary($playlistID: UUID!) {
+	playlist(playlistID: $playlistID) {
+		inLibrary
+		playlistID
+	}
+}

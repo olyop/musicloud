@@ -1,0 +1,9 @@
+type Play {
+	# base
+	playID: UUID!
+	dateCreated: Timestamp!
+
+	# relationships
+	user: User!
+	song: Song!
+}

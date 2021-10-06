@@ -1,0 +1,34 @@
+type User {
+	# base
+	userID: UUID!
+	email: EmailAddress!
+	name: NonEmptyString!
+	dateJoined: Timestamp!
+	phoneNumber: PhoneNumber!
+
+	# relationships
+	plays: [Play!]!
+	nowPlaying: Song
+
+	# queues
+	queueNext: [Song!]!
+	queueLater: [Song!]!
+	queuePrevious: [Song!]!
+
+	# user
+	playlists: [Playlist!]!
+	playlistsTotal: NonNegativeInt
+	playlistsFilteredBySong(songID: UUID!): [Playlist!]!
+	playlistsFilteredByAlbum(albumID: UUID!): [Playlist!]!
+
+	# library
+	libraryPlaysTotal: NonNegativeInt
+	librarySongsTotal: NonNegativeInt
+	libraryArtistsTotal: NonNegativeInt
+	libraryPlaylistsTotal: NonNegativeInt
+	librarySongs(input: LibrarySongsInput): [Song!]!
+	libraryAlbums(input: LibraryAlbumsInput!): [Album!]!
+	libraryGenres(input: LibraryGenresInput!): [Genre!]!
+	libraryArtists(input: LibraryArtistsInput!): [Artist!]!
+	libraryPlaylists(input: LibraryPlaylistsInput!): [Playlist!]!
+}

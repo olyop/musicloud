@@ -1,0 +1,6 @@
+type Key {
+	keyID: UUID!
+	flat: NonEmptyString!
+	sharp: NonEmptyString!
+	camelot: NonEmptyString!
+}

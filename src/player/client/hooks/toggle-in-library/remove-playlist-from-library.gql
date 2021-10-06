@@ -1,0 +1,6 @@
+mutation removePlaylistFromLibrary($playlistID: UUID!) {
+	removePlaylistFromLibrary(playlistID: $playlistID) {
+    inLibrary
+		playlistID
+	}
+}

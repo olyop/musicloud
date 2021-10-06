@@ -1,0 +1,31 @@
+.Header {
+	z-index: 2;
+	width: 100%;
+	height: var(--header-height);
+	&__hamburger {
+		margin-left: 4rem; }
+	&__offline {
+		--color: #f44336;
+		border-color: var(--color);
+		border-style: var(--border-style);
+		border-width: var(--border-width);
+		&:hover {
+			background-color: transparent !important; }
+		&-span {
+			color: var(--color) !important; } }
+	&__account {
+		&-modal {
+			&-background {
+				background-color: transparent; }
+			&-content {
+				--width: 114rem;
+				left: unset;
+				right: 0;
+				top: 66rem;
+				right: -57rem;
+				transform: translate(-50%, -50%);
+				width: calc(var(--space) + var(--width));
+				&-button {
+					width: 100%;
+					border-radius: 0;
+					justify-content: flex-start; } } } } }

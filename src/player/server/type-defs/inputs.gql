@@ -1,0 +1,63 @@
+input LogInInput {
+	userID: UUID!
+	password: NonEmptyString!
+}
+
+input PlaylistInput {
+	title: NonEmptyString!
+}
+
+input SongsOrderByInput {
+	field: SongsOrderByField!
+	direction: OrderByDirection!
+}
+
+input AlbumsOrderByInput {
+	field: AlbumsOrderByField!
+	direction: OrderByDirection!
+}
+
+input GenresOrderByInput {
+	field: GenresOrderByField!
+	direction: OrderByDirection!
+}
+
+input LibrarySongsOrderByInput {
+	direction: OrderByDirection!
+	field: LibrarySongsOrderByField!
+}
+
+input LibraryArtistsOrderByInput {
+	direction: OrderByDirection!
+	field: LibraryArtistsOrderByField!
+}
+
+input LibraryPlaylistsOrderByInput {
+	direction: OrderByDirection!
+	field: LibraryPlaylistsOrderByField!
+}
+
+input LibraryAlbumsInput {
+	page: NonNegativeInt!
+	orderBy: AlbumsOrderByInput!
+}
+
+input LibraryGenresInput {
+	page: NonNegativeInt!
+	orderBy: GenresOrderByInput!
+}
+
+input LibrarySongsInput {
+	page: NonNegativeInt!
+	orderBy: LibrarySongsOrderByInput!
+}
+
+input LibraryArtistsInput {
+	page: NonNegativeInt!
+	orderBy: LibraryArtistsOrderByInput!
+}
+
+input LibraryPlaylistsInput {
+	page: NonNegativeInt!
+	orderBy: LibraryPlaylistsOrderByInput!
+}

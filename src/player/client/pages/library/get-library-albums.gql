@@ -1,0 +1,14 @@
+query getLibraryAlbums($input: LibraryAlbumsInput!) {
+	user {
+		userID
+		libraryAlbums(input: $input) {
+			title
+			albumID
+			released
+			artists {
+				artistID
+				name
+			}
+		}
+	}
+}

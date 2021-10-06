@@ -1,0 +1,9 @@
+.SelectOrderBy {
+	gap: var(--space-half);
+	@media (min-width: 476px) {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end; }
+	@media (max-width: 476px) {
+		display: grid;
+		grid-template-columns: 1fr 1fr; } }

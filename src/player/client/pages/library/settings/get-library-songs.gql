@@ -1,0 +1,37 @@
+query getLibrarySongs {
+	user {
+		userID
+		librarySongs {
+			mix
+			title
+			songID
+			duration
+			inLibrary
+			dateAddedToLibrary
+			featuring {
+				artistID
+				name
+			}
+			remixers {
+				artistID
+				name
+			}
+			artists {
+				artistID
+				name
+			}
+			genres {
+				genreID
+				name
+			}
+			album {
+				title
+				albumID
+			}
+			userPlays {
+				playID
+				dateCreated
+			}
+		}
+	}
+}

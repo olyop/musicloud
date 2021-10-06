@@ -1,0 +1,24 @@
+type Artist {
+	# base
+	city: String!
+	artistID: UUID!
+	country: String!
+	name: NonEmptyString!
+
+	# library
+	inLibrary: Boolean!
+	dateAddedToLibrary: Timestamp
+
+	# user
+	userPlays: [Play!]!
+	playsTotal: PositiveInt
+	userPlaysTotal: NonNegativeInt
+
+	# relationships
+	topTenSongs: [Song!]!
+	songsTotal: NonNegativeInt!
+	albumsTotal: NonNegativeInt!
+	firstAlbumReleaseDate: Date!
+	songs(orderBy: SongsOrderByInput!): [Song!]!
+	albums(orderBy: AlbumsOrderByInput!): [Album!]!
+}

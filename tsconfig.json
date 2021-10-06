@@ -1,0 +1,10 @@
+{
+	"extends": "@oly_op/tsconfig/tsconfig.json",
+	"compilerOptions": {
+		"jsx": "react",
+		"jsxFactory": "createElement"
+	},
+	"exclude": [
+		"build"
+	]
+}

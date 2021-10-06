@@ -1,0 +1,10 @@
+scalar JWT
+scalar Date
+scalar Void
+scalar UUID
+scalar Timestamp
+scalar PhoneNumber
+scalar PositiveInt
+scalar EmailAddress
+scalar NonNegativeInt
+scalar NonEmptyString

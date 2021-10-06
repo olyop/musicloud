@@ -1,0 +1,6 @@
+.ObjectLink {
+	text-decoration: none;
+	&:hover,
+	&:focus {
+		color: var(--primary-color);
+		text-shadow: 0 0 1rem var(--primary-color-dark); } }

@@ -1,0 +1,43 @@
+.BarVolume {
+	&__background {
+		background-color: transparent; }
+	&__content {
+		--h: 250rem;
+		--w: calc(var(--button-dimension) + var(--space));
+		display: flex;
+		width: var(--w);
+		height: var(--h);
+		align-items: center;
+		flex-direction: column;
+		justify-content: space-between;
+		transform: translate(-100%, -100%);
+		left: calc(100% - var(--space-half) - 17px);
+		top: calc(100% - var(--player-height) - var(--space-half));
+		@media (max-width: 800px) {
+			top: calc(100% - var(--player-height-mobile) - var(--space-half)); } }
+	&__slider {
+		--dim: 16rem;
+		height: 100%;
+		appearance: none;
+		overflow: hidden;
+		height: var(--dim);
+		transform: rotateZ(-90deg);
+		background-color: transparent;
+		&:focus {
+			outline: none; }
+		&::-webkit-slider-runnable-track {
+			border: 0;
+			width: 100%;
+			height: 100%;
+			cursor: pointer;
+			border-radius: 9rem;
+			background-color: var(--hover-color); }
+		&::-webkit-slider-thumb {
+			border: 0;
+			height: 100%;
+			cursor: pointer;
+			appearance: none;
+			width: var(--dim);
+			position: relative;
+			border-radius: 100%;
+			background-color: var(--text-color); } } }

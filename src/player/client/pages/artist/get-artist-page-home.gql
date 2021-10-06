@@ -1,0 +1,33 @@
+query getArtistPageHome($artistID: UUID!) {
+	artist(artistID: $artistID) {
+		artistID
+		topTenSongs {
+			songID
+			mix
+			title
+			duration
+			inLibrary
+			playsTotal
+			featuring {
+				artistID
+				name
+			}
+			remixers {
+				artistID
+				name
+			}
+			artists {
+				artistID
+				name
+			}
+			genres {
+				genreID
+				name
+			}
+			album {
+				albumID
+				title
+			}
+		}
+	}
+}

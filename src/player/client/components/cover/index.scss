@@ -1,0 +1,20 @@
+.Cover {
+	&:hover &__link {
+		opacity: 0.3; }
+	&__landscape {
+		&::before {
+			padding-top: 56.25%; } }
+	&__img,
+	&__link {
+		transition-duration: var(--transition-duration); }
+	&__img {
+		transition-property: filter; }
+	&__link {
+		top: 0;
+		opacity: 0;
+		width: 100%;
+		height: 100%;
+		cursor: pointer;
+		position: absolute;
+		transition-property: opacity;
+		background-color: var(--grey-color-900); } }

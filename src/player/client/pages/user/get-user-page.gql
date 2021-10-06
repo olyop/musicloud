@@ -1,0 +1,7 @@
+query getUserPage($userID: UUID!) {
+	user(userID: $userID) {
+		name
+		userID
+		dateJoined
+	}
+}

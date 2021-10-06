@@ -1,0 +1,6 @@
+mutation removeArtistFromLibrary($artistID: UUID!) {
+  removeArtistFromLibrary(artistID: $artistID) {
+    artistID
+    inLibrary
+  }
+}

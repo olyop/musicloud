@@ -1,0 +1,42 @@
+query getBrowsePage {
+	topTenSongs {
+		mix
+		title
+		songID
+		playsTotal
+		featuring {
+			artistID
+			name
+		}
+		remixers {
+			artistID
+			name
+		}
+		artists {
+			artistID
+			name
+		}
+		genres {
+			genreID
+			name
+		}
+		album {
+			title
+			albumID
+		}
+	}
+	trendingAlbums {
+    title
+    albumID
+    released
+    duration
+    genres {
+      name
+      genreID
+    }
+    artists {
+      name
+      artistID
+    }
+	}
+}

@@ -1,0 +1,9 @@
+query getLibraryGenres($input: LibraryGenresInput!) {
+	user {
+		userID
+		libraryGenres(input: $input) {
+			name
+			genreID
+		}
+	}
+}

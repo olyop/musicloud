@@ -1,0 +1,27 @@
+.AlbumPage {
+	display: flex;
+	gap: var(--space);
+	flex-direction: column;
+	align-items: flex-start;
+	@media (min-width: 800px) {
+		display: grid;
+		grid-template-columns: var(--content-image-width) minmax(0, 1fr); }
+	&__img,
+	&__content {
+		width: 100%;
+		height: auto; }
+	&__title {
+		margin-top: -3rem; }
+	&__released {
+		margin-bottom: calc(var(--space-quart) + 2rem); }
+	&__sum {
+		outline: none;
+		cursor: pointer;
+		user-select: none; }
+	&__footer-text {
+		font-size: 14rem;
+		text-transform: uppercase;
+		color: var(--text-color-light);
+		margin-bottom: var(--space-fifth);
+		&:last-child {
+			margin-bottom: 0; } } }

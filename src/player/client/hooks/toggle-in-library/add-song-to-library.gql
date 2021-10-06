@@ -1,0 +1,6 @@
+mutation addSongToLibrary($songID: UUID!) {
+  addSongToLibrary(songID: $songID) {
+    songID
+    inLibrary
+  }
+}

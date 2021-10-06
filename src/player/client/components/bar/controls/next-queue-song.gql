@@ -1,0 +1,31 @@
+mutation nextQueueSong {
+	nextQueueSong {
+		userID
+		nowPlaying {
+			mix
+			title
+			songID
+			duration
+			featuring {
+				artistID
+				name
+			}
+			remixers {
+				artistID
+				name
+			}
+			artists {
+				artistID
+				name
+			}
+			genres {
+				genreID
+				name
+			}
+			album {
+				albumID
+				title
+			}
+		}
+	}
+}

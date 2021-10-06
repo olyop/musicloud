@@ -1,0 +1,36 @@
+query getArtistPageSongs(
+	$artistID: UUID!
+	$songsOrderBy: SongsOrderByInput!
+) {
+	artist(artistID: $artistID) {
+		artistID
+		songs(orderBy: $songsOrderBy) {
+			mix
+			title
+			songID
+			duration
+			inLibrary
+			playsTotal
+			featuring {
+				artistID
+				name
+			}
+			remixers {
+				artistID
+				name
+			}
+			artists {
+				artistID
+				name
+			}
+			genres {
+				genreID
+				name
+			}
+			album {
+				albumID
+				title
+			}
+		}
+	}
+}

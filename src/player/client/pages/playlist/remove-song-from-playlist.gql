@@ -1,0 +1,14 @@
+mutation removeSongFromPlaylist(
+	$songID: UUID!
+	$playlistID: UUID!
+) {
+	removeSongFromPlaylist(
+		songID: $songID
+		playlistID: $playlistID
+	) {
+		playlistID
+		songs {
+			songID
+		}
+	}
+}

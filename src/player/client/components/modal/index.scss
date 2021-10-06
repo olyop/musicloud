@@ -1,0 +1,23 @@
+.Modal {
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	&__background {
+		top: 0;
+		left: 0;
+		z-index: 4;
+		opacity: 0.7;
+		cursor: pointer;
+		position: absolute;
+		background-color: var(--text-color); }
+	&__content {
+		top: 50%;
+		left: 50%;
+		z-index: 5;
+		cursor: text;
+		overflow: hidden;
+		position: absolute;
+		width: var(--sidebar-width);
+		transform: translate(-50%, -50%); } }

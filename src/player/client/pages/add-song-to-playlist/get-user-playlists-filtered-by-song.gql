@@ -1,0 +1,14 @@
+query getUserPlaylistsFilteredBySong($songID: UUID!) {
+	user {
+		userID
+		playlistsFilteredBySong(songID: $songID) {
+			title
+			playlistID
+			songsTotal
+			user {
+				name
+				userID
+			}
+		}
+	}
+}

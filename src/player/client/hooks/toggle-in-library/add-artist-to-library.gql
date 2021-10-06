@@ -1,0 +1,6 @@
+mutation addArtistToLibrary($artistID: UUID!) {
+  addArtistToLibrary(artistID: $artistID) {
+    artistID
+    inLibrary
+  }
+}

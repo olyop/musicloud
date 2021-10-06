@@ -1,0 +1,14 @@
+type Genre {
+	# base
+	genreID: UUID!
+	name: NonEmptyString!
+
+	# user
+	userPlays: [Play!]
+	userPlaysTotal: NonNegativeInt
+
+	# relationships
+	songsTotal: PositiveInt
+	playsTotal: NonNegativeInt!
+	songs(orderBy: SongsOrderByInput!): [Song!]!
+}

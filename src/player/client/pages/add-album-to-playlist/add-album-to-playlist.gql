@@ -1,0 +1,11 @@
+mutation addAlbumToPlaylist(
+	$albumID: UUID!
+	$playlistID: UUID!
+) {
+	addAlbumToPlaylist(
+		albumID: $albumID
+		playlistID: $playlistID
+	) {
+		playlistID
+	}
+}

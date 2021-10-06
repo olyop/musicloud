@@ -1,0 +1,36 @@
+.Banner {
+	width: 100%;
+	height: 40vh;
+	&::before {
+		padding-top: 56.25%; }
+	&__img {
+		filter: blur(1px);
+		background-position: center; }
+	&__content {
+		left: 50%;
+		bottom: 0;
+		z-index: 2;
+		display: grid;
+		gap: var(--space);
+		position: absolute;
+		align-items: flex-start;
+		transform: translateX(-50%);
+		grid-template-columns: 156rem 1fr;
+		@media (max-width: 1360px) {
+			width: 100%; }
+		&-profile {
+			border-radius: 50%;
+			background-color: unset; }
+		&-title {
+			font-weight: 700;
+			margin-top: -10rem;
+			margin-left: -2rem; } }
+	&__black {
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		background:
+			radial-gradient(ellipse farthest-corner at center center, rgba(#000, 0.3) 20%, rgba(#000, 0.7) 100%)
+			repeat scroll 0% 0%; } }

@@ -1,0 +1,71 @@
+query getSearch(
+  $value: String!
+  $length: NonNegativeInt!
+) {
+  search(
+    value: $value
+    length: $length
+  ) {
+    ...on User {
+      name
+      userID
+      dateJoined
+    }
+    ...on Song {
+      mix
+      title
+      songID
+      duration
+      inLibrary
+      featuring {
+        artistID
+        name
+      }
+      remixers {
+        artistID
+        name
+      }
+      artists {
+        artistID
+        name
+      }
+      genres {
+        genreID
+        name
+      }
+      album {
+        albumID
+        title
+      }
+    }
+    ...on Genre {
+      name
+      genreID
+    }
+    ...on Album {
+      title
+      albumID
+      released
+      artists {
+        artistID
+        name
+      }
+    }
+    ...on Artist {
+      name
+      artistID
+      inLibrary
+      songsTotal
+      albumsTotal
+    }
+    ...on Playlist {
+      title
+      inLibrary
+      playlistID
+      user {
+        name
+        userID
+      }
+    }
+  }
+}

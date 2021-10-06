@@ -1,0 +1,5 @@
+mutation addSongLater($songID: UUID!) {
+	queueSongLater(songID: $songID) {
+		userID
+	}
+}
