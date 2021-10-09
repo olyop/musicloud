@@ -4,10 +4,12 @@
 	display: flex;
 	height: var(--player-height);
 	&__controls {
+		padding: var(--space-half);
 		border-right-width: var(--border-width);
 		border-right-style: var(--border-style);
 		border-right-color: var(--border-color);
 		@media (max-width: 800px) {
+			padding: 0;
 			border-top-width: var(--border-width);
 			border-top-style: var(--border-style);
 			border-top-color: var(--border-color); } }

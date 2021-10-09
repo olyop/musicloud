@@ -30,6 +30,9 @@
 	&__img {
 		width: var(--button-dimension);
 		height: var(--button-dimension); }
+	&__in-library {
+		@media (max-width: 700px) {
+			display: none; } }
 	&__info {
 		flex-grow: 1;
 		display: flex;

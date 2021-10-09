@@ -35,6 +35,7 @@ const Navigation: FC<PropTypes> = ({ right, routes, basePath, className }) => (
 								text={name}
 								transparent
 								className={bem("link-button")}
+								iconClassName={bem("link-button-icon")}
 								textClassName={bem("link-button-text")}
 							/>
 						)}

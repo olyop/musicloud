@@ -12,9 +12,7 @@
 		justify-content: space-between;
 		transform: translate(-100%, -100%);
 		left: calc(100% - var(--space-half) - 17px);
-		top: calc(100% - var(--player-height) - var(--space-half));
-		@media (max-width: 800px) {
-			top: calc(100% - var(--player-height-mobile) - var(--space-half)); } }
+		top: calc(100% - var(--player-height) - var(--space-half)); }
 	&__slider {
 		--dim: 16rem;
 		height: 100%;

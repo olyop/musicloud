@@ -111,8 +111,8 @@ const Item: FC<PropTypes> = ({
 				{inLibraryOptions && (
 					<InLibraryButton
 						onClick={inLibraryOptions.onClick}
-						className={bem(iconClassName, "add")}
 						inLibrary={inLibraryOptions.inLibrary}
+						className={bem(iconClassName, "in-library")}
 					/>
 				)}
 				{modalButtons && (

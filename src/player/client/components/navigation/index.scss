@@ -5,28 +5,42 @@
 	&__links {
 		@media (max-width: 800px) {
 			justify-content: center; }
+		@media (max-width: 700px) {
+			justify-content: center;
+			padding: 0 var(--space-half);
+			border-radius: var(--border-radius);
+			background-color: var(--grey-color-900); }
 		@media (max-width: 600px) {
 			justify-content: space-between; } }
 	&__link {
 		position: relative;
 		&-button {
-			padding-left: 0;
-			padding-right: 0;
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
 			&:hover {
 				background-color: transparent; }
+			@media (min-width: 700px) {
+				padding-left: 0;
+				padding-right: 0; }
+			&-icon {
+				@media (max-width: 700px) {
+					color: var(--primary-color-text) !important; } }
 			&-text {
 				@media (max-width: 700px) {
 					display: none; } } } }
 	&__active {
 		&-no-underline {
 			border-radius: 100%;
-			background-color: var(--hover-color); }
+			@media (min-dith: 700px) {
+				background-color: var(--hover-color); } }
 		&::after {
 			width: 100%;
-			height: 2px;
 			content: "";
-			bottom: -2px;
+			height: 2rem;
+			bottom: -2rem;
 			position: absolute;
-			background-color: var(--text-color); } } }
+			background-color: var(--text-color);
+			@media (max-width: 700px) {
+				height: 4rem;
+				bottom: -4rem;
+				background-color: var(--primary-color); } } } }
