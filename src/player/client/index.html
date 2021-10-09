@@ -5,7 +5,7 @@
 		<title>Musicloud</title>
 		<link href="/favicon.ico" rel="icon">
 		<link rel="manifest" href="/manifest.webmanifest">
-		<link rel="stylesheet" href="https://unpkg.com/@oly_op/css-utilities@2.0.43/index.css">
+		<link rel="stylesheet" href="https://unpkg.com/@oly_op/css-utilities@2.0.44/index.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400,500,700,700i&display=swap">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<style>
@@ -20,7 +20,7 @@
 				--primary-color-dark: #087f23;
 				--primary-color-light: #80e27e;
 				--header-height: calc(var(--button-dimesnion) + var(--space));
-				--player-height: calc(var(--button-dimesnion) + var(--space) + var(--space-quart) + var(--progress-height)); }
+				--player-height: calc(var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height)); }
 
 			@media (max-width: 1000px) {
 				:root {
@@ -28,39 +28,7 @@
 
 			@media (max-width: 800px) {
 				:root {
-					--space: 16rem;
-					--player-height-mobile: 125rem; } }
-
-			@media (max-width: 700px) {
-				:root {
-					--space: 14rem;
-					--player-height-mobile: 120rem; } }
-
-			@media (max-width: 550px) {
-				:root {
-					--space: 12rem;
-					--player-height-mobile: 115rem; } }
-
-			@media (prefers-color-scheme: dark) {
-				:root {
-					--text-color: #e0e0e0;
-					--text-color-light: #9e9e9e;
-					--text-color-inverted: #fafafa;
-
-					--hover-color: #424242;
-					--elevated-color: #212121;
-					--border-color: #282828;
-					--background-color: #424242;
-
-					--primary-color: #546e7a;
-					--primary-color-text: #fafafa;
-					--primary-color-dark: #29434e;
-					--primary-color-light: #819ca9;
-
-					--primary-color: #f4511e;
-					--primary-color-text: #fafafa;
-					--primary-color-dark: #b91400;
-					--primary-color-light: #ff844c; } }
+					--space: 16rem; } }
 
 			#Root {
 				background-color: var(--background-color); }

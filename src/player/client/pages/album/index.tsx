@@ -154,58 +154,50 @@ const AlbumPage: FC = () => {
 								}))}
 							/>
 						</h3>
-						<details open>
-							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>
-								Songs
-							</summary>
-							<div className={bem("discs", "MarginTopHalf")}>
-								{discs.map(
-									disc => (
-										<Disc
-											disc={disc}
-											key={disc.number}
-											className="MarginBottom"
-											isSingle={disc.songs.length === 1}
-										/>
-									),
-								)}
-								{discs.length > 1 && (
-									<p className="BodyTwo LightColor MarginTopQuart MarginBottom">
-										{discs.length > 1 && (
-											<Fragment>
-												{discs.length}
-												<Fragment> discs, </Fragment>
-											</Fragment>
-										)}
-										{data.album.songs.length}
-										<Fragment> songs</Fragment>
-									</p>
-								)}
-							</div>
-						</details>
-						<details open>
-							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>
-								Actions
-							</summary>
-							<div className="FlexListGapHalf MarginBottom">
-								<Button
-									icon="shuffle"
-									text="Shuffle"
-									onClick={loading ? undefined : shuffleAlbum}
-								/>
-								<Button
-									icon={songsInLibrary ? "done" : "add"}
-									text={songsInLibrary ? "Remove" : "Add"}
-									onClick={loading ? undefined : (songsInLibrary ? handleRemove : handleAdd)}
-								/>
-								<NavLink to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}>
-									<Button
-										text="Playlist"
-										icon="playlist_add"
+						<div className={bem("discs", "MarginTopHalf")}>
+							{discs.map(
+								disc => (
+									<Disc
+										disc={disc}
+										key={disc.number}
+										className="MarginBottom"
+										isSingle={disc.songs.length === 1}
 									/>
-								</NavLink>
-							</div>
-						</details>
+								),
+							)}
+							{discs.length > 1 && (
+								<p className="BodyTwo LightColor MarginTopQuart MarginBottom">
+									{discs.length > 1 && (
+										<Fragment>
+											{discs.length}
+											<Fragment> discs, </Fragment>
+										</Fragment>
+									)}
+									{data.album.songs.length}
+									<Fragment> songs</Fragment>
+								</p>
+							)}
+						</div>
+						<div className="FlexListGapHalf MarginBottom">
+							<Button
+								icon="shuffle"
+								text="Shuffle"
+								onClick={loading ? undefined : shuffleAlbum}
+							/>
+							<Button
+								icon={songsInLibrary ? "done" : "add"}
+								text={songsInLibrary ? "Remove" : "Add"}
+								onClick={loading ?
+									undefined :
+									(songsInLibrary ? handleRemove : handleAdd)}
+							/>
+							<NavLink to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}>
+								<Button
+									text="Playlist"
+									icon="playlist_add"
+								/>
+							</NavLink>
+						</div>
 						<details open={false}>
 							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>
 								Downloads

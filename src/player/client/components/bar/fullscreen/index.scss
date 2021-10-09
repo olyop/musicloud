@@ -49,12 +49,4 @@
 	&__album {
 		font-size: 20rem;
 		font-weight: 500;
-		margin-bottom: calc(var(--space) * 2.25); }
-	&__play {
-		--dim: 90rem;
-		width: var(--dim);
-		height: var(--dim);
-		&-icon {
-			width: calc(var(--dim) - 11rem);
-			height: calc(var(--dim) - 11rem);
-			font-size: calc(var(--dim) - 11rem); } } }
+		margin-bottom: calc(var(--space) * 2.25); } }

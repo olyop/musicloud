@@ -76,9 +76,7 @@ const BarFullscreen: FC<PropTypes> = ({ nowPlaying, onExit }) => (
 			<BarControls
 				className={bem("controls")}
 				buttonClassName={bem("button")}
-				playButtonClassName={bem("play")}
 				buttonIconClassName={bem("button-icon")}
-				playButtonIconClassName={bem("play-icon")}
 			/>
 		</div>
 		<BarVolume

@@ -71,8 +71,6 @@ const Bar: FC = () => {
 		<footer className={bem("", "Elevated")}>
 			<BarControls
 				className={bem("controls", "PaddingHalf")}
-				playButtonClassName={bem("controls-play")}
-				playButtonIconClassName={bem("controls-play-icon")}
 			/>
 			{data?.user.nowPlaying && (
 				<div className={bem("main", "PaddingHalf")}>
