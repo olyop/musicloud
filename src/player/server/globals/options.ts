@@ -32,7 +32,6 @@ export const HELMET_OPTIONS: FastifyHelmetOptions = {
 }
 
 export const SERVE_STATIC_OPTIONS: FastifyStaticOptions = {
-	index: false,
 	root: PUBLIC_PATH,
 }
 
