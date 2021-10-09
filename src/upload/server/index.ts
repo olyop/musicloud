@@ -15,28 +15,42 @@ import {
 } from "./plugins"
 
 import {
-	HOST,
-	PORT,
+	IS_DEV,
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	PG_POOL_OPTIONS,
 	MULTIPART_OPTIONS,
 	SERVE_STATIC_OPTIONS,
 	FASTIFY_SERVER_OPTIONS,
+	FASTIFY_LISTEN_OPTIONS,
 } from "./globals"
 
-(async () => (
-	fastify(FASTIFY_SERVER_OPTIONS)
-		.register(helmet, HELMET_OPTIONS)
-		.register(cors, CORS_OPTIONS)
-		.register(compress)
-		.register(multiPart, MULTIPART_OPTIONS)
-		.register(postgres, PG_POOL_OPTIONS)
-		.register(serveStatic, SERVE_STATIC_OPTIONS)
-		.register(uploadUser)
-		.register(uploadAlbum)
-		.register(uploadGenre)
-		.register(uploadArtist)
-		.register(serveClient)
-		.listen(PORT, HOST)
-))()
+const listenCallback =
+	(error: Error, address: string) => {
+		if (error) {
+			console.error(error)
+		} else {
+			if (!IS_DEV) {
+				console.log(address)
+			}
+		}
+	}
+
+const start =
+	async () => (
+		fastify(FASTIFY_SERVER_OPTIONS)
+			.register(helmet, HELMET_OPTIONS)
+			.register(cors, CORS_OPTIONS)
+			.register(compress)
+			.register(multiPart, MULTIPART_OPTIONS)
+			.register(postgres, PG_POOL_OPTIONS)
+			.register(serveStatic, SERVE_STATIC_OPTIONS)
+			.register(uploadUser)
+			.register(uploadAlbum)
+			.register(uploadGenre)
+			.register(uploadArtist)
+			.register(serveClient)
+			.listen(FASTIFY_LISTEN_OPTIONS, listenCallback)
+	)
+
+start()

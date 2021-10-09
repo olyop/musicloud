@@ -8,10 +8,6 @@
 	@media (max-width: 800px) {
 		flex-direction: column-reverse;
 		height: var(--player-height-mobile); }
-	&__section {
-		padding: 0 var(--space);
-		@media (max-width: 800px) {
-			padding: var(--space-half); } }
 	&__controls {
 		border-right-width: var(--border-width);
 		border-right-style: var(--border-style);
@@ -35,8 +31,8 @@
 		flex-grow: 1;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		gap: calc(var(--space-half) - 1rem);
+		gap: var(--space-quart);
+		justify-content: space-between;
 		@media (max-width: 800px) {
 			gap: 0;
 			justify-content: space-between; }

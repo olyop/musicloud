@@ -10,15 +10,17 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<style>
 			:root {
-				--header-height: 60rem;
-				--player-height: 90rem;
 				--content-width: 100vw;
 				--font-family: "Roboto";
 				--sidebar-width: 300rem;
 				--primary-color: #4caf50;
+				--progress-height: 15rem;
+				--button-dimesnion: 40rem;
 				--content-image-width: 330rem;
 				--primary-color-dark: #087f23;
-				--primary-color-light: #80e27e; }
+				--primary-color-light: #80e27e;
+				--header-height: calc(var(--button-dimesnion) + var(--space));
+				--player-height: calc(var(--button-dimesnion) + var(--space) + var(--space-quart) + var(--progress-height)); }
 
 			@media (max-width: 1000px) {
 				:root {

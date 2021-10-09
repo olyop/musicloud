@@ -41,6 +41,8 @@
 		"build:upload-typescript": "tsc --project tsconfig.upload.json",
 		"host-player": "node -r dotenv/config build/player",
 		"host-upload": "node -r dotenv/config build/upload",
+		"build-host-player": "npm run build-player && npm run host-player",
+		"build-host-upload": "npm run build-upload && npm run host-upload",
 		"docker:build": "docker build -t olyop/music-app:server-latest .",
 		"docker:push": "docker push olyop/music-app:server-latest",
 		"docker:host": "docker run -p 80:80 olyop/music-app:server-latest",

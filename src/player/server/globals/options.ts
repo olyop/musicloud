@@ -19,8 +19,8 @@ import {
 import { PUBLIC_PATH } from "./paths"
 
 export const FASTIFY_LISTEN_OPTIONS = {
-	port: PORT,
 	host: HOST,
+	port: PORT,
 }
 
 export const CORS_OPTIONS: FastifyCorsOptions = {

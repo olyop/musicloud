@@ -6,6 +6,8 @@ import { FastifyStaticOptions } from "fastify-static"
 import { FastifyMultipartOptions } from "fastify-multipart"
 
 import {
+	HOST,
+	PORT,
 	ALGOLIA_API_KEY,
 	AWS_RDS_USERNAME,
 	AWS_RDS_DATABASE,
@@ -15,6 +17,11 @@ import {
 } from "./environment"
 
 import { PUBLIC_PATH } from "./paths"
+
+export const FASTIFY_LISTEN_OPTIONS = {
+	host: HOST,
+	port: PORT,
+}
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	bodyLimit: 2e+7,
