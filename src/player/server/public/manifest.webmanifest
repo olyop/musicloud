@@ -3,8 +3,8 @@
 	"display":"fullscreen",
 	"theme_color":"#000000",
 	"short_name":"Musicloud",
-	"start_url":"/index.html",
 	"orientation": "portrait",
+	"start_url":"/library/songs",
 	"background_color":"#ffffff",
 	"icons":[
 		{
