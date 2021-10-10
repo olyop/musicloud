@@ -6,7 +6,7 @@ import { CLIENT_ENTRY_PATH } from "./globals"
 const serveClient: FastifyPluginCallback =
 	(fastify, options, next) => {
 		fastify.setNotFoundHandler(
-			async (request, reply) => {
+			(request, reply) => {
 				reply.type("text/html")
 						 .send(fs.createReadStream(CLIENT_ENTRY_PATH))
 			},
