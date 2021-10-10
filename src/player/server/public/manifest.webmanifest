@@ -1,10 +1,10 @@
 {
 	"name":"Musicloud",
+	"start_url":"/library",
 	"display":"fullscreen",
 	"theme_color":"#000000",
 	"short_name":"Musicloud",
 	"orientation": "portrait",
-	"start_url":"/library/songs",
 	"background_color":"#ffffff",
 	"icons":[
 		{
@@ -20,10 +20,10 @@
 	],
 	"shortcuts": [
 		{
+			"url": "/library",
 			"name": "Library",
 			"short_name": "Library",
 			"description": "Library",
-			"url": "/library/songs",
 			"icons": [{
 				"src": "/icons/192.png",
 				"type":"image/png",
@@ -31,10 +31,10 @@
 			}]
 		},
 		{
+			"url": "/search",
 			"name": "Search",
 			"short_name": "Search",
 			"description": "Search",
-			"url": "/search",
 			"icons": [{
 				"src": "/icons/192.png",
 				"type":"image/png",
@@ -42,10 +42,10 @@
 			}]
 		},
 		{
+			"url": "/user",
 			"name": "Account",
 			"short_name": "Account",
 			"description": "Account",
-			"url": "/user",
 			"icons": [{
 				"src": "/icons/192.png",
 				"type":"image/png",

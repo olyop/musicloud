@@ -2,6 +2,7 @@
 	z-index: 2;
 	width: 100%;
 	height: var(--header-height);
+	clip-path: inset(0 -3rem -8rem -4rem);
 	&__hamburger {
 		margin-left: 4rem; }
 	&__offline {
