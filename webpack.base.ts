@@ -43,7 +43,8 @@ export const baseHTMLPluginOptions =
 				minimum-scale=1,
 				initial-scale=1,
 				shrink-to-fit=no,
-				width=device-width
+				width=device-width,
+				viewport-fit=cover
 			`,
 		},
 	})
