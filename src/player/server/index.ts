@@ -36,6 +36,7 @@ const start =
 			.register(compress)
 			.register(serveStatic, SERVE_STATIC_OPTIONS)
 			.register(apollo.createHandler(APOLLO_REGISTRATION_OPTIONS))
+			.register(serveClient)
 			.listen(FASTIFY_LISTEN_OPTIONS, listenCallback)
 	}
 
