@@ -8,14 +8,12 @@
 		border-right-width: var(--border-width);
 		border-right-style: var(--border-style);
 		border-right-color: var(--border-color);
-		@media (max-width: 800px) {
-			padding: 0;
-			border-top-width: var(--border-width);
-			border-top-style: var(--border-style);
-			border-top-color: var(--border-color); } }
+		@media (max-width: 700px) {
+			padding: 0; } }
 	&__main {
-		flex-grow: 1;
+		width: 100%;
 		display: flex;
+		overflow: hidden;
 		flex-direction: column;
 		justify-content: space-between;
 		gap: calc(var(--space-quart) - 2rem);
@@ -23,9 +21,9 @@
 			gap: 0;
 			justify-content: space-between; }
 		&-content {
-			display: flex;
-			justify-content: space-between;
-			@media (min-width: 801px) {
-				margin-right: -7rem; }
-			&-current {
-				flex-grow: 1; } } } }
+			display: grid;
+			max-width: 100%;
+			overflow: hidden;
+			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 3);
+			@media (min-width: 800px) {
+				margin-right: -7rem; } } } }

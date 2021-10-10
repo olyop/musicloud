@@ -55,7 +55,7 @@
 	},
 	"dependencies": {
 		"@apollo/client": "3.4.16",
-		"@aws-sdk/client-s3": "3.35.0",
+		"@aws-sdk/client-s3": "3.36.0",
 		"@oly_op/bem": "5.0.5",
 		"@oly_op/music-app-common": "6.7.25",
 		"@oly_op/pg-helpers": "5.0.2",
@@ -135,7 +135,7 @@
 		"@typescript-eslint/parser": "4.33.0",
 		"compression-webpack-plugin": "9.0.0",
 		"cpy-cli": "3.1.1",
-		"css-loader": "6.3.0",
+		"css-loader": "6.4.0",
 		"css-minimizer-webpack-plugin": "3.1.1",
 		"del-cli": "4.0.1",
 		"dotenv-webpack": "7.0.3",

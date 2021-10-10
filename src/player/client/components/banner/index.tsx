@@ -27,7 +27,7 @@ const Banner: FC<PropTypes> = ({
 				className={bem("content-profile", "Elevated")}
 			/>
 			<div>
-				<h1 className={bem("content-title", "HeadingOneInverted")}>
+				<h1 className={bem("content-title", "HeadingTwoInverted")}>
 					{title}
 				</h1>
 				{subTitle && (

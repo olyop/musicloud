@@ -6,4 +6,12 @@
 		background-color: transparent !important;
 		padding-left: calc(var(--space-half) + 2rem); }
 	&__section {
-		margin-top: calc(var(--space-quart) * -1); } }
+		margin-top: calc(var(--space-quart) * -1); }
+	&__actions {
+		display: flex;
+		gap: var(--space-half);
+		@media (max-width: 800px) {
+			flex-direction: column; }
+		&-refresh {
+			@media (max-width: 800px) {
+				display: none; } } } }

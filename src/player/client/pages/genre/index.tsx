@@ -44,7 +44,7 @@ const GenrePage: FC = () => {
 			<Metadata title={data.genre.name}>
 				<h1
 					children={data.genre.name}
-					className={bem("", "HeadingThree MarginTopBottom PaddingTopBottomDouble")}
+					className={bem("", "HeadingFour MarginTopBottom PaddingTopBottom")}
 				/>
 				<Songs
 					hideIndex

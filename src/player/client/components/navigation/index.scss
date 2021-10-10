@@ -1,15 +1,16 @@
 .Navigation {
 	@media (max-width: 700px) {
-		flex-direction: column;
-		gap: var(--space-half); }
+		gap: var(--space-half);
+		flex-direction: column; }
 	&__links {
 		@media (max-width: 800px) {
 			justify-content: center; }
 		@media (max-width: 700px) {
+			gap: 0;
 			justify-content: center;
-			padding: 0 var(--space-half);
-			border-radius: var(--border-radius);
-			background-color: var(--grey-color-900); }
+			background-color: var(--grey-color-900);
+			border-top-left-radius: var(--border-radius);
+			border-top-right-radius: var(--border-radius); }
 		@media (max-width: 600px) {
 			justify-content: space-between; } }
 	&__link {
@@ -30,9 +31,12 @@
 					display: none; } } } }
 	&__active {
 		&-no-underline {
-			border-radius: 100%;
-			@media (min-dith: 700px) {
-				background-color: var(--hover-color); } }
+			@media (min-width: 700px) {
+				border-radius: 100%;
+				background-color: var(--hover-color); }
+			@media (max-width: 700px) {
+				background-color: var(--black-color);
+				border-top-left-radius: var(--border-radius); } }
 		&::after {
 			width: 100%;
 			content: "";

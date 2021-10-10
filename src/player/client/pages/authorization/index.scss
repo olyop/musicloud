@@ -4,7 +4,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: calc(100vh - var(--footer-height));
+		height: calc(100% - var(--footer-height));
 		&-content {
 			width: 361rem;
 			transition: var(--transition-duration) background-color;

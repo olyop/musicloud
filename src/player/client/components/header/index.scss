@@ -19,12 +19,14 @@
 				background-color: transparent; }
 			&-content {
 				--width: 114rem;
-				left: unset;
 				right: 0;
-				top: 66rem;
+				top: 64rem;
+				left: unset;
 				right: -57rem;
 				transform: translate(-50%, -50%);
 				width: calc(var(--space) + var(--width));
+				@media (max-width: 800px) {
+					top: 62rem; }
 				&-button {
 					width: 100%;
 					border-radius: 0;

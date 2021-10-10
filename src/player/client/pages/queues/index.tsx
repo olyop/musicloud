@@ -198,7 +198,7 @@ const Queues: FC = () => {
 
 	return (
 		<Metadata title="Queue">
-			<div className={bem("", "Content PaddingTopBottom")}>
+			<div className="Content PaddingTopBottom">
 				{nowPlayingData?.user.nowPlaying && (
 					<Fragment>
 						<Queue
@@ -227,7 +227,7 @@ const Queues: FC = () => {
 							query={GET_QUEUE_LATER}
 							removeQuery={REMOVE_SONG_FROM_QUEUE_LATER}
 						/>
-						<div className="FlexListGapHalf MarginTop">
+						<div className={bem("actions", "MarginTop")}>
 							<Button
 								text={areQueuesCollapsed ? "Collapse" : "Expand"}
 								icon={areQueuesCollapsed ? "unfold_more" : "unfold_less"}
@@ -252,6 +252,7 @@ const Queues: FC = () => {
 								transparent
 								icon="refresh"
 								onClick={handleRefresh}
+								className={bem("actions-refresh")}
 							/>
 						</div>
 					</Fragment>
