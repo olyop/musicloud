@@ -50,7 +50,7 @@
 		"docker:host": "docker run -p 80:80 olyop/music-app:server-latest",
 		"init": "clear && del-cli build",
 		"sync": "git checkout . && git remote update && git pull",
-		"push": "git commit -a -m \"Update\" && git push -u origin main",
+		"push": "git add -A && git commit -m \"Update\" && git push -u origin main",
 		"publish-common": "tsc --outDir src/common --project tsconfig.common.json && cd src/common && npm publish && cd ../.. && npm i -S -P @oly_op/music-app-common@latest",
 		"test": "clear && jest --setupFiles dotenv/config",
 		"postinstall": "del node_modules/@types/webpack && del node_modules/@types/gql/index.d.ts && mkdir -p node_modules/@types/gql && touch node_modules/@types/gql/index.d.ts && echo 'declare module \"*.gql\" {import {DocumentNode} from \"graphql\";const value: DocumentNode;export = value}' >> node_modules/@types/gql/index.d.ts"
