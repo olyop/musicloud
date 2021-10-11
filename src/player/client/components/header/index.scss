@@ -1,7 +1,7 @@
 .Header {
 	z-index: 2;
 	height: var(--header-height);
-	clip-path: inset(0 -8rem 300rem -8rem);
+	clip-path: inset(0 -8rem -300rem -8rem);
 	&__left {
 		margin-left: 4rem; }
 	&__offline {
