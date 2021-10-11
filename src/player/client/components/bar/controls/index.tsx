@@ -21,6 +21,8 @@ const BarControls: FC<PropTypes> = ({
 	className,
 	buttonClassName,
 	buttonIconClassName,
+	playButtonClassName,
+	playButtonIconClassName,
 	hidePreviousNext = false,
 }) => {
 	const play = useStatePlay()
@@ -104,9 +106,9 @@ const BarControls: FC<PropTypes> = ({
 			)}
 			<Button
 				icon={playButtonIcon}
-				iconClassName={bem(buttonIconClassName)}
 				onClick={loading ? undefined : handlePlayClick}
-				className={bem(buttonClassName, loading && "loading")}
+				iconClassName={bem(playButtonIconClassName, buttonIconClassName)}
+				className={bem(playButtonClassName, buttonClassName, loading && "loading")}
 			/>
 			{hidePreviousNext || (
 				<Button
@@ -134,6 +136,8 @@ interface PropTypes {
 	buttonClassName?: BEMInput,
 	hidePreviousNext?: boolean,
 	buttonIconClassName?: BEMInput,
+	playButtonClassName?: BEMInput,
+	playButtonIconClassName?: BEMInput,
 }
 
 export default BarControls

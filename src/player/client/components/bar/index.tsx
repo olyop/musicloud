@@ -51,6 +51,8 @@ const Bar: FC = () => {
 					<BarControls
 						className={bem("controls")}
 						hidePreviousNext={width <= 700}
+						playButtonClassName={bem("controls-play")}
+						playButtonIconClassName={bem("controls-play-icon")}
 					/>
 				)}
 			</Window>
@@ -77,9 +79,8 @@ const Bar: FC = () => {
 							hidePlays
 							hideDuration
 							song={data.user.nowPlaying}
-							className={bem("main-content-current")}
 						/>
-						<div className="FlexListCenter">
+						<div className={bem("main-content-actions", "FlexListRight")}>
 							<Button
 								transparent
 								icon="fullscreen"

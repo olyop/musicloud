@@ -1,14 +1,35 @@
 .Bar {
 	z-index: 2;
 	display: flex;
-	height: var(--player-height);
+	height: var(--bar-height);
 	&__controls {
 		padding: var(--space-half);
-		border-right-width: var(--border-width);
-		border-right-style: var(--border-style);
-		border-right-color: var(--border-color);
+		@media (min-width: 700px) {
+			border-right-width: var(--border-width);
+			border-right-style: var(--border-style);
+			border-right-color: var(--border-color); }
 		@media (max-width: 700px) {
-			padding: var(--space); } }
+			padding: 0; }
+		&-play {
+			@media (min-width: 700px) {
+				--dimension: calc(var(--button-dimension) + var(--space-quart));
+				width: var(--dimension);
+				height: var(--dimension);
+				&-icon {
+					--icon-dimesnion: calc(var(--dimension) - 12rem);
+					width: var(--icon-dimesnion);
+					height: var(--icon-dimesnion);
+					font-size: var(--icon-dimesnion); } }
+			@media (max-width: 700px) {
+				--dimension: var(--bar-height);
+				border-radius: unset;
+				width: var(--dimension);
+				height: var(--dimension);
+				&-icon {
+					--icon-dimesnion: calc(var(--dimension) - var(--space-double));
+					width: var(--icon-dimesnion);
+					height: var(--icon-dimesnion);
+					font-size: var(--icon-dimesnion); } } } }
 	&__main {
 		width: 100%;
 		display: flex;
@@ -22,5 +43,5 @@
 			display: grid;
 			max-width: 100%;
 			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 3);
-			@media (min-width: 800px) {
+			&-actions {
 				margin-right: -7rem; } } } }
