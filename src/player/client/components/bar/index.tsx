@@ -58,43 +58,45 @@ const Bar: FC = () => {
 			</Window>
 			{data?.user.nowPlaying && (
 				<div className={bem("main", "PaddingHalf")}>
-					<div className={bem("main-content")}>
-						<Howler
-							playing={play}
-							onEnd={handleEnd}
-							volume={volume / 100}
-							onLoadError={resetPlayer}
-							src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
-						/>
-						<FullScreen handle={fullscreen}>
-							{fullscreen.active && (
-								<BarFullscreen
-									onExit={fullscreen.exit}
-									nowPlaying={data.user.nowPlaying}
-								/>
-							)}
-						</FullScreen>
-						<Song
-							hidePlay
-							hidePlays
-							hideDuration
-							song={data.user.nowPlaying}
-						/>
-						<div className={bem("main-content-actions", "FlexListRight")}>
-							<Button
-								transparent
-								icon="fullscreen"
-								title="Fullscreen"
-								onClick={fullscreen.enter}
+					<div className={bem("main-content-wrapper")}>
+						<div className={bem("main-content")}>
+							<Howler
+								playing={play}
+								onEnd={handleEnd}
+								volume={volume / 100}
+								onLoadError={resetPlayer}
+								src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
 							/>
-							<BarVolume/>
-							<NavLink to="/queues">
+							<FullScreen handle={fullscreen}>
+								{fullscreen.active && (
+									<BarFullscreen
+										onExit={fullscreen.exit}
+										nowPlaying={data.user.nowPlaying}
+									/>
+								)}
+							</FullScreen>
+							<Song
+								hidePlay
+								hidePlays
+								hideDuration
+								song={data.user.nowPlaying}
+							/>
+							<div className="FlexListRight">
 								<Button
-									title="Queue"
-									icon="queue_music"
-									transparent={pathname !== "/queues"}
+									transparent
+									icon="fullscreen"
+									title="Fullscreen"
+									onClick={fullscreen.enter}
 								/>
-							</NavLink>
+								<BarVolume/>
+								<NavLink to="/queues">
+									<Button
+										title="Queue"
+										icon="queue_music"
+										transparent={pathname !== "/queues"}
+									/>
+								</NavLink>
+							</div>
 						</div>
 					</div>
 					<Progress
