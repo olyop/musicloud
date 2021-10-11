@@ -21,6 +21,7 @@ const BarControls: FC<PropTypes> = ({
 	className,
 	buttonClassName,
 	buttonIconClassName,
+	hidePreviousNext = false,
 }) => {
 	const play = useStatePlay()
 	const dispatch = useDispatch()
@@ -92,26 +93,30 @@ const BarControls: FC<PropTypes> = ({
 
 	return (
 		<div className={bem(className, "")}>
-			<Button
-				transparent
-				icon="skip_previous"
-				className={buttonClassName}
-				iconClassName={buttonIconClassName}
-				onClick={loading ? undefined : handlePreviousClick}
-			/>
+			{hidePreviousNext || (
+				<Button
+					transparent
+					icon="skip_previous"
+					className={buttonClassName}
+					iconClassName={buttonIconClassName}
+					onClick={loading ? undefined : handlePreviousClick}
+				/>
+			)}
 			<Button
 				icon={playButtonIcon}
 				iconClassName={bem(buttonIconClassName)}
 				onClick={loading ? undefined : handlePlayClick}
 				className={bem(buttonClassName, loading && "loading")}
 			/>
-			<Button
-				transparent
-				icon="skip_next"
-				className={buttonClassName}
-				iconClassName={buttonIconClassName}
-				onClick={loading ? undefined : handleNextClick}
-			/>
+			{hidePreviousNext || (
+				<Button
+					transparent
+					icon="skip_next"
+					className={buttonClassName}
+					iconClassName={buttonIconClassName}
+					onClick={loading ? undefined : handleNextClick}
+				/>
+			)}
 		</div>
 	)
 }
@@ -127,6 +132,7 @@ interface UserPreviousData {
 interface PropTypes {
 	className?: BEMInput,
 	buttonClassName?: BEMInput,
+	hidePreviousNext?: boolean,
 	buttonIconClassName?: BEMInput,
 }
 

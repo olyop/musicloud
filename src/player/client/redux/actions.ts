@@ -68,6 +68,9 @@ export const updateTheme =
 	createAction("UPDATE_THEME",
 		withPayloadType<SettingsTheme>())
 
+export const toggleIsFullscreen =
+	createAction("TOGGLE_IS_FULLSCREEN")
+
 export const updateOrderBy =
 	createAction("UPDATE_ORDER_BY",
 		withPayloadType<OrderByPayload>())

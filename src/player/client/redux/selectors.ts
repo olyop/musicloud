@@ -9,6 +9,11 @@ import {
 	SettingsQueuesDisclosure,
 } from "../types"
 
+export const useStateCurrent =
+() => useSelector<State, number>(
+	({ current }) => current,
+)
+
 export const useStatePlay =
 	() => useSelector<State, boolean>(
 		({ play }) => play,
@@ -19,9 +24,9 @@ export const useStateSidebar =
 		({ sidebar }) => sidebar,
 	)
 
-export const useStateCurrent =
-	() => useSelector<State, number>(
-		({ current }) => current,
+export const useStateIsOnline =
+	() => useSelector<State, boolean>(
+		({ isOnline }) => isOnline,
 	)
 
 export const useStateLoading =
@@ -29,19 +34,19 @@ export const useStateLoading =
 		({ loading }) => loading,
 	)
 
-export const useStateIsOnline =
+export const useStateIsFullscreen =
 	() => useSelector<State, boolean>(
-		({ isOnline }) => isOnline,
-	)
-
-export const useStateTheme =
-	() => useSelector<State, SettingsTheme>(
-		({ settings: { theme } }) => theme,
+		({ isFullscreen }) => isFullscreen,
 	)
 
 export const useStateVolume =
 	() => useSelector<State, number>(
 		({ settings: { volume } }) => volume,
+	)
+
+export const useStateTheme =
+	() => useSelector<State, SettingsTheme>(
+		({ settings: { theme } }) => theme,
 	)
 
 export const useStateListStyle =

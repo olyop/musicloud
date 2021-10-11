@@ -1,26 +1,21 @@
 .BarVolume {
-	&__background {
-		background-color: transparent; }
 	&__content {
-		--h: 250rem;
-		--w: calc(var(--button-dimension) + var(--space));
+		--h: 300rem;
+		--w: calc(var(--button-dimension) + var(--space-one-half));
 		display: flex;
 		width: var(--w);
 		height: var(--h);
 		align-items: center;
 		flex-direction: column;
-		justify-content: space-between;
-		transform: translate(-100%, -100%);
-		left: calc(100% - var(--space-half) - 17px);
-		top: calc(100% - var(--player-height) - var(--space-half)); }
+		justify-content: space-between; }
 	&__slider {
-		--dim: 16rem;
-		height: 100%;
+		--slider-w: calc(var(--button-dimesnion) - var(--space-half));
 		appearance: none;
 		overflow: hidden;
-		height: var(--dim);
+		height: var(--slider-w);
 		transform: rotateZ(-90deg);
 		background-color: transparent;
+		width: calc(var(--h) - var(--button-dimesnion) * 2 - var(--space-double));
 		&:focus {
 			outline: none; }
 		&::-webkit-slider-runnable-track {
@@ -28,14 +23,14 @@
 			width: 100%;
 			height: 100%;
 			cursor: pointer;
-			border-radius: 9rem;
-			background-color: var(--hover-color); }
+			background-color: var(--hover-color);
+			border-radius: calc(var(--slider-w) / 2); }
 		&::-webkit-slider-thumb {
 			border: 0;
 			height: 100%;
 			cursor: pointer;
 			appearance: none;
-			width: var(--dim);
 			position: relative;
 			border-radius: 100%;
+			width: var(--slider-w);
 			background-color: var(--text-color); } } }

@@ -1,8 +1,7 @@
 .Header {
 	z-index: 2;
-	width: 100%;
 	height: var(--header-height);
-	clip-path: inset(0 -3rem -8rem -4rem);
+	clip-path: inset(0 -3rem Infinity -4rem);
 	&__hamburger {
 		margin-left: 4rem; }
 	&__offline {
@@ -20,14 +19,11 @@
 				background-color: transparent; }
 			&-content {
 				--width: 114rem;
-				right: 0;
-				top: 64rem;
 				left: unset;
-				right: -57rem;
-				transform: translate(-50%, -50%);
+				transform: none;
+				right: calc(var(--space-half));
 				width: calc(var(--space) + var(--width));
-				@media (max-width: 800px) {
-					top: 62rem; }
+				top: calc(var(--space-half) + env(safe-area-inset-top) - 1rem);
 				&-button {
 					width: 100%;
 					border-radius: 0;

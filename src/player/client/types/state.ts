@@ -59,4 +59,5 @@ export interface State {
 	loading: string[],
 	isOnline: boolean,
 	settings: Settings,
+	isFullscreen: boolean,
 }

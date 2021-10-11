@@ -16,6 +16,7 @@ import {
 	updateIsOnline,
 	updateListStyle,
 	toggleShowGenres,
+	toggleIsFullscreen,
 	toggleShowReleased,
 	toggleShowDuration,
 	toggleQueueDisclosure,
@@ -41,10 +42,16 @@ const play =
 		builder
 			.addCase(togglePlay, state => !state)
 			.addCase(updatePlay, (_state, { payload }) => payload))
+
 const isOnline =
 	createReducer(initialState.isOnline, builder =>
 		builder
 			.addCase(updateIsOnline, (_state, { payload }) => payload))
+
+const isFullscreen =
+	createReducer(initialState.isFullscreen, builder =>
+		builder
+			.addCase(toggleIsFullscreen, state => !state))
 
 const loading =
 	createReducer(initialState.loading, builder =>
@@ -123,6 +130,7 @@ const reducer =
 		loading,
 		settings,
 		isOnline,
+		isFullscreen,
 	})
 
 export default reducer

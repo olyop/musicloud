@@ -85,7 +85,7 @@ const Authorization: FC = ({ children }) => {
 	} else if (isNull(accessToken)) {
 		return (
 			<Metadata title="Log In">
-				<div className={bem("", "FullWidthHeight")}>
+				<div className={bem("", "FullWidthAndHeight")}>
 					<div className={bem("main")}>
 						<div
 							className={bem(

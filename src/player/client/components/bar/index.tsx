@@ -18,6 +18,7 @@ import { useMutation, useQuery, useResetPlayer } from "../../hooks"
 import { useStatePlay, updatePlay, useDispatch, useStateVolume } from "../../redux"
 
 import "./index.scss"
+import Window from "../window"
 
 const bem =
 	createBEM("Bar")
@@ -45,9 +46,14 @@ const Bar: FC = () => {
 
 	return (
 		<footer className={bem("", "Elevated")}>
-			<BarControls
-				className={bem("controls")}
-			/>
+			<Window>
+				{({ width }) => (
+					<BarControls
+						className={bem("controls")}
+						hidePreviousNext={width <= 700}
+					/>
+				)}
+			</Window>
 			{data?.user.nowPlaying && (
 				<div className={bem("main", "PaddingHalf")}>
 					<div className={bem("main-content")}>

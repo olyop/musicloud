@@ -13,6 +13,7 @@ import Modal, {
 	ModalButtonPropTypes,
 } from "../modal"
 
+import Window from "../window"
 import PlayButton from "./play-button"
 import InLibraryButton from "./in-library-button"
 import { Handler, OnClickPropTypes } from "../../types"
@@ -108,13 +109,17 @@ const Item: FC<PropTypes> = ({
 						</p>
 					)}
 				</div>
-				{inLibraryOptions && (
-					<InLibraryButton
-						onClick={inLibraryOptions.onClick}
-						inLibrary={inLibraryOptions.inLibrary}
-						className={bem(iconClassName, "in-library")}
-					/>
-				)}
+				<Window>
+					{({ width }) => (
+						width >= 700 && inLibraryOptions && (
+							<InLibraryButton
+								className={bem(iconClassName)}
+								onClick={inLibraryOptions.onClick}
+								inLibrary={inLibraryOptions.inLibrary}
+							/>
+						)
+					)}
+				</Window>
 				{modalButtons && (
 					<Button
 						transparent

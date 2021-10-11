@@ -11,6 +11,7 @@ import Bar from "./components/bar"
 import Header from "./components/header"
 import Loading from "./components/loading"
 import Sidebar from "./components/sidebar"
+import Fullscreen from "./components/fullscreen"
 import Authorization from "./pages/authorization"
 
 const ReactRedux: FC = ({ children }) => (
@@ -29,13 +30,15 @@ const Root: FC = () => (
 	<ReactRedux>
 		<ReactRouter>
 			<ApolloClient>
-				<Loading/>
-				<Authorization>
-					<Sidebar/>
-					<Header/>
-					<Pages/>
-					<Bar/>
-				</Authorization>
+				<Fullscreen>
+					<Loading/>
+					<Authorization>
+						<Sidebar/>
+						<Header/>
+						<Pages/>
+						<Bar/>
+					</Authorization>
+				</Fullscreen>
 			</ApolloClient>
 		</ReactRouter>
 	</ReactRedux>

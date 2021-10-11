@@ -58,7 +58,6 @@ const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
 			{modal && (
 				<Modal
 					onClose={handleModalClose}
-					backgroundClassName={bem("background")}
 					contentClassName={bem("content", "PaddingHalf")}
 				>
 					<Button

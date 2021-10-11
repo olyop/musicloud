@@ -68,5 +68,6 @@ export const initialState: State = {
 	loading: [],
 	sidebar: false,
 	isOnline: true,
+	isFullscreen: false,
 	settings: initialSettings,
 }

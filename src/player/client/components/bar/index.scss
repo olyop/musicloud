@@ -1,6 +1,5 @@
 .Bar {
 	z-index: 2;
-	width: 100%;
 	display: flex;
 	height: var(--player-height);
 	&__controls {
@@ -9,11 +8,10 @@
 		border-right-style: var(--border-style);
 		border-right-color: var(--border-color);
 		@media (max-width: 700px) {
-			padding: 0; } }
+			padding: var(--space); } }
 	&__main {
 		width: 100%;
 		display: flex;
-		overflow: hidden;
 		flex-direction: column;
 		justify-content: space-between;
 		gap: calc(var(--space-quart) - 2rem);
@@ -23,7 +21,6 @@
 		&-content {
 			display: grid;
 			max-width: 100%;
-			overflow: hidden;
 			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 3);
 			@media (min-width: 800px) {
 				margin-right: -7rem; } } } }

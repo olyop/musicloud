@@ -15,6 +15,8 @@ import {
 	toggleSidebar,
 	updateIsOnline,
 	useStateIsOnline,
+	toggleIsFullscreen,
+	useStateIsFullscreen,
 } from "../../redux"
 
 import Modal from "../modal"
@@ -67,6 +69,7 @@ const Header: FC = () => {
 	const dispatch = useDispatch()
 	const { pathname } = useLocation()
 	const isOnline = useStateIsOnline()
+	const isFullscreen = useStateIsFullscreen()
 
 	const checkStatus =
 		async () =>
@@ -90,6 +93,12 @@ const Header: FC = () => {
 
 	const handleAccountModalClose =
 		() => setAccountModal(false)
+
+	const handleFullscreenClick =
+		() => {
+			dispatch(toggleIsFullscreen())
+			handleAccountModalClose()
+		}
 
 	useEffect(() => {
 		window.addEventListener("offline", () => {
@@ -127,22 +136,6 @@ const Header: FC = () => {
 						/>
 					)}
 				/>
-				{data && (
-					<Button
-						transparent
-						title="Account"
-						className="Border"
-						text={data.user.name}
-						rightIcon="expand_more"
-						onClick={handleAccountModalOpen}
-						image={determineCatalogImageURL(
-							data.user.userID,
-							"profile",
-							ImageSizes.MINI,
-							ImageDimensions.SQUARE,
-						)}
-					/>
-				)}
 				{isOnline || (
 					<Button
 						transparent
@@ -153,6 +146,20 @@ const Header: FC = () => {
 						spanClassName={bem("offline-span")}
 					/>
 				)}
+				<Button
+					transparent
+					title="Account"
+					className="Border"
+					text={data ? data.user.name : "Loading..."}
+					rightIcon="expand_more"
+					onClick={handleAccountModalOpen}
+					image={data ? determineCatalogImageURL(
+						data.user.userID,
+						"profile",
+						ImageSizes.MINI,
+						ImageDimensions.SQUARE,
+					) : undefined}
+				/>
 				{accountModal && data && (
 					<Modal
 						onClose={handleAccountModalClose}
@@ -177,6 +184,14 @@ const Header: FC = () => {
 									)}
 								/>
 							)}
+						/>
+						<Button
+							text={isFullscreen ? "Exit PWA" : "PWA"}
+							transparent
+							icon="fullscreen"
+							title="Go Fullscreen"
+							onClick={handleFullscreenClick}
+							className={bem("account-modal-content-button")}
 						/>
 						<NavLink
 							to="/settings"
