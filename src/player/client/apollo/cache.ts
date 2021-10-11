@@ -4,6 +4,8 @@ import {
 	FieldMergeFunction,
 } from "@apollo/client"
 
+import { persistCache, LocalStorageWrapper } from "apollo3-cache-persist"
+
 import { StoreObject } from "../types"
 
 const mergeArrays =
@@ -64,5 +66,10 @@ const cache =
 	new InMemoryCache({
 		typePolicies,
 	})
+
+persistCache({
+	cache,
+	storage: new LocalStorageWrapper(window.localStorage),
+})
 
 export default cache
