@@ -16,7 +16,7 @@ import BarFullscreen from "./fullscreen"
 import { determineCatalogMP3URL } from "../../helpers"
 import GET_USER_CURRENT from "./get-user-now-playing.gql"
 import NEXT_QUEUE_SONG from "./controls/next-queue-song.gql"
-import { useIsPWA, useMutation, useQuery, useResetPlayer } from "../../hooks"
+import { useMutation, useQuery, useResetPlayer } from "../../hooks"
 import { useStatePlay, updatePlay, useDispatch, useStateVolume } from "../../redux"
 
 import "./index.scss"
@@ -25,7 +25,6 @@ const bem =
 	createBEM("Bar")
 
 const Bar: FC = () => {
-	const isPWA = useIsPWA()
 	const play = useStatePlay()
 	const dispatch = useDispatch()
 	const volume = useStateVolume()
@@ -90,14 +89,16 @@ const Bar: FC = () => {
 								song={data.user.nowPlaying}
 							/>
 							<div className="FlexListRight">
-								{isPWA || (
-									<Button
-										transparent
-										icon="fullscreen"
-										title="Fullscreen"
-										onClick={fullscreen.enter}
-									/>
-								)}
+								<Window>
+									{({ width }) => width >= 700 && (
+										<Button
+											transparent
+											icon="fullscreen"
+											title="Fullscreen"
+											onClick={fullscreen.enter}
+										/>
+									)}
+								</Window>
 								<BarVolume/>
 								<NavLink to="/queues">
 									<Button

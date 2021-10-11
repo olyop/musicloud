@@ -22,10 +22,11 @@ import {
 import Modal from "../modal"
 import { User } from "../../types"
 import GET_USER_NAME from "./get-user-name.gql"
-import { useSignOut, useQuery, useIsPWA } from "../../hooks"
+import { useSignOut, useQuery } from "../../hooks"
 import { getUserID, determineCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
+import Window from "../window"
 
 const timeout =
 	(promise: Promise<unknown>) =>
@@ -64,7 +65,6 @@ const bem =
 	createBEM("Header")
 
 const Header: FC = () => {
-	const isPWA = useIsPWA()
 	const userID = getUserID()
 	const signOut = useSignOut()
 	const history = useHistory()
@@ -126,33 +126,37 @@ const Header: FC = () => {
 
 	return (
 		<header className={bem("", "Elevated PaddingLeftRightHalf FlexListSpaceBetween")}>
-			<div className={bem(isPWA || "left", "FlexList")}>
-				{isPWA && (
-					<div className="MarginRightQuart FlexList">
+			<Window>
+				{({ width }) => (
+					<div className={bem(width >= 700 || "left", "FlexList")}>
+						{width <= 700 && (
+							<div className="MarginRightQuart FlexList">
+								<Button
+									transparent
+									title="Back"
+									icon="arrow_back"
+									onClick={handleBack}
+									className={bem("icon")}
+								/>
+								<Button
+									transparent
+									title="Foward"
+									icon="arrow_forward"
+									onClick={handleFoward}
+									className={bem("icon")}
+								/>
+							</div>
+						)}
 						<Button
+							icon="menu"
 							transparent
-							title="Back"
-							icon="arrow_back"
-							onClick={handleBack}
-							className={bem("icon")}
-						/>
-						<Button
-							transparent
-							title="Foward"
-							icon="arrow_forward"
-							onClick={handleFoward}
+							title="Menu"
+							onClick={handleMenuClick}
 							className={bem("icon")}
 						/>
 					</div>
 				)}
-				<Button
-					icon="menu"
-					transparent
-					title="Menu"
-					onClick={handleMenuClick}
-					className={bem("icon")}
-				/>
-			</div>
+			</Window>
 			<div className="FlexListGapQuart">
 				<NavLink
 					to="/search"
