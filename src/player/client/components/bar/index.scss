@@ -13,23 +13,23 @@
 		&-play {
 			@media (min-width: 700px) {
 				--dimension: calc(var(--button-dimension) + var(--space-quart));
-				width: var(--dimension);
-				height: var(--dimension);
+				width: var(--dimension) !important;
+				height: var(--dimension) !important;
 				&-icon {
 					--icon-dimesnion: calc(var(--dimension) - 12rem);
-					width: var(--icon-dimesnion);
-					height: var(--icon-dimesnion);
-					font-size: var(--icon-dimesnion); } }
+					width: var(--icon-dimesnion) !important;
+					height: var(--icon-dimesnion) !important;
+					font-size: var(--icon-dimesnion) !important; } }
 			@media (max-width: 700px) {
 				--dimension: var(--bar-height);
 				border-radius: unset;
-				width: var(--dimension);
-				height: var(--dimension);
+				width: var(--dimension) !important;
+				height: var(--dimension) !important;
 				&-icon {
 					--icon-dimesnion: calc(var(--dimension) - var(--space-double));
-					width: var(--icon-dimesnion);
-					height: var(--icon-dimesnion);
-					font-size: var(--icon-dimesnion); } } } }
+					width: var(--icon-dimesnion) !important;
+					height: var(--icon-dimesnion) !important;
+					font-size: var(--icon-dimesnion) !important; } } } }
 	&__main {
 		width: 100%;
 		display: flex;
