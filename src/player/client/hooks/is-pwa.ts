@@ -1,5 +1,5 @@
 declare global {
-	interface Window {
+	interface Navigator {
 		standalone: boolean,
 	}
 }
@@ -8,4 +8,4 @@ export const useIsPWA =
 	() =>
 		window.matchMedia("(display-mode: standalone)").matches ||
 		document.referrer.includes("android-app://") ||
-		window?.standalone === true
+		window.navigator.standalone === true
