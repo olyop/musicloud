@@ -21,8 +21,6 @@
 		margin: 2rem var(--gap) 0 calc(var(--gap) - 5rem); }
 	&__play {
 		--fix: -3px;
-		@media (max-width: 800px) {
-			--fix: -6px; }
 		margin-left: var(--fix);
 		margin-right: calc(var(--gap) + var(--fix)); }
 	&__img-link {
