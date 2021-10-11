@@ -1,15 +1,17 @@
 import Howler from "react-howler"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
+import { createElement, FC, useEffect } from "react"
 import { useLocation, NavLink } from "react-router-dom"
 import { useFullScreenHandle, FullScreen } from "react-full-screen"
 
 import Song from "../song"
+import Window from "../window"
 import BarVolume from "./volume"
 import Progress from "../progress"
 import { User } from "../../types"
 import BarControls from "./controls"
+import setMetadata from "./set-metadata"
 import BarFullscreen from "./fullscreen"
 import { determineCatalogMP3URL } from "../../helpers"
 import GET_USER_CURRENT from "./get-user-now-playing.gql"
@@ -18,7 +20,6 @@ import { useIsPWA, useMutation, useQuery, useResetPlayer } from "../../hooks"
 import { useStatePlay, updatePlay, useDispatch, useStateVolume } from "../../redux"
 
 import "./index.scss"
-import Window from "../window"
 
 const bem =
 	createBEM("Bar")
@@ -44,6 +45,12 @@ const Bar: FC = () => {
 			await nextQueueSong()
 			dispatch(updatePlay(true))
 		}
+
+	useEffect(() => {
+		if (data?.user.nowPlaying) {
+			setMetadata(data.user.nowPlaying)
+		}
+	}, [data])
 
 	return (
 		<footer className={bem("", "Elevated")}>

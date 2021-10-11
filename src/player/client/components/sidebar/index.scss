@@ -33,7 +33,7 @@
 			flex-grow: 1;
 			border-radius: 0;
 			justify-content: flex-start;
-			height: var(--header-height); } }
+			height: var(--header-height) !important; } }
 	&__sub-route {
 		display: flex;
 		justify-content: stretch;
