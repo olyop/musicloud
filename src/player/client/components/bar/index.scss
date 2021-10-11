@@ -22,7 +22,7 @@
 					font-size: var(--icon-dimesnion) !important; } }
 			@media (max-width: 700px) {
 				--dimension: var(--bar-height);
-				border-radius: unset;
+				border-radius: unset !important;
 				width: var(--dimension) !important;
 				height: var(--dimension) !important;
 				&-icon {
