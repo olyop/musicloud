@@ -115,8 +115,23 @@ const SongPage: FC<PropTypes> = ({ song }) => {
 const SongPageWrapper: FC = () => {
 	const params = useParams<SongIDBase>()
 	const songID = addDashesToUUID(params.songID)
-	const { data } = useQuery<Data, SongIDBase>(GET_SONG_PAGE, { variables: { songID } })
-	return data ? <SongPage song={data.song}/> : null
+
+	const { data, error } =
+		useQuery<Data, SongIDBase>(GET_SONG_PAGE, { variables: { songID } })
+
+	if (error) {
+		return (
+			<h2 className="Content BodyOne PaddingTopBottom">
+				{error.message === "Failed to fetch" ?
+					error.message :
+					"Album does not exist."}
+			</h2>
+		)
+	} else if (data) {
+		return <SongPage song={data.song}/>
+	} else {
+		return null
+	}
 }
 
 interface Data {

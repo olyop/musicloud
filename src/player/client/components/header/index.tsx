@@ -6,9 +6,9 @@ import {
 
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, FC, useEffect, useState } from "react"
-import { useLocation, NavLink } from "react-router-dom"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
+import { createElement, FC, useEffect, useState } from "react"
+import { useHistory, useLocation, NavLink } from "react-router-dom"
 
 import {
 	useDispatch,
@@ -22,7 +22,7 @@ import {
 import Modal from "../modal"
 import { User } from "../../types"
 import GET_USER_NAME from "./get-user-name.gql"
-import { useSignOut, useQuery } from "../../hooks"
+import { useSignOut, useQuery, useIsPWA } from "../../hooks"
 import { getUserID, determineCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
@@ -64,8 +64,10 @@ const bem =
 	createBEM("Header")
 
 const Header: FC = () => {
+	const isPWA = useIsPWA()
 	const userID = getUserID()
 	const signOut = useSignOut()
+	const history = useHistory()
 	const dispatch = useDispatch()
 	const { pathname } = useLocation()
 	const isOnline = useStateIsOnline()
@@ -82,6 +84,12 @@ const Header: FC = () => {
 		useQuery<Data, UserIDBase>(GET_USER_NAME, {
 			variables: { userID },
 		})
+
+	const handleBack =
+		() => history.goBack()
+
+	const handleFoward =
+		() => history.goForward()
 
 	const handleMenuClick =
 		() => {
@@ -118,13 +126,33 @@ const Header: FC = () => {
 
 	return (
 		<header className={bem("", "Elevated PaddingLeftRightHalf FlexListSpaceBetween")}>
-			<Button
-				icon="menu"
-				transparent
-				title="Menu"
-				onClick={handleMenuClick}
-				className={bem("hamburger", "icon")}
-			/>
+			<div className={bem(isPWA || "left", "FlexList")}>
+				{isPWA && (
+					<div className="MarginRightQuart FlexList">
+						<Button
+							transparent
+							title="Back"
+							icon="arrow_back"
+							onClick={handleBack}
+							className={bem("icon")}
+						/>
+						<Button
+							transparent
+							title="Foward"
+							icon="arrow_forward"
+							onClick={handleFoward}
+							className={bem("icon")}
+						/>
+					</div>
+				)}
+				<Button
+					icon="menu"
+					transparent
+					title="Menu"
+					onClick={handleMenuClick}
+					className={bem("icon")}
+				/>
+			</div>
 			<div className="FlexListGapQuart">
 				<NavLink
 					to="/search"

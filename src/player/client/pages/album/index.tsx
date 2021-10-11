@@ -98,7 +98,7 @@ const AlbumPage: FC = () => {
 		return (
 			<h2 className="Content BodyOne PaddingTopBottom">
 				{error.message === "Failed to fetch" ?
-					"Network error." :
+					error.message :
 					"Album does not exist."}
 			</h2>
 		)

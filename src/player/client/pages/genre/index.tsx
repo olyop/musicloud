@@ -36,7 +36,9 @@ const GenrePage: FC = () => {
 	if (!isUndefined(error)) {
 		return (
 			<h2 className="Content BodyOne PaddingTopBottom">
-				Genre does not exist.
+				{error.message === "Failed to fetch" ?
+					error.message :
+					"Album does not exist."}
 			</h2>
 		)
 	} else if (!isUndefined(data)) {

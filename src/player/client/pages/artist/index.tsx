@@ -72,7 +72,9 @@ const ArtistPage: FC<RouteComponentProps> = ({ match }) => {
 	if (error) {
 		return (
 			<h2 className="Content BodyOne PaddingTopBottom">
-				{error.message}
+				{error.message === "Failed to fetch" ?
+					error.message :
+					"Artist does not exist."}
 			</h2>
 		)
 	} else if (data) {

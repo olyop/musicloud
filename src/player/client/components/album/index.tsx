@@ -1,5 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import { createElement, FC, Fragment } from "react"
+import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import Item from "../item"
@@ -51,13 +52,17 @@ const Album: FC<PropTypes> = ({
 		text: isPlaying ? "Pause" : "Play",
 		icon: isPlaying ? "pause" : "play_arrow",
 	},{
-		icon: "info",
-		text: "Info",
-		link: determineObjectPath("album", album.albumID),
+		text: "Playlist",
+		icon: "playlist_add",
+		link: `/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`,
 	},{
 		icon: "shuffle",
 		text: "Shuffle",
 		onClick: shuffleAlbum,
+	},{
+		icon: "info",
+		text: "Info",
+		link: determineObjectPath("album", album.albumID),
 	}]
 
 	const path =

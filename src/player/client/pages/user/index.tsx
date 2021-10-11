@@ -14,33 +14,45 @@ const UserPage: FC = () => {
 	const params = useParams<UserIDBase>()
 	const userID = addDashesToUUID(params.userID)
 
-	const { data } =
+	const { data, error } =
 		useQuery<Data, UserIDBase>(GET_USER_PAGE, { variables: { userID } })
 
-	return data ? (
-		<Metadata title={data.user.name}>
-			<Banner
-				title={data.user.name}
-				coverURL={determineCatalogImageURL(
-					data.user.userID,
-					"cover",
-					ImageSizes.FULL,
-					ImageDimensions.LANDSCAPE,
-				)}
-				profileURL={determineCatalogImageURL(
-					data.user.userID,
-					"profile",
-					ImageSizes.HALF,
-					ImageDimensions.SQUARE,
-				)}
-			/>
-			<div className="Content PaddingTopBottom">
-				<p className="BodyOne">
-					WIP.
-				</p>
-			</div>
-		</Metadata>
-	) : null
+	if (error) {
+		return (
+			<h2 className="Content BodyOne PaddingTopBottom">
+				{error.message === "Failed to fetch" ?
+					error.message :
+					"Album does not exist."}
+			</h2>
+		)
+	} else if (data) {
+		return (
+			<Metadata title={data.user.name}>
+				<Banner
+					title={data.user.name}
+					coverURL={determineCatalogImageURL(
+						data.user.userID,
+						"cover",
+						ImageSizes.FULL,
+						ImageDimensions.LANDSCAPE,
+					)}
+					profileURL={determineCatalogImageURL(
+						data.user.userID,
+						"profile",
+						ImageSizes.HALF,
+						ImageDimensions.SQUARE,
+					)}
+				/>
+				<div className="Content PaddingTopBottom">
+					<p className="BodyOne">
+						WIP.
+					</p>
+				</div>
+			</Metadata>
+		)
+	} else {
+		return null
+	}
 }
 
 interface Data {

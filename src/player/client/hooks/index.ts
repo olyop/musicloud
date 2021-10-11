@@ -1,4 +1,5 @@
 export * from "./query"
+export * from "./is-pwa"
 export * from "./sign-out"
 export * from "./mutation"
 export * from "./play-song"
