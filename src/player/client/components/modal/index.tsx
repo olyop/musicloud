@@ -23,7 +23,7 @@ const Modal: FC<ModalPropTypes> = ({
 			onClick={onClose}
 			className={bem(backgroundClassName, "background", "FullWidthAndHeight")}
 		/>
-		<div className={bem(className, contentClassName, "content", "Elevated Rounded")}>
+		<div className={bem(className, contentClassName, "content", "Elevated Rounded OverflowHidden")}>
 			{children}
 		</div>
 	</div>

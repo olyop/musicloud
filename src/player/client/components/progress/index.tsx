@@ -48,7 +48,7 @@ const Progress: FC<PropTypes> = ({ duration, className }) => {
 				max={duration}
 				value={current}
 				onInput={handleChange}
-				className={bem("slider")}
+				className={bem("slider", "OverflowHidden")}
 			/>
 			<p
 				className={bem("text", "BodyTwo")}

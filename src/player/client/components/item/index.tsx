@@ -90,12 +90,12 @@ const Item: FC<PropTypes> = ({
 					>
 						<p
 							children={upperLeft}
-							className={bem("info-left-text", "BodyOneBold")}
+							className={bem("info-left-text", "BodyOneBold OverflowHidden")}
 						/>
 						{lowerLeft && (
 							<p
 								children={lowerLeft}
-								className={bem("info-left-text", "BodyTwo")}
+								className={bem("info-left-text", "BodyTwo OverflowHidden")}
 							/>
 						)}
 					</div>

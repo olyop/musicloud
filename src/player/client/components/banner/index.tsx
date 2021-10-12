@@ -26,7 +26,7 @@ const Banner: FC<PropTypes> = ({
 				url={profileURL}
 				className={bem("content-profile", "Elevated")}
 			/>
-			<div>
+			<div className="OverflowHidden">
 				<h1 className={bem("content-title", "HeadingTwoInverted")}>
 					{title}
 				</h1>
@@ -37,7 +37,7 @@ const Banner: FC<PropTypes> = ({
 				)}
 				{content}
 				{buttons && (
-					<div className="MarginTop FlexListGapHalf">
+					<div className={bem("content-buttons", "MarginTop FlexListGapHalf")}>
 						{buttons}
 					</div>
 				)}

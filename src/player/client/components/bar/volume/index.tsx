@@ -72,7 +72,7 @@ const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
 						type="range"
 						value={volume}
 						onChange={handleChange}
-						className={bem("slider")}
+						className={bem("slider", "OverflowHidden")}
 					/>
 					<Button
 						transparent

@@ -15,16 +15,23 @@
 		position: absolute;
 		align-items: flex-start;
 		transform: translateX(-50%);
-		grid-template-columns: 156rem 1fr;
+		grid-template-columns: 150rem 1fr;
 		@media (max-width: 1360px) {
-			width: 100%; }
+			left: 0;
+			transform: unset;
+			width: calc(100% - var(--space-double)); }
+		@media (max-width: 700px) {
+			grid-template-columns: 100rem 1fr; }
 		&-profile {
 			border-radius: 50%;
 			background-color: unset; }
 		&-title {
 			font-weight: 700;
-			margin-top: -10rem;
-			margin-left: -2rem; } }
+			margin-left: -2rem; }
+		&-buttons {
+			@media (max-width: 400px) {
+				align-items: flex-start;
+				flex-direction: column; } } }
 	&__black {
 		top: 0;
 		left: 0;
