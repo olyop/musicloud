@@ -1,14 +1,6 @@
 .Header {
 	z-index: 2;
 	height: var(--header-height);
-	clip-path: inset(1rem -8rem -300rem -8rem);
-	&::before {
-		content: "";
-		width: 100vw;
-		height: 1rem;
-		position: absolute;
-		background-color: #e0e0e0;
-		top: calc(env(safe-area-inset-top) - 1rem); }
 	&__left {
 		margin-left: 4rem; }
 	&__offline {
