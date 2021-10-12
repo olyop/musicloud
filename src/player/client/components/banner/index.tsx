@@ -21,7 +21,7 @@ const Banner: FC<PropTypes> = ({
 		imgClassName={bem("img")}
 		className={bem("", "Elevated")}
 	>
-		<div className={bem("content", "Content PaddingBottomOneHalf")}>
+		<div className={bem("content", "Content PaddingTopBottom")}>
 			<Image
 				url={profileURL}
 				className={bem("content-profile", "Elevated")}
