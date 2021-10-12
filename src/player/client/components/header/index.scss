@@ -2,6 +2,15 @@
 	z-index: 2;
 	height: var(--header-height);
 	clip-path: inset(0 -8rem -300rem -8rem);
+	&::before {
+		content: "";
+		width: 100vw;
+		height: 1rem;
+		left: 0;
+		right: 0;
+		position: absolute;
+		background-color: var(--border-color);
+		top: calc(env(safe-area-inset-top) - 1rem); }
 	&__left {
 		margin-left: 4rem; }
 	&__offline {
