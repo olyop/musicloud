@@ -15,13 +15,15 @@
 			justify-content: space-between; } }
 	&__link {
 		position: relative;
+		outline: none !important;
 		&:hover {
 			background-color: transparent !important; }
 		&-button {
+			outline: none !important;
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
 			&:hover {
-				background-color: transparent; }
+				background-color: transparent !important; }
 			@media (min-width: 700px) {
 				padding-left: 0;
 				padding-right: 0; }
