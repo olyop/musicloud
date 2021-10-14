@@ -124,7 +124,7 @@ const SongPageWrapper: FC = () => {
 			<h2 className="Content BodyOne PaddingTopBottom">
 				{error.message === "Failed to fetch" ?
 					error.message :
-					"Album does not exist."}
+					"Song does not exist."}
 			</h2>
 		)
 	} else if (data) {
