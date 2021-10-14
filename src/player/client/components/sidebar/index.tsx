@@ -32,7 +32,7 @@ const Sidebar: FC = () => {
 		<div className={bem("")}>
 			<div
 				onClick={handleClose}
-				className={bem("background")}
+				className={bem("background", "FullWidthAndHeight")}
 			/>
 			<nav className={bem("content", "Elevated PaddingBottom")}>
 				<div>
