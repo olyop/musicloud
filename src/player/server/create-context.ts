@@ -1,8 +1,8 @@
 import algolia from "algoliasearch"
-import { isUndefined } from "lodash"
 import { S3 } from "@aws-sdk/client-s3"
 import { FastifyRequest } from "fastify"
 import { Pool } from "@oly_op/pg-helpers"
+import { isString, isUndefined } from "lodash"
 import jwt, { TokenExpiredError } from "jsonwebtoken"
 
 import { Context, JWTPayload } from "./types"
@@ -16,7 +16,14 @@ const determineAuthorization =
 		} else {
 			try {
 				const accessToken = authorization.substring(7)
-				return jwt.verify<JWTPayload>(accessToken, JWT_TOKEN_SECRET)
+				const payload = jwt.verify(accessToken, JWT_TOKEN_SECRET)
+				if (isString(payload)) {
+					return undefined
+				} else if ("userID" in payload) {
+					return payload as JWTPayload
+				} else {
+					return undefined
+				}
 			} catch (error) {
 				if (error instanceof TokenExpiredError) {
 					return null

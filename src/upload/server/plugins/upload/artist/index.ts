@@ -1,7 +1,6 @@
 import { join } from "path"
 import { readFileSync } from "fs"
 import { v4 as createUUID } from "uuid"
-import { BodyEntry } from "fastify-multipart"
 import { FastifyPluginCallback } from "fastify"
 import { query, exists } from "@oly_op/pg-helpers"
 import { ImageInput, ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
@@ -12,6 +11,7 @@ import {
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
+import { BodyEntry } from "../types"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
 interface Route {

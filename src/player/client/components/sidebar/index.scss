@@ -1,9 +1,8 @@
 .Sidebar {
 	left: 0;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	position: absolute;
-	top: env(safe-area-inset-top);
 	&__background {
 		z-index: 3;
 		width: 100%;
@@ -12,7 +11,7 @@
 		cursor: pointer;
 		position: absolute;
 		background-color: var(--text-color); }
-	&__bar {
+	&__content {
 		top: 0;
 		left: 0;
 		z-index: 4;
@@ -21,7 +20,10 @@
 		position: absolute;
 		flex-direction: column;
 		width: var(--sidebar-width);
-		justify-content: space-between; }
+		justify-content: space-between;
+		padding-top: env(safe-area-inset-top);
+		&-header {
+			height: var(--header-height); } }
 	&__links {
 		display: flex;
 		flex-direction: column;
@@ -32,16 +34,7 @@
 		&-button {
 			flex-grow: 1;
 			border-radius: 0;
-			justify-content: flex-start;
-			height: var(--header-height) !important; } }
-	&__sub-route {
-		display: flex;
-		justify-content: stretch;
-		&-button {
-			flex-grow: 1;
-			border-radius: 0;
-			justify-content: flex-start;
-			height: calc(var(--header-height) - var(--space)); } } }
+			justify-content: flex-start; } } }
 
 @media (prefers-color-scheme: dark) {
 	.Sidebar {

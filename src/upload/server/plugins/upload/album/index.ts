@@ -13,7 +13,6 @@ import { random } from "lodash"
 import { readFileSync } from "fs"
 import * as mm from "music-metadata"
 import { v4 as createUUID } from "uuid"
-import { BodyEntry } from "fastify-multipart"
 import { FastifyPluginCallback } from "fastify"
 import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
 
@@ -25,6 +24,7 @@ import {
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
+import { BodyEntry } from "../types"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
 interface Item {

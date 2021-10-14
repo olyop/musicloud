@@ -66,7 +66,7 @@ export const initialState: State = {
 	current: 0,
 	play: false,
 	loading: [],
-	sidebar: false,
+	sidebar: true,
 	isOnline: true,
 	isFullscreen: false,
 	settings: initialSettings,

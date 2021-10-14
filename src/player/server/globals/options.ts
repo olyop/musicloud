@@ -1,7 +1,7 @@
 import { SignOptions } from "jsonwebtoken"
+import { fastifyHelmet } from "fastify-helmet"
 import { PoolConfig } from "@oly_op/pg-helpers"
 import { FastifyCorsOptions } from "fastify-cors"
-import { FastifyHelmetOptions } from "fastify-helmet"
 import { FastifyStaticOptions } from "fastify-static"
 import { ServerRegistration } from "apollo-server-fastify"
 
@@ -27,7 +27,7 @@ export const CORS_OPTIONS: FastifyCorsOptions = {
 	origin: "*",
 }
 
-export const HELMET_OPTIONS: FastifyHelmetOptions = {
+export const HELMET_OPTIONS: Parameters<typeof fastifyHelmet>[1] = {
 	contentSecurityPolicy: false,
 }
 
