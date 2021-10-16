@@ -53,7 +53,6 @@
 		"push": "git add -A && git commit -m \"Update\" && git push -u origin main",
 		"publish-common": "tsc --outDir src/common --project tsconfig.common.json && cd src/common && npm publish && cd ../.. && npm i -S -P @oly_op/music-app-common@latest",
 		"test": "clear && jest --setupFiles dotenv/config",
-		"install": "npm i --legacy-peer-deps",
 		"postinstall": "del node_modules/@types/webpack"
 	},
 	"dependencies": {
