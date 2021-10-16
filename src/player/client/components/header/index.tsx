@@ -129,6 +129,13 @@ const Header: FC = () => {
 			<Window>
 				{({ width }) => (
 					<div className={bem(width >= 700 || "left", "FlexList")}>
+						<Button
+							icon="menu"
+							transparent
+							title="Menu"
+							onClick={handleMenuClick}
+							className={bem("icon")}
+						/>
 						{width <= 700 && (
 							<div className="MarginRightQuart FlexList">
 								<Button
@@ -147,13 +154,6 @@ const Header: FC = () => {
 								/>
 							</div>
 						)}
-						<Button
-							icon="menu"
-							transparent
-							title="Menu"
-							onClick={handleMenuClick}
-							className={bem("icon")}
-						/>
 					</div>
 				)}
 			</Window>
@@ -192,8 +192,9 @@ const Header: FC = () => {
 						ImageDimensions.SQUARE,
 					) : undefined}
 				/>
-				{accountModal && data && (
+				{data && (
 					<Modal
+						open={accountModal}
 						onClose={handleAccountModalClose}
 						backgroundClassName={bem("account-modal-background")}
 						contentClassName={bem("account-modal-content", "FlexColumn Border")}

@@ -55,32 +55,31 @@ const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
 				iconClassName={iconClassName}
 				icon={volume === 0 ? "volume_off" : "volume_up"}
 			/>
-			{modal && (
-				<Modal
-					onClose={handleModalClose}
-					contentClassName={bem("content", "PaddingHalf")}
-				>
-					<Button
-						transparent
-						icon="volume_up"
-						onClick={handleVolumeFull}
-					/>
-					<input
-						min={0}
-						step={1}
-						max={100}
-						type="range"
-						value={volume}
-						onChange={handleChange}
-						className={bem("slider", "OverflowHidden")}
-					/>
-					<Button
-						transparent
-						icon="volume_off"
-						onClick={handleVolumeMute}
-					/>
-				</Modal>
-			)}
+			<Modal
+				open={modal}
+				onClose={handleModalClose}
+				contentClassName={bem("content", "PaddingHalf")}
+			>
+				<Button
+					transparent
+					icon="volume_up"
+					onClick={handleVolumeFull}
+				/>
+				<input
+					min={0}
+					step={1}
+					max={100}
+					type="range"
+					value={volume}
+					onChange={handleChange}
+					className={bem("slider", "OverflowHidden")}
+				/>
+				<Button
+					transparent
+					icon="volume_off"
+					onClick={handleVolumeMute}
+				/>
+			</Modal>
 		</Fragment>
 	)
 }

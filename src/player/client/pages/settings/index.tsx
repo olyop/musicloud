@@ -195,31 +195,29 @@ const SettingsPage: FC = () => {
 					</details>
 				</div>
 			</div>
-			{deleteUserModal && (
-				<Modal onClose={handleDeleteUserModalClose}>
-					<ModalButtons>
-						<ModalHeader
-							text={(
-								<Fragment>
-									<Fragment>Are you sure you want</Fragment>
-									<br/>
-									<Fragment>to delete your account?</Fragment>
-								</Fragment>
-							)}
-						/>
-						<ModalButton
-							text="Delete"
-							icon="delete"
-							onClick={handleDeleteUser}
-						/>
-						<ModalButton
-							text="Cancel"
-							icon="arrow_back"
-							onClick={handleDeleteUserModalClose}
-						/>
-					</ModalButtons>
-				</Modal>
-			)}
+			<Modal open={deleteUserModal} onClose={handleDeleteUserModalClose}>
+				<ModalButtons>
+					<ModalHeader
+						text={(
+							<Fragment>
+								<Fragment>Are you sure you want</Fragment>
+								<br/>
+								<Fragment>to delete your account?</Fragment>
+							</Fragment>
+						)}
+					/>
+					<ModalButton
+						text="Delete"
+						icon="delete"
+						onClick={handleDeleteUser}
+					/>
+					<ModalButton
+						text="Cancel"
+						icon="arrow_back"
+						onClick={handleDeleteUserModalClose}
+					/>
+				</ModalButtons>
+			</Modal>
 		</Metadata>
 	)
 }

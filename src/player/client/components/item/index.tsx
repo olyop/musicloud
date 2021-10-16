@@ -1,4 +1,4 @@
-import uniqueId from "lodash/uniqueId"
+import uniqueID from "lodash/uniqueId"
 import { Link } from "react-router-dom"
 import Image from "@oly_op/react-image"
 import Button from "@oly_op/react-button"
@@ -136,8 +136,8 @@ const Item: FC<PropTypes> = ({
 						className={iconClassName}
 					/>
 				)}
-				{modalButtons && modal && (
-					<Modal onClose={handleModalClose}>
+				{modalButtons && (
+					<Modal open={modal} onClose={handleModalClose}>
 						{modalHeader && (
 							<ModalHeader
 								{...modalHeader}
@@ -154,7 +154,7 @@ const Item: FC<PropTypes> = ({
 												if (button.onClick) button.onClick()
 											},
 										}}
-										key={uniqueId()}
+										key={uniqueID()}
 									/>
 								),
 							)}

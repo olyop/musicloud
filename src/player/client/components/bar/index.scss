@@ -2,6 +2,7 @@
 	z-index: 2;
 	display: flex;
 	height: var(--bar-height);
+	padding-bottom: env(safe-area-inset-bottom);
 	&__controls {
 		padding: var(--space-half);
 		@media (min-width: 700px) {

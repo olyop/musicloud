@@ -71,7 +71,7 @@ const Library: FC<RouteComponentProps> = ({ match }) => {
 				basePath={match.path}
 				className="MarginBottom"
 				right={(
-					<div className="FlexListGapHalf">
+					<Fragment>
 						<NavLink to={`${match.path}/settings`}>
 							<Button
 								icon="settings"
@@ -97,7 +97,7 @@ const Library: FC<RouteComponentProps> = ({ match }) => {
 								</Fragment>
 							)}
 						</Window>
-					</div>
+					</Fragment>
 				)}
 			/>
 			<Switch>
@@ -112,33 +112,33 @@ const Library: FC<RouteComponentProps> = ({ match }) => {
 					),
 				)}
 			</Switch>
-			{modals.shuffle && (
-				<Modal onClose={handleModalsClose}>
-					<ModalButtons>
-						<ModalButton
-							icon="list"
-							text="Library Shuffle"
-							onClick={handleLibraryShuffle}
-						/>
-						<ModalButton
-							icon="psychology"
-							text="Smart Shuffle"
-						/>
-						<ModalButton
-							icon="handyman"
-							text="Custom Shuffle"
-							link="/custom-shuffle"
-						/>
-					</ModalButtons>
-				</Modal>
-			)}
-			{modals.createPlaylist && (
-				<Modal className="Padding" onClose={handleModalsClose}>
-					<LibraryCreatePlaylist
-						onClose={handleModalsClose}
+			<Modal open={modals.shuffle} onClose={handleModalsClose}>
+				<ModalButtons>
+					<ModalButton
+						icon="list"
+						text="Library Shuffle"
+						onClick={handleLibraryShuffle}
 					/>
-				</Modal>
-			)}
+					<ModalButton
+						icon="psychology"
+						text="Smart Shuffle"
+					/>
+					<ModalButton
+						icon="handyman"
+						text="Custom Shuffle"
+						link="/custom-shuffle"
+					/>
+				</ModalButtons>
+			</Modal>
+			<Modal
+				className="Padding"
+				onClose={handleModalsClose}
+				open={modals.createPlaylist}
+			>
+				<LibraryCreatePlaylist
+					onClose={handleModalsClose}
+				/>
+			</Modal>
 		</section>
 	)
 }

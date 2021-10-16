@@ -12,15 +12,17 @@ const bem =
 	createBEM("Modal")
 
 const Modal: FC<ModalPropTypes> = ({
+	open,
 	onClose,
 	children,
 	className,
 	contentClassName,
 	backgroundClassName,
 }) => (
-	<div className={bem("")}>
+	<div className={bem("")} style={{ visibility: open ? undefined : "hidden" }}>
 		<div
 			onClick={onClose}
+			style={{ opacity: open ? "var(--close-background-opacity)" : 0 }}
 			className={bem(backgroundClassName, "background", "FullWidthAndHeight")}
 		/>
 		<div className={bem(className, contentClassName, "content", "Elevated Rounded OverflowHidden")}>
@@ -30,6 +32,7 @@ const Modal: FC<ModalPropTypes> = ({
 )
 
 export interface ModalPropTypes extends BEMPropTypes {
+	open: boolean,
 	onClose: Handler,
 	contentClassName?: BEMInput,
 	backgroundClassName?: BEMInput,

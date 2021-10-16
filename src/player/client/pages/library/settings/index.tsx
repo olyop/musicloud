@@ -106,50 +106,46 @@ const LibrarySettings: FC = () => {
 					onClick={handleDeleteLibraryModalOpen}
 				/>
 			</div>
-			{deleteLibraryModal && (
-				<Modal onClose={handleDeleteLibraryModalClose}>
-					<ModalButtons>
-						<ModalHeader
-							text={(
-								<Fragment>
-									<Fragment>Are you sure you want</Fragment>
-									<br/>
-									<Fragment>to delete your library?</Fragment>
-								</Fragment>
-							)}
-						/>
-						<ModalButton
-							text="Delete"
-							icon="delete"
-							onClick={handleDeleteLibrary}
-						/>
-						<ModalButton
-							text="Cancel"
-							icon="arrow_back"
-							onClick={handleDeleteLibraryModalClose}
-						/>
-					</ModalButtons>
-				</Modal>
-			)}
-			{downloadLibraryModal && (
-				<Modal onClose={handleDownloadLibraryModalClose}>
-					<ModalButtons>
-						<ModalHeader
-							text="Download Library"
-						/>
-						<ModalButton
-							text="Download"
-							icon="cloud_download"
-							onClick={handleDownloadLibrary}
-						/>
-						<ModalButton
-							text="Cancel"
-							icon="arrow_back"
-							onClick={handleDownloadLibraryModalClose}
-						/>
-					</ModalButtons>
-				</Modal>
-			)}
+			<Modal open={deleteLibraryModal} onClose={handleDeleteLibraryModalClose}>
+				<ModalButtons>
+					<ModalHeader
+						text={(
+							<Fragment>
+								<Fragment>Are you sure you want</Fragment>
+								<br/>
+								<Fragment>to delete your library?</Fragment>
+							</Fragment>
+						)}
+					/>
+					<ModalButton
+						text="Delete"
+						icon="delete"
+						onClick={handleDeleteLibrary}
+					/>
+					<ModalButton
+						text="Cancel"
+						icon="arrow_back"
+						onClick={handleDeleteLibraryModalClose}
+					/>
+				</ModalButtons>
+			</Modal>
+			<Modal open={downloadLibraryModal} onClose={handleDownloadLibraryModalClose}>
+				<ModalButtons>
+					<ModalHeader
+						text="Download Library"
+					/>
+					<ModalButton
+						text="Download"
+						icon="cloud_download"
+						onClick={handleDownloadLibrary}
+					/>
+					<ModalButton
+						text="Cancel"
+						icon="arrow_back"
+						onClick={handleDownloadLibraryModalClose}
+					/>
+				</ModalButtons>
+			</Modal>
 		</Metadata>
 	)
 }

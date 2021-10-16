@@ -181,34 +181,36 @@ const PlaylistPage: FC = () => {
 					</Metadata>
 				)}
 			</div>
-			{renameModal && (
-				<Modal onClose={handleRenameModalClose} className="Padding">
-					<h1 className="HeadingFive MarginBottom">
-						Rename
-					</h1>
-					<TextField
-						name="Title"
-						value={renameTitle}
-						placeholder="Title"
-						className="MarginBottom"
-						fieldID="addToPlaylistTitle"
-						onChange={handleTitleRenameChange}
+			<Modal
+				open={renameModal}
+				className="Padding"
+				onClose={handleRenameModalClose}
+			>
+				<h1 className="HeadingFive MarginBottom">
+					Rename
+				</h1>
+				<TextField
+					name="Title"
+					value={renameTitle}
+					placeholder="Title"
+					className="MarginBottom"
+					fieldID="addToPlaylistTitle"
+					onChange={handleTitleRenameChange}
+				/>
+				<div className="FlexListGapHalf">
+					<Button
+						icon="edit"
+						text="Rename"
+						onClick={handleTitleRenameSubmit}
 					/>
-					<div className="FlexListGapHalf">
-						<Button
-							icon="edit"
-							text="Rename"
-							onClick={handleTitleRenameSubmit}
-						/>
-						<Button
-							transparent
-							icon="close"
-							text="Close"
-							onClick={handleRenameModalClose}
-						/>
-					</div>
-				</Modal>
-			)}
+					<Button
+						transparent
+						icon="close"
+						text="Close"
+						onClick={handleRenameModalClose}
+					/>
+				</div>
+			</Modal>
 		</Fragment>
 	)
 }

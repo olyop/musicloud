@@ -5,7 +5,7 @@
 		<title>Musicloud</title>
 		<link href="/favicon.ico" rel="icon">
 		<link rel="manifest" href="/manifest.webmanifest">
-		<link rel="stylesheet" href="https://unpkg.com/@oly_op/css-utilities@2.0.54/index.css">
+		<link rel="stylesheet" href="https://unpkg.com/@oly_op/css-utilities@2.0.55/index.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400,500,700,700i&display=swap">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<style>
@@ -21,8 +21,8 @@
 				--close-background-color: #000;
 				--close-background-opacity: 0.6;
 				--font-family: "Roboto", system-ui;
-				--header-height: calc(var(--button-dimesnion) + var(--space));
-				--bar-height: calc(var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height)); }
+				--header-height: calc(var(--button-dimesnion) + var(--space) + env(safe-area-inset-top));
+				--bar-height: calc(var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height) + env(safe-area-inset-bottom)); }
 
 			@media (max-width: 1000px) {
 				:root {
