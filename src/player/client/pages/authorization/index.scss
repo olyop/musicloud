@@ -1,5 +1,6 @@
 .Authorization {
 	--footer-height: 60rem;
+	padding-top: env(safe-area-inset-top);
 	padding-bottom: env(safe-area-inset-bottom);
 	&__main {
 		display: flex;
