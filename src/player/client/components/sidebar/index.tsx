@@ -42,7 +42,6 @@ const Sidebar: FC = () => {
 							transparent
 							title="Close"
 							onClick={handleClose}
-							className={bem("content-header-button")}
 						/>
 					</div>
 					<div className={bem("links", "BorderBottom PaddingBottomHalf")}>
