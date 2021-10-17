@@ -4,6 +4,7 @@
 	width: 100vw;
 	position: absolute;
 	overflow-x: hidden;
+	top: env(safe-area-inset-top);
 	&__line {
 		width: 150%;
 		opacity: 0.4;

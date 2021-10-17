@@ -22,7 +22,7 @@
 		flex-direction: column;
 		width: var(--sidebar-width);
 		justify-content: space-between;
-		padding-top: env(safe-area-inset-top) !important;
+		padding-top: env(safe-area-inset-top);
 		&-header {
 			height: var(--header-height); } }
 	&__links {
