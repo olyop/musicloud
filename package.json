@@ -56,7 +56,7 @@
 		"publish-common": "tsc --outDir src/common --project tsconfig.common.json && cd src/common && npm publish && cd ../.. && npm i -S -P @oly_op/music-app-common@latest",
 		"test": "clear && jest --setupFiles dotenv/config",
 		"postinstall": "del node_modules/@types/webpack",
-		"ec2": "sudo apt update && sudo apt upgrade -y && npm i -g npm@latest @types/node@latest && npm run sync-install-build-host-upload"
+		"ec2": "sudo apt update && sudo apt upgrade -y && npm i -g npm@latest @types/node@latest && npm run sync-install-build-host-player"
 	},
 	"dependencies": {
 		"@apollo/client": "3.4.16",
