@@ -19,8 +19,8 @@
 			border-top-style: var(--border-style);
 			border-top-color: var(--border-color);
 			&-button {
-				border-radius: 0;
-				width: calc(100% / 3); } } }
+				width: calc(100% / 3);
+				border-radius: 0 !important; } } }
 	&__main {
 		width: 100%;
 		display: flex;
