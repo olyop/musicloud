@@ -196,7 +196,6 @@ const Header: FC = () => {
 					<Modal
 						open={accountModal}
 						onClose={handleAccountModalClose}
-						backgroundClassName={bem("account-modal-background")}
 						contentClassName={bem("account-modal-content", "FlexColumn Border")}
 					>
 						<NavLink

@@ -88,16 +88,12 @@ const Bar: FC = () => {
 								song={data.user.nowPlaying}
 							/>
 							<div className="FlexListRight">
-								<Window>
-									{({ width }) => width >= 700 && (
-										<Button
-											transparent
-											icon="fullscreen"
-											title="Fullscreen"
-											onClick={fullscreen.enter}
-										/>
-									)}
-								</Window>
+								<Button
+									transparent
+									icon="fullscreen"
+									title="Fullscreen"
+									onClick={fullscreen.enter}
+								/>
 								<BarVolume/>
 								<NavLink to="/queues">
 									<Button
