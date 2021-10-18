@@ -3,6 +3,8 @@
 	display: flex;
 	padding-bottom: env(safe-area-inset-bottom);
 	height: calc(var(--bar-height) + env(safe-area-inset-bottom));
+	@media (max-width: 700px) {
+		flex-direction: column-reverse; }
 	&__controls {
 		padding: var(--space-half);
 		@media (min-width: 700px) {
@@ -10,35 +12,22 @@
 			border-right-style: var(--border-style);
 			border-right-color: var(--border-color); }
 		@media (max-width: 700px) {
-			padding: 0; }
-		&-play {
-			@media (min-width: 700px) {
-				--dimension: calc(var(--button-dimension) + var(--space-quart));
-				width: var(--dimension) !important;
-				height: var(--dimension) !important;
-				&-icon {
-					--icon-dimesnion: calc(var(--dimension) - 12rem);
-					width: var(--icon-dimesnion) !important;
-					height: var(--icon-dimesnion) !important;
-					font-size: var(--icon-dimesnion) !important; } }
-			@media (max-width: 700px) {
-				--dimension: var(--bar-height);
-				border-radius: unset !important;
-				width: var(--dimension) !important;
-				height: var(--dimension) !important;
-				&-icon {
-					--icon-dimesnion: calc(var(--dimension) - var(--space-double));
-					width: var(--icon-dimesnion) !important;
-					height: var(--icon-dimesnion) !important;
-					font-size: var(--icon-dimesnion) !important; } } } }
+			gap: 0;
+			padding: 0;
+			justify-content: space-between;
+			border-top-width: var(--border-width);
+			border-top-style: var(--border-style);
+			border-top-color: var(--border-color);
+			&-button {
+				border-radius: 0;
+				width: calc(100% / 3); } } }
 	&__main {
 		width: 100%;
 		display: flex;
 		flex-direction: column;
+		gap: var(--space-quart);
 		justify-content: space-between;
-		gap: calc(var(--space-quart) - 2rem);
 		@media (max-width: 800px) {
-			gap: 0;
 			justify-content: space-between; }
 		&-content {
 			display: grid;

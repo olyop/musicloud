@@ -57,9 +57,8 @@ const Bar: FC = () => {
 				{({ width }) => (
 					<BarControls
 						className={bem("controls")}
-						hidePreviousNext={width <= 700}
-						playButtonClassName={bem("controls-play")}
-						playButtonIconClassName={bem("controls-play-icon")}
+						buttonClassName={bem("controls-button")}
+						buttonIconClassName={bem("controls-button-icon")}
 					/>
 				)}
 			</Window>
