@@ -45,6 +45,8 @@
 		"build-host-upload": "npm run build-upload && npm run host-upload",
 		"sync-build-host-player": "npm run sync && npm run build-player && npm run host-player",
 		"sync-build-host-upload": "npm run sync && npm run build-upload && npm run host-upload",
+		"sync-install-build-host-player": "npm run sync && npm run build-player && npm run host-player",
+		"sync-install-build-host-upload": "npm run sync && npm run build-upload && npm run host-upload",
 		"docker:build": "docker build -t olyop/music-app:server-latest .",
 		"docker:push": "docker push olyop/music-app:server-latest",
 		"docker:host": "docker run -p 80:80 olyop/music-app:server-latest",
@@ -53,7 +55,8 @@
 		"push": "git add -A && git commit -m \"Update\" && git push -u origin main",
 		"publish-common": "tsc --outDir src/common --project tsconfig.common.json && cd src/common && npm publish && cd ../.. && npm i -S -P @oly_op/music-app-common@latest",
 		"test": "clear && jest --setupFiles dotenv/config",
-		"postinstall": "del node_modules/@types/webpack"
+		"postinstall": "del node_modules/@types/webpack",
+		"preec2": "sudo apt update && sudo apt upgrade -y && nvm install node && npm i -g npm@latest @types/node@latest && npm run sync-install-build-host-upload"
 	},
 	"dependencies": {
 		"@apollo/client": "3.4.16",
