@@ -33,7 +33,5 @@
 			display: grid;
 			max-width: 100%;
 			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 3);
-			@media (max-width: 700px) {
-				grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 2); }
 			&-wrapper {
 				margin-right: -7rem; } } } }
