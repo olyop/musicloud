@@ -1,14 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 import {
 	CacheFirst,
-	NetworkFirst,
+	NetworkOnly,
 	StaleWhileRevalidate,
 } from "workbox-strategies"
 
-import { registerRoute } from "workbox-routing"
+import { offlineFallback } from "workbox-recipes"
 import { precacheAndRoute } from "workbox-precaching"
 import { ExpirationPlugin } from "workbox-expiration"
 import { RangeRequestsPlugin } from "workbox-range-requests"
+import { registerRoute, setDefaultHandler } from "workbox-routing"
 import { CacheableResponsePlugin } from "workbox-cacheable-response"
 
 // @ts-ignore
@@ -20,16 +21,11 @@ precacheAndRoute(self.__WB_MANIFEST)
 // @ts-ignore
 self.__WB_DISABLE_DEV_LOGS = true
 
-registerRoute(
-	({ request }) =>
-		request.mode === "navigate",
-	new NetworkFirst({
-		cacheName: "pages",
-		plugins: [
-			new CacheableResponsePlugin({ statuses: [200] }),
-		],
-	}),
+setDefaultHandler(
+	new NetworkOnly(),
 )
+
+offlineFallback()
 
 registerRoute(
 	({ url }) =>
