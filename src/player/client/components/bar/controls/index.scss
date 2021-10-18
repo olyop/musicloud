@@ -4,7 +4,8 @@
 	gap: var(--space-quart);
 	justify-content: center;
 	&__loading {
-		animation: spin 1s infinite linear; } }
+		@media (min-width: 700px) {
+			animation: spin 1s infinite linear; } } }
 
 @keyframes spin {
 	0% {
