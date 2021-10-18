@@ -11,7 +11,6 @@ import {
 import {
 	SongIDBase,
 	AlbumIDBase,
-	InterfaceWithInput,
 	InterfaceWithPartialInput,
 } from "@oly_op/music-app-common/types"
 
@@ -43,6 +42,8 @@ import {
 	SELECT_SONG_BY_ID,
 	SELECT_USER_PLAYS,
 	SELECT_LIBRARY_SONGS,
+	SELECT_LIBRARY_ALBUMS,
+	SELECT_LIBRARY_GENRES,
 	SELECT_LIBRARY_ARTISTS,
 	SELECT_LIBRARY_PLAYLISTS,
 	SELECT_USER_PLAYLISTS_FILTERED,
@@ -59,9 +60,6 @@ interface LibraryObjectsInput
 	extends PageArgs, OrderByArgs {}
 
 type LibraryObjectsArgs =
-	InterfaceWithInput<LibraryObjectsInput>
-
-type LibraryObjectsPartialArgs =
 	InterfaceWithPartialInput<LibraryObjectsInput>
 
 type Callback<R, A> =
@@ -169,17 +167,27 @@ export const libraryAlbums =
 	resolver<Album[], LibraryObjectsArgs>(
 		checkAuthorization(
 			({ parent, args, context }) => (
-				query(context.pg)(SELECT_LIBRARY_ALBUMS_PAGINATED)({
-					parse: convertTableToCamelCase(),
-					variables: {
-						page: args.input.page,
-						userID: parent.userID,
-						columnNames: join(COLUMN_NAMES.ALBUM),
-						paginationPageSize: PAGINATION_PAGE_SIZE,
-						orderByDirection: args.input.orderBy?.direction || "ASC",
-						orderByField: args.input.orderBy?.field.toLowerCase() || "title",
-					},
-				})
+				args.input ? (
+					query(context.pg)(SELECT_LIBRARY_ALBUMS_PAGINATED)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							page: args.input.page,
+							userID: parent.userID,
+							paginationPageSize: PAGINATION_PAGE_SIZE,
+							columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
+							orderByDirection: args.input.orderBy?.direction || "ASC",
+							orderByField: args.input.orderBy?.field.toLowerCase() || "title",
+						},
+					})
+				) : (
+					query(context.pg)(SELECT_LIBRARY_ALBUMS)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							userID: parent.userID,
+							columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
+						},
+					})
+				)
 			),
 		),
 	)
@@ -188,23 +196,33 @@ export const libraryGenres =
 	resolver<Genre[], LibraryObjectsArgs>(
 		checkAuthorization(
 			({ parent, args, context }) => (
-				query(context.pg)(SELECT_LIBRARY_GENRES_PAGINATED)({
-					parse: convertTableToCamelCase(),
-					variables: {
-						page: args.input.page,
-						userID: parent.userID,
-						columnNames: join(COLUMN_NAMES.GENRE),
-						paginationPageSize: PAGINATION_PAGE_SIZE,
-						orderByDirection: args.input.orderBy?.direction || "ASC",
-						orderByField: args.input.orderBy?.field.toLowerCase() || "name",
-					},
-				})
+				args.input ? (
+					query(context.pg)(SELECT_LIBRARY_GENRES_PAGINATED)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							page: args.input.page,
+							userID: parent.userID,
+							paginationPageSize: PAGINATION_PAGE_SIZE,
+							columnNames: join(COLUMN_NAMES.GENRE, "genres"),
+							orderByDirection: args.input.orderBy?.direction || "ASC",
+							orderByField: args.input.orderBy?.field.toLowerCase() || "name",
+						},
+					})
+				) : (
+					query(context.pg)(SELECT_LIBRARY_GENRES)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							userID: parent.userID,
+							columnNames: join(COLUMN_NAMES.GENRE, "genres"),
+						},
+					})
+				)
 			),
 		),
 	)
 
 export const librarySongs =
-	resolver<Song[], LibraryObjectsPartialArgs>(
+	resolver<Song[], LibraryObjectsArgs>(
 		checkAuthorization(
 			({ parent, args, context }) => (
 				args.input ? (
@@ -253,19 +271,29 @@ export const libraryArtists =
 	resolver<Artist[], LibraryObjectsArgs>(
 		checkAuthorization(
 			({ parent, args, context }) => (
-				query(context.pg)(SELECT_LIBRARY_ARTISTS_PAGINATED)({
-					parse: convertTableToCamelCase(),
-					variables: {
-						page: args.input.page,
-						userID: parent.userID,
-						paginationPageSize: PAGINATION_PAGE_SIZE,
-						columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
-						orderByDirection: args.input.orderBy?.direction || "ASC",
-						orderByField: args.input.orderBy?.field.toLowerCase() || "title",
-						orderByTableName: args.input.orderBy?.field === "DATE_ADDED" ?
-							"library_artists" : "artists",
-					},
-				})
+				args.input ? (
+					query(context.pg)(SELECT_LIBRARY_ARTISTS_PAGINATED)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							page: args.input.page,
+							userID: parent.userID,
+							paginationPageSize: PAGINATION_PAGE_SIZE,
+							columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
+							orderByDirection: args.input.orderBy?.direction || "ASC",
+							orderByField: args.input.orderBy?.field.toLowerCase() || "title",
+							orderByTableName: args.input.orderBy?.field === "DATE_ADDED" ?
+								"library_artists" : "artists",
+						},
+					})
+				) : (
+					query(context.pg)(SELECT_LIBRARY_ARTISTS)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							userID: parent.userID,
+							columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
+						},
+					})
+				)
 			),
 		),
 	)
@@ -347,19 +375,29 @@ export const libraryPlaylists =
 	resolver<Playlist[], LibraryObjectsArgs>(
 		checkAuthorization(
 			({ parent, args, context }) => (
-				query(context.pg)(SELECT_LIBRARY_PLAYLISTS_PAGINATED)({
-					parse: convertTableToCamelCase(),
-					variables: {
-						userID: parent.userID,
-						page: args.input.page,
-						paginationPageSize: PAGINATION_PAGE_SIZE,
-						orderByField: args.input.orderBy?.field || "title",
-						columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
-						orderByDirection: args.input.orderBy?.direction || "ASC",
-						orderByTableName: args.input.orderBy?.field === "DATE_ADDED" ?
-							"library_playlists" : "playlists",
-					},
-				})
+				args.input ? (
+					query(context.pg)(SELECT_LIBRARY_PLAYLISTS_PAGINATED)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							userID: parent.userID,
+							page: args.input.page,
+							paginationPageSize: PAGINATION_PAGE_SIZE,
+							orderByField: args.input.orderBy?.field || "title",
+							columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
+							orderByDirection: args.input.orderBy?.direction || "ASC",
+							orderByTableName: args.input.orderBy?.field === "DATE_ADDED" ?
+								"library_playlists" : "playlists",
+						},
+					})
+				) : (
+					query(context.pg)(SELECT_LIBRARY_PLAYLISTS)({
+						parse: convertTableToCamelCase(),
+						variables: {
+							userID: parent.userID,
+							columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
+						},
+					})
+				)
 			),
 		),
 	)

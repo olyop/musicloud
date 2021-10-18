@@ -1,0 +1,14 @@
+query getLibraryAlbums {
+	user {
+		userID
+		libraryAlbums {
+			title
+			albumID
+			released
+			artists {
+				artistID
+				name
+			}
+		}
+	}
+}

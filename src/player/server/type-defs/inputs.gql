@@ -39,25 +39,25 @@ input LibraryPlaylistsOrderByInput {
 
 input LibraryAlbumsInput {
 	page: NonNegativeInt!
-	orderBy: AlbumsOrderByInput!
+	orderBy: AlbumsOrderByInput
 }
 
 input LibraryGenresInput {
 	page: NonNegativeInt!
-	orderBy: GenresOrderByInput!
+	orderBy: GenresOrderByInput
 }
 
 input LibrarySongsInput {
 	page: NonNegativeInt!
-	orderBy: LibrarySongsOrderByInput!
+	orderBy: LibrarySongsOrderByInput
 }
 
 input LibraryArtistsInput {
 	page: NonNegativeInt!
-	orderBy: LibraryArtistsOrderByInput!
+	orderBy: LibraryArtistsOrderByInput
 }
 
 input LibraryPlaylistsInput {
 	page: NonNegativeInt!
-	orderBy: LibraryPlaylistsOrderByInput!
+	orderBy: LibraryPlaylistsOrderByInput
 }

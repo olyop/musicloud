@@ -8,11 +8,12 @@
 		top: 0;
 		left: 0;
 		z-index: 4;
+		outline: none;
 		cursor: pointer;
 		position: absolute;
 		transition-property: opacity;
-		background-color: var(--close-background-color);
-		transition-duration: var(--transition-duration); }
+		transition-duration: var(--transition-duration);
+		background-color: var(--close-background-color) !important; }
 	&__content {
 		top: 50%;
 		left: 50%;

@@ -1,5 +1,5 @@
 SELECT
-	*
+	{{ columnNames }}
 FROM
 	library_artists
 JOIN

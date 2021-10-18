@@ -1,0 +1,16 @@
+query getLibraryPlaylists {
+	user {
+		userID
+		libraryPlaylists {
+			title
+			inLibrary
+			playlistID
+			songsTotal
+			dateAddedToLibrary
+			user {
+				name
+				userID
+			}
+		}
+	}
+}

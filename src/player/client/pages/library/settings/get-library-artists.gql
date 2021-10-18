@@ -1,0 +1,12 @@
+query getLibraryArtists {
+	user {
+		userID
+		libraryArtists {
+			name
+			artistID
+			inLibrary
+			albumsTotal
+			dateAddedToLibrary
+		}
+	}
+}

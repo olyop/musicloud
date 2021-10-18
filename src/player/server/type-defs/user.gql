@@ -27,8 +27,8 @@ type User {
 	libraryArtistsTotal: NonNegativeInt
 	libraryPlaylistsTotal: NonNegativeInt
 	librarySongs(input: LibrarySongsInput): [Song!]!
-	libraryAlbums(input: LibraryAlbumsInput!): [Album!]!
-	libraryGenres(input: LibraryGenresInput!): [Genre!]!
-	libraryArtists(input: LibraryArtistsInput!): [Artist!]!
-	libraryPlaylists(input: LibraryPlaylistsInput!): [Playlist!]!
+	libraryAlbums(input: LibraryAlbumsInput): [Album!]!
+	libraryGenres(input: LibraryGenresInput): [Genre!]!
+	libraryArtists(input: LibraryArtistsInput): [Artist!]!
+	libraryPlaylists(input: LibraryPlaylistsInput): [Playlist!]!
 }

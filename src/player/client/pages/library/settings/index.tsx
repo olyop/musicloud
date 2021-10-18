@@ -22,6 +22,10 @@ import { useMutation } from "../../../hooks"
 import DELETE_LIBRARY from "./delete-library.gql"
 import GET_LIBRARY_SONGS from "./get-library-songs.gql"
 import { determineCatalogMP3URL } from "../../../helpers"
+import GET_LIBRARY_ALBUMS from "./get-library-albums.gql"
+import GET_LIBRARY_GENRES from "./get-library-genres.gql"
+import GET_LIBRARY_ARTISTS from "./get-library-artists.gql"
+import GET_LIBRARY_PLAYLISTS from "./get-library-playlists.gql"
 
 const downloadLibraryLoadingID =
 	uniqueID()
@@ -69,22 +73,45 @@ const LibrarySettings: FC = () => {
 	const handleDownloadLibrary =
 		async () => {
 			if (!isLibraryDownloading) {
-				dispatch(addLoading(downloadLibraryLoadingID))
+				try {
+					dispatch(addLoading(downloadLibraryLoadingID))
 
-				const { data } =
-					await client.query<SongsData>({
-						query: GET_LIBRARY_SONGS,
+					await client.query({
+						query: GET_LIBRARY_ALBUMS,
+						fetchPolicy: "network-only",
 					})
 
-				const { librarySongs } =
-					data.user
+					await client.query({
+						query: GET_LIBRARY_GENRES,
+						fetchPolicy: "network-only",
+					})
 
-				for (const { songID } of librarySongs) {
-					await fetch(determineCatalogMP3URL(songID))
+					await client.query({
+						query: GET_LIBRARY_ARTISTS,
+						fetchPolicy: "network-only",
+					})
+
+					await client.query({
+						fetchPolicy: "network-only",
+						query: GET_LIBRARY_PLAYLISTS,
+					})
+
+					const { data } =
+						await client.query<SongsData>({
+							query: GET_LIBRARY_SONGS,
+							fetchPolicy: "network-only",
+						})
+
+					const { librarySongs } =
+						data.user
+
+					for (const { songID } of librarySongs) {
+						await fetch(determineCatalogMP3URL(songID))
+					}
+				} finally {
+					dispatch(removeLoading(downloadLibraryLoadingID))
+					handleDownloadLibraryModalClose()
 				}
-
-				dispatch(removeLoading(downloadLibraryLoadingID))
-				handleDownloadLibraryModalClose()
 			}
 		}
 
