@@ -14,13 +14,6 @@ import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 
 import {
-	useQuery,
-	useMutation,
-	usePlayAlbum,
-	useShuffleAlbum,
-} from "../../hooks"
-
-import {
 	createDiscs,
 	determineObjectPath,
 	determineCatalogImageURL,
@@ -35,9 +28,11 @@ import GET_ALBUM_PAGE from "./get-album-page.gql"
 import ObjectLinks from "../../components/object-links"
 import areAllSongsInLibrary from "./are-all-songs-in-library"
 import ADD_ALBUM_TO_LIBRARY from "./add-album-to-library.gql"
+import { useQuery, useMutation, useShuffleAlbum } from "../../hooks"
 import REMOVE_ALBUM_FROM_LIBRARY from "./remove-album-from-library.gql"
 
 import "./index.scss"
+import AlbumPlayButton from "./play-button"
 
 const bem =
 	createBEM("AlbumPage")
@@ -48,9 +43,6 @@ const AlbumPage: FC = () => {
 
 	const variables: AlbumIDBase =
 		{ albumID }
-
-	const [ playAlbum, isPlaying ] =
-		usePlayAlbum(albumID)
 
 	const [ shuffleAlbum, { loading: shuffleLoading } ] =
 		useShuffleAlbum(albumID)
@@ -125,13 +117,7 @@ const AlbumPage: FC = () => {
 							<h1 className="HeadingFour">
 								{data.album.title}
 							</h1>
-							<Button
-								text="Play"
-								transparent
-								className="Border"
-								onClick={playAlbum}
-								icon={isPlaying ? "pause" : "play_arrow"}
-							/>
+							<AlbumPlayButton albumID={albumID}/>
 						</div>
 						<div className="FlexListGapHalf MarginBottomHalf">
 							{data.album.artists.map(

@@ -14,13 +14,12 @@ import { getUserID } from "../../helpers"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
-import { togglePlay, updatePlay, useDispatch, useStatePlay } from "../../redux"
+import { togglePlay, updatePlay, useDispatch } from "../../redux"
 
 export const usePlaySong =
 	(song: Song) => {
 		const { songID } = song
 		const userID = getUserID()
-		const play = useStatePlay()
 		const dispatch = useDispatch()
 		const { cache } = useApolloClient()
 		const resetPlayer = useResetPlayer()
@@ -77,7 +76,7 @@ export const usePlaySong =
 
 		return [
 			handler,
-			isNowPlaying && play,
+			isNowPlaying,
 			result,
 		] as [
 			playSong: Handler,

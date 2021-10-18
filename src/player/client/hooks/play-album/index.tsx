@@ -9,11 +9,10 @@ import { useMutation } from "../mutation"
 import { User, Handler } from "../../types"
 import { useResetPlayer } from "../reset-player"
 import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
-import { useDispatch, updatePlay, useStatePlay, togglePlay } from "../../redux"
+import { useDispatch, updatePlay, togglePlay } from "../../redux"
 
 export const usePlayAlbum =
 	(albumID: string) => {
-		const play = useStatePlay()
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
@@ -48,7 +47,7 @@ export const usePlayAlbum =
 
 		return [
 			handlePlayAlbum,
-			isNowPlaying && play,
+			isNowPlaying,
 			result,
 		] as [
 			playAlbum: Handler,

@@ -46,37 +46,35 @@ const Feed = <Data, Vars>({
 					page: page.current,
 				},
 			}}
-			children={
-				result => (
-					<Fragment>
-						{children(result)}
-						{result.data && (
-							<Waypoint
-								onEnter={async () => {
-									if (isNotLastPage(dataToObjectsLength(result.data!), page.current)) {
-										const queryID = uniqueID()
-										try {
-											page.current += 1
-											dispatch(addLoading(queryID))
-											await result.fetchMore({
-												variables: {
-													...result.variables,
-													input: {
-														...result.variables!.input,
-														page: page.current,
-													},
+			children={result => (
+				<Fragment>
+					{children(result)}
+					{result.data && (
+						<Waypoint
+							onEnter={async () => {
+								if (isNotLastPage(dataToObjectsLength(result.data!), page.current)) {
+									const queryID = uniqueID()
+									try {
+										page.current += 1
+										dispatch(addLoading(queryID))
+										await result.fetchMore({
+											variables: {
+												...result.variables,
+												input: {
+													...result.variables!.input,
+													page: page.current,
 												},
-											})
-										} finally {
-											dispatch(removeLoading(queryID))
-										}
+											},
+										})
+									} finally {
+										dispatch(removeLoading(queryID))
 									}
-								}}
-							/>
-						)}
-					</Fragment>
-				)
-			}
+								}
+							}}
+						/>
+					)}
+				</Fragment>
+			)}
 		/>
 	)
 }
