@@ -19,13 +19,25 @@ const Modal: FC<ModalPropTypes> = ({
 	contentClassName,
 	backgroundClassName,
 }) => (
-	<div className={bem("")} style={{ visibility: open ? undefined : "hidden" }}>
+	<div className={bem(open ? "visible" : "hidden", "")}>
 		<div
 			onClick={onClose}
-			style={{ opacity: open ? "var(--close-background-opacity)" : 0 }}
-			className={bem(backgroundClassName, "background", "FullWidthAndHeight")}
+			className={bem(
+				backgroundClassName,
+				open ? "background-visible" : "background-hidden",
+				"background",
+				"FullWidthAndHeight",
+			)}
 		/>
-		<div className={bem(className, contentClassName, "content", "Elevated Rounded OverflowHidden")}>
+		<div
+			className={bem(
+				className,
+				contentClassName,
+				open ? "content-visible" : "content-hidden",
+				"content",
+				"Elevated Rounded OverflowHidden",
+			)}
+		>
 			{children}
 		</div>
 	</div>
