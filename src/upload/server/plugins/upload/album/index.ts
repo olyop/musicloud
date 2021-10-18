@@ -91,8 +91,8 @@ export const uploadAlbum: FastifyPluginCallback =
 			async (request, reply) => {
 				const albumID = createUUID()
 				const { title, cover, released } = request.body
-				const songs = JSON.parse<Song[]>(request.body.songs)
-				const artists = JSON.parse<Item[]>(request.body.artists)
+				const songs = JSON.parse(request.body.songs) as Song[]
+				const artists = JSON.parse(request.body.artists) as Item[]
 
 				await normalizeImageAndUploadToS3({
 					images,
