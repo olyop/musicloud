@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
 import { useEffect } from "react"
+import isNull from "lodash/isNull"
 import isEmpty from "lodash/isEmpty"
 import { ApolloCache, MutationResult } from "@apollo/client"
 
@@ -28,72 +29,76 @@ const update =
 		const id =
 			cache.identify({ userID, __typename: "User" })
 
-		const { nowPlaying, queueNext, queueLater, queuePrevious } =
+		const data =
 			cache.readFragment<User>({
 				id,
 				fragment: USER_QUEUES_FRAGMENT,
-			})!
-
-		if (!isEmpty(queueNext) || !isEmpty(queueLater)) {
-			cache.writeFragment<Partial<User>>({
-				id,
-				fragment: USER_QUEUE_NOW_PLAYING_FRAGMENT,
-				data: {
-					userID,
-					nowPlaying:
-						isEmpty(queueNext) ?
-							queueLater[0] :
-							queueNext[0],
-				},
 			})
-			if (isEmpty(queueNext)) {
+
+		if (!isNull(data)) {
+			const { nowPlaying, queueNext, queueLater, queuePrevious } =
+				data
+			if (!isEmpty(queueNext) || !isEmpty(queueLater)) {
 				cache.writeFragment<Partial<User>>({
 					id,
-					fragment: USER_QUEUE_LATER_FRAGMENT,
+					fragment: USER_QUEUE_NOW_PLAYING_FRAGMENT,
 					data: {
 						userID,
-						queueLater:
-							queueLater
-								.slice(1)
-								.filter(({ queueIndex }) => (
-									queueIndex !== 0
-								))
-								.map(({ queueIndex, ...song }) => ({
-									queueIndex: queueIndex! - 1,
-									...song,
-								})),
+						nowPlaying:
+							isEmpty(queueNext) ?
+								queueLater[0] :
+								queueNext[0],
 					},
 				})
-			} else {
+				if (isEmpty(queueNext)) {
+					cache.writeFragment<Partial<User>>({
+						id,
+						fragment: USER_QUEUE_LATER_FRAGMENT,
+						data: {
+							userID,
+							queueLater:
+								queueLater
+									.slice(1)
+									.filter(({ queueIndex }) => (
+										queueIndex !== 0
+									))
+									.map(({ queueIndex, ...song }) => ({
+										queueIndex: queueIndex! - 1,
+										...song,
+									})),
+						},
+					})
+				} else {
+					cache.writeFragment<Partial<User>>({
+						id,
+						fragment: USER_QUEUE_NEXT_FRAGMENT,
+						data: {
+							userID,
+							queueNext:
+								queueNext
+									.slice(1)
+									.filter(({ queueIndex }) => (
+										queueIndex !== 0
+									))
+									.map(({ queueIndex, ...song }) => ({
+										queueIndex: queueIndex! - 1,
+										...song,
+									})),
+						},
+					})
+				}
 				cache.writeFragment<Partial<User>>({
 					id,
-					fragment: USER_QUEUE_NEXT_FRAGMENT,
+					fragment: USER_QUEUE_PREVIOUS_FRAGMENT,
 					data: {
 						userID,
-						queueNext:
-							queueNext
-								.slice(1)
-								.filter(({ queueIndex }) => (
-									queueIndex !== 0
-								))
-								.map(({ queueIndex, ...song }) => ({
-									queueIndex: queueIndex! - 1,
-									...song,
-								})),
+						queuePrevious: [
+							...queuePrevious,
+							{ ...nowPlaying!, queueIndex: queuePrevious.length },
+						],
 					},
 				})
 			}
-			cache.writeFragment<Partial<User>>({
-				id,
-				fragment: USER_QUEUE_PREVIOUS_FRAGMENT,
-				data: {
-					userID,
-					queuePrevious: [
-						...queuePrevious,
-						{ ...nowPlaying!, queueIndex: queuePrevious.length },
-					],
-				},
-			})
 		}
 	}
 

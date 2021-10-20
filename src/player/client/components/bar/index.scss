@@ -20,7 +20,8 @@
 			border-top-color: var(--border-color);
 			&-button {
 				width: calc(100% / 3);
-				border-radius: 0 !important; } } }
+				border-radius: 0 !important;
+				height: calc(var(--button-dimesnion) + var(--space)); } } }
 	&__main {
 		width: 100%;
 		display: flex;
