@@ -128,7 +128,7 @@ const Queues: FC = () => {
 
 	const { data: nowPlayingData } =
 		useQuery<NowPlayingData>(GET_USER_NOW_PLAYING, {
-			fetchPolicy: "cache-and-network",
+			fetchPolicy: "cache-first",
 		})
 
 	const [ shuffleNext ] =

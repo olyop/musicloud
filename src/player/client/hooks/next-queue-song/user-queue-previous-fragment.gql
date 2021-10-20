@@ -1,0 +1,7 @@
+fragment UserQueuePreviousFragment on User {
+	userID
+	queuePrevious {
+		songID
+		queueIndex
+	}
+}

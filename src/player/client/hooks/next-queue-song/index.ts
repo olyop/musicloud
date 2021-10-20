@@ -1,20 +1,101 @@
 /* eslint-disable prefer-const */
 import { useEffect } from "react"
 import isEmpty from "lodash/isEmpty"
-import { MutationResult } from "@apollo/client"
+import { ApolloCache, MutationResult } from "@apollo/client"
 
 import { getUserID } from "../../helpers"
 import { useMutation } from "../mutation"
 import { useKeyPress } from "../key-press"
+import { Handler, User } from "../../types"
 import { useResetPlayer } from "../reset-player"
-import { Handler, Song, User } from "../../types"
 import NEXT_QUEUE_SONG from "./next-queue-song.gql"
 import { updatePlay, useDispatch } from "../../redux"
 import USER_QUEUES_FRAGMENT from "./user-queues-fragment.gql"
+import USER_QUEUE_NEXT_FRAGMENT from "./user-queue-next-fragment.gql"
+import USER_QUEUE_LATER_FRAGMENT from "./user-queue-later-fragment.gql"
+import USER_QUEUE_PREVIOUS_FRAGMENT from "./user-queue-previous-fragment.gql"
+import USER_QUEUE_NOW_PLAYING_FRAGMENT from "./user-now-playing-fragment.gql"
 
 interface Data {
 	nextQueueSong: User,
 }
+
+const update =
+	(cache: ApolloCache<unknown>) => {
+		const userID =
+			getUserID()
+
+		const id =
+			cache.identify({ userID, __typename: "User" })
+
+		const { nowPlaying, queueNext, queueLater, queuePrevious } =
+			cache.readFragment<User>({
+				id,
+				fragment: USER_QUEUES_FRAGMENT,
+			})!
+
+		if (!isEmpty(queueNext) || !isEmpty(queueLater)) {
+			cache.writeFragment<Partial<User>>({
+				id,
+				fragment: USER_QUEUE_NOW_PLAYING_FRAGMENT,
+				data: {
+					userID,
+					nowPlaying:
+						isEmpty(queueNext) ?
+							queueLater[0] :
+							queueNext[0],
+				},
+			})
+			if (isEmpty(queueNext)) {
+				cache.writeFragment<Partial<User>>({
+					id,
+					fragment: USER_QUEUE_LATER_FRAGMENT,
+					data: {
+						userID,
+						queueLater:
+							queueLater
+								.slice(1)
+								.filter(({ queueIndex }) => (
+									queueIndex !== 0
+								))
+								.map(({ queueIndex, ...song }) => ({
+									queueIndex: queueIndex! - 1,
+									...song,
+								})),
+					},
+				})
+			} else {
+				cache.writeFragment<Partial<User>>({
+					id,
+					fragment: USER_QUEUE_NEXT_FRAGMENT,
+					data: {
+						userID,
+						queueNext:
+							queueNext
+								.slice(1)
+								.filter(({ queueIndex }) => (
+									queueIndex !== 0
+								))
+								.map(({ queueIndex, ...song }) => ({
+									queueIndex: queueIndex! - 1,
+									...song,
+								})),
+					},
+				})
+			}
+			cache.writeFragment<Partial<User>>({
+				id,
+				fragment: USER_QUEUE_PREVIOUS_FRAGMENT,
+				data: {
+					userID,
+					queuePrevious: [
+						...queuePrevious,
+						{ ...nowPlaying!, queueIndex: queuePrevious.length },
+					],
+				},
+			})
+		}
+	}
 
 export const useNextQueueSong =
 	() => {
@@ -23,71 +104,7 @@ export const useNextQueueSong =
 		const nextPress = useKeyPress("MediaTrackNext")
 
 		const [ nextQueueSong, result ] =
-			useMutation<Data>(NEXT_QUEUE_SONG, {
-				update: cache => {
-					const id =
-						cache.identify({
-							__typename: "User",
-							userID: getUserID(),
-						})
-
-					const { nowPlaying, queueNext, queueLater, queuePrevious } =
-						cache.readFragment<User>({
-							id,
-							fragment: USER_QUEUES_FRAGMENT,
-						})!
-
-					if (!isEmpty(queueNext) || !isEmpty(queueLater)) {
-						let
-							newNowPlaying: Song,
-							newQueueNext: Song[],
-							newQueueLater: Song[],
-							newQueuePrevious: Song[]
-
-						newNowPlaying =
-							isEmpty(queueNext) ?
-								queueLater[0] : queueNext[0]
-
-						if (isEmpty(queueNext)) {
-							newQueueLater =
-								queueLater.slice(1)
-						} else {
-							newQueueNext =
-								queueNext.slice(1)
-						}
-
-						if (isEmpty(queueNext)) {
-							newQueueLater =
-								queueLater
-									.filter(({ queueIndex }) => queueIndex !== 0)
-									.map(({ queueIndex, ...song }, index) => ({
-										queueIndex: queueIndex! - 1,
-										...song,
-									}))
-
-							console.log({ newQueueLater })
-						} else {
-							newQueueNext =
-								queueNext
-									.filter(({ queueIndex }) => queueIndex !== 0)
-									.map(({ queueIndex, ...song }, index) => ({
-										queueIndex: queueIndex! - 1,
-										...song,
-									}))
-
-							console.log({ newQueueNext })
-						}
-
-						newQueuePrevious = [
-							...queuePrevious,
-							{ ...nowPlaying!, queueIndex: queuePrevious.length },
-						]
-
-						console.log({ newNowPlaying })
-						console.log({ newQueuePrevious })
-					}
-				},
-			})
+			useMutation<Data>(NEXT_QUEUE_SONG, { update })
 
 		const handleNextClick =
 			async () => {

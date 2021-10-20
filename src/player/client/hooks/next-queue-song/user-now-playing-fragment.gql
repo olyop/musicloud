@@ -1,0 +1,7 @@
+fragment UserQueueLaterFragment on User {
+	userID
+	nowPlaying {
+		songID
+		queueIndex
+	}
+}
