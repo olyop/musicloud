@@ -21,7 +21,7 @@
 			&-button {
 				width: calc(100% / 3);
 				border-radius: 0 !important;
-				height: calc(var(--button-dimesnion) + var(--space)); } } }
+				height: calc(var(--button-dimesnion) + var(--space)) !important; } } }
 	&__main {
 		width: 100%;
 		display: flex;
