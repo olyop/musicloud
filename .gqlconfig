@@ -7,6 +7,12 @@
 			{
 				parser: 'QueryParser',
 				match: 'src/player/client/**/*.gql',
+				validate: {
+					extends: 'gql-rules-query',
+					rules: {
+						NoUnusedFragments: 'off',
+					},
+				}
 			}
 		]
 	}

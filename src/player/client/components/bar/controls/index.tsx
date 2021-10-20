@@ -1,16 +1,9 @@
 import Button from "@oly_op/react-button"
-import { createElement, FC, useEffect } from "react"
-import { PureQueryOptions } from "@apollo/client"
 import { createBEM, BEMInput } from "@oly_op/bem"
+import { createElement, FC, useEffect } from "react"
 
-import { User } from "../../../types"
-import NEXT_QUEUE_SONG from "./next-queue-song.gql"
-import PREVIOUS_QUEUE_SONG from "./previous-queue-song.gql"
-import GET_QUEUE_NEXT from "../../../pages/queues/get-queue-next.gql"
-import GET_QUEUE_LATER from "../../../pages/queues/get-queue-later.gql"
-import { useKeyPress, useMutation, useResetPlayer } from "../../../hooks"
-import GET_QUEUE_PREVIOUS from "../../../pages/queues/get-queue-previous.gql"
-import { togglePlay, updatePlay, useDispatch, useStatePlay } from "../../../redux"
+import { togglePlay, useDispatch, useStatePlay } from "../../../redux"
+import { useKeyPress, useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
 
 import "./index.scss"
 
@@ -27,23 +20,13 @@ const BarControls: FC<PropTypes> = ({
 }) => {
 	const play = useStatePlay()
 	const dispatch = useDispatch()
-	const resetPlayer = useResetPlayer()
-
-	const nextPress = useKeyPress("MediaTrackNext")
 	const playPausePress = useKeyPress("MediaPlayPause")
-	const previousPress = useKeyPress("MediaTrackPrevious")
-
-	const refetchQueries: PureQueryOptions[] = [
-		{ query: GET_QUEUE_NEXT },
-		{ query: GET_QUEUE_LATER },
-		{ query: GET_QUEUE_PREVIOUS },
-	]
 
 	const [ nextQueueSong, { loading: nextLoading } ] =
-		useMutation<UserNextData>(NEXT_QUEUE_SONG, { refetchQueries })
+		useNextQueueSong()
 
 	const [ previousQueueSong, { loading: previousLoading } ] =
-		useMutation<UserPreviousData>(PREVIOUS_QUEUE_SONG, { refetchQueries })
+		usePreviousQueueSong()
 
 	const loading =
 		nextLoading || previousLoading
@@ -53,20 +36,6 @@ const BarControls: FC<PropTypes> = ({
 			dispatch(togglePlay())
 		}
 
-	const handleNextClick =
-		async () => {
-			resetPlayer()
-			await nextQueueSong()
-			dispatch(updatePlay(true))
-		}
-
-	const handlePreviousClick =
-		async () => {
-			resetPlayer()
-			await previousQueueSong()
-			dispatch(updatePlay(true))
-		}
-
 	const playButtonIcon =
 		loading ?
 			"loop" : (
@@ -74,18 +43,6 @@ const BarControls: FC<PropTypes> = ({
 					"pause" :
 					"play_arrow"
 			)
-
-	useEffect(() => {
-		if (nextPress) {
-			handleNextClick()
-		}
-	}, [nextPress])
-
-	useEffect(() => {
-		if (previousPress) {
-			handlePreviousClick()
-		}
-	}, [previousPress])
 
 	useEffect(() => {
 		if (playPausePress) {
@@ -99,9 +56,9 @@ const BarControls: FC<PropTypes> = ({
 				<Button
 					transparent
 					icon="skip_previous"
+					onClick={previousQueueSong}
 					className={buttonClassName}
 					iconClassName={buttonIconClassName}
-					onClick={loading ? undefined : handlePreviousClick}
 				/>
 			)}
 			<Button
@@ -114,21 +71,13 @@ const BarControls: FC<PropTypes> = ({
 				<Button
 					transparent
 					icon="skip_next"
+					onClick={nextQueueSong}
 					className={buttonClassName}
 					iconClassName={buttonIconClassName}
-					onClick={loading ? undefined : handleNextClick}
 				/>
 			)}
 		</div>
 	)
-}
-
-interface UserNextData {
-	nextQueueSong: User,
-}
-
-interface UserPreviousData {
-	previousQueueSong: User,
 }
 
 interface PropTypes {

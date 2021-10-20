@@ -1,12 +1,12 @@
 .Queues {
 	&__expand {
-		gap: 5rem;
 		border-radius: 0;
 		justify-content: flex-start;
 		background-color: transparent !important;
-		padding-left: calc(var(--space-half) + 2rem); }
+		gap: calc(var(--space-three-quart) + 1rem);
+		padding-left: calc(var(--space-three-quart) + 2rem); }
 	&__section {
-		margin-top: calc(var(--space-quart) * -1); }
+		margin-top: calc((var(--space-quart) + 3rem) * -1); }
 	&__actions {
 		display: flex;
 		gap: var(--space-half);
