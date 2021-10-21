@@ -101,9 +101,9 @@ const settings =
 			.addCase(expandQueuesDisclosure, state => ({
 				...state,
 				queuesDisclosure: {
+					...state.queuesDisclosure,
 					queueNext: true,
 					queueLater: true,
-					queuePrevious: true,
 				},
 			}))
 			.addCase(collapseQueuesDisclosure, state => ({

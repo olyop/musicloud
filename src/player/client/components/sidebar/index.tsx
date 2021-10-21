@@ -98,6 +98,19 @@ const Sidebar: FC = () => {
 							/>
 						</NavLink>
 						<NavLink
+							to="/library/albums"
+							onClick={handleClose}
+							title="Library Albums"
+							className={bem("route")}
+						>
+							<Button
+								transparent
+								icon="album"
+								text="Albums"
+								className={bem("route-button", "PaddingLeftDouble")}
+							/>
+						</NavLink>
+						<NavLink
 							to="/library/artists"
 							onClick={handleClose}
 							title="Library Artists"

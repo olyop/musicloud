@@ -40,7 +40,7 @@ const LibraryAlbums: FC = () => {
 										albums={data.user.libraryAlbums}
 										hideOrderBy={isEmpty(data.user.libraryAlbums)}
 										orderByFields={Object.keys(AlbumsOrderByField)}
-										className={isList ? "Content" : "PaddingBottom PaddingLeft PaddingRight"}
+										className={isList ? "Content" : "PaddingLeft PaddingRight"}
 									/>
 								)
 							}

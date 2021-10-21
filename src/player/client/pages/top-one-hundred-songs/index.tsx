@@ -28,7 +28,7 @@ const TopOneHundredSongsPage: FC = () => {
 	return (
 		<Metadata title="#100 Songs">
 			<div className="Content PaddingTopBottom">
-				<div className="FlexListGapQuart MarginBottom">
+				<div className="FlexListGapHalf MarginBottom">
 					<h1
 						children="#100 Songs"
 						className="HeadingFour"
@@ -38,6 +38,7 @@ const TopOneHundredSongsPage: FC = () => {
 						text="Play"
 						transparent
 						icon="play_arrow"
+						className="Border"
 						onClick={handlePlay}
 					/>
 				</div>

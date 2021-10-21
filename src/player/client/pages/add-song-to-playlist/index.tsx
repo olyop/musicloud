@@ -106,7 +106,10 @@ const AddSongToPlaylistPage: FC = () => {
 			<h1 className="BodyOne">
 				<ObjectLink
 					text={songData.song.title}
-					path={determineObjectPath("song", songData.song.songID)}
+					path={determineObjectPath(
+						"song",
+						songData.song.songID,
+					)}
 				/>
 			</h1>
 			{!isEmpty(playlistsData.user.playlistsFilteredBySong) ? (

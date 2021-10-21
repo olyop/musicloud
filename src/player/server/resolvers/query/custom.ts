@@ -22,7 +22,7 @@ export const topTenSongs =
 export const topOneHundredSongs =
 	resolver(
 		({ context }) => (
-			getTopSongs(context.pg)("ALL")
+			getTopSongs(context.pg)(100)
 		),
 	)
 

@@ -91,7 +91,10 @@ const AddAlbumToPlaylistPage: FC = () => {
 			<h1 className="BodyOne">
 				<ObjectLink
 					text={albumData.album.title}
-					path={determineObjectPath("album", albumData.album.albumID)}
+					path={determineObjectPath(
+						"album",
+						albumData.album.albumID,
+					)}
 				/>
 			</h1>
 			{!isEmpty(playlistsData.user.playlists) ? (

@@ -113,11 +113,13 @@ const AlbumPage: FC = () => {
 						)}
 					/>
 					<div className={bem("content")}>
-						<div className={bem("title", "FlexListGapHalf MarginBottomQuart")}>
+						<div className={bem("title")}>
 							<h1 className="HeadingFour">
 								{data.album.title}
 							</h1>
-							<AlbumPlayButton albumID={albumID}/>
+							<AlbumPlayButton
+								albumID={albumID}
+							/>
 						</div>
 						<div className="FlexListGapHalf MarginBottomHalf">
 							{data.album.artists.map(
