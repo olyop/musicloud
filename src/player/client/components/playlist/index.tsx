@@ -89,30 +89,32 @@ const Playlist: FC<PropTypes> = ({
 					inLibrary,
 					onClick: toggleInLibrary,
 				}}
-				modalHeader={{
-					text: playlist.title,
-				}}
-				modalButtons={[
-					...(hideModal ? [] : [{
-						onClick: toggleInLibrary,
-						icon: inLibrary ? "done" : "add",
-						text: inLibrary ? "Remove" : "Add",
-					}]),
-					...(getUserID() === playlist.user.userID ? [{
-						icon: "edit",
-						text: "Rename",
-						onClick: handleRenameModalOpen,
-					},{
-						icon: "delete",
-						text: "Delete",
-						onClick: deletePlaylist,
-					}] : []),
-					{
-						icon: "info",
-						text: "Info",
-						link: determineObjectPath("playlist", playlist.playlistID),
+				modal={{
+					header: {
+						text: playlist.title,
 					},
-				]}
+					buttons: [
+						...(hideModal ? [] : [{
+							onClick: toggleInLibrary,
+							icon: inLibrary ? "done" : "add",
+							text: inLibrary ? "Remove" : "Add",
+						}]),
+						...(getUserID() === playlist.user.userID ? [{
+							icon: "edit",
+							text: "Rename",
+							onClick: handleRenameModalOpen,
+						},{
+							icon: "delete",
+							text: "Delete",
+							onClick: deletePlaylist,
+						}] : []),
+						{
+							icon: "info",
+							text: "Info",
+							link: determineObjectPath("playlist", playlist.playlistID),
+						},
+					],
+				}}
 			/>
 			<Modal
 				open={renameModal}

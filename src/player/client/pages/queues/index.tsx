@@ -112,7 +112,7 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 					hideIndex
 					hideOrderBy
 					hideElevated
-					onClose={handleRemove}
+					onRemove={handleRemove}
 					className={bem("section")}
 					songs={orderBy(data.user[queueKey], "queueIndex")}
 				/>

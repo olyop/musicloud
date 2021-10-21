@@ -13,17 +13,28 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 	icon,
 	link,
 	onClick,
+	onClose,
 	className,
 	externalLinkProps,
 	externalLink = false,
 }) => {
+	const handleOnClick =
+		() => {
+			if (!externalLink && onClick) {
+				onClick()
+			}
+			if (onClose) {
+				onClose()
+			}
+		}
+
 	const jsx = (
 		<Button
 			key={text}
 			transparent
 			icon={icon}
 			text={text}
-			onClick={onClick}
+			onClick={handleOnClick}
 			className={link ? null : bem(className, "ItemBorder")}
 			style={{
 				borderRadius: 0,
@@ -45,7 +56,7 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 				<Link
 					to={link}
 					children={jsx}
-					onClick={onClick}
+					onClick={handleOnClick}
 					className={bem(className, "FlexListCenter ItemBorder")}
 				/>
 			)}
@@ -58,6 +69,7 @@ export interface ModalButtonPropTypes extends BEMPropTypes {
 	icon?: string,
 	link?: string,
 	onClick?: Handler,
+	onClose?: Handler,
 	externalLink?: boolean,
 	externalLinkProps?: AnchorHTMLAttributes<HTMLAnchorElement>,
 }

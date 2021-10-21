@@ -3,14 +3,13 @@ import { createElement, FC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
-import Item from "../item"
 import Cover from "../cover"
 import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
+import Item, { ModalOptions } from "../item"
 import { useShuffleAlbum, usePlayAlbum } from "../../hooks"
 import { Album as AlbumType, SettingsListStyle } from "../../types"
 import { useStateListStyle, useStateShowReleased } from "../../redux"
-import { ModalHeaderPropTypes, ModalButtonPropTypes } from "../modal"
 import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
 
 const bem =
@@ -34,36 +33,37 @@ const Album: FC<PropTypes> = ({
 	const [ playAlbum, isPlaying ] =
 		usePlayAlbum(album.albumID)
 
-	const modalHeader: ModalHeaderPropTypes = {
-		text: album.title,
-		imgPropTypes: {
-			title: album.title,
-			url: determineCatalogImageURL(
-				album.albumID,
-				"cover",
-				ImageSizes.MINI,
-				ImageDimensions.SQUARE,
-			),
+	const modal: ModalOptions = {
+		header: {
+			text: album.title,
+			imgPropTypes: {
+				title: album.title,
+				url: determineCatalogImageURL(
+					album.albumID,
+					"cover",
+					ImageSizes.MINI,
+					ImageDimensions.SQUARE,
+				),
+			},
 		},
+		buttons: [{
+			onClick: playAlbum,
+			text: isPlaying ? "Pause" : "Play",
+			icon: isPlaying ? "pause" : "play_arrow",
+		},{
+			text: "Playlist",
+			icon: "playlist_add",
+			link: `/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`,
+		},{
+			icon: "shuffle",
+			text: "Shuffle",
+			onClick: shuffleAlbum,
+		},{
+			icon: "info",
+			text: "Info",
+			link: determineObjectPath("album", album.albumID),
+		}],
 	}
-
-	const modalButtons: ModalButtonPropTypes[] = [{
-		onClick: playAlbum,
-		text: isPlaying ? "Pause" : "Play",
-		icon: isPlaying ? "pause" : "play_arrow",
-	},{
-		text: "Playlist",
-		icon: "playlist_add",
-		link: `/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`,
-	},{
-		icon: "shuffle",
-		text: "Shuffle",
-		onClick: shuffleAlbum,
-	},{
-		icon: "info",
-		text: "Info",
-		link: determineObjectPath("album", album.albumID),
-	}]
 
 	const path =
 		determineObjectPath("album", album.albumID)
@@ -71,9 +71,8 @@ const Album: FC<PropTypes> = ({
 	return (
 		listStyle === SettingsListStyle.LIST || alwaysList ? (
 			<Item
+				modal={hideModal ? undefined : modal}
 				leftIcon={leftIcon ? "album" : undefined}
-				modalHeader={hideModal ? undefined : modalHeader}
-				modalButtons={hideModal ? undefined : modalButtons}
 				className={bem(className, "PaddingHalf ItemBorder")}
 				playOptions={hidePlay ? undefined : {
 					isPlaying,
@@ -121,8 +120,7 @@ const Album: FC<PropTypes> = ({
 				/>
 				<Item
 					className="PaddingHalf"
-					modalHeader={hideModal ? undefined : modalHeader}
-					modalButtons={hideModal ? undefined : modalButtons}
+					modal={hideModal ? undefined : modal}
 					infoOptions={{
 						upperLeft: (
 							<Fragment>

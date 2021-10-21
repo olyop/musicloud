@@ -143,7 +143,7 @@ const PlaylistPage: FC = () => {
 								hideOrderBy
 								className="MarginBottom"
 								songs={data.playlist.songs}
-								onClose={handleRemoveSongFromPlaylist}
+								onRemove={handleRemoveSongFromPlaylist}
 							/>
 						) : (
 							<p className="BodyTwo MarginBottom">

@@ -1,4 +1,4 @@
-fragment UserQueueLaterFragment on User {
+fragment UserQueueNowPlaying on User {
 	userID
 	nowPlaying {
 		songID

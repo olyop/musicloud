@@ -1,22 +1,28 @@
 import uniqueID from "lodash/uniqueId"
 import { Link } from "react-router-dom"
 import Image from "@oly_op/react-image"
+import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createBEM, BEMInput } from "@oly_op/bem"
-import { useState, createElement, FC, ReactNode } from "react"
+import { useState, createElement, FC } from "react"
 
 import Modal, {
 	ModalHeader,
 	ModalButton,
 	ModalButtons,
-	ModalHeaderPropTypes,
-	ModalButtonPropTypes,
 } from "../modal"
+
+import {
+	PropTypes,
+	InfoOptions,
+	PlayOptions,
+	ImageOptions,
+	ModalOptions,
+	InLibraryOptions,
+} from "./types"
 
 import Window from "../window"
 import PlayButton from "./play-button"
 import InLibraryButton from "./in-library-button"
-import { Handler, OnClickPropTypes } from "../../types"
 
 import "./index.scss"
 
@@ -25,14 +31,13 @@ const bem =
 
 const Item: FC<PropTypes> = ({
 	left,
+	modal,
 	onClick,
-	onClose,
+	onRemove,
 	leftIcon,
 	className,
-	modalHeader,
 	playOptions,
 	imageOptions,
-	modalButtons,
 	infoClassName,
 	iconClassName,
 	rightClassName,
@@ -44,9 +49,15 @@ const Item: FC<PropTypes> = ({
 		rightRight,
 	},
 }) => {
-	const [ modal, setModal ] = useState(false)
-	const handleModalOpen = () => setModal(true)
-	const handleModalClose = () => setModal(false)
+	const [ showModal, setShowModal ] =
+		useState(false)
+
+	const handleModalOpen =
+		() => setShowModal(true)
+
+	const handleModalClose =
+		() => setShowModal(false)
+
 	return (
 		<div className={className}>
 			<div className={bem("")} onClick={onClick}>
@@ -120,7 +131,7 @@ const Item: FC<PropTypes> = ({
 						)
 					)}
 				</Window>
-				{modalButtons && (
+				{modal && (
 					<Button
 						transparent
 						icon="more_vert"
@@ -128,37 +139,37 @@ const Item: FC<PropTypes> = ({
 						className={iconClassName}
 					/>
 				)}
-				{onClose && (
+				{onRemove && (
 					<Button
 						transparent
 						icon="close"
-						onClick={onClose}
+						onClick={onRemove}
 						className={iconClassName}
 					/>
 				)}
-				{modalButtons && (
-					<Modal open={modal} onClose={handleModalClose}>
-						{modalHeader && (
+				{modal && (
+					<Modal open={showModal} onClose={handleModalClose}>
+						{modal.header && (
 							<ModalHeader
-								{...modalHeader}
+								{...modal.header}
 							/>
 						)}
-						<ModalButtons>
-							{modalButtons.map(
-								button => (
-									<ModalButton
-										{...{
-											...button,
-											onClick: () => {
-												handleModalClose()
-												if (button.onClick) button.onClick()
-											},
-										}}
-										key={uniqueID()}
-									/>
-								),
-							)}
-						</ModalButtons>
+						{modal.content && (
+							modal.content(handleModalClose)
+						)}
+						{modal.buttons && (
+							<ModalButtons>
+								{modal.buttons.map(
+									button => (
+										<ModalButton
+											{...button}
+											key={uniqueID()}
+											onClose={handleModalClose}
+										/>
+									),
+								)}
+							</ModalButtons>
+						)}
 					</Modal>
 				)}
 			</div>
@@ -166,43 +177,12 @@ const Item: FC<PropTypes> = ({
 	)
 }
 
-export interface ImageOptions {
-	url: string,
-	path: string,
-	title: string,
-}
-
-export interface PlayOptions {
-	onClick?: Handler,
-	isPlaying: boolean,
-}
-
-export interface InfoOptions {
-	upperLeft?: ReactNode,
-	lowerLeft?: ReactNode,
-	rightLeft?: ReactNode,
-	rightRight?: ReactNode,
-}
-
-export interface InLibraryOptions {
-	onClick: Handler,
-	inLibrary: boolean,
-}
-
-export interface PropTypes extends OnClickPropTypes {
-	left?: ReactNode,
-	onClose?: Handler,
-	leftIcon?: string,
-	className?: string,
-	infoOptions: InfoOptions,
-	infoClassName?: BEMInput,
-	iconClassName?: BEMInput,
-	playOptions?: PlayOptions,
-	rightClassName?: BEMInput,
-	imageOptions?: ImageOptions,
-	modalHeader?: ModalHeaderPropTypes,
-	inLibraryOptions?: InLibraryOptions,
-	modalButtons?: ModalButtonPropTypes[],
+export {
+	InfoOptions,
+	PlayOptions,
+	ImageOptions,
+	ModalOptions,
+	InLibraryOptions,
 }
 
 export default Item

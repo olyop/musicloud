@@ -12,21 +12,50 @@ import {
 	determineCatalogImageURL,
 } from "../../helpers"
 
+import {
+	useStatePlay,
+	useStateShowGenres,
+	useStateShowDuration,
+} from "../../redux"
+
 import Item from "../item"
 import SongTitle from "../song-title"
 import ObjectLinks from "../object-links"
 import FeaturingArtists from "../featuring-artists"
 import QUEUE_SONG_NEXT from "./queue-song-next.gql"
+import { ModalButton, ModalButtons } from "../modal"
 import QUEUE_SONG_AFTER from "./queue-song-after.gql"
 import QUEUE_SONG_LATER from "./queue-song-later.gql"
 import { User, Song as SongType, Handler } from "../../types"
-import { useStateShowDuration, useStateShowGenres } from "../../redux"
 import { useToggleInLibrary, useMutation, usePlaySong } from "../../hooks"
+
+const ModalPlayButton: FC<ModalPlayButtonPropTypes> = ({
+	onClose,
+	onClick,
+	isPlaying,
+}) => {
+	const play = useStatePlay()
+	const playing = play && isPlaying
+	return (
+		<ModalButton
+			onClose={onClose}
+			onClick={onClick}
+			text={playing ? "Pause" : "Play"}
+			icon={playing ? "pause" : "play_arrow"}
+		/>
+	)
+}
+
+interface ModalPlayButtonPropTypes {
+	onClose: Handler,
+	onClick: Handler,
+	isPlaying: boolean,
+}
 
 const Song: FC<PropTypes> = ({
 	song,
 	index,
-	onClose,
+	onRemove,
 	className,
 	iconClassName,
 	leftIcon = false,
@@ -47,9 +76,14 @@ const Song: FC<PropTypes> = ({
 		trackNumber,
 	} = song
 
-	const variables: SongIDBase = { songID }
-	const showGenres = useStateShowGenres()
-	const showDuration = useStateShowDuration()
+	const variables: SongIDBase =
+		{ songID }
+
+	const showGenres =
+		useStateShowGenres()
+
+	const showDuration =
+		useStateShowDuration()
 
 	const [ playSong, isPlaying ] =
 		usePlaySong(song)
@@ -58,29 +92,44 @@ const Song: FC<PropTypes> = ({
 		useToggleInLibrary(song)
 
 	const [ next, { loading: nextLoading } ] =
-		useMutation<QueueData, SongIDBase>(QUEUE_SONG_NEXT, { variables })
+		useMutation<QueueData, SongIDBase>(
+			QUEUE_SONG_NEXT,
+			{ variables },
+		)
 
 	const [ after, { loading: afterLoading } ] =
-		useMutation<QueueData, SongIDBase>(QUEUE_SONG_AFTER, { variables })
+		useMutation<QueueData, SongIDBase>(
+			QUEUE_SONG_AFTER,
+			{ variables },
+		)
 
 	const [ later, { loading: laterLoading } ] =
-		useMutation<QueueData, SongIDBase>(QUEUE_SONG_LATER, { variables })
+		useMutation<QueueData, SongIDBase>(
+			QUEUE_SONG_LATER,
+			{ variables },
+		)
 
 	const loading =
 		nextLoading || afterLoading || laterLoading
 
 	const handleNextClick =
-		async () => { await next() }
+		async () => {
+			await next()
+		}
 
 	const handleAfterClick =
-		async () => { await after() }
+		async () => {
+			await after()
+		}
 
 	const handleLaterClick =
-		async () => { await later() }
+		async () => {
+			await later()
+		}
 
 	return (
 		<Item
-			onClose={onClose}
+			onRemove={onRemove}
 			className={className}
 			iconClassName={iconClassName}
 			leftIcon={leftIcon ? "audiotrack" : undefined}
@@ -140,60 +189,88 @@ const Song: FC<PropTypes> = ({
 						null : numberWithCommas(playsTotal)
 				),
 			}}
-			modalHeader={{
-				text: (
-					<SongTitle
-						song={song}
-					/>
-				),
-				imgPropTypes: {
-					title: album.title,
-					url: determineCatalogImageURL(
-						album.albumID,
-						"cover",
-						ImageSizes.HALF,
-						ImageDimensions.SQUARE,
+			modal={{
+				header: {
+					text: (
+						<SongTitle
+							song={song}
+						/>
 					),
+					imgPropTypes: {
+						title: album.title,
+						url: determineCatalogImageURL(
+							album.albumID,
+							"cover",
+							ImageSizes.HALF,
+							ImageDimensions.SQUARE,
+						),
+					},
 				},
+				content: onClose => (
+					<ModalButtons>
+						<ModalPlayButton
+							onClose={onClose}
+							onClick={playSong}
+							isPlaying={isPlaying}
+						/>
+						<ModalButton
+							icon="radio"
+							text="Radio"
+						/>
+						<ModalButton
+							text="Next"
+							onClose={onClose}
+							icon="playlist_add"
+							onClick={loading ? undefined : handleNextClick}
+						/>
+						<ModalButton
+							text="After"
+							onClose={onClose}
+							icon="queue_music"
+							onClick={loading ? undefined : handleAfterClick}
+						/>
+						<ModalButton
+							text="Later"
+							icon="queue"
+							onClose={onClose}
+							onClick={loading ? undefined : handleLaterClick}
+						/>
+						<ModalButton
+							text="Library"
+							onClose={onClose}
+							onClick={toggleInLibrary}
+							icon={inLibrary ? "done" : "add"}
+						/>
+						<ModalButton
+							externalLink
+							icon="get_app"
+							text="Download"
+							link={determineCatalogMP3URL(songID)}
+							externalLinkProps={{ type: "audio/mpeg", download: true }}
+						/>
+						<ModalButton
+							text="Playlist"
+							onClose={onClose}
+							icon="playlist_add"
+							link={`/add-song-to-playlist/${removeDashesFromUUID(songID)}`}
+						/>
+						{onRemove && (
+							<ModalButton
+								text="Remove"
+								onClose={onClose}
+								icon="queue_music"
+								onClick={onRemove}
+							/>
+						)}
+						<ModalButton
+							icon="info"
+							text="Info"
+							onClose={onClose}
+							link={determineObjectPath("song", songID)}
+						/>
+					</ModalButtons>
+				),
 			}}
-			modalButtons={hideMore ? undefined : [{
-				onClick: playSong,
-				text: isPlaying ? "Pause" : "Play",
-				icon: isPlaying ? "pause" : "play_arrow",
-			},{
-				icon: "radio",
-				text: "Radio",
-			},{
-				text: "Next",
-				icon: "playlist_add",
-				onClick: loading ? undefined : handleNextClick,
-			},{
-				text: "After",
-				icon: "queue_music",
-				onClick: loading ? undefined : handleAfterClick,
-			},{
-				icon: "queue",
-				text: "Later",
-				onClick: loading ? undefined : handleLaterClick,
-			},{
-				icon: "get_app",
-				text: "Download",
-				externalLink: true,
-				link: determineCatalogMP3URL(songID),
-				externalLinkProps: { type: "audio/mpeg", download: true },
-			},{
-				onClick: toggleInLibrary,
-				icon: inLibrary ? "done" : "add",
-				text: inLibrary ? "Remove" : "Add",
-			},{
-				text: "Playlist",
-				icon: "playlist_add",
-				link: `/add-song-to-playlist/${removeDashesFromUUID(songID)}`,
-			},{
-				icon: "info",
-				text: "Info",
-				link: determineObjectPath("song", songID),
-			}]}
 		/>
 	)
 }
@@ -205,7 +282,7 @@ interface QueueData {
 interface PropTypes {
 	song: SongType,
 	index?: number,
-	onClose?: Handler,
+	onRemove?: Handler,
 	leftIcon?: boolean,
 	hidePlay?: boolean,
 	className?: string,

@@ -10,7 +10,7 @@ const bem =
 	createBEM("Songs")
 
 const Songs: FC<PropTypes> = ({
-	onClose,
+	onRemove,
 	className,
 	orderByKey,
 	songs = [],
@@ -53,7 +53,7 @@ const Songs: FC<PropTypes> = ({
 					className="ItemBorder PaddingHalf"
 					key={song.songID + index.toString()}
 					index={hideIndex ? undefined : index + 1}
-					onClose={onClose && onClose({ index, song })}
+					onRemove={onRemove && onRemove({ index, song })}
 				/>
 			),
 		)}
@@ -78,7 +78,7 @@ interface PropTypes extends BEMPropTypes {
 	hideInLibrary?: boolean,
 	orderByFields?: string[],
 	hideTrackNumber?: boolean,
-	onClose?: (options: OnCloseOptions) => Handler,
+	onRemove?: (options: OnCloseOptions) => Handler,
 	orderByKey?: keyof Pick<SettingsOrderBy, "songs" | "librarySongs">,
 }
 

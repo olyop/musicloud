@@ -2,6 +2,13 @@ import { createBEM } from "@oly_op/bem"
 import { createElement, FC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
+import Item, {
+	InfoOptions,
+	ImageOptions,
+	ModalOptions,
+	InLibraryOptions,
+} from "../item"
+
 import {
 	determineObjectPath,
 	determineArtistLower,
@@ -13,8 +20,6 @@ import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
 import { useToggleInLibrary, useShuffleArtist } from "../../hooks"
 import { Artist as ArtistType, SettingsListStyle } from "../../types"
-import { ModalHeaderPropTypes, ModalButtonPropTypes } from "../modal"
-import Item, { InfoOptions, ImageOptions, InLibraryOptions } from "../item"
 
 const bem =
 	createBEM("Artist")
@@ -40,28 +45,29 @@ const Artist: FC<PropTypes> = ({
 		onClick: handleToggleInLibrary,
 	}
 
-	const modalHeader: ModalHeaderPropTypes = {
-		text: artist.name,
-		imgPropTypes: {
-			title: artist.name,
-			url: determineCatalogImageURL(
-				artist.artistID,
-				"profile",
-				ImageSizes.MINI,
-				ImageDimensions.SQUARE,
-			),
+	const modal: ModalOptions = {
+		header: {
+			text: artist.name,
+			imgPropTypes: {
+				title: artist.name,
+				url: determineCatalogImageURL(
+					artist.artistID,
+					"profile",
+					ImageSizes.MINI,
+					ImageDimensions.SQUARE,
+				),
+			},
 		},
+		buttons: [{
+			onClick: handleToggleInLibrary,
+			icon: inLibrary ? "done" : "add",
+			text: inLibrary ? "Remove" : "Add",
+		},{
+			icon: "shuffle",
+			text: "Shuffle",
+			onClick: handleShuffleClick,
+		}],
 	}
-
-	const modalButtons: ModalButtonPropTypes[] = [{
-		onClick: handleToggleInLibrary,
-		icon: inLibrary ? "done" : "add",
-		text: inLibrary ? "Remove" : "Add",
-	},{
-		icon: "shuffle",
-		text: "Shuffle",
-		onClick: handleShuffleClick,
-	}]
 
 	const info: InfoOptions = {
 		lowerLeft: determineArtistLower(artist),
@@ -86,10 +92,9 @@ const Artist: FC<PropTypes> = ({
 
 	return listStyle === SettingsListStyle.LIST || alwaysList ? (
 		<Item
+			modal={modal}
 			infoOptions={info}
-			modalHeader={modalHeader}
 			imageOptions={imageOptions}
-			modalButtons={modalButtons}
 			inLibraryOptions={inLibraryConfig}
 			leftIcon={leftIcon ? "person" : undefined}
 			className={bem(className, "PaddingHalf ItemBorder")}
@@ -109,10 +114,9 @@ const Artist: FC<PropTypes> = ({
 				)}
 			/>
 			<Item
+				modal={modal}
 				infoOptions={info}
 				className="PaddingHalf"
-				modalHeader={modalHeader}
-				modalButtons={modalButtons}
 				inLibraryOptions={inLibraryConfig}
 			/>
 		</div>
