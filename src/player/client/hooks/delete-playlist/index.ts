@@ -1,10 +1,10 @@
-import { MutationResult } from "@apollo/client"
+import { MutationResult, StoreObject } from "@apollo/client"
 import { PlaylistIDBase } from "@oly_op/music-app-common/types"
 
 import { useMutation } from "../mutation"
 import { getUserID } from "../../helpers"
+import { User, Handler } from "../../types"
 import DELETE_PLAYLIST from "./delete-playlist.gql"
-import { User, Handler, Playlist } from "../../types"
 
 export const useDeletePlaylist =
 	(playlistID: string) => {
@@ -18,8 +18,11 @@ export const useDeletePlaylist =
 							userID: getUserID(),
 						}),
 						fields: {
-							libraryPlaylists: (existing: Playlist[]) =>
-								existing.filter(playlist => playlist.playlistID === playlistID),
+							libraryPlaylists:
+								(existing: StoreObject[], { readField }) =>
+									existing.filter(playlist => (
+										readField("playlistID", playlist) !== playlistID
+									)),
 						},
 					})
 				},

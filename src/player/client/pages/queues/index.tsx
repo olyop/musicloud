@@ -44,6 +44,10 @@ import "./index.scss"
 const bem =
 	createBEM("Queues")
 
+const QueueSong: FC = ({  }) => {
+	
+}
+
 const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 	const userID = getUserID()
 	const dispatch = useDispatch()

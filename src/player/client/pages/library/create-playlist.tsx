@@ -39,6 +39,7 @@ const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
 						},
 					})
 				} finally {
+					setTitle("")
 					onClose()
 				}
 			}

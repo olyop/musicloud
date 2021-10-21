@@ -1,7 +1,7 @@
 import Howler from "react-howler"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, FC, useEffect } from "react"
+import { createElement, FC, Fragment, useEffect } from "react"
 import { useLocation, NavLink } from "react-router-dom"
 import { useFullScreenHandle, FullScreen } from "react-full-screen"
 
@@ -32,7 +32,7 @@ const Bar: FC = () => {
 	const resetPlayer = useResetPlayer()
 	const fullscreen = useFullScreenHandle()
 
-	const { data } =
+	const { data, loading } =
 		useQuery<Data>(GET_USER_CURRENT)
 
 	const [ nextQueueSong ] =
@@ -62,54 +62,60 @@ const Bar: FC = () => {
 					/>
 				)}
 			</Window>
-			{data?.user.nowPlaying && (
-				<div className={bem("main", "PaddingHalf")}>
-					<div className={bem("main-content-wrapper")}>
-						<div className={bem("main-content")}>
-							<Howler
-								playing={play}
-								onEnd={handleEnd}
-								volume={volume / 100}
-								onLoadError={resetPlayer}
-								src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
-							/>
-							<FullScreen handle={fullscreen}>
-								{fullscreen.active && (
-									<BarFullscreen
-										onExit={fullscreen.exit}
-										nowPlaying={data.user.nowPlaying}
-									/>
-								)}
-							</FullScreen>
-							<Song
-								hidePlay
-								hidePlays
-								hideDuration
-								song={data.user.nowPlaying}
-							/>
-							<div className="FlexListRight">
-								<Button
-									transparent
-									icon="fullscreen"
-									title="Fullscreen"
-									onClick={fullscreen.enter}
+			<div className={bem("main", "PaddingHalf")}>
+				{data?.user.nowPlaying && !loading ? (
+					<Fragment>
+						<div className={bem("main-content-wrapper")}>
+							<div className={bem("main-content")}>
+								<Howler
+									playing={play}
+									onEnd={handleEnd}
+									volume={volume / 100}
+									onLoadError={resetPlayer}
+									src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
 								/>
-								<BarVolume/>
-								<NavLink to="/queues">
+								<FullScreen handle={fullscreen}>
+									{fullscreen.active && (
+										<BarFullscreen
+											onExit={fullscreen.exit}
+											nowPlaying={data.user.nowPlaying}
+										/>
+									)}
+								</FullScreen>
+								<Song
+									hidePlay
+									hidePlays
+									hideDuration
+									song={data.user.nowPlaying}
+								/>
+								<div className="FlexListRight">
 									<Button
-										title="Queue"
-										icon="queue_music"
-										transparent={pathname !== "/queues"}
+										transparent
+										icon="fullscreen"
+										title="Fullscreen"
+										onClick={fullscreen.enter}
 									/>
-								</NavLink>
+									<BarVolume/>
+									<NavLink to="/queues">
+										<Button
+											title="Queue"
+											icon="queue_music"
+											transparent={pathname !== "/queues"}
+										/>
+									</NavLink>
+								</div>
 							</div>
 						</div>
-					</div>
-					<Progress
-						duration={data.user.nowPlaying.duration}
-					/>
-				</div>
-			)}
+						<Progress
+							duration={data.user.nowPlaying.duration}
+						/>
+					</Fragment>
+				) : (
+					<p className="BodyOne">
+						Nothing playing.
+					</p>
+				)}
+			</div>
 		</footer>
 	)
 }
