@@ -1,12 +1,11 @@
 import Howler from "react-howler"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, FC, Fragment, useEffect } from "react"
 import { useLocation, NavLink } from "react-router-dom"
 import { useFullScreenHandle, FullScreen } from "react-full-screen"
+import { createElement, FC, Fragment, useEffect, useState } from "react"
 
 import Song from "../song"
-import Window from "../window"
 import BarVolume from "./volume"
 import Progress from "../progress"
 import { User } from "../../types"
@@ -20,6 +19,7 @@ import { useMutation, useQuery, useResetPlayer } from "../../hooks"
 import { useStatePlay, updatePlay, useDispatch, useStateVolume } from "../../redux"
 
 import "./index.scss"
+import Modal from "../modal"
 
 const bem =
 	createBEM("Bar")
@@ -31,6 +31,9 @@ const Bar: FC = () => {
 	const { pathname } = useLocation()
 	const resetPlayer = useResetPlayer()
 	const fullscreen = useFullScreenHandle()
+
+	const [ expand, setExpand ] =
+		useState(false)
 
 	const { data, loading } =
 		useQuery<Data>(GET_USER_CURRENT)
@@ -45,6 +48,12 @@ const Bar: FC = () => {
 			dispatch(updatePlay(true))
 		}
 
+	const handleExpandOpen =
+		() => setExpand(true)
+
+	const handleExpandClose =
+		() => setExpand(false)
+
 	useEffect(() => {
 		if (data?.user.nowPlaying) {
 			setMetadata(data.user.nowPlaying)
@@ -53,15 +62,11 @@ const Bar: FC = () => {
 
 	return (
 		<footer className={bem("", "Elevated")}>
-			<Window>
-				{({ width }) => (
-					<BarControls
-						className={bem("controls")}
-						buttonClassName={bem("controls-button")}
-						buttonIconClassName={bem("controls-button-icon")}
-					/>
-				)}
-			</Window>
+			<BarControls
+				className={bem("controls")}
+				buttonClassName={bem("controls-button")}
+				buttonIconClassName={bem("controls-button-icon")}
+			/>
 			<div className={bem("main", "PaddingHalf")}>
 				{data?.user.nowPlaying && !loading ? (
 					<Fragment>
@@ -76,10 +81,12 @@ const Bar: FC = () => {
 								/>
 								<FullScreen handle={fullscreen}>
 									{fullscreen.active && (
-										<BarFullscreen
-											onExit={fullscreen.exit}
-											nowPlaying={data.user.nowPlaying}
-										/>
+										<div className={bem("fullscreen")}>
+											<BarFullscreen
+												onExit={fullscreen.exit}
+												nowPlaying={data.user.nowPlaying}
+											/>
+										</div>
 									)}
 								</FullScreen>
 								<Song
@@ -103,6 +110,12 @@ const Bar: FC = () => {
 											transparent={pathname !== "/queues"}
 										/>
 									</NavLink>
+									<Button
+										transparent
+										title="Player"
+										icon="unfold_more"
+										onClick={handleExpandOpen}
+									/>
 								</div>
 							</div>
 						</div>
@@ -116,6 +129,25 @@ const Bar: FC = () => {
 					</p>
 				)}
 			</div>
+			{data?.user.nowPlaying && (
+				<Modal
+					open={expand}
+					onClose={handleExpandClose}
+					contentClassName={bem("expand")}
+				>
+					<Button
+						transparent
+						icon="close"
+						title="Close Player"
+						onClick={handleExpandClose}
+						className={bem("expand-close")}
+					/>
+					<BarFullscreen
+						onExit={fullscreen.exit}
+						nowPlaying={data.user.nowPlaying}
+					/>
+				</Modal>
+			)}
 		</footer>
 	)
 }

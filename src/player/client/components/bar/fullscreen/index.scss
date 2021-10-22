@@ -1,36 +1,17 @@
 .BarFullscreen {
-	--icon-dim: 50rem;
-	position: relative;
-	background-color: var(--background-color);
-	&__button {
-		width: var(--icon-dim);
-		height: var(--icon-dim);
-		&-icon {
-			width: calc(var(--icon-dim) - 11rem);
-			height: calc(var(--icon-dim) - 11rem);
-			font-size: calc(var(--icon-dim) - 11rem); } }
-	&__close {
-		top: 0;
-		left: 0;
-		position: absolute; }
-	&__volume {
-		right: 0;
-		bottom: 0;
-		position: absolute; }
-	&__main {
-		top: 50%;
-		display: flex;
-		position: absolute;
-		align-items: center;
-		flex-direction: column;
-		@media (min-width: 800px) {
-			left: 50%;
-			width: 600px;
-			transform: translate(-50%, -50%); }
-		@media (max-width: 800px) {
-			width: 100%;
-			padding: var(--space);
-			transform: translateY(-50%); } }
+	top: 50%;
+	display: flex;
+	position: absolute;
+	align-items: center;
+	flex-direction: column;
+	@media (min-width: 800px) {
+		left: 50%;
+		width: 600px;
+		transform: translate(-50%, -50%); }
+	@media (max-width: 800px) {
+		width: 100%;
+		padding: var(--space);
+		transform: translateY(-50%); } 
 	&__cover {
 		width: 100%;
 		margin-bottom: var(--space-double);

@@ -32,6 +32,18 @@
 		&-content {
 			display: grid;
 			max-width: 100%;
-			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 3);
+			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 4);
 			&-wrapper {
-				margin-right: -7rem; } } } }
+				margin-right: calc(var(--space-half) *  -1); } } }
+	&__expand {
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: unset;
+		box-shadow: none;
+		border-radius: 0;
+		&-close {
+			position: absolute;
+			left: var(--space-half);
+			top: calc(var(--space-half) + env(safe-area-inset-top)); } } }
