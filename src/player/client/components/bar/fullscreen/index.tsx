@@ -1,6 +1,5 @@
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
 import { createElement, FC, Fragment } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
@@ -9,7 +8,6 @@ import {
 	determineCatalogImageURL,
 } from "../../../helpers"
 
-import BarVolume from "../volume"
 import Progress from "../../progress"
 import BarControls from "../controls"
 import SongTitle from "../../song-title"
