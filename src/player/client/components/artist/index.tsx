@@ -20,6 +20,7 @@ import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
 import { useToggleInLibrary, useShuffleArtist } from "../../hooks"
 import { Artist as ArtistType, SettingsListStyle } from "../../types"
+import { ModalButton, ModalButtons } from "../modal"
 
 const bem =
 	createBEM("Artist")
@@ -47,7 +48,12 @@ const Artist: FC<PropTypes> = ({
 
 	const modal: ModalOptions = {
 		header: {
-			text: artist.name,
+			text: (
+				<ObjectLink
+					text={artist.name}
+					path={determineObjectPath("artist", artist.artistID)}
+				/>
+			),
 			imgPropTypes: {
 				title: artist.name,
 				url: determineCatalogImageURL(
@@ -58,15 +64,20 @@ const Artist: FC<PropTypes> = ({
 				),
 			},
 		},
-		buttons: [{
-			onClick: handleToggleInLibrary,
-			icon: inLibrary ? "done" : "add",
-			text: inLibrary ? "Remove" : "Add",
-		},{
-			icon: "shuffle",
-			text: "Shuffle",
-			onClick: handleShuffleClick,
-		}],
+		content: onClose => (
+			<ModalButtons>
+				<ModalButton
+					onClick={handleToggleInLibrary}
+					icon={inLibrary ? "done" : "add"}
+					text={inLibrary ? "Remove" : "Add"}
+				/>
+				<ModalButton
+					icon="shuffle"
+					text="Shuffle"
+					onClick={handleShuffleClick}
+				/>
+			</ModalButtons>
+		),
 	}
 
 	const info: InfoOptions = {

@@ -7,10 +7,34 @@ import Cover from "../cover"
 import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
 import Item, { ModalOptions } from "../item"
+import { ModalButton, ModalButtons } from "../modal"
 import { useShuffleAlbum, usePlayAlbum } from "../../hooks"
-import { Album as AlbumType, SettingsListStyle } from "../../types"
-import { useStateListStyle, useStateShowReleased } from "../../redux"
+import { Album as AlbumType, Handler, SettingsListStyle } from "../../types"
 import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
+import { useStateListStyle, useStatePlay, useStateShowReleased } from "../../redux"
+
+const ModalPlayButton: FC<ModalPlayButtonPropTypes> = ({
+	onClose,
+	onClick,
+	isPlaying,
+}) => {
+	const play = useStatePlay()
+	const playing = play && isPlaying
+	return (
+		<ModalButton
+			onClose={onClose}
+			onClick={onClick}
+			text={playing ? "Pause" : "Play"}
+			icon={playing ? "pause" : "play_arrow"}
+		/>
+	)
+}
+
+interface ModalPlayButtonPropTypes {
+	onClose: Handler,
+	onClick: Handler,
+	isPlaying: boolean,
+}
 
 const bem =
 	createBEM("Album")
@@ -35,7 +59,12 @@ const Album: FC<PropTypes> = ({
 
 	const modal: ModalOptions = {
 		header: {
-			text: album.title,
+			text: (
+				<ObjectLink
+					text={album.title}
+					path={determineObjectPath("album", album.albumID)}
+				/>
+			),
 			imgPropTypes: {
 				title: album.title,
 				url: determineCatalogImageURL(
@@ -46,23 +75,25 @@ const Album: FC<PropTypes> = ({
 				),
 			},
 		},
-		buttons: [{
-			onClick: playAlbum,
-			text: isPlaying ? "Pause" : "Play",
-			icon: isPlaying ? "pause" : "play_arrow",
-		},{
-			text: "Playlist",
-			icon: "playlist_add",
-			link: `/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`,
-		},{
-			icon: "shuffle",
-			text: "Shuffle",
-			onClick: shuffleAlbum,
-		},{
-			icon: "info",
-			text: "Info",
-			link: determineObjectPath("album", album.albumID),
-		}],
+		content: onClose => (
+			<ModalButtons>
+				<ModalPlayButton
+					onClose={onClose}
+					onClick={playAlbum}
+					isPlaying={isPlaying}
+				/>
+				<ModalButton
+					text="Playlist"
+					icon="playlist_add"
+					link={`/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`}
+				/>
+				<ModalButton
+					icon="shuffle"
+					text="Shuffle"
+					onClick={shuffleAlbum}
+				/>
+			</ModalButtons>
+		),
 	}
 
 	const path =

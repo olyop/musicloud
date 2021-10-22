@@ -16,12 +16,12 @@
 	&__account {
 		&-modal {
 			&-content {
-				--width: 114rem;
+				--width: 131rem;
 				left: unset;
 				transform: none;
 				right: calc(var(--space-half));
-				width: calc(var(--space) + var(--width));
 				top: calc(var(--space-half) + env(safe-area-inset-top) - 1rem);
+				width: calc(var(--space) + var(--width) + 2 * var(--border-width));
 				&-button {
 					width: 100%;
 					border-radius: 0;

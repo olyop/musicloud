@@ -1,14 +1,9 @@
-import {
-	ImageSizes,
-	UserIDBase,
-	ImageDimensions,
-} from "@oly_op/music-app-common/types"
-
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { createElement, FC, useEffect, useState } from "react"
 import { useHistory, useLocation, NavLink } from "react-router-dom"
+import { ImageSizes, ImageDimensions } from "@oly_op/music-app-common/types"
 
 import {
 	useDispatch,
@@ -20,13 +15,11 @@ import {
 } from "../../redux"
 
 import Modal from "../modal"
-import { User } from "../../types"
-import GET_USER_NAME from "./get-user-name.gql"
-import { useSignOut, useQuery } from "../../hooks"
+import Window from "../window"
+import { useSignOut } from "../../hooks"
 import { getUserID, determineCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
-import Window from "../window"
 
 const timeout =
 	(promise: Promise<unknown>) =>
@@ -79,11 +72,6 @@ const Header: FC = () => {
 
 	const [ accountModal, setAccountModal ] =
 		useState(false)
-
-	const { data } =
-		useQuery<Data, UserIDBase>(GET_USER_NAME, {
-			variables: { userID },
-		})
 
 	const handleBack =
 		() => history.goBack()
@@ -180,79 +168,73 @@ const Header: FC = () => {
 				)}
 				<Button
 					transparent
+					text="Account"
 					title="Account"
 					className="Border"
-					text={data ? data.user.name : "Loading..."}
 					rightIcon="expand_more"
 					onClick={handleAccountModalOpen}
-					image={data ? determineCatalogImageURL(
-						data.user.userID,
+					image={determineCatalogImageURL(
+						userID,
 						"profile",
 						ImageSizes.MINI,
 						ImageDimensions.SQUARE,
-					) : undefined}
+					)}
 				/>
-				{data && (
-					<Modal
-						open={accountModal}
-						onClose={handleAccountModalClose}
-						contentClassName={bem("account-modal-content", "FlexColumn Border")}
-					>
-						<NavLink
-							onClick={handleAccountModalClose}
-							to={`/user/${removeDashesFromUUID(data.user.userID)}`}
-							children={(
-								<Button
-									transparent
-									title="Your Page"
-									text={data.user.name}
-									rightIcon="arrow_forward"
-									className={bem("account-modal-content-button")}
-									image={determineCatalogImageURL(
-										data.user.userID,
-										"profile",
-										ImageSizes.MINI,
-										ImageDimensions.SQUARE,
-									)}
-								/>
-							)}
-						/>
-						<Button
-							text={isFullscreen ? "Exit PWA" : "PWA"}
-							transparent
-							icon="fullscreen"
-							title="Go Fullscreen"
-							onClick={handleFullscreenClick}
-							className={bem("account-modal-content-button")}
-						/>
-						<NavLink
-							to="/settings"
-							onClick={handleAccountModalClose}
-							children={(
-								<Button
-									transparent
-									icon="settings"
-									text="Settings"
-									className={bem("account-modal-content-button")}
-								/>
-							)}
-						/>
-						<Button
-							transparent
-							text="Logout"
-							onClick={signOut}
-							icon="exit_to_app"
-							className={bem("account-modal-content-button")}
-						/>
-					</Modal>
-				)}
+				<Modal
+					open={accountModal}
+					onClose={handleAccountModalClose}
+					contentClassName={bem("account-modal-content", "FlexColumn Border")}
+				>
+					<NavLink
+						onClick={handleAccountModalClose}
+						to={`/user/${removeDashesFromUUID(userID)}`}
+						children={(
+							<Button
+								transparent
+								text="Account"
+								title="Account"
+								rightIcon="arrow_forward"
+								className={bem("account-modal-content-button")}
+								image={determineCatalogImageURL(
+									userID,
+									"profile",
+									ImageSizes.MINI,
+									ImageDimensions.SQUARE,
+								)}
+							/>
+						)}
+					/>
+					<Button
+						text={isFullscreen ? "Exit PWA" : "PWA"}
+						transparent
+						icon="fullscreen"
+						title="Go Fullscreen"
+						onClick={handleFullscreenClick}
+						className={bem("account-modal-content-button")}
+					/>
+					<NavLink
+						to="/settings"
+						onClick={handleAccountModalClose}
+						children={(
+							<Button
+								transparent
+								icon="settings"
+								text="Settings"
+								className={bem("account-modal-content-button")}
+							/>
+						)}
+					/>
+					<Button
+						transparent
+						text="Logout"
+						onClick={signOut}
+						icon="exit_to_app"
+						className={bem("account-modal-content-button")}
+					/>
+				</Modal>
 			</div>
 		</header>
 	)
-}
-
-interface Data {
-	user: User,
 }
 
 export default Header

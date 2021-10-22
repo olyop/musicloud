@@ -44,57 +44,63 @@ import "./index.scss"
 const bem =
 	createBEM("Queues")
 
-const QueueSong: FC = ({  }) => {
-	
-}
-
 const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 	const userID = getUserID()
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
 
 	const { data } =
-		useQuery<NowPlayingData>(query, { fetchPolicy: "network-only" })
+		useQuery<NowPlayingData>(
+			query,
+			{ fetchPolicy: "network-only" },
+		)
 
 	const [ removeNext ] =
-		useMutation<RemoveNextData, RemoveVars>(REMOVE_SONG_FROM_QUEUE_NEXT)
+		useMutation<RemoveNextData, RemoveVars>(
+			REMOVE_SONG_FROM_QUEUE_NEXT,
+		)
 
 	const [ removeLater ] =
-		useMutation<RemoveLaterData, RemoveVars>(REMOVE_SONG_FROM_QUEUE_LATER)
+		useMutation<RemoveLaterData, RemoveVars>(
+			REMOVE_SONG_FROM_QUEUE_LATER,
+		)
 
 	const handleUpdateDisclosure =
-		() => { dispatch(toggleQueueDisclosure(queueKey)) }
+		() => {
+			dispatch(toggleQueueDisclosure(queueKey))
+		}
 
 	const handleRemove =
-		({ index }: OnCloseOptions) => async () => {
-			if (queueKey === "queueNext") {
-				await removeNext({
-					variables: { index },
-					update: cache => {
-						cache.modify({
-							id: cache.identify({ userID, __typename: "User" }),
-							fields: {
-								queueNext: (exisiting: SongType[] = []) =>
-									exisiting.filter(song => song.queueIndex !== index),
-							},
-						})
-					},
-				})
-			} else if (queueKey === "queueLater") {
-				await removeLater({
-					variables: { index },
-					update: cache => {
-						cache.modify({
-							id: cache.identify({ userID, __typename: "User" }),
-							fields: {
-								queueLaters: (exisiting: SongType[] = []) =>
-									exisiting.filter(song => song.queueIndex !== index),
-							},
-						})
-					},
-				})
+		({ index }: OnCloseOptions) =>
+			async () => {
+				if (queueKey === "queueNext") {
+					await removeNext({
+						variables: { index },
+						update: cache => {
+							cache.modify({
+								id: cache.identify({ userID, __typename: "User" }),
+								fields: {
+									queueNext: (exisiting: SongType[] = []) =>
+										exisiting.filter(song => song.queueIndex !== index),
+								},
+							})
+						},
+					})
+				} else if (queueKey === "queueLater") {
+					await removeLater({
+						variables: { index },
+						update: cache => {
+							cache.modify({
+								id: cache.identify({ userID, __typename: "User" }),
+								fields: {
+									queueLaters: (exisiting: SongType[] = []) =>
+										exisiting.filter(song => song.queueIndex !== index),
+								},
+							})
+						},
+					})
+				}
 			}
-		}
 
 	return (
 		<div className={bem(className, "FlexColumn Rounded Elevated ItemBorder")}>

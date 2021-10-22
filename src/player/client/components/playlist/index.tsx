@@ -10,7 +10,7 @@ import {
 } from "../../hooks"
 
 import Item from "../item"
-import Modal from "../modal"
+import Modal, { ModalButton, ModalButtons } from "../modal"
 import TextField from "../text-field"
 import ObjectLink from "../object-link"
 import { getUserID, determineObjectPath } from "../../helpers"
@@ -89,31 +89,40 @@ const Playlist: FC<PropTypes> = ({
 					inLibrary,
 					onClick: toggleInLibrary,
 				}}
-				modal={{
+				modal={hideModal ? undefined : {
 					header: {
-						text: playlist.title,
+						text: (
+							<ObjectLink
+								text={playlist.title}
+								path={determineObjectPath("playlist", playlist.playlistID)}
+							/>
+						),
 					},
-					buttons: [
-						...(hideModal ? [] : [{
-							onClick: toggleInLibrary,
-							icon: inLibrary ? "done" : "add",
-							text: inLibrary ? "Remove" : "Add",
-						}]),
-						...(getUserID() === playlist.user.userID ? [{
-							icon: "edit",
-							text: "Rename",
-							onClick: handleRenameModalOpen,
-						},{
-							icon: "delete",
-							text: "Delete",
-							onClick: deletePlaylist,
-						}] : []),
-						{
-							icon: "info",
-							text: "Info",
-							link: determineObjectPath("playlist", playlist.playlistID),
-						},
-					],
+					content: onClose => (
+						<ModalButtons>
+							{hideInLibrary || (
+								<ModalButton
+									onClick={toggleInLibrary}
+									icon={inLibrary ? "done" : "add"}
+									text={inLibrary ? "Remove" : "Add"}
+								/>
+							)}
+							{getUserID() === playlist.user.userID && (
+								<Fragment>
+									<ModalButton
+										icon="edit"
+										text="Rename"
+										onClick={handleRenameModalOpen}
+									/>
+									<ModalButton
+										icon="delete"
+										text="Delete"
+										onClick={deletePlaylist}
+									/>
+								</Fragment>
+							)}
+						</ModalButtons>
+					),
 				}}
 			/>
 			<Modal

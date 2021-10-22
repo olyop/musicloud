@@ -15,6 +15,7 @@ import {
 } from "../../helpers"
 
 import { Song } from "../../types"
+import { useStatePlay } from "../../redux"
 import GET_SONG_PAGE from "./get-song-page.gql"
 import { useQuery, usePlaySong } from "../../hooks"
 import ObjectLink from "../../components/object-link"
@@ -27,13 +28,14 @@ const bem =
 	createBEM("SongPage")
 
 const SongPage: FC<PropTypes> = ({ song }) => {
+	const play = useStatePlay()
 	const [ playSong, isPlaying ] = usePlaySong(song)
 	return (
 		<Metadata title={song.title}>
 			<div className={bem("", "Content PaddingTopBottom")}>
 				<Image
-					className="Elevated"
 					title={song.album.title}
+					className={bem("img", "Elevated")}
 					url={determineCatalogImageURL(
 						song.album.albumID,
 						"cover",
@@ -47,10 +49,11 @@ const SongPage: FC<PropTypes> = ({ song }) => {
 							{song.title}
 						</h1>
 						<Button
-							text="Play"
 							transparent
 							onClick={playSong}
-							icon={isPlaying ? "pause" : "play_arrow"}
+							className="Border"
+							text={play && isPlaying ? "Pause" : "Play"}
+							icon={play && isPlaying ? "pause" : "play_arrow"}
 						/>
 					</div>
 					<h2 className="HeadingFive MarginBottomHalf">
