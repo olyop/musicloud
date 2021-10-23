@@ -19,6 +19,7 @@ import {
 	toggleIsFullscreen,
 	toggleShowReleased,
 	toggleShowDuration,
+	toggleDoTransitions,
 	toggleQueueDisclosure,
 	expandQueuesDisclosure,
 	collapseQueuesDisclosure,
@@ -79,6 +80,10 @@ const settings =
 			.addCase(toggleShowDuration, state => ({
 				...state,
 				showDuration: !state.showDuration,
+			}))
+			.addCase(toggleDoTransitions, state => ({
+				...state,
+				doTransitions: !state.doTransitions,
 			}))
 			.addCase(updateListStyle, (state, { payload }) => ({
 				...state,

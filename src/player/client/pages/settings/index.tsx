@@ -13,8 +13,10 @@ import {
 	useStateShowGenres,
 	toggleShowReleased,
 	toggleShowDuration,
+	toggleDoTransitions,
 	useStateShowDuration,
 	useStateShowReleased,
+	useStateDoTransitions,
 } from "../../redux"
 
 import Modal, {
@@ -41,6 +43,7 @@ const SettingsPage: FC = () => {
 	const showGenres = useStateShowGenres()
 	const showDuration = useStateShowDuration()
 	const showReleased = useStateShowReleased()
+	const doTransitions = useStateDoTransitions()
 
 	const [ deleteUserModal, setDeleteUserModal ] =
 		useState(false)
@@ -61,6 +64,11 @@ const SettingsPage: FC = () => {
 	const handleToggleShowReleased =
 		() => {
 			dispatch(toggleShowReleased())
+		}
+
+	const handleToggleDoTransitions =
+		() => {
+			dispatch(toggleDoTransitions())
 		}
 
 	const handleThemeChange =
@@ -93,12 +101,12 @@ const SettingsPage: FC = () => {
 				</h1>
 				<div className="FlexColumnGap">
 					<details open className={bem("details")}>
-						<summary className={bem("summary", "BodyOne MarginBottomHalf")}>
+						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
 							Appearance
 						</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf ")}>
 							<div>
-								<p className="BodyTwo MarginBottomQuart">
+								<p className="BodyTwoBold MarginBottomQuart">
 									Theme:
 								</p>
 								<Select
@@ -109,7 +117,7 @@ const SettingsPage: FC = () => {
 								/>
 							</div>
 							<div>
-								<p className="BodyTwo MarginBottomQuart">
+								<p className="BodyTwoBold MarginBottomQuart">
 									List Style:
 								</p>
 								<Select
@@ -122,12 +130,12 @@ const SettingsPage: FC = () => {
 						</div>
 					</details>
 					<details open className={bem("details")}>
-						<summary className={bem("summary", "BodyOne MarginBottomHalf")}>
+						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
 							View
 						</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
 							<div>
-								<p className="BodyTwo MarginBottomQuart">
+								<p className="BodyTwoBold MarginBottomQuart">
 									Song Duration:
 								</p>
 								<div className="FlexListGapFifth">
@@ -143,7 +151,7 @@ const SettingsPage: FC = () => {
 								</div>
 							</div>
 							<div>
-								<p className="BodyTwo MarginBottomQuart">
+								<p className="BodyTwoBold MarginBottomQuart">
 									Song Genres:
 								</p>
 								<div className="FlexListGapFifth">
@@ -159,7 +167,7 @@ const SettingsPage: FC = () => {
 								</div>
 							</div>
 							<div>
-								<p className="BodyTwo MarginBottomQuart">
+								<p className="BodyTwoBold MarginBottomQuart">
 									Album Released:
 								</p>
 								<div className="FlexListGapFifth">
@@ -174,10 +182,26 @@ const SettingsPage: FC = () => {
 									</p>
 								</div>
 							</div>
+							<div>
+								<p className="BodyTwoBold MarginBottomQuart">
+									Tranitions:
+								</p>
+								<div className="FlexListGapFifth">
+									<input
+										type="checkbox"
+										className="Text"
+										checked={doTransitions}
+										onChange={handleToggleDoTransitions}
+									/>
+									<p className="BodyTwo LightWeight">
+										{doTransitions ? "Yes" : "No"}
+									</p>
+								</div>
+							</div>
 						</div>
 					</details>
 					<details open className={bem("details")}>
-						<summary className={bem("summary", "BodyOne MarginBottomHalf")}>
+						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
 							Actions
 						</summary>
 						<div className={bem("controls", "details-content", "FlexColumnGapHalf")}>

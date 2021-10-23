@@ -47,6 +47,7 @@ export interface Settings {
 	theme: SettingsTheme,
 	showReleased: boolean,
 	showDuration: boolean,
+	doTransitions: boolean,
 	orderBy: SettingsOrderBy,
 	listStyle: SettingsListStyle,
 	queuesDisclosure: SettingsQueuesDisclosure,

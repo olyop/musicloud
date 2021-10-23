@@ -13,6 +13,7 @@ import Loading from "./components/loading"
 import Sidebar from "./components/sidebar"
 import Fullscreen from "./components/fullscreen"
 import Authorization from "./pages/authorization"
+import ApplySettings from "./components/apply-settings"
 
 const ReactRedux: FC = ({ children }) => (
 	<ReduxProvider store={store}>
@@ -30,15 +31,17 @@ const Root: FC = () => (
 	<ReactRedux>
 		<ReactRouter>
 			<ApolloClient>
-				<Fullscreen>
-					<Loading/>
-					<Authorization>
-						<Sidebar/>
-						<Header/>
-						<Pages/>
-						<Bar/>
-					</Authorization>
-				</Fullscreen>
+				<ApplySettings>
+					<Fullscreen>
+						<Loading/>
+						<Authorization>
+							<Sidebar/>
+							<Header/>
+							<Pages/>
+							<Bar/>
+						</Authorization>
+					</Fullscreen>
+				</ApplySettings>
 			</ApolloClient>
 		</ReactRouter>
 	</ReactRedux>

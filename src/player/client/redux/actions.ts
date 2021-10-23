@@ -34,6 +34,9 @@ export const toggleShowReleased =
 export const toggleShowDuration =
 	createAction("TOGGLE_SHOW_DURATION")
 
+export const toggleDoTransitions =
+	createAction("TOGGLE_DO_TRANSITIONS")
+
 export const expandQueuesDisclosure =
 	createAction("EXPAND_QUEUES_DISCLOSURE")
 

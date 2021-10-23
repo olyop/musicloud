@@ -64,6 +64,11 @@ export const useStateShowReleased =
 		({ settings: { showReleased } }) => showReleased,
 	)
 
+export const useStateDoTransitions =
+	() => useSelector<State, boolean>(
+		({ settings: { doTransitions } }) => doTransitions,
+	)
+
 export const useStateShowDuration =
 	() => useSelector<State, boolean>(
 		({ settings: { showDuration } }) => showDuration,

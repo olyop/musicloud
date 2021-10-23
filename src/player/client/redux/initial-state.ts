@@ -19,6 +19,7 @@ export const initialSettings: Settings = {
 	showGenres: false,
 	showDuration: false,
 	showReleased: false,
+	doTransitions: true,
 	theme: SettingsTheme.SYSTEM,
 	listStyle: SettingsListStyle.GRID,
 	queuesDisclosure: {
