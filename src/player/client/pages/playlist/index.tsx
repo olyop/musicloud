@@ -25,7 +25,7 @@ import TextField from "../../components/text-field"
 import ObjectLink from "../../components/object-link"
 import SHUFFLE_PLAYLIST from "./shuffle-playlist.gql"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
-import Songs, { OnCloseOptions } from "../../components/songs"
+import Songs, { OnRemoveOptions } from "../../components/songs"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
 const PlaylistPage: FC = () => {
@@ -84,7 +84,7 @@ const PlaylistPage: FC = () => {
 		}
 
 	const handleRemoveSongFromPlaylist =
-		({ song: { songID } }: OnCloseOptions) =>
+		({ song: { songID } }: OnRemoveOptions) =>
 			async () => {
 				await removeSongFromPlaylist({
 					variables: {

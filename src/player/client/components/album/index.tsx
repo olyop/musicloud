@@ -57,7 +57,7 @@ const Album: FC<PropTypes> = ({
 	const [ playAlbum, isPlaying ] =
 		usePlayAlbum(album.albumID)
 
-	const modal: ModalOptions = {
+	const modalOptions: ModalOptions = {
 		header: {
 			text: (
 				<ObjectLink
@@ -102,8 +102,8 @@ const Album: FC<PropTypes> = ({
 	return (
 		listStyle === SettingsListStyle.LIST || alwaysList ? (
 			<Item
-				modal={hideModal ? undefined : modal}
 				leftIcon={leftIcon ? "album" : undefined}
+				modalOptions={hideModal ? undefined : modalOptions}
 				className={bem(className, "PaddingHalf ItemBorder")}
 				playOptions={hidePlay ? undefined : {
 					isPlaying,
@@ -151,7 +151,11 @@ const Album: FC<PropTypes> = ({
 				/>
 				<Item
 					className="PaddingHalf"
-					modal={hideModal ? undefined : modal}
+					modalOptions={hideModal ? undefined : modalOptions}
+					playOptions={{
+						isPlaying,
+						onClick: playAlbum,
+					}}
 					infoOptions={{
 						upperLeft: (
 							<Fragment>
@@ -179,10 +183,6 @@ const Album: FC<PropTypes> = ({
 								}))}
 							/>
 						),
-					}}
-					playOptions={{
-						isPlaying,
-						onClick: playAlbum,
 					}}
 				/>
 			</div>

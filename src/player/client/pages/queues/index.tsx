@@ -35,7 +35,7 @@ import { useQuery, useMutation } from "../../hooks"
 import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql"
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql"
 import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
-import Songs, { OnCloseOptions } from "../../components/songs"
+import Songs, { OnRemoveOptions } from "../../components/songs"
 import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
 import REMOVE_SONG_FROM_QUEUE_LATER from "./remove-song-from-queue-later.gql"
 
@@ -70,8 +70,14 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 			dispatch(toggleQueueDisclosure(queueKey))
 		}
 
+	const handleJump =
+		({ index }: OnRemoveOptions) =>
+			async () => {
+				console.log({ index })
+			}
+
 	const handleRemove =
-		({ index }: OnCloseOptions) =>
+		({ index }: OnRemoveOptions) =>
 			async () => {
 				if (queueKey === "queueNext") {
 					await removeNext({
@@ -117,7 +123,6 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 				queuesDisclosure[queueKey]
 			) && (
 				<Songs
-					hidePlay
 					hidePlays
 					hideIndex
 					hideOrderBy

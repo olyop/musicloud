@@ -46,7 +46,7 @@ const Artist: FC<PropTypes> = ({
 		onClick: handleToggleInLibrary,
 	}
 
-	const modal: ModalOptions = {
+	const modalOptions: ModalOptions = {
 		header: {
 			text: (
 				<ObjectLink
@@ -103,8 +103,8 @@ const Artist: FC<PropTypes> = ({
 
 	return listStyle === SettingsListStyle.LIST || alwaysList ? (
 		<Item
-			modal={modal}
 			infoOptions={info}
+			modalOptions={modalOptions}
 			imageOptions={imageOptions}
 			inLibraryOptions={inLibraryConfig}
 			leftIcon={leftIcon ? "person" : undefined}
@@ -125,9 +125,9 @@ const Artist: FC<PropTypes> = ({
 				)}
 			/>
 			<Item
-				modal={modal}
 				infoOptions={info}
 				className="PaddingHalf"
+				modalOptions={modalOptions}
 				inLibraryOptions={inLibraryConfig}
 			/>
 		</div>

@@ -2,10 +2,10 @@ import Howler from "react-howler"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useLocation, NavLink } from "react-router-dom"
-import { useFullScreenHandle, FullScreen } from "react-full-screen"
 import { createElement, FC, Fragment, useEffect, useState } from "react"
 
 import Song from "../song"
+import Modal from "../modal"
 import BarVolume from "./volume"
 import Progress from "../progress"
 import { User } from "../../types"
@@ -19,7 +19,6 @@ import { useMutation, useQuery, useResetPlayer } from "../../hooks"
 import { useStatePlay, updatePlay, useDispatch, useStateVolume } from "../../redux"
 
 import "./index.scss"
-import Modal from "../modal"
 
 const bem =
 	createBEM("Bar")
@@ -30,7 +29,6 @@ const Bar: FC = () => {
 	const volume = useStateVolume()
 	const { pathname } = useLocation()
 	const resetPlayer = useResetPlayer()
-	const fullscreen = useFullScreenHandle()
 
 	const [ expand, setExpand ] =
 		useState(false)
@@ -79,16 +77,6 @@ const Bar: FC = () => {
 									onLoadError={resetPlayer}
 									src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
 								/>
-								<FullScreen handle={fullscreen}>
-									{fullscreen.active && (
-										<div className={bem("fullscreen")}>
-											<BarFullscreen
-												onExit={fullscreen.exit}
-												nowPlaying={data.user.nowPlaying}
-											/>
-										</div>
-									)}
-								</FullScreen>
 								<Song
 									hidePlay
 									hidePlays
@@ -96,12 +84,6 @@ const Bar: FC = () => {
 									song={data.user.nowPlaying}
 								/>
 								<div className="FlexListRight">
-									<Button
-										transparent
-										icon="fullscreen"
-										title="Fullscreen"
-										onClick={fullscreen.enter}
-									/>
 									<BarVolume/>
 									<NavLink to="/queues">
 										<Button
@@ -143,7 +125,7 @@ const Bar: FC = () => {
 						className={bem("expand-close")}
 					/>
 					<BarFullscreen
-						onExit={fullscreen.exit}
+						onExit={handleExpandClose}
 						nowPlaying={data.user.nowPlaying}
 					/>
 				</Modal>

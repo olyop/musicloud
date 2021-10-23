@@ -33,17 +33,29 @@ export interface ModalOptions {
 	content?: (onClose: Handler) => ReactNode,
 }
 
-export interface PropTypes extends OnClickPropTypes {
-	left?: ReactNode,
-	leftIcon?: string,
+interface PropTypesClassNames {
 	className?: string,
-	onRemove?: Handler,
-	modal?: ModalOptions,
-	infoOptions: InfoOptions,
 	infoClassName?: BEMInput,
 	iconClassName?: BEMInput,
-	playOptions?: PlayOptions,
 	rightClassName?: BEMInput,
+}
+
+interface PropTypesOptions {
+	infoOptions: InfoOptions,
+	playOptions?: PlayOptions,
+	modalOptions?: ModalOptions,
 	imageOptions?: ImageOptions,
 	inLibraryOptions?: InLibraryOptions,
 }
+
+interface PropTypesOther {
+	left?: ReactNode,
+	leftIcon?: string,
+	onRemove?: Handler,
+}
+
+export interface PropTypes extends
+	OnClickPropTypes,
+	PropTypesClassNames,
+	PropTypesOptions,
+	PropTypesOther {}

@@ -10,9 +10,9 @@ import {
 } from "../../hooks"
 
 import Item from "../item"
-import Modal, { ModalButton, ModalButtons } from "../modal"
 import TextField from "../text-field"
 import ObjectLink from "../object-link"
+import Modal, { ModalButton, ModalButtons } from "../modal"
 import { getUserID, determineObjectPath } from "../../helpers"
 import { OnClickPropTypes, Playlist as PlaylistType } from "../../types"
 
@@ -89,7 +89,7 @@ const Playlist: FC<PropTypes> = ({
 					inLibrary,
 					onClick: toggleInLibrary,
 				}}
-				modal={hideModal ? undefined : {
+				modalOptions={hideModal ? undefined : {
 					header: {
 						text: (
 							<ObjectLink

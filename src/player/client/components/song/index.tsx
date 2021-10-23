@@ -189,7 +189,7 @@ const Song: FC<PropTypes> = ({
 						null : numberWithCommas(playsTotal)
 				),
 			}}
-			modal={{
+			modalOptions={{
 				header: {
 					text: (
 						<SongTitle

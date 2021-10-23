@@ -60,7 +60,7 @@ const Songs: FC<PropTypes> = ({
 	</div>
 )
 
-export interface OnCloseOptions {
+export interface OnRemoveOptions {
 	index: number,
 	song: SongType,
 }
@@ -78,7 +78,7 @@ interface PropTypes extends BEMPropTypes {
 	hideInLibrary?: boolean,
 	orderByFields?: string[],
 	hideTrackNumber?: boolean,
-	onRemove?: (options: OnCloseOptions) => Handler,
+	onRemove?: (options: OnRemoveOptions) => Handler,
 	orderByKey?: keyof Pick<SettingsOrderBy, "songs" | "librarySongs">,
 }
 

@@ -20,6 +20,8 @@ type Mutation {
   shuffleAlbum(albumID: UUID!): User!
   shuffleArtist(artistID: UUID!): User!
   shufflePlaylist(playlistID: UUID!): User!
+  jumpToSongInQueueNext(index: NonNegativeInt!): User!
+  jumpToSongInQueueLater(index: NonNegativeInt!): User!
   removeSongFromQueueNext(index: NonNegativeInt!): User!
   removeSongFromQueueLater(index: NonNegativeInt!): User!
 

@@ -31,12 +31,12 @@ const bem =
 
 const Item: FC<PropTypes> = ({
 	left,
-	modal,
 	onClick,
 	onRemove,
 	leftIcon,
 	className,
 	playOptions,
+	modalOptions,
 	imageOptions,
 	infoClassName,
 	iconClassName,
@@ -131,7 +131,7 @@ const Item: FC<PropTypes> = ({
 						)
 					)}
 				</Window>
-				{modal && (
+				{modalOptions && (
 					<Button
 						transparent
 						icon="more_vert"
@@ -147,19 +147,19 @@ const Item: FC<PropTypes> = ({
 						className={iconClassName}
 					/>
 				)}
-				{modal && (
+				{modalOptions && (
 					<Modal open={showModal} onClose={handleModalClose}>
-						{modal.header && (
+						{modalOptions.header && (
 							<ModalHeader
-								{...modal.header}
+								{...modalOptions.header}
 							/>
 						)}
-						{modal.content && (
-							modal.content(handleModalClose)
+						{modalOptions.content && (
+							modalOptions.content(handleModalClose)
 						)}
-						{modal.buttons && (
+						{modalOptions.buttons && (
 							<ModalButtons>
-								{modal.buttons.map(
+								{modalOptions.buttons.map(
 									button => (
 										<ModalButton
 											{...button}
