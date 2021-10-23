@@ -34,7 +34,7 @@
 		"build-docker-host": "npm-run-all build-docker docker:host",
 		"build-docker-push": "npm-run-all build-docker docker:push",
 		"build:player-babel": "babel -d build/player -D --quiet src/player/server",
-		"build:player-webpack": "cross-env TS_NODE_PROJECT=\"tsconfig.webpack.json\" NODE_OPTIONS=\"--r dotenv/config\" webpack --config webpack.player.ts",
+		"build:player-webpack": "cross-env TS_NODE_PROJECT=\"tsconfig.webpack.json\" NODE_OPTIONS=\"-r dotenv/config\" webpack --config webpack.player.ts",
 		"build:player-typescript": "tsc --project tsconfig.player.json",
 		"build:upload-babel": "babel -d build/upload -D --quiet src/upload/server",
 		"build:upload-webpack": "cross-env TS_NODE_PROJECT=\"tsconfig.webpack.json\" NODE_OPTIONS=\"-r dotenv/config\" webpack --config webpack.upload.ts",
