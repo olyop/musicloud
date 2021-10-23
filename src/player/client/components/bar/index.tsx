@@ -65,18 +65,18 @@ const Bar: FC = () => {
 				buttonClassName={bem("controls-button")}
 				buttonIconClassName={bem("controls-button-icon")}
 			/>
-			<div className={bem("main", "PaddingHalf")}>
-				{data?.user.nowPlaying && !loading ? (
-					<Fragment>
+			{data?.user.nowPlaying && !loading ? (
+				<Fragment>
+					<Howler
+						playing={play}
+						onEnd={handleEnd}
+						volume={volume / 100}
+						onLoadError={resetPlayer}
+						src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
+					/>
+					<div className={bem("main", "PaddingHalf")}>
 						<div className={bem("main-content-wrapper")}>
 							<div className={bem("main-content")}>
-								<Howler
-									playing={play}
-									onEnd={handleEnd}
-									volume={volume / 100}
-									onLoadError={resetPlayer}
-									src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
-								/>
 								<Song
 									hidePlay
 									hidePlays
@@ -104,13 +104,13 @@ const Bar: FC = () => {
 						<Progress
 							duration={data.user.nowPlaying.duration}
 						/>
-					</Fragment>
-				) : (
-					<p className="BodyOne">
-						Nothing playing.
-					</p>
-				)}
-			</div>
+					</div>
+				</Fragment>
+			) : (
+				<p className="BodyOne">
+					Nothing playing.
+				</p>
+			)}
 			{data?.user.nowPlaying && (
 				<Modal
 					open={expand}
