@@ -3,14 +3,13 @@ import Button from "@oly_op/react-button"
 import { useState, createElement, FC, Fragment } from "react"
 import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 
-import { getUserID } from "../../helpers"
-import { useMutation } from "../../hooks"
 import { Handler, Playlist } from "../../types"
 import TextField from "../../components/text-field"
 import CREATE_PLAYLIST from "./create-playlist.gql"
+import { useMutation, useUserID } from "../../hooks"
 
 const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
-	const userID = getUserID()
+	const userID = useUserID()
 	const [ title, setTitle ] = useState("")
 
 	const [ addPlaylist ] =

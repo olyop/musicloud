@@ -18,9 +18,21 @@ import { useDispatch, updatePlay } from "../../redux"
 import { useMutation, useResetPlayer } from "../../hooks"
 import Modal, { ModalButton, ModalButtons } from "../../components/modal"
 
+const LibrarySettings: FC<{ path: string }> = ({ path }) => {
+	const { pathname } = useLocation()
+	return (
+		<NavLink to={`${path}/settings`}>
+			<Button
+				icon="settings"
+				title="Library Settings"
+				transparent={pathname !== "/library/settings"}
+			/>
+		</NavLink>
+	)
+}
+
 const Library: FC<RouteComponentProps> = ({ match }) => {
 	const dispatch = useDispatch()
-	const location = useLocation()
 	const resetPlayer = useResetPlayer()
 
 	const [ modals, setModals ] =
@@ -72,13 +84,9 @@ const Library: FC<RouteComponentProps> = ({ match }) => {
 				className="MarginBottom"
 				right={(
 					<Fragment>
-						<NavLink to={`${match.path}/settings`}>
-							<Button
-								icon="settings"
-								title="Library Settings"
-								transparent={location.pathname !== "/library/settings"}
-							/>
-						</NavLink>
+						<LibrarySettings
+							path={match.path}
+						/>
 						<Window>
 							{({ width }) => (
 								<Fragment>

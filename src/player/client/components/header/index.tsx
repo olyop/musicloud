@@ -16,8 +16,8 @@ import {
 
 import Modal from "../modal"
 import Window from "../window"
-import { useSignOut } from "../../hooks"
-import { getUserID, determineCatalogImageURL } from "../../helpers"
+import { useSignOut, useUserID } from "../../hooks"
+import { determineCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
 
@@ -54,15 +54,27 @@ const checkOnlineStatus =
 		}
 	}
 
+const HeaderSearchButton: FC = () => {
+	const { pathname } = useLocation()
+	return (
+		<NavLink to="/search">
+			<Button
+				icon="search"
+				title="Search"
+				transparent={pathname !== "/search"}
+			/>
+		</NavLink>
+	)
+}
+
 const bem =
 	createBEM("Header")
 
 const Header: FC = () => {
-	const userID = getUserID()
+	const userID = useUserID()
 	const signOut = useSignOut()
 	const history = useHistory()
 	const dispatch = useDispatch()
-	const { pathname } = useLocation()
 	const isOnline = useStateIsOnline()
 	const isFullscreen = useStateIsFullscreen()
 
@@ -146,16 +158,7 @@ const Header: FC = () => {
 				)}
 			</Window>
 			<div className="FlexListGapQuart">
-				<NavLink
-					to="/search"
-					children={(
-						<Button
-							icon="search"
-							title="Search"
-							transparent={pathname !== "/search"}
-						/>
-					)}
-				/>
+				<HeaderSearchButton/>
 				{isOnline || (
 					<Button
 						transparent

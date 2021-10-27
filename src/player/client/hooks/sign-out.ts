@@ -1,7 +1,9 @@
-import { removeJWT } from "../helpers"
+import { updateAccessToken, useDispatch } from "../redux"
 
 export const useSignOut =
-	() => () => {
-		removeJWT()
-		location.reload()
+	() => {
+		const dispatch = useDispatch()
+		return () => {
+			dispatch(updateAccessToken(null))
+		}
 	}

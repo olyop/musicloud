@@ -7,17 +7,12 @@ import { PlaylistIDBase, SongIDBase } from "@oly_op/music-app-common/types"
 
 import {
 	useQuery,
+	useUserID,
 	useMutation,
 	usePlayPlaylist,
 	useDeletePlaylist,
 	useRenamePlaylist,
 } from "../../hooks"
-
-import {
-	getUserID,
-	determinePlural,
-	determineObjectPath,
-} from "../../helpers"
 
 import Modal from "../../components/modal"
 import { Playlist, User } from "../../types"
@@ -26,10 +21,11 @@ import ObjectLink from "../../components/object-link"
 import SHUFFLE_PLAYLIST from "./shuffle-playlist.gql"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
 import Songs, { OnRemoveOptions } from "../../components/songs"
+import { determinePlural, determineObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
 const PlaylistPage: FC = () => {
-	const userID = getUserID()
+	const userID = useUserID()
 	const history = useHistory()
 	const params = useParams<PlaylistIDBase>()
 	const playlistID = addDashesToUUID(params.playlistID)

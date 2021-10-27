@@ -6,8 +6,8 @@ import { MutationResult } from "@apollo/client"
 import { Modifier, Reference } from "@apollo/client/cache"
 
 import { useQuery } from "../query"
+import { useUserID } from "../user-id"
 import determineID from "./determine-id"
-import { getUserID } from "../../helpers"
 import { useMutation } from "../mutation"
 import { InLibraryObjects } from "../../types"
 import determineReturn from "./determine-return"
@@ -33,7 +33,7 @@ export const useToggleInLibrary =
 		const objectIDKeys = dr("songID", "artistID", "playlistID")
 		const userLibraryKeys = dr("librarySongs", "libraryArtists", "libraryPlaylists")
 
-		const userID = getUserID()
+		const userID = useUserID()
 		const isOptimistic = useRef(true)
 		const objectID = determineID(object)
 

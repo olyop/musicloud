@@ -12,39 +12,39 @@ import { User } from "../../types"
 import BarControls from "./controls"
 import setMetadata from "./set-metadata"
 import BarFullscreen from "./fullscreen"
+import GET_USER_QUEUES from "./get-user-queues.gql"
 import { determineCatalogMP3URL } from "../../helpers"
-import GET_USER_CURRENT from "./get-user-now-playing.gql"
-import NEXT_QUEUE_SONG from "./controls/next-queue-song.gql"
-import { useMutation, useQuery, useResetPlayer } from "../../hooks"
-import { useStatePlay, updatePlay, useDispatch, useStateVolume } from "../../redux"
+import { useQuery, useResetPlayer } from "../../hooks"
+import { useStatePlay, useStateVolume } from "../../redux"
 
 import "./index.scss"
+
+const BarQueueButton: FC = () => {
+	const { pathname } = useLocation()
+	return (
+		<NavLink to="/queues">
+			<Button
+				title="Queue"
+				icon="queue_music"
+				transparent={pathname !== "/queues"}
+			/>
+		</NavLink>
+	)
+}
 
 const bem =
 	createBEM("Bar")
 
 const Bar: FC = () => {
 	const play = useStatePlay()
-	const dispatch = useDispatch()
 	const volume = useStateVolume()
-	const { pathname } = useLocation()
 	const resetPlayer = useResetPlayer()
 
 	const [ expand, setExpand ] =
 		useState(false)
 
-	const { data, loading } =
-		useQuery<Data>(GET_USER_CURRENT)
-
-	const [ nextQueueSong ] =
-		useMutation(NEXT_QUEUE_SONG)
-
-	const handleEnd =
-		async () => {
-			resetPlayer()
-			await nextQueueSong()
-			dispatch(updatePlay(true))
-		}
+	const { data } =
+		useQuery<Data>(GET_USER_QUEUES)
 
 	const handleExpandOpen =
 		() => setExpand(true)
@@ -60,19 +60,19 @@ const Bar: FC = () => {
 
 	return (
 		<footer className={bem("", "Elevated")}>
-			<BarControls
-				className={bem("controls")}
-				buttonClassName={bem("controls-button")}
-				buttonIconClassName={bem("controls-button-icon")}
-			/>
-			{data?.user.nowPlaying && !loading ? (
+			{data?.user.nowPlaying ? (
 				<Fragment>
 					<Howler
 						playing={play}
-						onEnd={handleEnd}
+						onEnd={resetPlayer}
 						volume={volume / 100}
 						onLoadError={resetPlayer}
 						src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
+					/>
+					<BarControls
+						className={bem("controls")}
+						buttonClassName={bem("controls-button")}
+						buttonIconClassName={bem("controls-button-icon")}
 					/>
 					<div className={bem("main", "PaddingHalf")}>
 						<div className={bem("main-content-wrapper")}>
@@ -85,13 +85,7 @@ const Bar: FC = () => {
 								/>
 								<div className="FlexListRight">
 									<BarVolume/>
-									<NavLink to="/queues">
-										<Button
-											title="Queue"
-											icon="queue_music"
-											transparent={pathname !== "/queues"}
-										/>
-									</NavLink>
+									<BarQueueButton/>
 									<Button
 										transparent
 										title="Player"
@@ -105,30 +99,28 @@ const Bar: FC = () => {
 							duration={data.user.nowPlaying.duration}
 						/>
 					</div>
+					<Modal
+						open={expand}
+						onClose={handleExpandClose}
+						contentClassName={bem("expand")}
+					>
+						<Button
+							transparent
+							icon="close"
+							title="Close Player"
+							onClick={handleExpandClose}
+							className={bem("expand-close")}
+						/>
+						<BarFullscreen
+							onExit={handleExpandClose}
+							nowPlaying={data.user.nowPlaying}
+						/>
+					</Modal>
 				</Fragment>
 			) : (
 				<p className="BodyOne">
-					Nothing playing.
+					Queue empty.
 				</p>
-			)}
-			{data?.user.nowPlaying && (
-				<Modal
-					open={expand}
-					onClose={handleExpandClose}
-					contentClassName={bem("expand")}
-				>
-					<Button
-						transparent
-						icon="close"
-						title="Close Player"
-						onClick={handleExpandClose}
-						className={bem("expand-close")}
-					/>
-					<BarFullscreen
-						onExit={handleExpandClose}
-						nowPlaying={data.user.nowPlaying}
-					/>
-				</Modal>
 			)}
 		</footer>
 	)

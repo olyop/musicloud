@@ -34,7 +34,6 @@ const GenrePage: FC = () => {
 		)
 
 	if (!isUndefined(error)) {
-		console.log(error.message)
 		return (
 			<h2 className="Content BodyOne PaddingTopBottom">
 				{error.message === "Failed to fetch" ?

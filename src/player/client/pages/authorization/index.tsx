@@ -6,7 +6,6 @@ import {
 	FormEventHandler,
 } from "react"
 
-import isNull from "lodash/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
@@ -15,8 +14,8 @@ import { UserIDBase, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import LOG_IN from "./log-in.gql"
 import { useMutation } from "../../hooks"
-import { getJWT, setJWT } from "../../helpers"
 import TextField from "../../components/text-field"
+import { updateAccessToken, useDispatch, useStateAccessToken } from "../../redux"
 
 import "./index.scss"
 
@@ -31,24 +30,23 @@ interface Form extends UserIDBase {
 const bem =
 	createBEM("Authorization")
 
-const initialState: Form = {
-	userID: "",
-	password: "",
-}
-
 const uploadClientURL =
 	`http://${process.env.HOST!}:${process.env.UPLOAD_CLIENT_PORT!}`
 
 const Authorization: FC = ({ children }) => {
-	const accessToken = getJWT()
-
-	const [ { userID, password }, setForm ] =
-		useState<Form>(initialState)
+	const dispatch = useDispatch()
+	const accessToken = useStateAccessToken()
 
 	const [ isError, setIsError ] =
 		useState(false)
 
-	const [ logIn, { loading } ] =
+	const [ { userID, password }, setForm ] =
+		useState<Form>({
+			userID: "",
+			password: "",
+		})
+
+	const [ logIn ] =
 		useMutation<Data, InterfaceWithInput<Form>>(LOG_IN)
 
 	const handleSubmit: FormEventHandler =
@@ -56,16 +54,18 @@ const Authorization: FC = ({ children }) => {
 			event.preventDefault()
 			if (userID && userID) {
 				try {
-					const { data } = await logIn({
-						variables: {
-							input: {
-								password,
-								userID: addDashesToUUID(userID),
+					const { data } =
+						await logIn({
+							variables: {
+								input: {
+									password,
+									userID: addDashesToUUID(userID),
+								},
 							},
-						},
-					})
-					setJWT(data!.logIn)
-					location.reload()
+						})
+					if (data) {
+						dispatch(updateAccessToken(data.logIn))
+					}
 				} catch (error) {
 					setIsError(true)
 				}
@@ -80,9 +80,13 @@ const Authorization: FC = ({ children }) => {
 					[fieldKey]: value,
 				}))
 
-	if (loading) {
-		return null
-	} else if (isNull(accessToken)) {
+	if (accessToken) {
+		return (
+			<Fragment>
+				{children}
+			</Fragment>
+		)
+	} else {
 		return (
 			<Metadata title="Log In">
 				<div className={bem("", "FullWidthAndHeight")}>
@@ -141,12 +145,6 @@ const Authorization: FC = ({ children }) => {
 					/>
 				</div>
 			</Metadata>
-		)
-	} else {
-		return (
-			<Fragment>
-				{children}
-			</Fragment>
 		)
 	}
 }

@@ -1,10 +1,15 @@
+import isNull from "lodash/isNull"
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch as internalUseDispatch } from "react-redux"
 
 import reducer from "./reducer"
 import { Settings } from "../types"
+import { getJWT } from "../helpers"
 
-const loadState =
+const loadAccessToken =
+	() => getJWT()
+
+const loadSettings =
 	() => {
 		const serializedState = localStorage.getItem("settings")
 		return serializedState === null ?
@@ -15,21 +20,19 @@ export const store =
 	configureStore({
 		reducer,
 		preloadedState: {
-			settings: loadState(),
+			settings: loadSettings(),
+			accessToken: loadAccessToken(),
 		},
 		middleware:
 			getDefaultMiddleware =>
-				getDefaultMiddleware({
-					serializableCheck: {
-						ignoredActions: ["CHANGE_MODAL", "CLEAR_MODAL"],
-					},
-				}),
+				getDefaultMiddleware(),
 	})
 
 store.subscribe(() => {
-	const { settings } = store.getState()
+	const { settings, accessToken } = store.getState()
 	const serializedSettings = JSON.stringify(settings)
 	localStorage.setItem("settings", serializedSettings)
+	localStorage.setItem("authorization", isNull(accessToken) ? "null" : accessToken)
 })
 
 export type Dispatch =

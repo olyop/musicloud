@@ -1,8 +1,8 @@
 import { MutationResult } from "@apollo/client"
 import { AlbumIDBase } from "@oly_op/music-app-common/types"
 
+import { useUserID } from "../user-id"
 import { useMutation } from "../mutation"
-import { getUserID } from "../../helpers"
 import SHUFFLE_ALBUM from "./shuffle-album.gql"
 import { useResetPlayer } from "../reset-player"
 import { useDispatch, updatePlay } from "../../redux"
@@ -10,7 +10,7 @@ import { Handler, UserQueuesNowPlayingExtracted } from "../../types"
 
 export const useShuffleAlbum =
 	(albumID: string) => {
-		const userID = getUserID()
+		const userID = useUserID()
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 		const variables: AlbumIDBase = { albumID }

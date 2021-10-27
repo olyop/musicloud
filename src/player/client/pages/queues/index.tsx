@@ -25,16 +25,15 @@ import {
 } from "../../redux"
 
 import Song from "../../components/song"
-import { getUserID } from "../../helpers"
 import SHUFFLE_NEXT from "./shuffle-next.gql"
 import CLEAR_QUEUES from "./clear-queues.gql"
 import { Song as SongType } from "../../types"
 import GET_QUEUE_NEXT from "./get-queue-next.gql"
 import GET_QUEUE_LATER from "./get-queue-later.gql"
-import { useQuery, useMutation } from "../../hooks"
 import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql"
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql"
 import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
+import { useQuery, useMutation, useUserID } from "../../hooks"
 import Songs, { OnRemoveOptions } from "../../components/songs"
 import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
 import REMOVE_SONG_FROM_QUEUE_LATER from "./remove-song-from-queue-later.gql"
@@ -45,7 +44,7 @@ const bem =
 	createBEM("Queues")
 
 const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
-	const userID = getUserID()
+	const userID = useUserID()
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
 
@@ -123,6 +122,7 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 				queuesDisclosure[queueKey]
 			) && (
 				<Songs
+					hidePlay
 					hidePlays
 					hideIndex
 					hideOrderBy
@@ -137,7 +137,7 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 }
 
 const Queues: FC = () => {
-	const userID = getUserID()
+	const userID = useUserID()
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
 

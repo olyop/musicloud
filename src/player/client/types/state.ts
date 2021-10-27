@@ -61,4 +61,5 @@ export interface State {
 	isOnline: boolean,
 	settings: Settings,
 	isFullscreen: boolean,
+	accessToken: string | null,
 }

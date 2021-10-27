@@ -9,8 +9,8 @@ import {
 } from "../../types"
 
 import { useQuery } from "../query"
+import { useUserID } from "../user-id"
 import PLAY_SONG from "./play-song.gql"
-import { getUserID } from "../../helpers"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
@@ -19,7 +19,7 @@ import { togglePlay, updatePlay, useDispatch } from "../../redux"
 export const usePlaySong =
 	(song: Song) => {
 		const { songID } = song
-		const userID = getUserID()
+		const userID = useUserID()
 		const dispatch = useDispatch()
 		const { cache } = useApolloClient()
 		const resetPlayer = useResetPlayer()

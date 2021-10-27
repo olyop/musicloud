@@ -54,6 +54,11 @@ export const useStateListStyle =
 		({ settings: { listStyle } }) => listStyle,
 	)
 
+export const useStateAccessToken =
+	() => useSelector<State, string | null>(
+		({ accessToken }) => accessToken,
+	)
+
 export const useStateShowGenres =
 	() => useSelector<State, boolean>(
 		({ settings: { showGenres } }) => showGenres,

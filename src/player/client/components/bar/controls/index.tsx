@@ -10,6 +10,46 @@ import "./index.scss"
 const bem =
 	createBEM("BarControls")
 
+const BarControlsPlayButton: FC<ButtonPropTypes> = ({
+	loading,
+	buttonClassName,
+	buttonIconClassName,
+	playButtonClassName,
+	playButtonIconClassName,
+}) => {
+	const play = useStatePlay()
+	const dispatch = useDispatch()
+	const playPausePress = useKeyPress("MediaPlayPause")
+
+	const icon =
+		loading ?
+			"loop" : (
+				play ?
+					"pause" :
+					"play_arrow"
+			)
+
+	const handleClick =
+		() => {
+			dispatch(togglePlay())
+		}
+
+	useEffect(() => {
+		if (playPausePress) {
+			dispatch(togglePlay())
+		}
+	}, [playPausePress])
+
+	return (
+		<Button
+			icon={icon}
+			onClick={loading ? undefined : handleClick}
+			iconClassName={bem(playButtonIconClassName, buttonIconClassName)}
+			className={bem(playButtonClassName, buttonClassName, loading && "loading")}
+		/>
+	)
+}
+
 const BarControls: FC<PropTypes> = ({
 	className,
 	buttonClassName,
@@ -18,10 +58,6 @@ const BarControls: FC<PropTypes> = ({
 	playButtonIconClassName,
 	hidePreviousNext = false,
 }) => {
-	const play = useStatePlay()
-	const dispatch = useDispatch()
-	const playPausePress = useKeyPress("MediaPlayPause")
-
 	const [ nextQueueSong, { loading: nextLoading } ] =
 		useNextQueueSong()
 
@@ -30,25 +66,6 @@ const BarControls: FC<PropTypes> = ({
 
 	const loading =
 		nextLoading || previousLoading
-
-	const handlePlayClick =
-		() => {
-			dispatch(togglePlay())
-		}
-
-	const playButtonIcon =
-		loading ?
-			"loop" : (
-				play ?
-					"pause" :
-					"play_arrow"
-			)
-
-	useEffect(() => {
-		if (playPausePress) {
-			dispatch(togglePlay())
-		}
-	}, [playPausePress])
 
 	return (
 		<div className={bem(className, "")}>
@@ -61,11 +78,12 @@ const BarControls: FC<PropTypes> = ({
 					iconClassName={buttonIconClassName}
 				/>
 			)}
-			<Button
-				icon={playButtonIcon}
-				onClick={loading ? undefined : handlePlayClick}
-				iconClassName={bem(playButtonIconClassName, buttonIconClassName)}
-				className={bem(playButtonClassName, buttonClassName, loading && "loading")}
+			<BarControlsPlayButton
+				loading={loading}
+				buttonClassName={buttonClassName}
+				buttonIconClassName={buttonIconClassName}
+				playButtonClassName={playButtonClassName}
+				playButtonIconClassName={playButtonIconClassName}
 			/>
 			{hidePreviousNext || (
 				<Button
@@ -80,13 +98,20 @@ const BarControls: FC<PropTypes> = ({
 	)
 }
 
-interface PropTypes {
-	className?: BEMInput,
+interface PropTypesBase {
 	buttonClassName?: BEMInput,
-	hidePreviousNext?: boolean,
 	buttonIconClassName?: BEMInput,
 	playButtonClassName?: BEMInput,
 	playButtonIconClassName?: BEMInput,
+}
+
+interface ButtonPropTypes extends PropTypesBase {
+	loading: boolean,
+}
+
+interface PropTypes extends PropTypesBase {
+	className?: BEMInput,
+	hidePreviousNext?: boolean,
 }
 
 export default BarControls

@@ -14,7 +14,7 @@ import {
 	LibraryPlaylistsOrderByField,
 } from "../types"
 
-export const initialSettings: Settings = {
+const settings: Settings = {
 	volume: 0,
 	showGenres: false,
 	showDuration: false,
@@ -64,11 +64,12 @@ export const initialSettings: Settings = {
 }
 
 export const initialState: State = {
+	settings,
 	current: 0,
 	play: false,
 	loading: [],
 	sidebar: false,
 	isOnline: true,
+	accessToken: null,
 	isFullscreen: false,
-	settings: initialSettings,
 }

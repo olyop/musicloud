@@ -16,6 +16,7 @@ import {
 	updateIsOnline,
 	updateListStyle,
 	toggleShowGenres,
+	updateAccessToken,
 	toggleIsFullscreen,
 	toggleShowReleased,
 	toggleShowDuration,
@@ -26,7 +27,7 @@ import {
 } from "./actions"
 
 import { State, Settings } from "../types"
-import { initialSettings, initialState } from "./initial-state"
+import { initialState } from "./initial-state"
 
 const sidebar =
 	createReducer(initialState.sidebar, builder =>
@@ -62,8 +63,13 @@ const loading =
 				state.filter(x => x !== payload)
 			)))
 
+const accessToken =
+	createReducer(initialState.accessToken, builder =>
+		builder
+			.addCase(updateAccessToken, (_state, { payload }) => payload))
+
 const settings =
-	createReducer<Settings>(initialSettings, builder =>
+	createReducer<Settings>(initialState.settings, builder =>
 		builder
 			.addCase(updateVolume, (state, { payload }) => ({
 				...state,
@@ -135,6 +141,7 @@ const reducer =
 		loading,
 		settings,
 		isOnline,
+		accessToken,
 		isFullscreen,
 	})
 

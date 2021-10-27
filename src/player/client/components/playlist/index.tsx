@@ -3,6 +3,7 @@ import { createBEM, BEMPropTypes } from "@oly_op/bem"
 import { useState, createElement, FC, Fragment } from "react"
 
 import {
+	useUserID,
 	usePlayPlaylist,
 	useRenamePlaylist,
 	useDeletePlaylist,
@@ -13,7 +14,7 @@ import Item from "../item"
 import TextField from "../text-field"
 import ObjectLink from "../object-link"
 import Modal, { ModalButton, ModalButtons } from "../modal"
-import { getUserID, determineObjectPath } from "../../helpers"
+import { determineObjectPath } from "../../helpers"
 import { OnClickPropTypes, Playlist as PlaylistType } from "../../types"
 
 const bem =
@@ -27,6 +28,9 @@ const Playlist: FC<PropTypes> = ({
 	hideModal = false,
 	hideInLibrary = false,
 }) => {
+	const userID =
+		useUserID()
+
 	const [ renameModal, setRenameModal ] =
 		useState(false)
 
@@ -107,7 +111,7 @@ const Playlist: FC<PropTypes> = ({
 									text={inLibrary ? "Remove" : "Add"}
 								/>
 							)}
-							{getUserID() === playlist.user.userID && (
+							{userID === playlist.user.userID && (
 								<Fragment>
 									<ModalButton
 										icon="edit"

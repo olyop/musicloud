@@ -1,5 +1,9 @@
 fragment UserQueuesFragment on User {
 	userID
+	queuePrevious {
+		songID
+		queueIndex
+	}
 	nowPlaying {
 		songID
 		queueIndex
@@ -9,10 +13,6 @@ fragment UserQueuesFragment on User {
 		queueIndex
 	}
 	queueLater {
-		songID
-		queueIndex
-	}
-	queuePrevious {
 		songID
 		queueIndex
 	}

@@ -68,7 +68,7 @@ export const addSongToPlaylist =
 					),
 					variables: {
 						playlistID,
-						columnNames: "playlist.user_id",
+						columnNames: "user_id",
 					},
 				})
 
