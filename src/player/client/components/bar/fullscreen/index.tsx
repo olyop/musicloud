@@ -1,12 +1,7 @@
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC, Fragment } from "react"
+import { createElement, Fragment, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
-
-import {
-	determineObjectPath,
-	determineCatalogImageURL,
-} from "../../../helpers"
 
 import Progress from "../../progress"
 import BarControls from "../controls"
@@ -15,13 +10,14 @@ import ObjectLink from "../../object-link"
 import ObjectLinks from "../../object-links"
 import { Song, Handler } from "../../../types"
 import FeaturingArtists from "../../featuring-artists"
+import { determineObjectPath, determineCatalogImageURL } from "../../../helpers"
 
 import "./index.scss"
 
 const bem =
 	createBEM("BarFullscreen")
 
-const BarFullscreen: FC<PropTypes> = ({ nowPlaying, onExit }) => (
+const BarFullscreen: VFC<PropTypes> = ({ open, nowPlaying, onExit }) => (
 	<div className={bem("")}>
 		<Image
 			title={nowPlaying.album.title}
@@ -48,8 +44,10 @@ const BarFullscreen: FC<PropTypes> = ({ nowPlaying, onExit }) => (
 		<h2 className={bem("album", "text", "MarginBottomHalf")}>
 			<ObjectLink
 				onClick={onExit}
-				text={nowPlaying.album.title}
-				path={determineObjectPath("album", nowPlaying.album.albumID)}
+				link={{
+					text: nowPlaying.album.title,
+					path: determineObjectPath("album", nowPlaying.album.albumID),
+				}}
 			/>
 			<Fragment> - </Fragment>
 			<ObjectLinks
@@ -63,15 +61,18 @@ const BarFullscreen: FC<PropTypes> = ({ nowPlaying, onExit }) => (
 		<Progress
 			duration={nowPlaying.duration}
 		/>
-		<BarControls
-			className={bem("controls")}
-			buttonClassName={bem("button")}
-			buttonIconClassName={bem("button-icon")}
-		/>
+		{open && (
+			<BarControls
+				className={bem("controls")}
+				buttonClassName={bem("button")}
+				buttonIconClassName={bem("button-icon")}
+			/>
+		)}
 	</div>
 )
 
 interface PropTypes {
+	open: boolean,
 	onExit: Handler,
 	nowPlaying: Song,
 }

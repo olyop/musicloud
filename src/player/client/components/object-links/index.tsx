@@ -1,24 +1,20 @@
-import { createElement, Fragment, FC } from "react"
-
-import ObjectLink, {
-	ObjectLinkOptions,
-} from "../object-link"
+import { createElement, Fragment, VFC } from "react"
 
 import { OnClickPropTypes } from "../../types"
 import determineConcat from "./determine-concat"
+import ObjectLink, { ObjectLinkOptions } from "../object-link"
 
-const ObjectLinks: FC<PropTypes> = ({
+const ObjectLinks: VFC<PropTypes> = ({
 	links,
 	onClick,
 	ampersand = true,
 }) => (
 	<Fragment>
 		{links.map(
-			({ path, text }, index) => (
-				<Fragment key={path}>
+			(link, index) => (
+				<Fragment key={link.path}>
 					<ObjectLink
-						path={path}
-						text={text}
+						link={link}
 						onClick={onClick}
 					/>
 					{determineConcat(links, index, ampersand)}

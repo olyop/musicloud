@@ -24,160 +24,174 @@ import {
 } from "../../sql"
 
 import {
-	createResolver,
 	handleInLibrary,
 	HandleInLibraryOptions,
+	HandleInLibraryOptionsBase,
 } from "../helpers"
 
+import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
 import { Song, Artist, Playlist, Album } from "../../types"
 
-type AddRemoveFunc =
-	(inLibrary: boolean, objectID: string, userID: string) => HandleInLibraryOptions
+type ConfigFunc =
+	(input: HandleInLibraryOptionsBase) => HandleInLibraryOptions
 
-const songConfig: AddRemoveFunc =
-	(inLibrary, objectID, userID) => ({
+const createSongConfig: ConfigFunc =
+	({ userID, objectID, inLibrary }) => ({
 		userID,
 		objectID,
 		inLibrary,
 		tableName: "songs",
 		columnKey: "songID",
-		columnName: "song_id",
 		columnNames: COLUMN_NAMES.SONG,
 		returnQuery: SELECT_SONG_BY_ID,
+		columnName: COLUMN_NAMES.SONG[0],
 		libraryTableName: "library_songs",
 	})
 
-const artistConfig: AddRemoveFunc =
-	(inLibrary, objectID, userID) => ({
+const createArtistConfig: ConfigFunc =
+	({ userID, objectID, inLibrary }) => ({
 		userID,
 		objectID,
 		inLibrary,
 		tableName: "artists",
 		columnKey: "artistID",
-		columnName: "artist_id",
 		columnNames: COLUMN_NAMES.ARTIST,
 		returnQuery: SELECT_ARTIST_BY_ID,
+		columnName: COLUMN_NAMES.ARTIST[0],
 		libraryTableName: "library_artists",
 	})
 
-const playlistConfig: AddRemoveFunc =
-	(inLibrary, objectID, userID) => ({
+const createPlaylistConfig: ConfigFunc =
+	({ userID, objectID, inLibrary }) => ({
 		userID,
 		objectID,
 		inLibrary,
 		tableName: "playlists",
 		columnKey: "playlistID",
-		columnName: "playlist_id",
 		columnNames: COLUMN_NAMES.PLAYLIST,
 		returnQuery: SELECT_PLAYLIST_BY_ID,
+		columnName: COLUMN_NAMES.PLAYLIST[0],
 		libraryTableName: "library_playlists",
 	})
-
-const resolver =
-	createResolver()
 
 export const addSongToLibrary =
 	resolver<Song, SongIDBase>(
 		({ args, context }) => (
-			handleInLibrary(context.pg)(songConfig(
-				true,
-				args.songID,
-				context.authorization!.userID,
-			))
+			handleInLibrary(context.pg)(
+				createSongConfig({
+					inLibrary: true,
+					objectID: args.songID,
+					userID: context.authorization!.userID,
+				}),
+			)
 		),
 	)
 
 export const removeSongFromLibrary =
 	resolver<Song, SongIDBase>(
 		({ args, context }) => (
-			handleInLibrary(context.pg)(songConfig(
-				false,
-				args.songID,
-				context.authorization!.userID,
-			))
+			handleInLibrary(context.pg)(
+				createSongConfig({
+					inLibrary: false,
+					objectID: args.songID,
+					userID: context.authorization!.userID,
+				}),
+			)
 		),
 	)
 
 export const addArtistToLibrary =
 	resolver<Artist, ArtistIDBase>(
 		({ args, context }) => (
-			handleInLibrary(context.pg)(artistConfig(
-				true,
-				args.artistID,
-				context.authorization!.userID,
-			))
+			handleInLibrary(context.pg)(
+				createArtistConfig({
+					inLibrary: true,
+					objectID: args.artistID,
+					userID: context.authorization!.userID,
+				}),
+			)
 		),
 	)
 
 export const removeArtistFromLibrary =
 	resolver<Artist, ArtistIDBase>(
 		({ args, context }) => (
-			handleInLibrary(context.pg)(artistConfig(
-				false,
-				args.artistID,
-				context.authorization!.userID,
-			))
+			handleInLibrary(context.pg)(
+				createArtistConfig({
+					inLibrary: false,
+					objectID: args.artistID,
+					userID: context.authorization!.userID,
+				}),
+			)
 		),
 	)
 
 export const addPlaylistToLibrary =
 	resolver<Playlist, PlaylistIDBase>(
 		({ args, context }) => (
-			handleInLibrary(context.pg)(playlistConfig(
-				true,
-				args.playlistID,
-				context.authorization!.userID,
-			))
+			handleInLibrary(context.pg)(
+				createPlaylistConfig({
+					inLibrary: true,
+					objectID: args.playlistID,
+					userID: context.authorization!.userID,
+				}),
+			)
 		),
 	)
 
 export const removePlaylistFromLibrary =
 	resolver<Playlist, PlaylistIDBase>(
 		({ args, context }) => (
-			handleInLibrary(context.pg)(playlistConfig(
-				false,
-				args.playlistID,
-				context.authorization!.userID,
-			))
+			handleInLibrary(context.pg)(
+				createPlaylistConfig({
+					inLibrary: false,
+					objectID: args.playlistID,
+					userID: context.authorization!.userID,
+				}),
+			)
 		),
 	)
 
 export const addAlbumToLibrary =
 	resolver<Album, AlbumIDBase>(
 		async ({ args, context }) => {
+			const { albumID } = args
+
 			const albumExists =
 				await exists(context.pg)({
+					value: albumID,
 					table: "albums",
-					column: "album_id",
-					value: args.albumID,
+					column: COLUMN_NAMES.ALBUM[0],
 				})
 
 			if (!albumExists) {
-				throw new UserInputError("Album does not exist.")
+				throw new UserInputError("Album does not exist")
 			}
 
 			const songs =
 				await query(context.pg)(SELECT_ALBUM_SONGS)({
 					parse: convertTableToCamelCase<Song>(),
 					variables: {
-						albumID: args.albumID,
+						albumID,
 						columnNames: join(COLUMN_NAMES.SONG),
 					},
 				})
 
 			for (const song of songs) {
-				await handleInLibrary(context.pg)(songConfig(
-					true,
-					song.songID,
-					context.authorization!.userID,
-				))
+				await handleInLibrary(context.pg)(
+					createSongConfig({
+						inLibrary: true,
+						objectID: song.songID,
+						userID: context.authorization!.userID,
+					}),
+				)
 			}
 
 			return query(context.pg)(SELECT_ALBUM_BY_ID)({
 				parse: convertFirstRowToCamelCase<Album>(),
 				variables: {
-					albumID: args.albumID,
+					albumID,
 					columnNames: join(COLUMN_NAMES.ALBUM),
 				},
 			})
@@ -187,38 +201,42 @@ export const addAlbumToLibrary =
 export const removeAlbumFromLibrary =
 	resolver<Album, AlbumIDBase>(
 		async ({ args, context }) => {
+			const { albumID } = args
+
 			const albumExists =
 				await exists(context.pg)({
+					value: albumID,
 					table: "albums",
-					column: "album_id",
-					value: args.albumID,
+					column: COLUMN_NAMES.ALBUM[0],
 				})
 
 			if (!albumExists) {
-				throw new UserInputError("Album does not exist.")
+				throw new UserInputError("Album does not exist")
 			}
 
 			const songs =
 				await query(context.pg)(SELECT_ALBUM_SONGS)({
 					parse: convertTableToCamelCase<Song>(),
 					variables: {
-						albumID: args.albumID,
+						albumID,
 						columnNames: join(COLUMN_NAMES.SONG),
 					},
 				})
 
 			for (const song of songs) {
-				await handleInLibrary(context.pg)(songConfig(
-					false,
-					song.songID,
-					context.authorization!.userID,
-				))
+				await handleInLibrary(context.pg)(
+					createSongConfig({
+						inLibrary: false,
+						objectID: song.songID,
+						userID: context.authorization!.userID,
+					}),
+				)
 			}
 
 			return query(context.pg)(SELECT_ALBUM_BY_ID)({
 				parse: convertFirstRowToCamelCase<Album>(),
 				variables: {
-					albumID: args.albumID,
+					albumID,
 					columnNames: join(COLUMN_NAMES.ALBUM),
 				},
 			})

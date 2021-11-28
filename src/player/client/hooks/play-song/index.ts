@@ -1,94 +1,61 @@
+import { useRef } from "react"
+import isNull from "lodash/isNull"
+import isUndefined from "lodash/isUndefined"
 import { SongIDBase } from "@oly_op/music-app-common/types"
-import { useApolloClient, MutationResult } from "@apollo/client"
 
-import {
-	Song,
-	User,
-	Handler,
-	UserQueuesNowPlayingExtracted,
-} from "../../types"
-
+import update from "./update"
+import { Song } from "../../types"
 import { useQuery } from "../query"
-import { useUserID } from "../user-id"
 import PLAY_SONG from "./play-song.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
-import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
+import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 import { togglePlay, updatePlay, useDispatch } from "../../redux"
+import { GetQueueNowPlayingData, PlaySongData, UsePlaySongResult } from "./types"
 
 export const usePlaySong =
 	(song: Song) => {
 		const { songID } = song
-		const userID = useUserID()
 		const dispatch = useDispatch()
-		const { cache } = useApolloClient()
+		const isOptimistic = useRef(true)
 		const resetPlayer = useResetPlayer()
+		const variables: SongIDBase = { songID }
 
-		const variables: SongIDBase =
-			{ songID }
-
-		const { data: userData } =
-			useQuery<UserNowPlayingData>(
-				GET_USER_NOW_PLAYING,
+		const { data } =
+			useQuery<GetQueueNowPlayingData>(
+				GET_QUEUE_NOW_PLAYING,
 				{ fetchPolicy: "cache-first" },
 			)
 
-		const [ mutation, result ] =
-			useMutation<PlaySongData, SongIDBase>(PLAY_SONG, { variables })
+		const [ playSong, result ] =
+			useMutation<PlaySongData, SongIDBase>(PLAY_SONG, {
+				variables,
+				optimisticResponse: {
+					playSong: {
+						nowPlaying: song,
+					},
+				},
+				update: update(isOptimistic),
+			})
 
-		const isNowPlaying = (
-			userData &&
-			userData.user.nowPlaying &&
-			userData.user.nowPlaying.songID === songID
+		const isPlaying = (
+			!isUndefined(data) &&
+			!isNull(data.getQueue.nowPlaying) &&
+			data.getQueue.nowPlaying.songID === songID
 		)
 
-		const handler =
+		const handlePlaySong =
 			async () => {
 				if (!result.loading) {
-					if (isNowPlaying) {
+					if (isPlaying) {
 						dispatch(togglePlay())
 					} else {
 						resetPlayer()
-						try {
-							await mutation()
-						} finally {
-							cache.modify({
-								id: cache.identify({ userID, __typename: "User" }),
-								fields: {
-									queueNext: () => [],
-									queueLater: () => [],
-									nowPlaying: () => song,
-									queuePrevious: () => [],
-								},
-							})
-							cache.modify({
-								id: cache.identify({ songID, __typename: "Song" }),
-								fields: {
-									playsTotal: (cached: number) => cached + 1,
-								},
-							})
-
-							dispatch(updatePlay(true))
-						}
+						await playSong()
+						dispatch(updatePlay(true))
 					}
 				}
 			}
 
-		return [
-			handler,
-			isNowPlaying,
-			result,
-		] as [
-			playSong: Handler,
-			isPlaying: boolean,
-			result: MutationResult<PlaySongData>,
-		]
+		return [ handlePlaySong, isPlaying, result ] as UsePlaySongResult
 	}
-
-interface UserNowPlayingData {
-	user: User,
-}
-
-interface PlaySongData {
-	playSong: UserQueuesNowPlayingExtracted,
-}

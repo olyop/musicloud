@@ -1,13 +1,6 @@
-import {
-	Route,
-	Switch,
-	NavLink,
-	useLocation,
-	RouteComponentProps,
-} from "react-router-dom"
-
 import Button from "@oly_op/react-button"
-import { useState, createElement, FC, Fragment } from "react"
+import { useState, createElement, VFC, Fragment } from "react"
+import { useLocation, Route, Routes, NavLink } from "react-router-dom"
 
 import routes from "./routes"
 import Window from "../../components/window"
@@ -18,20 +11,20 @@ import { useDispatch, updatePlay } from "../../redux"
 import { useMutation, useResetPlayer } from "../../hooks"
 import Modal, { ModalButton, ModalButtons } from "../../components/modal"
 
-const LibrarySettings: FC<{ path: string }> = ({ path }) => {
-	const { pathname } = useLocation()
+const LibrarySettings: VFC = () => {
+	const location = useLocation()
 	return (
-		<NavLink to={`${path}/settings`}>
+		<NavLink to="settings">
 			<Button
 				icon="settings"
 				title="Library Settings"
-				transparent={pathname !== "/library/settings"}
+				transparent={location.pathname !== "/library/settings"}
 			/>
 		</NavLink>
 	)
 }
 
-const Library: FC<RouteComponentProps> = ({ match }) => {
+const Library: VFC = () => {
 	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
 
@@ -80,13 +73,10 @@ const Library: FC<RouteComponentProps> = ({ match }) => {
 			</h1>
 			<Navigation
 				routes={routes}
-				basePath={match.path}
 				className="MarginBottom"
 				right={(
 					<Fragment>
-						<LibrarySettings
-							path={match.path}
-						/>
+						<LibrarySettings/>
 						<Window>
 							{({ width }) => (
 								<Fragment>
@@ -108,18 +98,17 @@ const Library: FC<RouteComponentProps> = ({ match }) => {
 					</Fragment>
 				)}
 			/>
-			<Switch>
+			<Routes>
 				{routes.map(
-					({ routeID, exact, component, path }) => (
+					({ routeID, path, element }) => (
 						<Route
+							path={path}
 							key={routeID}
-							exact={exact}
-							component={component}
-							path={match.path + path}
+							element={element}
 						/>
 					),
 				)}
-			</Switch>
+			</Routes>
 			<Modal open={modals.shuffle} onClose={handleModalsClose}>
 				<ModalButtons>
 					<ModalButton

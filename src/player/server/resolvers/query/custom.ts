@@ -4,29 +4,27 @@ import {
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
+import resolver from "./resolver"
 import { Album } from "../../types"
+import { getTopSongs } from "../helpers"
 import { COLUMN_NAMES } from "../../globals"
 import { SELECT_ALBUMS_TRENDING } from "../../sql"
-import { createResolver, getTopSongs } from "../helpers"
 
-const resolver =
-	createResolver()
-
-export const topTenSongs =
+export const getTopTenSongs =
 	resolver(
 		({ context }) => (
 			getTopSongs(context.pg)(10)
 		),
 	)
 
-export const topOneHundredSongs =
+export const getTopOneHundredSongs =
 	resolver(
 		({ context }) => (
 			getTopSongs(context.pg)(100)
 		),
 	)
 
-export const trendingAlbums =
+export const getTrendingAlbums =
 	resolver<Album[]>(
 		({ context }) => (
 			query(context.pg)(SELECT_ALBUMS_TRENDING)({

@@ -1,6 +1,6 @@
 import isEmpty from "lodash/isEmpty"
 import { createBEM } from "@oly_op/bem"
-import { createElement, Fragment, FC, MouseEventHandler } from "react"
+import { createElement, Fragment, VFC, MouseEventHandler } from "react"
 
 import ObjectLinks from "../object-links"
 import { useStatePlay } from "../../redux"
@@ -12,7 +12,7 @@ import "./index.scss"
 const bem =
 	createBEM("SongTitle")
 
-const SongTitle: FC<PropTypes> = ({
+const SongTitle: VFC<PropTypes> = ({
 	song,
 	onClick,
 	showRemixers = true,

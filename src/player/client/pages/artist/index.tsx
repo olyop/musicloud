@@ -1,9 +1,4 @@
-import {
-	Route,
-	Switch,
-	useParams,
-	RouteComponentProps,
-} from "react-router-dom"
+import { useParams, Route, Routes } from "react-router-dom"
 
 import {
 	ImageSizes,
@@ -13,7 +8,7 @@ import {
 
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
-import { createElement, Fragment, FC } from "react"
+import { createElement, Fragment, VFC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 
 import {
@@ -39,7 +34,7 @@ import { updatePlay, useDispatch } from "../../redux"
 const googleMapsBaseURL =
 	"https://www.google.com.au/maps/search"
 
-const ArtistFollowButton: FC<Data> = ({ artist }) => {
+const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
 	const [ toggleInLibrary, inLibrary ] = useToggleInLibrary(artist)
 	return (
 		<Button
@@ -50,17 +45,19 @@ const ArtistFollowButton: FC<Data> = ({ artist }) => {
 	)
 }
 
-const ArtistPage: FC<RouteComponentProps> = ({ match }) => {
+const ArtistPage: VFC = () => {
 	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
-	const params = useParams<ArtistIDBase>()
-	const artistID = addDashesToUUID(params.artistID)
+	const params = useParams<keyof ArtistIDBase>()
+	const artistID = addDashesToUUID(params.artistID!)
 
 	const { data, error } =
-		useQuery<Data, ArtistIDBase>(GET_ARTIST_PAGE, { variables: { artistID } })
+		useQuery<GetArtistData, ArtistIDBase>(GET_ARTIST_PAGE, {
+			variables: { artistID },
+		})
 
 	const [ shuffleArtist ] =
-		useShuffleArtist(artistID)
+		useShuffleArtist({ artistID })
 
 	const handleShuffle =
 		async () => {
@@ -78,15 +75,14 @@ const ArtistPage: FC<RouteComponentProps> = ({ match }) => {
 			</h2>
 		)
 	} else if (data) {
-		const { artist } = data
-		const { name, city, country, playsTotal } = data.artist
+		const { name, city, country, playsTotal } = data.getArtistByID
 		const cityURL = city.toLowerCase().replace(" ", "+")
 		const countryURL = country.toLowerCase().replace(" ", "+")
 		return (
 			<Metadata title={name}>
 				<Banner
 					title={name}
-					subTitle={determineArtistLower(artist)}
+					subTitle={determineArtistLower(data.getArtistByID)}
 					profileURL={determineCatalogImageURL(
 						artistID,
 						"profile",
@@ -102,7 +98,7 @@ const ArtistPage: FC<RouteComponentProps> = ({ match }) => {
 					buttons={(
 						<Fragment>
 							<ArtistFollowButton
-								artist={artist}
+								artist={data.getArtistByID}
 							/>
 							<Button
 								icon="shuffle"
@@ -115,7 +111,7 @@ const ArtistPage: FC<RouteComponentProps> = ({ match }) => {
 						<Fragment>
 							<p className="BodyTwoInverted MarginTopQuart">
 								<Fragment>Formed in </Fragment>
-								{data.artist.firstAlbumReleaseDate.slice(0, -6)}
+								{data.getArtistByID.since.slice(0, -6)}
 							</p>
 							{city && country && (
 								<a
@@ -142,21 +138,19 @@ const ArtistPage: FC<RouteComponentProps> = ({ match }) => {
 				/>
 				<Navigation
 					routes={routes}
-					basePath={match.url}
 					className="PaddingTopHalf"
 				/>
-				<Switch>
+				<Routes>
 					{routes.map(
-						({ routeID, path, exact, component }) => (
+						({ routeID, path, element }) => (
 							<Route
+								path={path}
 								key={routeID}
-								exact={exact}
-								component={component}
-								path={match.url + path}
+								element={element}
 							/>
 						),
 					)}
-				</Switch>
+				</Routes>
 			</Metadata>
 		)
 	} else {
@@ -164,7 +158,11 @@ const ArtistPage: FC<RouteComponentProps> = ({ match }) => {
 	}
 }
 
-interface Data {
+interface GetArtistData {
+	getArtistByID: Artist,
+}
+
+interface ArtistFollowButtonPropTypes {
 	artist: Artist,
 }
 

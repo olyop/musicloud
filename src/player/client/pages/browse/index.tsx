@@ -1,8 +1,8 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, FC, Fragment } from "react"
 import { NavLink } from "react-router-dom"
 import Metadata from "@oly_op/react-metadata"
+import { createElement, VFC, Fragment } from "react"
 
 import { useQuery } from "../../hooks"
 import { Song, Album } from "../../types"
@@ -15,8 +15,8 @@ import "./index.scss"
 const bem =
 	createBEM("BrowsePage")
 
-const BrowsePage: FC = () => {
-	const { data } = useQuery<Data>(GET_BROWSE_PAGE)
+const BrowsePage: VFC = () => {
+	const { data } = useQuery<GetBrowsePageData>(GET_BROWSE_PAGE)
 	return (
 		<Metadata title="Home">
 			<div className="Content PaddingTopBottom">
@@ -30,9 +30,9 @@ const BrowsePage: FC = () => {
 								<Albums
 									hideModal
 									alwaysList
-									hideOrderBy
-									albums={data.trendingAlbums}
+									orderBy={false}
 									className="MarginBottomHalf"
+									albums={data.getTrendingAlbums}
 								/>
 								<Button
 									transparent
@@ -48,11 +48,11 @@ const BrowsePage: FC = () => {
 									hideMore
 									hideCover
 									hideIndex
-									hideOrderBy
 									hideDuration
 									hideInLibrary
 									hideTrackNumber
-									songs={data.topTenSongs}
+									orderBy={false}
+									songs={data.getTopTenSongs}
 									className="MarginBottomHalf"
 								/>
 								<NavLink to="/top-one-hundred-songs">
@@ -76,9 +76,9 @@ const BrowsePage: FC = () => {
 	)
 }
 
-interface Data {
-	topTenSongs: Song[],
-	trendingAlbums: Album[],
+interface GetBrowsePageData {
+	getTopTenSongs: Song[],
+	getTrendingAlbums: Album[],
 }
 
 export default BrowsePage

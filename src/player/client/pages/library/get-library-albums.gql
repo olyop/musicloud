@@ -1,7 +1,6 @@
 query getLibraryAlbums($input: LibraryAlbumsInput!) {
-	user {
-		userID
-		libraryAlbums(input: $input) {
+	getLibrary {
+		albumsPaginated(input: $input) {
 			title
 			albumID
 			released

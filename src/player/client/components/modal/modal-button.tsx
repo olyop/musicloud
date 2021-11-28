@@ -21,10 +21,10 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 	const handleOnClick =
 		() => {
 			if (!externalLink && onClick) {
-				onClick()
+				void onClick()
 			}
 			if (onClose) {
-				onClose()
+				void onClose()
 			}
 		}
 

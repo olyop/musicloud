@@ -1,9 +1,9 @@
 type Artist {
 	# base
-	city: String!
 	artistID: UUID!
-	country: String!
+	city: NonEmptyString!
 	name: NonEmptyString!
+	country: NonEmptyString!
 
 	# library
 	inLibrary: Boolean!
@@ -11,14 +11,14 @@ type Artist {
 
 	# user
 	userPlays: [Play!]!
-	playsTotal: PositiveInt
-	userPlaysTotal: NonNegativeInt
+	userPlaysTotal: PositiveInt
 
 	# relationships
+	since: Date!
 	topTenSongs: [Song!]!
-	songsTotal: NonNegativeInt!
-	albumsTotal: NonNegativeInt!
-	firstAlbumReleaseDate: Date!
+	playsTotal: PositiveInt
+	songsTotal: PositiveInt!
+	albumsTotal: PositiveInt!
 	songs(orderBy: SongsOrderByInput!): [Song!]!
 	albums(orderBy: AlbumsOrderByInput!): [Album!]!
 }

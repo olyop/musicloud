@@ -1,40 +1,24 @@
-import {
-	join,
-	convertTableToCamelCase,
-	query as pgHelpersQuery,
-} from "@oly_op/pg-helpers"
-
 import pipe from "@oly_op/pipe"
 import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
-import {
-	shuffle,
-	clearQueues,
-	createResolver,
-	getUserWithQueues,
-	updateUserNowPlaying,
-} from "../helpers"
-
-import { User, Song } from "../../types"
+import resolver from "./resolver"
+import { Song } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
 import { INSERT_QUEUE_SONG, SELECT_PLAYLIST_SONGS } from "../../sql"
-
-const resolver =
-	createResolver()
+import { shuffle, clearQueue, updateQueueNowPlaying } from "../helpers"
 
 export const shufflePlaylist =
-	resolver<User, PlaylistIDBase>(
+	resolver<Record<string, never>, PlaylistIDBase>(
 		async ({ args, context }) => {
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
-			let user: User
-
 			try {
 				await query("BEGIN")()
 
-				await clearQueues(client)(userID)
+				await clearQueue(client)({ userID })
 
 				const [ nowPlaying, ...shuffled ] =
 					await query(SELECT_PLAYLIST_SONGS)({
@@ -48,22 +32,25 @@ export const shufflePlaylist =
 						},
 					})
 
-				await updateUserNowPlaying(client)(userID, nowPlaying.songID)
+				await updateQueueNowPlaying(client)({
+					userID,
+					value: nowPlaying.songID,
+				})
 
-				await Promise.all(shuffled.map(
-					({ songID }, index) => (
-						query(INSERT_QUEUE_SONG)({
-							variables: {
-								index,
-								userID,
-								songID,
-								tableName: "queue_laters",
-							},
-						})
+				await Promise.all(
+					shuffled.map(
+						({ songID }, index) => (
+							query(INSERT_QUEUE_SONG)({
+								variables: {
+									index,
+									userID,
+									songID,
+									tableName: "queue_laters",
+								},
+							})
+						),
 					),
-				))
-
-				user = await getUserWithQueues(client)(userID)
+				)
 
 				await query("COMMIT")()
 			} catch (error) {
@@ -73,6 +60,6 @@ export const shufflePlaylist =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

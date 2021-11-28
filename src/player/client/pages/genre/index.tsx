@@ -6,16 +6,11 @@ import Metadata from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { GenreIDBase } from "@oly_op/music-app-common/types"
 
-import {
-	Genre,
-	SongsOrderBy,
-	SongsOrderByField,
-} from "../../types"
-
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"
 import { useStateOrderBy } from "../../redux"
 import GET_GENRE_PAGE from "./get-genre-page.gql"
+import { Genre, SongsOrderBy, SongsOrderByField } from "../../types"
 
 import "./index.scss"
 
@@ -23,12 +18,12 @@ const bem =
 	createBEM("GenrePage")
 
 const GenrePage: FC = () => {
-	const params = useParams<GenreIDBase>()
-	const genreID = addDashesToUUID(params.genreID)
+	const params = useParams<keyof GenreIDBase>()
+	const genreID = addDashesToUUID(params.genreID!)
 	const songsOrderBy = useStateOrderBy<SongsOrderByField>("songs")
 
 	const { data, error } =
-		useQuery<Data, Vars>(
+		useQuery<GetGenrePageData, GetGenrePageVars>(
 			GET_GENRE_PAGE,
 			{ variables: { songsOrderBy, genreID } },
 		)
@@ -43,17 +38,16 @@ const GenrePage: FC = () => {
 		)
 	} else if (!isUndefined(data)) {
 		return (
-			<Metadata title={data.genre.name}>
+			<Metadata title={data.getGenreByID.name}>
 				<h1
-					children={data.genre.name}
+					children={data.getGenreByID.name}
 					className={bem("", "HeadingFour MarginTopBottom PaddingTopBottom")}
 				/>
 				<Songs
 					hideIndex
-					orderByKey="songs"
-					songs={data.genre.songs}
+					songs={data.getGenreByID.songs}
 					className="Content MarginBottom"
-					orderByFields={Object.keys(SongsOrderByField)}
+					orderBy={{ key: "songs", fields: Object.keys(SongsOrderByField) }}
 				/>
 			</Metadata>
 		)
@@ -62,11 +56,11 @@ const GenrePage: FC = () => {
 	}
 }
 
-interface Data {
-	genre: Genre,
+interface GetGenrePageData {
+	getGenreByID: Genre,
 }
 
-interface Vars extends GenreIDBase {
+interface GetGenrePageVars extends GenreIDBase {
 	songsOrderBy: SongsOrderBy,
 }
 

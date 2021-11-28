@@ -1,12 +1,6 @@
-mutation renamePlaylist(
-	$playlistID: UUID!
-	$title: NonEmptyString!
-) {
-	renamePlaylist(
-		title: $title
-		playlistID: $playlistID
-	) {
-		title
+mutation renamePlaylist($input: RenamePlaylistInput!) {
+	renamePlaylist(input: $input) {
 		playlistID
+		title
 	}
 }

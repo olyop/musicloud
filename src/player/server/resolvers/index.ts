@@ -16,11 +16,12 @@ import * as User from "./user"
 import * as Song from "./song"
 import * as Genre from "./genre"
 import * as Album from "./album"
+import * as Queue from "./queue"
+import * as Query from "./query"
 import * as Search from "./search"
 import * as Artist from "./artist"
+import * as Library from "./library"
 import * as Playlist from "./playlist"
-
-import * as Query from "./query"
 import * as Mutation from "./mutation"
 
 const resolvers = {
@@ -31,11 +32,13 @@ const resolvers = {
 	Play,
 	User,
 	Song,
+	Queue,
 	Query,
 	Genre,
 	Album,
 	Search,
 	Artist,
+	Library,
 	Mutation,
 	Playlist,
 	Timestamp,

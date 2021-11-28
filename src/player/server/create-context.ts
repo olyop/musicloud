@@ -1,7 +1,7 @@
+import { Pool } from "pg"
 import algolia from "algoliasearch"
 import { S3 } from "@aws-sdk/client-s3"
 import { FastifyRequest } from "fastify"
-import { Pool } from "@oly_op/pg-helpers"
 import { isString, isUndefined } from "lodash"
 import jwt, { TokenExpiredError } from "jsonwebtoken"
 

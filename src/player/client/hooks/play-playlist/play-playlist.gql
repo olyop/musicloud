@@ -1,6 +1,5 @@
 mutation playPlaylist($playlistID: UUID!) {
 	playPlaylist(playlistID: $playlistID) {
-		userID
 		nowPlaying {
 			mix
 			title

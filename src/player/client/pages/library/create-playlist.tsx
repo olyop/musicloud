@@ -1,19 +1,17 @@
 import isEmpty from "lodash/isEmpty"
 import Button from "@oly_op/react-button"
-import { useState, createElement, FC, Fragment } from "react"
-import { InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { useState, createElement, VFC, Fragment } from "react"
 
-import { Handler, Playlist } from "../../types"
+import { Handler } from "../../types"
+import { useCreatePlaylist } from "../../hooks"
 import TextField from "../../components/text-field"
-import CREATE_PLAYLIST from "./create-playlist.gql"
-import { useMutation, useUserID } from "../../hooks"
 
-const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
-	const userID = useUserID()
-	const [ title, setTitle ] = useState("")
+const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
+	const [ title, setTitle ] =
+		useState("")
 
-	const [ addPlaylist ] =
-		useMutation<Data, Vars>(CREATE_PLAYLIST)
+	const [ createPlaylist ] =
+		useCreatePlaylist()
 
 	const handleInput =
 		(value: string) =>
@@ -22,25 +20,9 @@ const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
 	const handleSubmit =
 		async () => {
 			if (!isEmpty(title)) {
-				try {
-					await addPlaylist({
-						variables: { input: { title } },
-						update: (cache, { data }) => {
-							cache.modify({
-								id: cache.identify({ userID, __typename: "User" }),
-								fields: {
-									libraryPlaylists: (existing: Playlist[]) => [
-										...existing,
-										data?.createPlaylist,
-									],
-								},
-							})
-						},
-					})
-				} finally {
-					setTitle("")
-					onClose()
-				}
+				setTitle("")
+				await onClose()
+				await createPlaylist({ title })
 			}
 		}
 
@@ -77,12 +59,5 @@ const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
 interface PropTypes {
 	onClose: Handler,
 }
-
-interface Data {
-	createPlaylist: Playlist,
-}
-
-type Vars =
-	InterfaceWithInput<Pick<Playlist, "title">>
 
 export default LibraryCreatePlaylist

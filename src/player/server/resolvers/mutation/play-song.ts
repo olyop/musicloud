@@ -2,14 +2,12 @@ import { exists } from "@oly_op/pg-helpers"
 import { UserInputError } from "apollo-server-fastify"
 import { SongIDBase } from "@oly_op/music-app-common/types"
 
-import { User } from "../../types"
-import { clearQueuesNowPlaying, createResolver, updateUserNowPlaying } from "../helpers"
-
-const resolver =
-	createResolver()
+import resolver from "./resolver"
+import { COLUMN_NAMES } from "../../globals"
+import { clearQueue, updateQueueNowPlaying } from "../helpers"
 
 export const playSong =
-	resolver<User, SongIDBase>(
+	resolver<Record<string, never>, SongIDBase>(
 		async ({ args, context }) => {
 			const { songID } = args
 			const { userID } = context.authorization!
@@ -18,15 +16,20 @@ export const playSong =
 				await exists(context.pg)({
 					value: songID,
 					table: "songs",
-					column: "song_id",
+					column: COLUMN_NAMES.SONG[0],
 				})
 
 			if (!songExists) {
-				throw new UserInputError("Song does not exist.")
+				throw new UserInputError("Song does not exist")
 			}
 
-			await clearQueuesNowPlaying(context.pg)(userID)
+			await clearQueue(context.pg)({ userID })
 
-			return updateUserNowPlaying(context.pg)(userID, songID)
+			await updateQueueNowPlaying(context.pg)({
+				userID,
+				value: songID,
+			})
+
+			return {}
 		},
 	)

@@ -1,9 +1,9 @@
 import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 
 import { OnClickPropTypes } from "../../types"
 
-const InLibraryButton: FC<PropTypes> = ({ inLibrary, onClick, className }) => (
+const InLibraryButton: VFC<PropTypes> = ({ inLibrary, onClick, className }) => (
 	<Button
 		transparent
 		onClick={onClick}

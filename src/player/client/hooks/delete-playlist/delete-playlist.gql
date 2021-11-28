@@ -1,5 +1,3 @@
-mutation deletePlaylist($playlistID: UUID!) {
-	deletePlaylist(playlistID: $playlistID) {
-		userID
-	}
+mutation deletePlaylistByID($playlistID: UUID!) {
+	deletePlaylistByID(playlistID: $playlistID)
 }

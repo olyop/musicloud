@@ -1,12 +1,10 @@
 query getLibrarySongs($input: LibrarySongsInput!) {
-	user {
-		userID
-		librarySongs(input: $input) {
+	getLibrary {
+		songsPaginated(input: $input) {
 			mix
 			title
 			songID
 			duration
-			inLibrary
 			dateAddedToLibrary
 			featuring {
 				artistID

@@ -1,35 +1,24 @@
 import pipe from "@oly_op/pipe"
 import { isEmpty } from "lodash"
-import { convertTableToCamelCase, join, query as pgQuery } from "@oly_op/pg-helpers"
+import { convertTableToCamelCase, join, query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
-import {
-	shuffle,
-	clearQueues,
-	createResolver,
-	getUserWithQueues,
-	updateUserNowPlaying,
-} from "../helpers"
-
-import { Song, User } from "../../types"
+import resolver from "./resolver"
+import { Song } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
 import { INSERT_QUEUE_SONG, SELECT_LIBRARY_SONGS } from "../../sql"
-
-const resolver =
-	createResolver()
+import { shuffle, clearQueue, updateQueueNowPlaying } from "../helpers"
 
 export const shuffleLibrary =
-	resolver<User>(
+	resolver<Record<string, never>>(
 		async ({ context }) => {
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
-			const query = pgQuery(client)
-
-			let user: User
+			const query = pgHelpersQuery(client)
 
 			try {
 				await query("BEGIN")()
 
-				await clearQueues(client)(userID)
+				await clearQueue(client)({ userID })
 
 				const librarySongs =
 					await query(SELECT_LIBRARY_SONGS)({
@@ -47,7 +36,10 @@ export const shuffleLibrary =
 					const [ nowPlaying, ...shuffled ] =
 						librarySongs
 
-					await updateUserNowPlaying(client)(userID, nowPlaying.songID)
+					await updateQueueNowPlaying(client)({
+						userID,
+						value: nowPlaying.songID,
+					})
 
 					await Promise.all(shuffled.map(
 						({ songID }, index) => (
@@ -63,8 +55,6 @@ export const shuffleLibrary =
 					))
 				}
 
-				user = await getUserWithQueues(client)(userID)
-
 				await query("COMMIT")()
 			} catch (error) {
 				await query("ROLLBACK")()
@@ -73,6 +63,6 @@ export const shuffleLibrary =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

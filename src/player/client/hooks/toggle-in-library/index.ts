@@ -1,12 +1,12 @@
 /* eslint-disable no-underscore-dangle */
-import uniq from "lodash/uniq"
-import { useRef } from "react"
+// import uniq from "lodash/uniq"
+// import { useRef } from "react"
 import isUndefined from "lodash/isUndefined"
 import { MutationResult } from "@apollo/client"
-import { Modifier, Reference } from "@apollo/client/cache"
+// import { Modifier, Reference } from "@apollo/client/cache"
 
 import { useQuery } from "../query"
-import { useUserID } from "../user-id"
+// import { useUserID } from "../user-id"
 import determineID from "./determine-id"
 import { useMutation } from "../mutation"
 import { InLibraryObjects } from "../../types"
@@ -29,12 +29,12 @@ export const useToggleInLibrary =
 
 		const typeName = dr("Song", "Artist", "Playlist")
 		const QUERY = dr(GET_SONG, GET_ARTIST, GET_PLAYLIST)
-		const typeNameLowerCase = dr("song", "artist", "playlist")
 		const objectIDKeys = dr("songID", "artistID", "playlistID")
-		const userLibraryKeys = dr("librarySongs", "libraryArtists", "libraryPlaylists")
+		const typeNameLowerCase = dr("getSongByID", "getArtistByID", "getPlaylistByID")
+		// const userLibraryKeys = dr("librarySongs", "libraryArtists", "libraryPlaylists")
 
-		const userID = useUserID()
-		const isOptimistic = useRef(true)
+		// const userID = useUserID()
+		// const isOptimistic = useRef(true)
 		const objectID = determineID(object)
 
 		type Vars = {
@@ -48,7 +48,7 @@ export const useToggleInLibrary =
 		const variables: Vars =
 			{ [objectIDKeys]: objectID }
 
-		const { data: inLibraryQuery } =
+		const { data: inLibraryData } =
 			useQuery<QueryData, typeof variables>(QUERY, {
 				variables,
 				hideLoading: true,
@@ -56,9 +56,9 @@ export const useToggleInLibrary =
 			})
 
 		const inLibrary =
-			isUndefined(object.inLibrary) ?
-				(inLibraryQuery ? inLibraryQuery[typeNameLowerCase]!.inLibrary : false) :
-				object.inLibrary
+		isUndefined(object.inLibrary) ?
+			(inLibraryData ? inLibraryData[typeNameLowerCase]!.inLibrary : false) :
+			object.inLibrary
 
 		const actionVerb =
 			inLibrary ? "remove" : "add"
@@ -77,26 +77,26 @@ export const useToggleInLibrary =
 			dr(REMOVE_SONG, REMOVE_ARTIST, REMOVE_PLAYLIST) :
 			dr(ADD_SONG, ADD_ARTIST, ADD_PLAYLIST)
 
-		const modifer =
-			(inLibraryMutation: boolean, cacheID: string): Modifier<Reference[]> =>
-				(existing, { readField, toReference }) => {
-					if (isOptimistic.current) {
-						isOptimistic.current = false
-						return existing
-					} else {
-						isOptimistic.current = true
-						if (inLibraryMutation) {
-							return uniq([
-								...existing,
-								toReference(cacheID)!,
-							])
-						} else {
-							return existing.filter(
-								reference => readField(objectIDKeys, reference) !== objectID,
-							)
-						}
-					}
-				}
+		// const modifer =
+		// 	(inLibraryMutation: boolean, cacheID: string): Modifier<Reference[]> =>
+		// 		(existing, { readField, toReference }) => {
+		// 			if (isOptimistic.current) {
+		// 				isOptimistic.current = false
+		// 				return existing
+		// 			} else {
+		// 				isOptimistic.current = true
+		// 				if (inLibraryMutation) {
+		// 					return uniq([
+		// 						...existing,
+		// 						toReference(cacheID)!,
+		// 					])
+		// 				} else {
+		// 					return existing.filter(
+		// 						reference => readField(objectIDKeys, reference) !== objectID,
+		// 					)
+		// 				}
+		// 			}
+		// 		}
 
 		const [ mutate, result ] =
 			useMutation<MutationData, Vars>(MUTATION, {
@@ -108,20 +108,20 @@ export const useToggleInLibrary =
 						[objectIDKeys]: objectID,
 					},
 				},
-				update: (cache, { data }) => {
-					cache.modify({
-						id: cache.identify({ userID, __typename: "User" }),
-						fields: {
-							[userLibraryKeys]: modifer(
-								data![mutationName]?.inLibrary!,
-								cache.identify({
-									__typename: typeName,
-									[objectIDKeys]: objectID,
-								})!,
-							),
-						},
-					})
-				},
+				// update: (cache, { data }) => {
+				// 	cache.modify({
+				// 		id: cache.identify({ userID, __typename: "User" }),
+				// 		fields: {
+				// 			[userLibraryKeys]: modifer(
+				// 				data![mutationName]?.inLibrary!,
+				// 				cache.identify({
+				// 					__typename: typeName,
+				// 					[objectIDKeys]: objectID,
+				// 				})!,
+				// 			),
+				// 		},
+				// 	})
+				// },
 			})
 
 		const handleClick =

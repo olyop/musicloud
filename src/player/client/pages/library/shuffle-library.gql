@@ -1,12 +1,11 @@
 mutation shuffleLibrary {
 	shuffleLibrary {
-		userID
-    nowPlaying {
+		nowPlaying {
       mix
       title
       songID
       duration
-			inLibrary
+      inLibrary
       featuring {
         artistID
         name

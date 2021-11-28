@@ -1,0 +1,18 @@
+type Library {
+	songs: [Song!]
+	albums: [Album!]
+	genres: [Genre!]
+	artists: [Artist!]
+	duration: PositiveInt
+	playlists: [Playlist!]
+	songsTotal: NonNegativeInt
+	albumsTotal: NonNegativeInt
+	genresTotal: NonNegativeInt
+	artistsTotal: NonNegativeInt
+	playlistsTotal: NonNegativeInt
+	songsPaginated(input: LibrarySongsInput!): [Song!]
+	albumsPaginated(input: LibraryAlbumsInput!): [Album!]
+	genresPaginated(input: LibraryGenresInput!): [Genre!]
+	artistsPaginated(input: LibraryArtistsInput!): [Artist!]
+	playlistsPaginated(input: LibraryPlaylistsInput!): [Playlist!]
+}

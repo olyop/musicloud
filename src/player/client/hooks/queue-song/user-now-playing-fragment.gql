@@ -1,7 +1,0 @@
-fragment UserNowPlayingFragment on User {
-	userID
-	nowPlaying {
-		songID
-		queueIndex
-	}
-}

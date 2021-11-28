@@ -1,11 +1,12 @@
 import isEmpty from "lodash/isEmpty"
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 
 import {
-	SettingsOrderBy,
+	OrderByOptions,
 	SettingsListStyle,
 	Artist as ArtistType,
+	SettingsOrderByArtists,
 } from "../../types"
 
 import List from "../list"
@@ -16,22 +17,19 @@ import { useStateListStyle } from "../../redux"
 const bem =
 	createBEM("Artists")
 
-const Artists: FC<PropTypes> = ({
+const Artists: VFC<ArtistsPropTypes> = ({
 	className,
-	orderByKey,
 	artists = [],
-	orderByFields,
-	hideOrderBy = false,
+	orderBy = false,
 }) => {
 	const listStyle = useStateListStyle()
 	const isList = listStyle === SettingsListStyle.LIST
 	const empty = isEmpty(artists)
 	return (
 		<div className={bem(className, isList && !empty && "Elevated")}>
-			{hideOrderBy || (
+			{orderBy && (
 				<SelectOrderBy
-					settingsKey={orderByKey!}
-					fieldOptions={orderByFields!}
+					orderBy={orderBy}
 					className={bem(
 						"FlexListRight",
 						isList && !empty && "ItemBorder",
@@ -53,12 +51,10 @@ const Artists: FC<PropTypes> = ({
 	)
 }
 
-interface PropTypes {
+export interface ArtistsPropTypes {
 	className?: string,
-	hideOrderBy?: boolean,
 	artists?: ArtistType[],
-	orderByFields?: string[],
-	orderByKey?: keyof Pick<SettingsOrderBy, "artists" | "libraryArtists">,
+	orderBy?: OrderByOptions<SettingsOrderByArtists> | false,
 }
 
 export default Artists

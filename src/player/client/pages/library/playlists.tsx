@@ -1,10 +1,10 @@
-import isEmpty from "lodash/isEmpty"
-import { createElement, FC } from "react"
+import isNull from "lodash/isNull"
+import { createElement, VFC } from "react"
 import Metadata from "@oly_op/react-metadata"
 
 import {
-	User,
 	LibraryPlaylistsOrderBy,
+	LibraryPlaylistsPaginated,
 	LibraryPlaylistsOrderByField,
 } from "../../types"
 
@@ -14,18 +14,20 @@ import { useStateOrderBy } from "../../redux"
 import Playlists from "../../components/playlists"
 import GET_LIBRARY_PLAYLISTS from "./get-library-playlists.gql"
 
-const LibraryPlaylists: FC = () => {
+const LibraryPlaylists: VFC = () => {
 	const orderBy = useStateOrderBy<LibraryPlaylistsOrderByField>("libraryPlaylists")
 	return (
 		<Metadata title="Library Playlists">
-			<Feed<Data, Vars>
+			<Feed<GetLibraryPlaylistsData, GetLibraryPlaylistsVars>
 				variables={{ orderBy }}
 				query={GET_LIBRARY_PLAYLISTS}
-				dataToObjectsLength={({ user }) => user.libraryPlaylists.length}
-				children={
+				dataToObjectsLength={
+					data => data.getLibrary.playlistsPaginated?.length || 0
+				}
+				render={
 					({ data }) => {
 						if (data) {
-							if (isEmpty(data.user.libraryPlaylists)) {
+							if (isNull(data.getLibrary.playlistsPaginated)) {
 								return (
 									<LibraryEmpty
 										name="playlists"
@@ -35,9 +37,11 @@ const LibraryPlaylists: FC = () => {
 								return (
 									<Playlists
 										className="Content"
-										orderByKey="libraryPlaylists"
-										playlists={data.user.libraryPlaylists}
-										orderByFields={Object.keys(LibraryPlaylistsOrderByField)}
+										playlists={data.getLibrary.playlistsPaginated}
+										orderBy={{
+											key: "libraryPlaylists",
+											fields: Object.keys(LibraryPlaylistsOrderByField),
+										}}
 									/>
 								)
 							}
@@ -51,12 +55,12 @@ const LibraryPlaylists: FC = () => {
 	)
 }
 
-interface Data {
-	user: User,
+interface GetLibraryPlaylistsVars {
+	orderBy: LibraryPlaylistsOrderBy,
 }
 
-interface Vars {
-	orderBy: LibraryPlaylistsOrderBy,
+interface GetLibraryPlaylistsData {
+	getLibrary: LibraryPlaylistsPaginated,
 }
 
 export default LibraryPlaylists

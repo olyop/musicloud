@@ -19,68 +19,24 @@ export interface Key
 	extends
 		KeyBase, StoreObject<"Key"> {}
 
+export interface InLibraryBase {
+	inLibrary: boolean,
+}
+
 export interface UserClientBase
 	extends
 		StoreObject<"User">,
 		UserIDBase {}
 
-export interface UserQueueNext {
-	queueNext: Song[],
-}
-
-export interface UserQueueLater {
-	queueLater: Song[],
-}
-
-export interface UserQueuePrevious {
-	queuePrevious: Song[],
-}
-
-export interface UserQueuesNextLater
-	extends
-		UserQueueNext,
-		UserQueueLater {}
-
-export interface UserQueues
-	extends
-		UserQueuePrevious,
-		UserQueuesNextLater {}
-
-export interface UserNowPlaying {
-	nowPlaying: Song | null,
-}
-
-export interface UserQueuesNowPlaying
-	extends
-		UserQueues,
-		UserNowPlaying {}
-
-export interface UserLibrary {
-	librarySongs: Song[],
-	libraryGenres: Genre[],
-	libraryAlbums: Album[],
-	libraryArtists: Artist[],
-	libraryPlaylists: Playlist[],
-	librarySongsTotal: number | null,
-	libraryArtistsTotal: number | null,
-}
-
-export interface UserOther {
+export interface UserPlaylists {
 	playlists: Playlist[],
 	playlistsFilteredBySong: Playlist[],
 }
 
 export interface User
 	extends
-		UserOther,
-		UserLibrary,
-		UserClientBase,
-		UserQueuesNowPlaying,
-		UserBase {}
-
-export interface UserPartial
-	extends
-		Partial<Omit<User, keyof UserClientBase>>,
+		UserBase,
+		UserPlaylists,
 		UserClientBase {}
 
 export interface Play
@@ -91,22 +47,20 @@ export interface Play
 
 export interface LibraryObject<T = string>
 	extends StoreObject<T> {
-		userPlays: Play[],
+		userPlays: Play[] | null,
 		playsTotal: number | null,
 		userPlaysTotal: number | null,
 	}
 
 export interface Genre
-	extends
-	GenreBase,
-	LibraryObject<"Genre"> {
-	songs: Song[],
-	songsTotal: number | null,
-	albumsTotal: number | null,
-}
+	extends GenreBase, LibraryObject<"Genre"> {
+		songs: Song[],
+		songsTotal: number | null,
+		albumsTotal: number | null,
+	}
 
 export interface Album
-	extends AlbumBase, LibraryObject<"Album"> {
+	extends AlbumBase, InLibraryBase, LibraryObject<"Album"> {
 		songs: Song[],
 		genres: Genre[],
 		duration: number,
@@ -116,21 +70,26 @@ export interface Album
 	}
 
 export interface InLibraryObject<T = string>
-	extends LibraryObject<T> {
-		inLibrary: boolean,
+	extends InLibraryBase, LibraryObject<T> {
 		dateAddedToLibrary: number | null,
 	}
 
+export interface ArtistSongs {
+	songs: Song[],
+}
+
+export interface ArtistTopTenSongs {
+	topTenSongs: Song[],
+}
+
 export interface Artist
-	extends ArtistBase, InLibraryObject<"Artist"> {
+	extends ArtistBase, ArtistSongs, ArtistTopTenSongs, InLibraryObject<"Artist"> {
 		city: string,
-		songs: Song[],
+		since: string,
 		albums: Album[],
 		country: string,
 		songsTotal: number,
 		albumsTotal: number,
-		topTenSongs: Song[],
-		firstAlbumReleaseDate: string,
 	}
 
 export interface Song
@@ -142,6 +101,7 @@ export interface Song
 		artists: Artist[],
 		remixers: Artist[],
 		featuring: Artist[],
+		isInPlaylist: boolean,
 		queueIndex: number | null,
 		dateAddedToPlaylist: number | null,
 	}
@@ -153,3 +113,112 @@ export interface Playlist
 		dateCreated: number,
 		songsTotal: number | null,
 	}
+
+export interface QueueNext {
+	next: Song[],
+}
+
+export interface QueueLater {
+	later: Song[],
+}
+
+export interface QueuePrevious {
+	previous: Song[],
+}
+
+export interface QueueNextLater
+	extends
+		QueueNext,
+		QueueLater {}
+
+export interface QueuePreviousNextLater
+	extends
+		QueuePrevious,
+		QueueNextLater {}
+
+export interface QueueNowPlaying {
+	nowPlaying: Song | null,
+}
+
+export interface Queue
+	extends
+		QueuePreviousNextLater,
+		QueueNowPlaying {}
+
+export interface LibrarySongs {
+	songs: Song[] | null,
+}
+
+export interface LibraryGenres {
+	genres: Genre[] | null,
+}
+
+export interface LibraryAlbums {
+	albums: Album[] | null,
+}
+
+export interface LibraryArtists {
+	artists: Artist[] | null,
+}
+
+export interface LibraryPlaylists {
+	playlists: Playlist[] | null,
+}
+
+export interface LibrarySongsTotal {
+	songsTotal: number | null,
+}
+
+export interface LibraryGenresTotal {
+	genresTotal: number | null,
+}
+
+export interface LibraryAlbumsTotal {
+	albumsTotal: number | null,
+}
+
+export interface LibraryArtistsTotal {
+	artistsTotal: number | null,
+}
+
+export interface LibraryPlaylistsTotal {
+	playlistsTotal: number | null,
+}
+
+export interface LibrarySongsPaginated {
+	songsPaginated: Song[] | null,
+}
+
+export interface LibraryGenresPaginated {
+	genresPaginated: Genre[] | null,
+}
+
+export interface LibraryAlbumsPaginated {
+	albumsPaginated: Album[] | null,
+}
+
+export interface LibraryArtistsPaginated {
+	artistsPaginated: Artist[] | null,
+}
+
+export interface LibraryPlaylistsPaginated {
+	playlistsPaginated: Playlist[] | null,
+}
+
+export interface Library
+	extends
+		LibrarySongs,
+		LibraryGenres,
+		LibraryAlbums,
+		LibraryArtists,
+		LibraryPlaylists,
+		LibrarySongsTotal,
+		LibraryGenresTotal,
+		LibraryAlbumsTotal,
+		LibraryArtistsTotal,
+		LibraryPlaylistsTotal,
+		LibrarySongsPaginated,
+		LibraryGenresPaginated,
+		LibraryAlbumsPaginated,
+		LibraryArtistsPaginated,
+		LibraryPlaylistsPaginated {}

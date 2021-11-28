@@ -1,34 +1,47 @@
 import { MutationResult } from "@apollo/client"
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistIDBase, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
+import { Playlist } from "../../types"
 import { useMutation } from "../mutation"
-import { Playlist, User } from "../../types"
 import RENAME_PLAYLIST from "./rename-playlist.gql"
 
 export const useRenamePlaylist =
-	(playlistID: string) => {
+	({ playlistID }: PlaylistIDBase) => {
 		const [ deletePlaylist, result ] =
-			useMutation<Data, Vars>(RENAME_PLAYLIST)
+			useMutation<RenamePlaylistData, Vars>(RENAME_PLAYLIST, {
+				optimisticResponse: ({ input: { title } }) => ({
+					renamePlaylist: {
+						title,
+						playlistID,
+						__typename: "Playlist",
+					},
+				}),
+			})
 
-		const handler =
-			async (title: string) => {
+		const handleRenamePlaylist =
+			async ({ title }: InputBase) => {
 				await deletePlaylist({
-					variables: { playlistID, title },
+					variables: { input: { playlistID, title } },
 				})
 			}
 
-		return [
-			handler,
-			result,
-		] as [
-			handler: (title: string) => Promise<void>,
-			result: MutationResult<Data>,
-		]
+		return [ handleRenamePlaylist, result ] as UseRenamePlaylistResult
 	}
 
-interface Vars
-	extends PlaylistIDBase, Pick<Playlist, "title"> {}
+type UseRenamePlaylistResult = [
+	renamePlaylist: (input: InputBase) => Promise<void>,
+	result: MutationResult<RenamePlaylistData>,
+]
 
-interface Data {
-	deletePlaylist: User,
+type InputBase =
+	Pick<Playlist, "title">
+
+interface Input
+	extends PlaylistIDBase, InputBase {}
+
+type Vars =
+	InterfaceWithInput<Input>
+
+interface RenamePlaylistData {
+	renamePlaylist: Pick<Playlist, "playlistID" | "__typename" | "title">,
 }

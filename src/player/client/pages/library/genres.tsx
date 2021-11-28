@@ -1,5 +1,5 @@
-import isEmpty from "lodash/isEmpty"
-import { createElement, FC } from "react"
+import isNull from "lodash/isNull"
+import { createElement, VFC } from "react"
 import Metadata from "@oly_op/react-metadata"
 
 import LibraryEmpty from "./empty"
@@ -7,20 +7,22 @@ import Feed from "../../components/feed"
 import Genres from "../../components/genres"
 import { useStateOrderBy } from "../../redux"
 import GET_LIBRARY_GENRES from "./get-library-genres.gql"
-import { User, GenresOrderBy, GenresOrderByField } from "../../types"
+import { GenresOrderBy, GenresOrderByField, LibraryGenresPaginated } from "../../types"
 
-const LibraryGenres: FC = () => {
+const LibraryGenres: VFC = () => {
 	const orderBy = useStateOrderBy<GenresOrderByField>("genres")
 	return (
 		<Metadata title="Library Genres">
-			<Feed<Data, Vars>
+			<Feed<LibraryGenresData, LibraryGenresVars>
 				variables={{ orderBy }}
 				query={GET_LIBRARY_GENRES}
-				dataToObjectsLength={({ user }) => user.libraryGenres.length}
-				children={
+				dataToObjectsLength={
+					data => data.getLibrary.genresPaginated?.length || 0
+				}
+				render={
 					({ data }) => {
 						if (data) {
-							if (isEmpty(data.user.libraryGenres)) {
+							if (isNull(data.getLibrary.genresPaginated)) {
 								return (
 									<LibraryEmpty
 										name="genres"
@@ -29,10 +31,9 @@ const LibraryGenres: FC = () => {
 							} else {
 								return (
 									<Genres
+										orderBy
 										className="Content"
-										genres={data.user.libraryGenres}
-										hideOrderBy={isEmpty(data.user.libraryGenres)}
-										orderByFields={Object.keys(GenresOrderByField)}
+										genres={data.getLibrary.genresPaginated}
 									/>
 								)
 							}
@@ -46,12 +47,12 @@ const LibraryGenres: FC = () => {
 	)
 }
 
-interface Data {
-	user: User,
+interface LibraryGenresVars {
+	orderBy: GenresOrderBy,
 }
 
-interface Vars {
-	orderBy: GenresOrderBy,
+interface LibraryGenresData {
+	getLibrary: LibraryGenresPaginated,
 }
 
 export default LibraryGenres

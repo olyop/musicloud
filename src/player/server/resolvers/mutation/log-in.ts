@@ -2,13 +2,13 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { isNull, isUndefined } from "lodash"
 import { AuthenticationError } from "apollo-server-fastify"
+import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
-import { UserIDBase, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
+import resolver from "./resolver"
 import { User } from "../../types"
-import { createResolver } from "../helpers"
 import { SELECT_USER_PASSWORD } from "../../sql"
-import { JWT_TOKEN_SECRET, JWT_SIGN_OPTIONS } from "../../globals"
+import { JWT_TOKEN_SECRET, JWT_SIGN_OPTIONS, COLUMN_NAMES } from "../../globals"
 
 const generateAccessToken =
 	(userID: string) =>
@@ -29,15 +29,11 @@ const generateAccessToken =
 			},
 		)
 
-const resolver =
-	createResolver()
-
-interface Input extends UserIDBase {
-	password: string,
-}
+type Args =
+	InterfaceWithInput<Pick<User, "userID" | "password">>
 
 export const logIn =
-	resolver<string, InterfaceWithInput<Input>>(
+	resolver<string, Args>(
 		async ({ args, context }) => {
 			const { userID } = args.input
 
@@ -45,7 +41,7 @@ export const logIn =
 				await exists(context.pg)({
 					value: userID,
 					table: "users",
-					column: "user_id",
+					column: COLUMN_NAMES.USER[0],
 				})
 
 			if (userExists) {

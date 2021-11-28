@@ -1,6 +1,5 @@
 mutation playAlbum($albumID: UUID!) {
 	playAlbum(albumID: $albumID) {
-		userID
 		nowPlaying {
 			mix
 			title

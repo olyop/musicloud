@@ -8,83 +8,53 @@ import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
-import { createElement, Fragment, FC } from "react"
+import { createElement, Fragment, VFC } from "react"
 import { NavLink, useParams } from "react-router-dom"
 import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 
-import {
-	createDiscs,
-	determineObjectPath,
-	determineCatalogImageURL,
-} from "../../helpers"
-
 import Disc from "./disc"
 import AlbumArtist from "./artist"
 import { Album } from "../../types"
+import AlbumPlayButton from "./play-button"
 import downloadCover from "./download-cover"
 import downloadSongs from "./download-songs"
 import GET_ALBUM_PAGE from "./get-album-page.gql"
 import ObjectLinks from "../../components/object-links"
-import areAllSongsInLibrary from "./are-all-songs-in-library"
-import ADD_ALBUM_TO_LIBRARY from "./add-album-to-library.gql"
-import { useQuery, useMutation, useShuffleAlbum } from "../../hooks"
-import REMOVE_ALBUM_FROM_LIBRARY from "./remove-album-from-library.gql"
+import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
+import { createDiscs, determineObjectPath, determineCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
-import AlbumPlayButton from "./play-button"
 
 const bem =
 	createBEM("AlbumPage")
 
-const AlbumPage: FC = () => {
-	const params = useParams<AlbumIDBase>()
-	const albumID = addDashesToUUID(params.albumID)
+const AlbumPage: VFC = () => {
+	const params = useParams<keyof AlbumIDBase>()
+	const albumID = addDashesToUUID(params.albumID!)
 
 	const variables: AlbumIDBase =
 		{ albumID }
 
-	const [ shuffleAlbum, { loading: shuffleLoading } ] =
-		useShuffleAlbum(albumID)
-
 	const { data, error } =
-		useQuery<AlbumData, AlbumIDBase>(
+		useQuery<GetAlbumData, AlbumIDBase>(
 			GET_ALBUM_PAGE,
 			{ variables },
 		)
 
-	const [ addToLibrary, { loading: addLoading } ] =
-		useMutation<AddAlbumToLibraryData, AlbumIDBase>(
-			ADD_ALBUM_TO_LIBRARY,
-			{ variables },
-		)
+	const [ shuffleAlbum ] =
+		useShuffleAlbum(variables)
 
-	const [ removeFromLibrary, { loading: removeLoading } ] =
-		useMutation<RemoveAlbumFromLibraryData, AlbumIDBase>(
-			REMOVE_ALBUM_FROM_LIBRARY,
-			{ variables },
-		)
-
-	const handleAdd =
-		async () => {
-			await addToLibrary()
-		}
-
-	const handleRemove =
-		async () => {
-			await removeFromLibrary()
-		}
+	const [ toggleAlbumInLibrary, inLibrary ] =
+		useToggleAlbumInLibrary({ albumID })
 
 	const handleSongsDownload =
 		async () =>
-			downloadSongs(data!.album)
+			downloadSongs(data!.getAlbumByID)
 
 	const handleCoverDownload =
 		async () =>
-			downloadCover(data!.album.albumID)
-
-	const loading =
-		addLoading || removeLoading || shuffleLoading
+			downloadCover(data!.getAlbumByID.albumID)
 
 	if (error) {
 		return (
@@ -96,17 +66,15 @@ const AlbumPage: FC = () => {
 		)
 	} else if (data) {
 		const discs =
-			createDiscs(data.album.songs)
-		const songsInLibrary =
-			areAllSongsInLibrary(data.album.songs)
+			createDiscs(data.getAlbumByID.songs)
 		return (
-			<Metadata title={data.album.title}>
+			<Metadata title={data.getAlbumByID.title}>
 				<div className={bem("", "Content PaddingTopBottom")}>
 					<Image
-						title={data.album.title}
+						title={data.getAlbumByID.title}
 						className={bem("img", "Elevated")}
 						url={determineCatalogImageURL(
-							data.album.albumID,
+							data.getAlbumByID.albumID,
 							"cover",
 							ImageSizes.FULL,
 							ImageDimensions.SQUARE,
@@ -115,14 +83,14 @@ const AlbumPage: FC = () => {
 					<div className={bem("content")}>
 						<div className={bem("title")}>
 							<h1 className="HeadingFour">
-								{data.album.title}
+								{data.getAlbumByID.title}
 							</h1>
 							<AlbumPlayButton
 								albumID={albumID}
 							/>
 						</div>
 						<div className="FlexListGapHalf MarginBottomHalf">
-							{data.album.artists.map(
+							{data.getAlbumByID.artists.map(
 								artist => (
 									<AlbumArtist
 										artist={artist}
@@ -132,11 +100,11 @@ const AlbumPage: FC = () => {
 							)}
 						</div>
 						<h3 className={bem("released", "BodyOne LightColor LightWeight")}>
-							{data.album.released}
+							{data.getAlbumByID.released}
 						</h3>
 						<h3 className="BodyTwo MarginBottom LightColor LightWeight">
 							<ObjectLinks
-								links={data.album.genres.map(({ genreID, name }) => ({
+								links={data.getAlbumByID.genres.map(({ genreID, name }) => ({
 									text: name,
 									path: determineObjectPath("genre", genreID),
 								}))}
@@ -161,7 +129,7 @@ const AlbumPage: FC = () => {
 											<Fragment> discs, </Fragment>
 										</Fragment>
 									)}
-									{data.album.songs.length}
+									{data.getAlbumByID.songs.length}
 									<Fragment> songs</Fragment>
 								</p>
 							)}
@@ -170,14 +138,12 @@ const AlbumPage: FC = () => {
 							<Button
 								icon="shuffle"
 								text="Shuffle"
-								onClick={loading ? undefined : shuffleAlbum}
+								onClick={shuffleAlbum}
 							/>
 							<Button
-								icon={songsInLibrary ? "done" : "add"}
-								text={songsInLibrary ? "Remove" : "Add"}
-								onClick={loading ?
-									undefined :
-									(songsInLibrary ? handleRemove : handleAdd)}
+								onClick={toggleAlbumInLibrary}
+								icon={inLibrary ? "done" : "add"}
+								text={inLibrary ? "Remove" : "Add"}
 							/>
 							<NavLink to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}>
 								<Button
@@ -209,11 +175,11 @@ const AlbumPage: FC = () => {
 							</summary>
 							<p className={bem("footer-text")}>
 								<Fragment>Released: </Fragment>
-								{data.album.released}
+								{data.getAlbumByID.released}
 							</p>
 							<p className={bem("footer-text")}>
 								<Fragment>Duration: </Fragment>
-								{deserializeDuration(data.album.duration, true)}
+								{deserializeDuration(data.getAlbumByID.duration, true)}
 							</p>
 						</details>
 					</div>
@@ -225,15 +191,8 @@ const AlbumPage: FC = () => {
 	}
 }
 
-interface AlbumData {
-	album: Album,
-}
-
-interface AddAlbumToLibraryData {
-	addAlbumToLibrary: Album,
-}
-interface RemoveAlbumFromLibraryData {
-	removeAlbumFromLibrary: Album,
+interface GetAlbumData {
+	getAlbumByID: Album,
 }
 
 export default AlbumPage

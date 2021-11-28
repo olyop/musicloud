@@ -1,13 +1,13 @@
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
-import { createElement, FC, Fragment } from "react"
+import { createElement, VFC, Fragment } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("LibraryEmpty")
 
-const LibraryEmpty: FC<PropTypes> = ({ name }) => (
+const LibraryEmpty: VFC<PropTypes> = ({ name }) => (
 	<div className={bem("", "Content PaddingBottom")}>
 		<h2 className={bem("heading", "MarginBottomHalf")}>
 			<Fragment>No </Fragment>

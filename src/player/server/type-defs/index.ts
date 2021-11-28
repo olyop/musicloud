@@ -8,13 +8,14 @@ const TYPE_DEFS_PATH =
 
 const importFile =
 	(fileName: string) =>
-		`${fs.readFileSync(path.join(TYPE_DEFS_PATH, `${fileName}.gql`))}`
+		`${fs.readFileSync(path.join(TYPE_DEFS_PATH, `${fileName}.gql`)).toString()}`
 
 const typeDefs = [
 	importFile("key"),
 	importFile("user"),
 	importFile("play"),
 	importFile("song"),
+	importFile("queue"),
 	importFile("enums"),
 	importFile("query"),
 	importFile("genre"),
@@ -22,6 +23,7 @@ const typeDefs = [
 	importFile("inputs"),
 	importFile("unions"),
 	importFile("artist"),
+	importFile("library"),
 	importFile("scalars"),
 	importFile("mutation"),
 	importFile("playlist"),

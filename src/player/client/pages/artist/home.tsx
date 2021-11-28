@@ -1,18 +1,19 @@
-import { createElement, FC } from "react"
-import { RouteComponentProps } from "react-router-dom"
+import { createElement, VFC } from "react"
+import { useParams } from "react-router-dom"
+import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { ArtistIDBase } from "@oly_op/music-app-common/types"
 
-import { Artist } from "../../types"
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"
-import getArtistIDFromURL from "./get-id-from-url"
+import { ArtistTopTenSongs } from "../../types"
 import GET_ARTIST_PAGE_HOME from "./get-artist-page-home.gql"
 
-const ArtistPageHome: FC<RouteComponentProps> = ({ match }) => {
-	const artistID = getArtistIDFromURL(match.path)
+const ArtistPageHome: VFC = () => {
+	const params = useParams<keyof ArtistIDBase>()
+	const artistID = addDashesToUUID(params.artistID!)
 
 	const { data } =
-		useQuery<Data, ArtistIDBase>(
+		useQuery<ArtistPageHomeData, ArtistIDBase>(
 			GET_ARTIST_PAGE_HOME,
 			{ variables: { artistID } },
 		)
@@ -24,19 +25,17 @@ const ArtistPageHome: FC<RouteComponentProps> = ({ match }) => {
 			</h1>
 			<Songs
 				hideIndex
-				hideCover
-				hideOrderBy
+				orderBy={false}
 				hideTrackNumber
-				orderByKey="songs"
 				className="Content"
-				songs={data?.artist.topTenSongs}
+				songs={data?.getArtistByID.topTenSongs}
 			/>
 		</div>
 	)
 }
 
-interface Data {
-	artist: Artist,
+interface ArtistPageHomeData {
+	getArtistByID: ArtistTopTenSongs,
 }
 
 export default ArtistPageHome

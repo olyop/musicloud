@@ -1,14 +1,9 @@
-import {
-	QueryResult,
-	QueryHookOptions,
-	useQuery as useBaseQuery,
-} from "@apollo/client"
-
 import uniqueID from "lodash/uniqueId"
 import { useRef, useEffect } from "react"
 import type { DocumentNode } from "graphql"
+import { QueryResult, QueryHookOptions, useQuery as useBaseQuery } from "@apollo/client"
 
-import { addLoading, useDispatch, removeLoading } from "../redux"
+import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../redux"
 
 export const useQuery = <Data, Vars = Record<string, unknown>>(
 	query: DocumentNode,
@@ -20,7 +15,7 @@ export const useQuery = <Data, Vars = Record<string, unknown>>(
 	const result =
 		useBaseQuery<Data, Vars>(query, options)
 
-	const { loading } = result
+	const { loading, error } = result
 
 	useEffect(() => {
 		if (!hideLoading) {
@@ -36,6 +31,12 @@ export const useQuery = <Data, Vars = Record<string, unknown>>(
 			}
 		}
 	}, [loading])
+
+	useEffect(() => {
+		if (error?.message === "Token expired") {
+			dispatch(updateAccessToken(null))
+		}
+	}, [error])
 
 	return result
 }

@@ -1,9 +1,9 @@
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 
 import Songs from "../../components/songs"
 import { Disc as DiscType } from "../../types"
 
-const Disc: FC<PropTypes> = ({
+const Disc: VFC<PropTypes> = ({
 	isSingle,
 	className,
 	disc: { songs, number, hideLabel },
@@ -18,8 +18,8 @@ const Disc: FC<PropTypes> = ({
 		<Songs
 			hideCover
 			hideIndex
-			hideOrderBy
 			songs={songs}
+			orderBy={false}
 			hideTrackNumber={isSingle}
 		/>
 	</div>

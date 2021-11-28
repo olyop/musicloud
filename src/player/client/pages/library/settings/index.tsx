@@ -1,8 +1,9 @@
+import isNull from "lodash/isNull"
 import uniqueID from "lodash/uniqueId"
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
 import { useApolloClient } from "@apollo/client"
-import { createElement, FC, Fragment, useState } from "react"
+import { createElement, VFC, Fragment, useState } from "react"
 
 import {
 	addLoading,
@@ -17,7 +18,7 @@ import Modal, {
 	ModalButtons,
 } from "../../../components/modal"
 
-import { User } from "../../../types"
+import { Library } from "../../../types"
 import { useMutation } from "../../../hooks"
 import DELETE_LIBRARY from "./delete-library.gql"
 import GET_LIBRARY_SONGS from "./get-library-songs.gql"
@@ -30,11 +31,7 @@ import GET_LIBRARY_PLAYLISTS from "./get-library-playlists.gql"
 const downloadLibraryLoadingID =
 	uniqueID()
 
-interface SongsData {
-	user: User,
-}
-
-const LibrarySettings: FC = () => {
+const LibrarySettings: VFC = () => {
 	const dispatch = useDispatch()
 	const client = useApolloClient()
 	const loading = useStateLoading()
@@ -97,16 +94,18 @@ const LibrarySettings: FC = () => {
 					})
 
 					const { data } =
-						await client.query<SongsData>({
+						await client.query<GetLibrarySongsData>({
 							query: GET_LIBRARY_SONGS,
 							fetchPolicy: "network-only",
 						})
 
-					const { librarySongs } =
-						data.user
+					const { songs } =
+						data.getLibrary
 
-					for (const { songID } of librarySongs) {
-						await fetch(determineCatalogMP3URL(songID))
+					if (!isNull(songs)) {
+						for (const { songID } of songs) {
+							await fetch(determineCatalogMP3URL(songID))
+						}
 					}
 				} finally {
 					dispatch(removeLoading(downloadLibraryLoadingID))
@@ -138,9 +137,9 @@ const LibrarySettings: FC = () => {
 					<ModalHeader
 						text={(
 							<Fragment>
-								<Fragment>Are you sure you want</Fragment>
+								Are you sure you want
 								<br/>
-								<Fragment>to delete your library?</Fragment>
+								to delete your library?
 							</Fragment>
 						)}
 					/>
@@ -175,6 +174,10 @@ const LibrarySettings: FC = () => {
 			</Modal>
 		</Metadata>
 	)
+}
+
+interface GetLibrarySongsData {
+	getLibrary: Library,
 }
 
 export default LibrarySettings

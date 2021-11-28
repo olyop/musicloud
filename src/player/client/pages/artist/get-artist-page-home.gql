@@ -1,5 +1,5 @@
 query getArtistPageHome($artistID: UUID!) {
-	artist(artistID: $artistID) {
+	getArtistByID(artistID: $artistID) {
 		artistID
 		topTenSongs {
 			songID

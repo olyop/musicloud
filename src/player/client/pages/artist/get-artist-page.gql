@@ -1,13 +1,13 @@
 query getArtistPage($artistID: UUID!) {
-	artist(artistID: $artistID) {
+	getArtistByID(artistID: $artistID) {
 		name
 		city
+		since
 		country
 		artistID
 		inLibrary
 		playsTotal
 		songsTotal
 		albumsTotal
-		firstAlbumReleaseDate
 	}
 }

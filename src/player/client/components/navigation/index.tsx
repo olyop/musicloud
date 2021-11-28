@@ -1,7 +1,7 @@
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
-import { createElement, FC, ReactNode } from "react"
 import { createBEM, BEMPropTypes } from "@oly_op/bem"
+import { createElement, ReactNode, VFC } from "react"
 
 import { Route } from "../../types"
 
@@ -10,10 +10,9 @@ import "./index.scss"
 const bem =
 	createBEM("Navigation")
 
-const Navigation: FC<PropTypes> = ({
+const Navigation: VFC<PropTypes> = ({
 	right,
 	routes,
-	basePath,
 	className,
 }) => (
 	<nav className={bem(className, "Content FlexListSpaceBetween")}>
@@ -28,12 +27,17 @@ const Navigation: FC<PropTypes> = ({
 			}) => (
 				ignore || (
 					<NavLink
-						exact
+						to={path}
 						key={routeID}
-						to={basePath + path}
-						className={bem("link")}
-						activeClassName={underline ?
-							bem("active") : bem("active-no-underline")}
+						className={({ isActive }) => (
+							bem(
+								isActive && (
+									underline ?
+										"active" : "active-no-underline"
+								),
+								"link",
+							)!
+						)}
 						children={(
 							<Button
 								icon={icon}
@@ -59,7 +63,6 @@ const Navigation: FC<PropTypes> = ({
 
 interface PropTypes extends BEMPropTypes {
 	routes: Route[],
-	basePath: string,
 	right?: ReactNode,
 }
 

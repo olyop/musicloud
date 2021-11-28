@@ -1,67 +1,35 @@
-import {
-	join,
-	query as pgHelpersQuery,
-	exists as pgHelpersExists,
-	convertFirstRowToCamelCase,
-} from "@oly_op/pg-helpers"
+import { InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { join, query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
-import {
-	ForbiddenError,
-	UserInputError,
-} from "apollo-server-fastify"
-
-import pipe from "@oly_op/pipe"
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
-
-import {
-	SELECT_PLAYLIST_BY_ID,
-	UPDATE_PLAYLIST_TITLE,
-} from "../../sql"
-
+import resolver from "./resolver"
 import { Playlist } from "../../types"
-import { createResolver } from "../helpers"
 import { COLUMN_NAMES } from "../../globals"
+import { isNotUsersPlaylist } from "../helpers"
+import { UPDATE_PLAYLIST_TITLE } from "../../sql"
 
-interface Args
-	extends PlaylistIDBase, Pick<Playlist, "title"> {}
-
-const resolver =
-	createResolver()
+type Args =
+	InterfaceWithInput<Pick<Playlist, "playlistID" | "title">>
 
 export const renamePlaylist =
 	resolver<Playlist, Args>(
 		async ({ args, context }) => {
-			const { title, playlistID } = args
+			const { title, playlistID } = args.input
 			const { userID } = context.authorization!
 
-			const query = pgHelpersQuery(context.pg)
-			const exists = pgHelpersExists(context.pg)
-
 			const playlistExists =
-				await exists({
+				await exists(context.pg)({
 					value: playlistID,
 					table: "playlists",
-					column: "playlist_id",
+					column: COLUMN_NAMES.PLAYLIST[0],
 				})
 
 			if (!playlistExists) {
-				throw new UserInputError("Playlist does not exist.")
+				throw new UserInputError("Playlist does not exist")
 			}
 
-			const isUsersPlaylist =
-				await query(SELECT_PLAYLIST_BY_ID)({
-					parse: pipe(
-						convertFirstRowToCamelCase<Playlist>(),
-						playlist => playlist.userID === userID,
-					),
-					variables: {
-						playlistID,
-						columnNames: "*",
-					},
-				})
-
-			if (!isUsersPlaylist) {
-				throw new ForbiddenError("Unauthorized to delete playlist.")
+			if (await isNotUsersPlaylist(context.pg)({ userID, playlistID })) {
+				throw new ForbiddenError("Unauthorized to delete playlist")
 			}
 
 			await context.ag.partialUpdateObject({
@@ -70,7 +38,7 @@ export const renamePlaylist =
 				objectID: playlistID,
 			})
 
-			return query(UPDATE_PLAYLIST_TITLE)({
+			return query(context.pg)(UPDATE_PLAYLIST_TITLE)({
 				parse: convertFirstRowToCamelCase(),
 				variables: [{
 					key: "playlistID",

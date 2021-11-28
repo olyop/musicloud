@@ -1,12 +1,11 @@
 mutation playTopOneHundredSongs {
 	playTopOneHundredSongs {
-    userID
     nowPlaying {
       mix
       title
       songID
       duration
-			inLibrary
+      inLibrary
       featuring {
         artistID
         name

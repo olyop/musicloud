@@ -1,26 +1,24 @@
 import isEmpty from "lodash/isEmpty"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { createBEM, BEMPropTypes } from "@oly_op/bem"
 
 import Song from "../song"
 import SelectOrderBy from "../select-order-by"
-import { Handler, SettingsOrderBy, Song as SongType } from "../../types"
+import { Handler, OrderByOptions, SettingsOrderBySongs, Song as SongType } from "../../types"
 
 const bem =
 	createBEM("Songs")
 
-const Songs: FC<PropTypes> = ({
+const Songs: VFC<SongsPropTypes> = ({
 	onRemove,
 	className,
-	orderByKey,
 	songs = [],
-	orderByFields,
+	orderBy = false,
 	hidePlay = false,
 	hideMore = false,
 	hidePlays = false,
 	hideIndex = false,
 	hideCover = false,
-	hideOrderBy = false,
 	hideDuration = false,
 	hideElevated = false,
 	hideInLibrary = false,
@@ -32,10 +30,9 @@ const Songs: FC<PropTypes> = ({
 			(isEmpty(songs) || hideElevated) || "Elevated",
 		)}
 	>
-		{hideOrderBy || (
+		{orderBy && (
 			<SelectOrderBy
-				settingsKey={orderByKey!}
-				fieldOptions={orderByFields!}
+				orderBy={orderBy}
 				className="PaddingHalf ItemBorder FlexListRight"
 			/>
 		)}
@@ -65,21 +62,19 @@ export interface OnRemoveOptions {
 	song: SongType,
 }
 
-interface PropTypes extends BEMPropTypes {
+export interface SongsPropTypes extends BEMPropTypes {
 	songs?: SongType[],
 	hidePlay?: boolean,
 	hideMore?: boolean,
 	hideCover?: boolean,
 	hidePlays?: boolean,
 	hideIndex?: boolean,
-	hideOrderBy?: boolean,
 	hideDuration?: boolean,
 	hideElevated?: boolean,
 	hideInLibrary?: boolean,
-	orderByFields?: string[],
 	hideTrackNumber?: boolean,
 	onRemove?: (options: OnRemoveOptions) => Handler,
-	orderByKey?: keyof Pick<SettingsOrderBy, "songs" | "librarySongs">,
+	orderBy?: OrderByOptions<SettingsOrderBySongs> | false,
 }
 
 export default Songs

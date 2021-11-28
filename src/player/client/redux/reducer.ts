@@ -113,16 +113,16 @@ const settings =
 				...state,
 				queuesDisclosure: {
 					...state.queuesDisclosure,
-					queueNext: true,
-					queueLater: true,
+					next: true,
+					later: true,
 				},
 			}))
 			.addCase(collapseQueuesDisclosure, state => ({
 				...state,
 				queuesDisclosure: {
-					queueNext: false,
-					queueLater: false,
-					queuePrevious: false,
+					next: false,
+					later: false,
+					previous: false,
 				},
 			}))
 			.addCase(toggleQueueDisclosure, (state, { payload }) => ({

@@ -1,47 +1,43 @@
-import { MutationResult, StoreObject } from "@apollo/client"
+import isNull from "lodash/isNull"
+import { Reference } from "@apollo/client"
 import { PlaylistIDBase } from "@oly_op/music-app-common/types"
 
-import { useUserID } from "../user-id"
 import { useMutation } from "../mutation"
-import { User, Handler } from "../../types"
 import DELETE_PLAYLIST from "./delete-playlist.gql"
+import { DeletePlaylistData, UseDeletePlaylistResult } from "./types"
 
 export const useDeletePlaylist =
-	(playlistID: string) => {
-		const userID =
-			useUserID()
-
+	({ playlistID }: PlaylistIDBase): UseDeletePlaylistResult => {
 		const [ deletePlaylist, result ] =
-			useMutation<Data, PlaylistIDBase>(DELETE_PLAYLIST, {
+			useMutation<DeletePlaylistData, PlaylistIDBase>(DELETE_PLAYLIST, {
 				variables: { playlistID },
-				update: (cache, { data }) => {
+				update: cache => {
 					cache.modify({
-						id: cache.identify({ userID, __typename: "User" }),
+						id: cache.identify({ __typename: "Library" }),
 						fields: {
-							libraryPlaylists:
-								(existing: StoreObject[], { readField }) =>
-									existing.filter(playlist => (
-										readField("playlistID", playlist) !== playlistID
-									)),
+							playlistsPaginated:
+								(existing: Reference[] | null, { readField }) => {
+									if (isNull(existing)) {
+										return null
+									} else {
+										if (existing.length === 1) {
+											return null
+										} else {
+											return existing.filter(playlist => (
+												readField("playlistID", playlist) !== playlistID
+											))
+										}
+									}
+								},
 						},
 					})
 				},
 			})
 
-		const handler =
+		const handleDeletePlaylist =
 			async () => {
 				await deletePlaylist()
 			}
 
-		return [
-			handler,
-			result,
-		] as [
-			handler: Handler,
-			result: MutationResult<Data>,
-		]
+		return [ handleDeletePlaylist, result ]
 	}
-
-interface Data {
-	deletePlaylist: User,
-}

@@ -1,19 +1,14 @@
-import { User } from "../../types"
-import { createResolver, jumpToSongInQueue } from "../helpers"
-
-const resolver =
-	createResolver()
-
-interface Args {
-	index: number,
-}
+import resolver from "./resolver"
+import { IndexOptions } from "../../types"
+import { jumpToSongInQueue } from "../helpers"
 
 export const removeSongFromQueueNext =
-	resolver<User, Args>(
+	resolver<void, IndexOptions>(
 		({ args, context }) => (
-			jumpToSongInQueue(context.pg)(context.authorization!.userID)(
-				"queue_nexts",
-				args.index,
-			)
+			jumpToSongInQueue(context.pg)({
+				index: args.index,
+				tableName: "queue_nexts",
+				userID: context.authorization!.userID,
+			})
 		),
 	)

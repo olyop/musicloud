@@ -1,11 +1,11 @@
 import isEmpty from "lodash/isEmpty"
-import { createElement, Fragment, FC } from "react"
+import { createElement, Fragment, VFC } from "react"
 
 import ObjectLinks from "../object-links"
 import { determineObjectPath } from "../../helpers"
 import { Song, OnClickPropTypes } from "../../types"
 
-const FeaturingArtists: FC<PropTypes> = ({ song, onClick }) => (
+const FeaturingArtists: VFC<PropTypes> = ({ song, onClick }) => (
 	<Fragment>
 		<ObjectLinks
 			ampersand

@@ -7,5 +7,36 @@ mutation addSongToPlaylist(
 		playlistID: $playlistID
 	) {
 		playlistID
+		songs {
+			mix
+			title
+			songID
+			duration
+			inLibrary
+			playsTotal
+			discNumber
+			trackNumber
+			playlistIndex(playlistID: $playlistID)
+			featuring {
+				name
+				artistID
+			}
+			remixers {
+				name
+				artistID
+			}
+			artists {
+				name
+				artistID
+			}
+			genres {
+				name
+				genreID
+			}
+			album {
+				title
+				albumID
+			}
+		}
 	}
 }

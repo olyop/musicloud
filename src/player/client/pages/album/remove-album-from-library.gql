@@ -1,9 +1,0 @@
-mutation removeAlbumFromLibrary($albumID: UUID!) {
-  removeAlbumFromLibrary(albumID: $albumID) {
-    albumID
-    songs {
-      songID
-      inLibrary
-    }
-  }
-}

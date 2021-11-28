@@ -1,5 +1,5 @@
 query getSongInLibrary($songID: UUID!) {
-	song(songID: $songID) {
+	getSongByID(songID: $songID) {
 		songID
 		inLibrary
 	}

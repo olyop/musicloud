@@ -1,48 +1,43 @@
 import {
 	join,
-	query as pgQuery,
+	query as pgHelpersQuery,
 	convertFirstRowToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { isEmpty } from "lodash"
+import { isNull } from "lodash"
 
 import {
-	createResolver,
-	getUserWithQueues,
-	getQueuesNowPlaying,
-	updateUserNowPlaying,
-} from "../helpers"
-
-import {
-	SELECT_USER_BY_ID,
 	INSERT_QUEUE_SONG,
 	SELECT_QUEUE_SONG,
 	DELETE_QUEUE_SONG,
-	UPDATE_USER_QUEUE_SONG,
+	UPDATE_QUEUE_SONG,
 } from "../../sql"
 
+import resolver from "./resolver"
+import { QueueSong } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
-import { User, QueueSong } from "../../types"
-
-const resolver =
-	createResolver()
+import { getQueue, updateQueueNowPlaying } from "../helpers"
 
 export const nextQueueSong =
-	resolver<User>(
+	resolver<Record<string, never>>(
 		async ({ context }) => {
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
-			const query = pgQuery(client)
-
-			let user: User
+			const query = pgHelpersQuery(client)
 
 			try {
 				await query("BEGIN")()
 
-				const { queuePrevious, nowPlaying, queueNext, queueLater } =
-					await getQueuesNowPlaying(client)(userID)
+				const { previous, nowPlaying, next, later } =
+					await getQueue(client)({ userID })
 
-				if (!isEmpty(queueNext) || !isEmpty(queueLater)) {
+				if (!isNull(nowPlaying) && (!isNull(next) || !isNull(later))) {
+					const queueToBeEdited =
+						(isNull(next) ? later : next)!
+
+					const queueToBeEditedName =
+						isNull(next) ? "later" : "next"
+
 					const newNowPlaying =
 						await query(SELECT_QUEUE_SONG)({
 							parse: convertFirstRowToCamelCase<QueueSong>(),
@@ -50,7 +45,7 @@ export const nextQueueSong =
 								userID,
 								index: 0,
 								columnNames: join(COLUMN_NAMES.QUEUE_SONG),
-								tableName: `queue_${isEmpty(queueNext) ? "later" : "next"}s`,
+								tableName: `queue_${queueToBeEditedName}s`,
 							},
 						})
 
@@ -58,18 +53,18 @@ export const nextQueueSong =
 						variables: {
 							userID,
 							index: 0,
-							tableName: `queue_${isEmpty(queueNext) ? "later" : "next"}s`,
+							tableName: `queue_${queueToBeEditedName}s`,
 						},
 					})
 
-					for (const queue of isEmpty(queueNext) ? queueLater : queueNext) {
+					for (const queue of queueToBeEdited) {
 						if (queue.index !== 0) {
-							await query(UPDATE_USER_QUEUE_SONG)({
+							await query(UPDATE_QUEUE_SONG)({
 								variables: {
 									userID,
 									addSubtract: "-",
 									index: queue.index,
-									tableName: `queue_${isEmpty(queueNext) ? "later" : "next"}s`,
+									tableName: `queue_${queueToBeEditedName}s`,
 								},
 							})
 						}
@@ -78,22 +73,15 @@ export const nextQueueSong =
 					await query(INSERT_QUEUE_SONG)({
 						variables: {
 							userID,
-							songID: nowPlaying!,
+							songID: nowPlaying.songID,
 							tableName: "queue_previous",
-							index: queuePrevious.length,
+							index: isNull(previous) ? 0 : previous.length,
 						},
 					})
 
-					await updateUserNowPlaying(client)(userID, newNowPlaying.songID)
-
-					user = await getUserWithQueues(client)(userID)
-				} else {
-					user = await query(SELECT_USER_BY_ID)({
-						parse: convertFirstRowToCamelCase<User>(),
-						variables: {
-							userID,
-							columnNames: join(COLUMN_NAMES.USER),
-						},
+					await updateQueueNowPlaying(client)({
+						userID,
+						value: newNowPlaying.songID,
 					})
 				}
 
@@ -105,6 +93,6 @@ export const nextQueueSong =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

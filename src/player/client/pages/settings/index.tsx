@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
-import { useState, createElement, FC, Fragment } from "react"
+import { useState, createElement, VFC, Fragment } from "react"
 
 import {
 	useDispatch,
@@ -35,7 +35,7 @@ import "./index.scss"
 const bem =
 	createBEM("SettingsPage")
 
-const SettingsPage: FC = () => {
+const SettingsPage: VFC = () => {
 	const signOut = useSignOut()
 	const theme = useStateTheme()
 	const dispatch = useDispatch()

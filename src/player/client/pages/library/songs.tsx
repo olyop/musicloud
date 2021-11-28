@@ -1,10 +1,10 @@
-import isEmpty from "lodash/isEmpty"
-import { createElement, FC } from "react"
+import isNull from "lodash/isNull"
+import { createElement, VFC } from "react"
 import Metadata from "@oly_op/react-metadata"
 
 import {
-	User,
 	LibrarySongsOrderBy,
+	LibrarySongsPaginated,
 	LibrarySongsOrderByField,
 } from "../../types"
 
@@ -14,18 +14,20 @@ import Songs from "../../components/songs"
 import { useStateOrderBy } from "../../redux"
 import GET_LIBRARY_SONGS from "./get-library-songs.gql"
 
-const LibrarySongs: FC = () => {
+const LibrarySongs: VFC = () => {
 	const orderBy = useStateOrderBy<LibrarySongsOrderByField>("librarySongs")
 	return (
 		<Metadata title="Library Songs">
-			<Feed<Data, Vars>
+			<Feed<GetLibrarySongsData, GetLibrarySongsVars>
 				variables={{ orderBy }}
 				query={GET_LIBRARY_SONGS}
-				dataToObjectsLength={({ user }) => user.librarySongs.length}
-				children={
-					({ error, data }) => {
+				dataToObjectsLength={
+					data => data.getLibrary.songsPaginated?.length || 0
+				}
+				render={
+					({ data }) => {
 						if (data) {
-							if (isEmpty(data.user.librarySongs)) {
+							if (isNull(data.getLibrary.songsPaginated)) {
 								return (
 									<LibraryEmpty
 										name="songs"
@@ -38,10 +40,11 @@ const LibrarySongs: FC = () => {
 										hideIndex
 										hideTrackNumber
 										className="Content"
-										orderByKey="librarySongs"
-										songs={data.user.librarySongs}
-										hideOrderBy={isEmpty(data?.user.librarySongs)}
-										orderByFields={Object.keys(LibrarySongsOrderByField)}
+										songs={data.getLibrary.songsPaginated}
+										orderBy={{
+											key: "librarySongs",
+											fields: Object.keys(LibrarySongsOrderByField),
+										}}
 									/>
 								)
 							}
@@ -55,12 +58,12 @@ const LibrarySongs: FC = () => {
 	)
 }
 
-interface Data {
-	user: User,
+interface GetLibrarySongsVars {
+	orderBy: LibrarySongsOrderBy,
 }
 
-interface Vars {
-	orderBy: LibrarySongsOrderBy,
+interface GetLibrarySongsData {
+	getLibrary: LibrarySongsPaginated,
 }
 
 export default LibrarySongs

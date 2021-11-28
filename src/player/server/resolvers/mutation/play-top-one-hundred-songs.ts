@@ -1,52 +1,51 @@
-import { query as pgQuery } from "@oly_op/pg-helpers"
+import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
 import {
+	clearQueue,
 	getTopSongs,
 	createResolver,
-	getUserWithQueues,
-	clearQueuesNowPlaying,
-	updateUserNowPlaying,
+	updateQueueNowPlaying,
 } from "../helpers"
 
-import { User } from "../../types"
 import { INSERT_QUEUE_SONG } from "../../sql"
 
 const resolver =
 	createResolver()
 
 export const playTopOneHundredSongs =
-	resolver(
+	resolver<Record<string, never>>(
 		async ({ context }) => {
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
-			const query = pgQuery(client)
-
-			let user: User
+			const query = pgHelpersQuery(client)
 
 			try {
 				await query("BEGIN")()
 
-				await clearQueuesNowPlaying(client)(userID)
+				await clearQueue(client)({ userID })
 
 				const [ nowPlaying, ...songs ] =
 					await getTopSongs(context.pg)(100)
 
-				await updateUserNowPlaying(client)(userID, nowPlaying.songID)
+				await updateQueueNowPlaying(client)({
+					userID,
+					value: nowPlaying.songID,
+				})
 
-				await Promise.all(songs.map(
-					({ songID }, index) => (
-						query(INSERT_QUEUE_SONG)({
-							variables: {
-								index,
-								userID,
-								songID,
-								tableName: "queue_laters",
-							},
-						})
+				await Promise.all(
+					songs.map(
+						({ songID }, index) => (
+							query(INSERT_QUEUE_SONG)({
+								variables: {
+									index,
+									userID,
+									songID,
+									tableName: "queue_laters",
+								},
+							})
+						),
 					),
-				))
-
-				user = await getUserWithQueues(client)(userID)
+				)
 
 				await query("COMMIT")()
 			} catch (error) {
@@ -56,6 +55,6 @@ export const playTopOneHundredSongs =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

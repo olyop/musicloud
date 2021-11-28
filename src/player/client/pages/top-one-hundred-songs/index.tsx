@@ -3,7 +3,7 @@ import { createElement, FC } from "react"
 import isUndefined from "lodash/isUndefined"
 import Metadata from "@oly_op/react-metadata"
 
-import { User, Song } from "../../types"
+import { Song, Queue } from "../../types"
 import Songs from "../../components/songs"
 import { updatePlay, useDispatch } from "../../redux"
 import { useQuery, useMutation, useResetPlayer } from "../../hooks"
@@ -13,14 +13,18 @@ import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
 const TopOneHundredSongsPage: FC = () => {
 	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
-	const { data } = useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS)
-	const [ play, { loading } ] = useMutation<MutationData>(PLAY_TOP_ONE_HUNDRED_SONGS)
+
+	const { data } =
+		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS)
+
+	const [ playTopOneHundredSongs, { loading } ] =
+		useMutation<MutationData>(PLAY_TOP_ONE_HUNDRED_SONGS)
 
 	const handlePlay =
 		async () => {
 			if (!loading) {
 				resetPlayer()
-				await play()
+				await playTopOneHundredSongs()
 				dispatch(updatePlay(true))
 			}
 		}
@@ -44,10 +48,10 @@ const TopOneHundredSongsPage: FC = () => {
 				</div>
 				{!isUndefined(data) && (
 					<Songs
-						hideOrderBy
 						hideDuration
+						orderBy={false}
 						hideTrackNumber
-						songs={data.topOneHundredSongs}
+						songs={data.getTopOneHundredSongs}
 					/>
 				)}
 			</div>
@@ -56,11 +60,11 @@ const TopOneHundredSongsPage: FC = () => {
 }
 
 interface QueryData {
-	topOneHundredSongs: Song[],
+	getTopOneHundredSongs: Song[],
 }
 
 interface MutationData {
-	playTopOneHundredSongs: User,
+	playTopOneHundredSongs: Queue,
 }
 
 export default TopOneHundredSongsPage

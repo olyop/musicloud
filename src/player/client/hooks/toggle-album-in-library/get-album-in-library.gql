@@ -1,0 +1,6 @@
+query getAlbumInLibrary($albumID: UUID!) {
+	getAlbumByID(albumID: $albumID) {
+		albumID
+		inLibrary
+	}
+}

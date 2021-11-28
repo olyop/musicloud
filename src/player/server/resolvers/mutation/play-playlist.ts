@@ -1,7 +1,7 @@
 import {
 	join,
-	query as pgQuery,
 	exists as pgExists,
+	query as pgHelpersQuery,
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
@@ -9,30 +9,20 @@ import { isEmpty } from "lodash"
 import { UserInputError } from "apollo-server-fastify"
 import { PlaylistIDBase } from "@oly_op/music-app-common/types"
 
-import {
-	createResolver,
-	getUserWithQueues,
-	clearQueuesNowPlaying,
-	updateUserNowPlaying,
-} from "../helpers"
-
-import { Song, User } from "../../types"
+import resolver from "./resolver"
+import { Song } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
+import { clearQueue, updateQueueNowPlaying } from "../helpers"
 import { INSERT_QUEUE_SONG, SELECT_PLAYLIST_SONGS } from "../../sql"
 
-const resolver =
-	createResolver()
-
 export const playPlaylist =
-	resolver<User, PlaylistIDBase>(
+	resolver<Record<string, never>, PlaylistIDBase>(
 		async ({ parent, args, context }) => {
 			const { playlistID } = args
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
-			const query = pgQuery(client)
+			const query = pgHelpersQuery(client)
 			const exists = pgExists(client)
-
-			let user: User
 
 			try {
 				await query("BEGIN")()
@@ -41,14 +31,14 @@ export const playPlaylist =
 					await exists({
 						value: playlistID,
 						table: "playlists",
-						column: "playlist_id",
+						column: COLUMN_NAMES.PLAYLIST[0],
 					})
 
 				if (!playlistExists) {
-					throw new UserInputError("Playlist does not exist.")
+					throw new UserInputError("Playlist does not exist")
 				}
 
-				await clearQueuesNowPlaying(client)(userID)
+				await clearQueue(client)({ userID })
 
 				const playlistSongs =
 					await query(SELECT_PLAYLIST_SONGS)({
@@ -59,29 +49,30 @@ export const playPlaylist =
 						},
 					})
 
-				if (isEmpty(playlistSongs)) {
-					throw new UserInputError("Playlist is empty")
+				if (!isEmpty(playlistSongs)) {
+					const [ nowPlaying, ...songs ] =
+						playlistSongs
+
+					await updateQueueNowPlaying(client)({
+						userID,
+						value: nowPlaying.songID,
+					})
+
+					await Promise.all(
+						songs.map(
+							({ songID }, index) => (
+								query(INSERT_QUEUE_SONG)({
+									variables: {
+										index,
+										userID,
+										songID,
+										tableName: "queue_laters",
+									},
+								})
+							),
+						),
+					)
 				}
-
-				const [ nowPlaying, ...songs ] =
-					playlistSongs
-
-				await updateUserNowPlaying(client)(userID, nowPlaying.songID)
-
-				await Promise.all(songs.map(
-					({ songID }, index) => (
-						query(INSERT_QUEUE_SONG)({
-							variables: {
-								index,
-								userID,
-								songID,
-								tableName: "queue_laters",
-							},
-						})
-					),
-				))
-
-				user = await getUserWithQueues(client)(userID)
 
 				await query("COMMIT")()
 			} catch (error) {
@@ -91,6 +82,6 @@ export const playPlaylist =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

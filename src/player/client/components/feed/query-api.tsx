@@ -14,7 +14,7 @@ const QueryApi = <Data, Vars = Record<string, unknown>>({
 	const queryID = useRef(uniqueID())
 
 	const result =
-		useQuery<Data, Vars>(query, { variables, fetchPolicy: "cache-first" })
+		useQuery<Data, Vars>(query, { variables })
 
 	useEffect(() => {
 		if (!result.data && result.loading) {

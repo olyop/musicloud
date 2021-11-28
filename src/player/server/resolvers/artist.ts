@@ -5,10 +5,11 @@ import {
 	getResultRowCount,
 	getResultRowCountOrNull,
 	convertTableToCamelCase,
+	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
 import pipe from "@oly_op/pipe"
-import { head as lodashHead } from "lodash"
+import { ArtistIDBase, UserIDBase } from "@oly_op/music-app-common/types"
 
 import {
 	Song,
@@ -20,6 +21,7 @@ import {
 } from "../types"
 
 import {
+	head,
 	createResolver,
 	getObjectInLibrary,
 	getObjectDateAddedToLibrary,
@@ -32,12 +34,11 @@ import {
 	SELECT_ARTIST_ALBUMS,
 	SELECT_OBJECT_SONG_PLAYS,
 	SELECT_ARTIST_TOP_TEN_SONGS,
+	SELECT_ARTIST_SONGS_ORDER_BY,
+	SELECT_ARTIST_ALBUMS_ORDER_BY,
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
-
-const head =
-	<T>() => (array: T[]) => lodashHead<T>(array)!
 
 const resolver =
 	createResolver<Artist>()
@@ -54,28 +55,17 @@ export const playsTotal =
 		),
 	)
 
-const getSongs =
-	(client: PoolOrClient) =>
-		<T>({ objectID, parse, orderBy }: GetObjectsOptions<T>) =>
-			query(client)(SELECT_ARTIST_SONGS)({
-				parse,
-				variables: {
-					artistID: objectID,
-					columnNames: join(COLUMN_NAMES.SONG, "songs"),
-					orderByDirection: orderBy?.direction || "ASC",
-					orderByField: determineSongsSQLOrderByField(
-						orderBy?.field.toLowerCase() || "title",
-					),
-				},
-			})
-
 export const songs =
 	resolver<Song[], OrderByArgs>(
 		({ parent, args, context }) => (
-			getSongs(context.pg)({
-				orderBy: args.orderBy,
-				objectID: parent.artistID,
+			query(context.pg)(SELECT_ARTIST_SONGS_ORDER_BY)({
 				parse: convertTableToCamelCase(),
+				variables: {
+					artistID: parent.artistID,
+					orderByDirection: args.orderBy.direction,
+					columnNames: join(COLUMN_NAMES.SONG, "songs"),
+					orderByField: determineSongsSQLOrderByField(args.orderBy.field),
+				},
 			})
 		),
 	)
@@ -83,66 +73,86 @@ export const songs =
 export const songsTotal =
 	resolver(
 		({ parent, context }) => (
-			getSongs(context.pg)({
+			query(context.pg)(SELECT_ARTIST_SONGS)({
 				parse: getResultRowCount,
-				objectID: parent.artistID,
+				variables: {
+					artistID: parent.artistID,
+					columnNames: join(COLUMN_NAMES.SONG, "songs"),
+				},
 			})
 		),
 	)
 
-const getAlbums =
-	(client: PoolOrClient) =>
-		<T>({ objectID, parse, orderBy }: GetObjectsOptions<T>) =>
-			query(client)(SELECT_ARTIST_ALBUMS)({
-				parse,
-				variables: {
-					artistID: objectID,
-					orderByField: orderBy?.field || "title",
-					orderByDirection: orderBy?.direction || "ASC",
-					columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
-				},
-			})
-
 export const albums =
 	resolver<Album[], OrderByArgs>(
 		({ parent, args, context }) => (
-			getAlbums(context.pg)({
-				orderBy: args.orderBy,
-				objectID: parent.artistID,
+			query(context.pg)(SELECT_ARTIST_ALBUMS_ORDER_BY)({
 				parse: convertTableToCamelCase(),
+				variables: {
+					artistID: parent.artistID,
+					orderByField: args.orderBy.field,
+					orderByDirection: args.orderBy.direction,
+					columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
+				},
 			})
 		),
 	)
 
 export const albumsTotal =
-	resolver<number>(
+	resolver(
 		({ parent, context }) => (
-			getAlbums(context.pg)({
+			query(context.pg)(SELECT_ARTIST_ALBUMS)({
 				parse: getResultRowCount,
-				objectID: parent.artistID,
+				variables: {
+					artistID: parent.artistID,
+					columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
+				},
 			})
 		),
 	)
 
-const getUserPlays =
+export const since =
+	resolver(
+		({ parent, context }) => (
+			query(context.pg)(SELECT_ARTIST_ALBUMS_ORDER_BY)({
+				parse: pipe(
+					convertTableToCamelCase<Album>(),
+					head(),
+					({ released }) => released,
+				),
+				variables: {
+					orderByDirection: "ASC",
+					orderByField: "released",
+					artistID: parent.artistID,
+					columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
+				},
+			})
+		),
+	)
+
+interface GetUserArtistPlays<T>
+	extends UserIDBase, ArtistIDBase, GetObjectsOptions<T> {}
+
+const getUserArtistPlays =
 	(client: PoolOrClient) =>
-		(userID: string) =>
-			<T>({ objectID, parse }: GetObjectsOptions<T>) =>
-				query(client)(SELECT_OBJECT_SONG_PLAYS)({
-					parse,
-					variables: {
-						userID,
-						artistID: objectID,
-						columnNames: join(COLUMN_NAMES.PLAY),
-					},
-				})
+		<T>({ userID, artistID, parse, columnNames }: GetUserArtistPlays<T>) =>
+			query(client)(SELECT_OBJECT_SONG_PLAYS)({
+				parse,
+				variables: {
+					userID,
+					artistID,
+					columnNames,
+				},
+			})
 
 export const userPlays =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				objectID: parent.artistID,
-				parse: convertTableToCamelCase<Play>(),
+			getUserArtistPlays(context.pg)({
+				artistID: parent.artistID,
+				columnNames: join(COLUMN_NAMES.PLAY),
+				userID: context.authorization!.userID,
+				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
 		),
 	)
@@ -150,9 +160,11 @@ export const userPlays =
 export const userPlaysTotal =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				objectID: parent.artistID,
+			getUserArtistPlays(context.pg)({
+				artistID: parent.artistID,
 				parse: getResultRowCountOrNull,
+				columnNames: COLUMN_NAMES.PLAY[0],
+				userID: context.authorization!.userID,
 			})
 		),
 	)
@@ -161,9 +173,9 @@ export const dateAddedToLibrary =
 	resolver(
 		({ parent, context }) => (
 			getObjectDateAddedToLibrary(context.pg)({
-				columnName: "artist_id",
 				objectID: parent.artistID,
-				libraryTableName: "library_artists",
+				tableName: "library_artists",
+				columnName: COLUMN_NAMES.ARTIST[0],
 				userID: context.authorization!.userID,
 			})
 		),
@@ -173,9 +185,9 @@ export const inLibrary =
 	resolver(
 		({ parent, context }) => (
 			getObjectInLibrary(context.pg)({
-				columnName: "artist_id",
 				objectID: parent.artistID,
-				libraryTableName: "library_artists",
+				tableName: "library_artists",
+				columnName: COLUMN_NAMES.ARTIST[0],
 				userID: context.authorization!.userID,
 			})
 		),
@@ -190,21 +202,6 @@ export const topTenSongs =
 					artistID: parent.artistID,
 					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 				},
-			})
-		),
-	)
-
-export const firstAlbumReleaseDate =
-	resolver(
-		({ parent, context }) => (
-			getAlbums(context.pg)({
-				objectID: parent.artistID,
-				orderBy: { field: "released", direction: "ASC" },
-				parse: pipe(
-					convertTableToCamelCase<Album>(),
-					head(),
-					({ released }) => released,
-				),
 			})
 		),
 	)

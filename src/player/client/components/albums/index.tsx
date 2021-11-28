@@ -1,33 +1,34 @@
 import isEmpty from "lodash/isEmpty"
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 
 import List from "../list"
 import Album from "../album"
 import SelectOrderBy from "../select-order-by"
 import { useStateListStyle } from "../../redux"
-import { SettingsListStyle, Album as AlbumType } from "../../types"
+import { SettingsListStyle, Album as AlbumType, AlbumsOrderByField } from "../../types"
 
 const bem =
 	createBEM("Albums")
 
-const Albums: FC<PropTypes> = ({
+const Albums: VFC<AlbumsPropTypes> = ({
 	className,
 	albums = [],
-	orderByFields,
+	orderBy = false,
 	hideModal = false,
 	alwaysList = false,
-	hideOrderBy = false,
 }) => {
 	const listStyle = useStateListStyle()
 	const isList = alwaysList ? true : (listStyle === SettingsListStyle.LIST)
 	const empty = isEmpty(albums)
 	return (
 		<div className={bem(className, isList && !empty && "Elevated")}>
-			{hideOrderBy || (
+			{orderBy && (
 				<SelectOrderBy
-					settingsKey="albums"
-					fieldOptions={orderByFields!}
+					orderBy={{
+						key: "albums",
+						fields: Object.keys(AlbumsOrderByField),
+					}}
 					className={bem(
 						"FlexListRight",
 						isList && !empty && "ItemBorder",
@@ -51,13 +52,12 @@ const Albums: FC<PropTypes> = ({
 	)
 }
 
-interface PropTypes {
+export interface AlbumsPropTypes {
+	orderBy?: boolean,
 	className?: string,
 	hideModal?: boolean,
 	albums?: AlbumType[],
 	alwaysList?: boolean,
-	hideOrderBy?: boolean,
-	orderByFields?: string[],
 }
 
 export default Albums

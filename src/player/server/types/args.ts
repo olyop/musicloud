@@ -1,3 +1,5 @@
+import { InterfaceWithInput } from "@oly_op/music-app-common/types"
+
 import { OrderBy } from "./other"
 
 export interface PageArgs {
@@ -5,5 +7,11 @@ export interface PageArgs {
 }
 
 export interface OrderByArgs {
-	orderBy?: OrderBy,
+	orderBy: OrderBy,
 }
+
+interface LibraryObjectsPaginatedInput
+	extends PageArgs, OrderByArgs {}
+
+export type LibraryObjectsPaginatedArgs =
+	InterfaceWithInput<LibraryObjectsPaginatedInput>

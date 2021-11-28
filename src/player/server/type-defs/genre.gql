@@ -5,10 +5,10 @@ type Genre {
 
 	# user
 	userPlays: [Play!]
-	userPlaysTotal: NonNegativeInt
+	userPlaysTotal: PositiveInt
 
 	# relationships
 	songsTotal: PositiveInt
-	playsTotal: NonNegativeInt!
+	playsTotal: PositiveInt
 	songs(orderBy: SongsOrderByInput!): [Song!]!
 }

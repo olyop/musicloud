@@ -6,9 +6,6 @@ import reducer from "./reducer"
 import { Settings } from "../types"
 import { getJWT } from "../helpers"
 
-const loadAccessToken =
-	() => getJWT()
-
 const loadSettings =
 	() => {
 		const serializedState = localStorage.getItem("settings")
@@ -20,8 +17,8 @@ export const store =
 	configureStore({
 		reducer,
 		preloadedState: {
+			accessToken: getJWT(),
 			settings: loadSettings(),
-			accessToken: loadAccessToken(),
 		},
 		middleware:
 			getDefaultMiddleware =>
@@ -32,7 +29,11 @@ store.subscribe(() => {
 	const { settings, accessToken } = store.getState()
 	const serializedSettings = JSON.stringify(settings)
 	localStorage.setItem("settings", serializedSettings)
-	localStorage.setItem("authorization", isNull(accessToken) ? "null" : accessToken)
+	if (isNull(accessToken)) {
+		localStorage.removeItem("authorization")
+	} else {
+		localStorage.setItem("authorization", accessToken)
+	}
 })
 
 export type Dispatch =

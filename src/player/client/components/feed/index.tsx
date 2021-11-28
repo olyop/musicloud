@@ -26,7 +26,7 @@ const isNotLastPage =
 
 const Feed = <Data, Vars>({
 	query,
-	children,
+	render,
 	dataToObjectsLength,
 	variables = {} as Vars,
 }: PropTypes<Data, Vars>) => {
@@ -48,7 +48,7 @@ const Feed = <Data, Vars>({
 			}}
 			children={result => (
 				<Fragment>
-					{children(result)}
+					{render(result)}
 					{result.data && (
 						<Waypoint
 							onEnter={async () => {
@@ -90,7 +90,7 @@ interface PropTypes<Data, Vars> {
 	variables?: Vars,
 	query: DocumentNode,
 	dataToObjectsLength: (data: Data) => number,
-	children: (result: QueryResult<Data, InputVars<Vars>>) => ReactNode,
+	render: (result: QueryResult<Data, InputVars<Vars>>) => ReactNode,
 }
 
 export default Feed

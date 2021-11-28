@@ -1,34 +1,37 @@
-// import isNull from "lodash/isNull"
-// import isUndefined from "lodash/isUndefined"
+import isNull from "lodash/isNull"
+import isUndefined from "lodash/isUndefined"
 import { MutationResult } from "@apollo/client"
 import { PlaylistIDBase } from "@oly_op/music-app-common/types"
 
-// import { useQuery } from "../query"
-import { User, Handler } from "../../types"
+import { useQuery } from "../query"
 import { useMutation } from "../mutation"
 import PLAY_PLAYLIST from "./play-playlist.gql"
 import { useResetPlayer } from "../reset-player"
-// import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
-import { useDispatch, updatePlay, useStatePlay, togglePlay } from "../../redux"
+import { Handler, QueueNowPlaying } from "../../types"
+import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
+import { useDispatch, updatePlay, togglePlay, useStatePlay } from "../../redux"
 
 export const usePlayPlaylist =
-	(playlistID: string) => {
-		const play = useStatePlay()
+	({ playlistID }: PlaylistIDBase) => {
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
 		const [ playPlaylist, result ] =
-			useMutation<Data, PlaylistIDBase>(PLAY_PLAYLIST, {
+			useMutation<PlayPlaylistData, PlaylistIDBase>(PLAY_PLAYLIST, {
 				variables: { playlistID },
 			})
 
-		// const { data } =
-		// 	useQuery<UserCurrentRes>(GET_USER_NOW_PLAYING, {
-		// 		fetchPolicy: "cache-first",
-		// 	})
+		const { data } =
+			useQuery<GetQueueNowPlayingData, PlaylistIDBase>(GET_QUEUE_NOW_PLAYING, {
+				variables: { playlistID },
+				fetchPolicy: "cache-first",
+			})
 
-		const isNowPlaying =
-			false
+		const isNowPlaying = (
+			!isUndefined(data) &&
+			!isNull(data.getQueue.nowPlaying) &&
+			data.getQueue.nowPlaying.isInPlaylist
+		)
 
 		const handlePlayPlaylist =
 			async () => {
@@ -43,21 +46,19 @@ export const usePlayPlaylist =
 				}
 			}
 
-		return [
-			handlePlayPlaylist,
-			isNowPlaying && play,
-			result,
-		] as [
-			playPlaylist: Handler,
-			isPlaying: boolean,
-			result: MutationResult<Data>,
-		]
+		return [ handlePlayPlaylist, isNowPlaying, result ] as UsePlayPlaylistResult
 	}
 
-interface Data {
-	shuffleAlbum: User,
+type UsePlayPlaylistResult = [
+	playPlaylist: Handler,
+	isPlaying: boolean,
+	result: MutationResult<PlayPlaylistData>,
+]
+
+interface PlayPlaylistData {
+	playPlaylist: QueueNowPlaying,
 }
 
-// interface UserCurrentRes {
-// 	user: User,
-// }
+interface GetQueueNowPlayingData {
+	getQueue: QueueNowPlaying,
+}

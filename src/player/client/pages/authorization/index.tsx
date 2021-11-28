@@ -6,6 +6,7 @@ import {
 	FormEventHandler,
 } from "react"
 
+import isNull from "lodash/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
@@ -80,13 +81,7 @@ const Authorization: FC = ({ children }) => {
 					[fieldKey]: value,
 				}))
 
-	if (accessToken) {
-		return (
-			<Fragment>
-				{children}
-			</Fragment>
-		)
-	} else {
+	if (isNull(accessToken)) {
 		return (
 			<Metadata title="Log In">
 				<div className={bem("", "FullWidthAndHeight")}>
@@ -145,6 +140,12 @@ const Authorization: FC = ({ children }) => {
 					/>
 				</div>
 			</Metadata>
+		)
+	} else {
+		return (
+			<Fragment>
+				{children}
+			</Fragment>
 		)
 	}
 }

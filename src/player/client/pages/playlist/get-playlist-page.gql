@@ -1,5 +1,5 @@
 query getPlaylistPage($playlistID: UUID!) {
-	playlist(playlistID: $playlistID) {
+	getPlaylistByID(playlistID: $playlistID) {
 		title
 		inLibrary
 		songsTotal

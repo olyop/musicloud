@@ -1,19 +1,14 @@
-import { User } from "../../types"
-import { createResolver, removeSongFromQueue } from "../helpers"
-
-const resolver =
-	createResolver()
-
-interface Args {
-	index: number,
-}
+import resolver from "./resolver"
+import { IndexOptions } from "../../types"
+import { removeSongFromQueue } from "../helpers"
 
 export const removeSongFromQueueLater =
-	resolver<User, Args>(
+	resolver<Record<string, never>, IndexOptions>(
 		({ args, context }) => (
-			removeSongFromQueue(context.pg)(context.authorization!.userID)(
-				"queue_laters",
-				args.index,
-			)
+			removeSongFromQueue(context.pg)({
+				index: args.index,
+				tableName: "queue_laters",
+				userID: context.authorization!.userID,
+			})
 		),
 	)

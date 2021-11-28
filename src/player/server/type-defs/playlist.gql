@@ -7,13 +7,13 @@ type Playlist {
 	
 	# relationships
 	user: User!
-	songs: [Song!]!
-	songsTotal: NonNegativeInt
-	playsTotal: NonNegativeInt
+	songs: [Song!]
+	playsTotal: PositiveInt
+	songsTotal: PositiveInt
 
 	# user
-	userPlays: [Play!]!
-	userPlaysTotal: NonNegativeInt
+	userPlays: [Play!]
+	userPlaysTotal: PositiveInt
 
 	# library
 	inLibrary: Boolean!

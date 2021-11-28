@@ -1,154 +1,41 @@
 import {
 	join,
 	query,
-	Parse,
 	PoolOrClient,
 	convertTableToCamelCase,
 	getResultRowCountOrNull,
-	convertFirstRowToCamelCase,
+	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import {
-	SongIDBase,
-	AlbumIDBase,
-	InterfaceWithPartialInput,
-} from "@oly_op/music-app-common/types"
-
-import { isNull, isEmpty } from "lodash"
 import { ForbiddenError } from "apollo-server-fastify"
-import { PAGINATION_PAGE_SIZE } from "@oly_op/music-app-common/globals"
+import { SongIDBase, AlbumIDBase, UserIDBase } from "@oly_op/music-app-common/types"
 
 import {
-	Song,
-	Play,
-	User,
-	Genre,
-	Album,
-	Artist,
-	PageArgs,
-	Playlist,
-	OrderByArgs,
-	ResolverParameter,
-} from "../types"
-
-import {
-	getQueueSongs,
-	createResolver,
-	getQueueSongsFromIDs,
-	determineSongsSQLOrderByField,
-} from "./helpers"
-
-import {
-	SELECT_SONG_BY_ID,
 	SELECT_USER_PLAYS,
-	SELECT_LIBRARY_SONGS,
-	SELECT_LIBRARY_ALBUMS,
-	SELECT_LIBRARY_GENRES,
-	SELECT_LIBRARY_ARTISTS,
-	SELECT_LIBRARY_PLAYLISTS,
+	SELECT_USER_PLAYLISTS,
 	SELECT_USER_PLAYLISTS_FILTERED,
-	SELECT_LIBRARY_SONGS_PAGINATED,
-	SELECT_LIBRARY_ALBUMS_PAGINATED,
-	SELECT_LIBRARY_GENRES_PAGINATED,
-	SELECT_LIBRARY_ARTISTS_PAGINATED,
-	SELECT_LIBRARY_PLAYLISTS_PAGINATED,
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
-
-interface LibraryObjectsInput
-	extends PageArgs, OrderByArgs {}
-
-type LibraryObjectsArgs =
-	InterfaceWithPartialInput<LibraryObjectsInput>
-
-type Callback<R, A> =
-	(arg: ResolverParameter<User, A>) => R | Promise<R>
+import { Play, User, Playlist, GetObjectsOptions } from "../types"
+import { createResolver, ResolverCallback, ResolverParameter } from "./helpers"
 
 const resolver =
 	createResolver<User>()
 
 const checkAuthorization =
-	<R, A>(callback: Callback<R, A>) =>
+	<A, R>(callback: ResolverCallback<User, A, R>) =>
 		(parameter: ResolverParameter<User, A>) => {
-			const { parent, context } = parameter
-			const queryUserID = parent.userID
-			const tokenUserID = context.authorization?.userID
-			if (queryUserID === tokenUserID) {
+			if (parameter.parent.userID === parameter.context.authorization!.userID) {
 				return callback(parameter)
 			} else {
-				throw new ForbiddenError("Unauthorized access to this user.")
+				throw new ForbiddenError("Unauthorized access to this user")
 			}
 		}
 
 export const dateJoined =
 	resolver<number>(
 		({ parent }) => parent.dateJoined * 1000,
-	)
-
-export const nowPlaying =
-	resolver(
-		checkAuthorization(
-			({ parent, context }) => (
-				isNull(parent.nowPlaying) ? null : (
-					query(context.pg)(SELECT_SONG_BY_ID)({
-						parse: convertFirstRowToCamelCase<Song>(),
-						variables: {
-							songID: parent.nowPlaying,
-							columnNames: join(COLUMN_NAMES.SONG),
-						},
-					})
-				)
-			),
-		),
-	)
-
-export const queueNext =
-	resolver(
-		checkAuthorization(
-			({ parent, context }) => {
-				if (parent.queueNext && !isEmpty(parent.queueNext)) {
-					return getQueueSongsFromIDs(context.pg)(
-						"queue_nexts",
-						parent.queueNext,
-					)
-				} else {
-					return getQueueSongs(context.pg)(parent.userID)("queue_nexts")
-				}
-			},
-		),
-	)
-
-export const queueLater =
-	resolver(
-		checkAuthorization(
-			({ parent, context }) => {
-				if (parent.queueLater && !isEmpty(parent.queueLater)) {
-					return getQueueSongsFromIDs(context.pg)(
-						"queue_laters",
-						parent.queueLater,
-					)
-				} else {
-					return getQueueSongs(context.pg)(parent.userID)("queue_laters")
-				}
-			},
-		),
-	)
-
-export const queuePrevious =
-	resolver(
-		checkAuthorization(
-			({ parent, context }) => {
-				if (parent.queuePrevious && !isEmpty(parent.queuePrevious)) {
-					return getQueueSongsFromIDs(context.pg)(
-						"queue_previous",
-						parent.queuePrevious,
-					)
-				} else {
-					return getQueueSongs(context.pg)(parent.userID)("queue_previous")
-				}
-			},
-		),
 	)
 
 export const plays =
@@ -163,183 +50,42 @@ export const plays =
 		),
 	)
 
-export const libraryAlbums =
-	resolver<Album[], LibraryObjectsArgs>(
-		checkAuthorization(
-			({ parent, args, context }) => (
-				args.input ? (
-					query(context.pg)(SELECT_LIBRARY_ALBUMS_PAGINATED)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							page: args.input.page,
-							userID: parent.userID,
-							paginationPageSize: PAGINATION_PAGE_SIZE,
-							columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
-							orderByDirection: args.input.orderBy?.direction || "ASC",
-							orderByField: args.input.orderBy?.field.toLowerCase() || "title",
-						},
-					})
-				) : (
-					query(context.pg)(SELECT_LIBRARY_ALBUMS)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							userID: parent.userID,
-							columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
-						},
-					})
-				)
-			),
-		),
-	)
-
-export const libraryGenres =
-	resolver<Genre[], LibraryObjectsArgs>(
-		checkAuthorization(
-			({ parent, args, context }) => (
-				args.input ? (
-					query(context.pg)(SELECT_LIBRARY_GENRES_PAGINATED)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							page: args.input.page,
-							userID: parent.userID,
-							paginationPageSize: PAGINATION_PAGE_SIZE,
-							columnNames: join(COLUMN_NAMES.GENRE, "genres"),
-							orderByDirection: args.input.orderBy?.direction || "ASC",
-							orderByField: args.input.orderBy?.field.toLowerCase() || "name",
-						},
-					})
-				) : (
-					query(context.pg)(SELECT_LIBRARY_GENRES)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							userID: parent.userID,
-							columnNames: join(COLUMN_NAMES.GENRE, "genres"),
-						},
-					})
-				)
-			),
-		),
-	)
-
-export const librarySongs =
-	resolver<Song[], LibraryObjectsArgs>(
-		checkAuthorization(
-			({ parent, args, context }) => (
-				args.input ? (
-					query(context.pg)(SELECT_LIBRARY_SONGS_PAGINATED)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							page: args.input.page,
-							userID: parent.userID,
-							paginationPageSize: PAGINATION_PAGE_SIZE,
-							columnNames: join(COLUMN_NAMES.SONG, "songs"),
-							orderByDirection: args.input.orderBy?.direction || "ASC",
-							orderByField: determineSongsSQLOrderByField(
-								args.input.orderBy?.field.toLowerCase() || "title",
-							),
-						},
-					})
-				) : (
-					query(context.pg)(SELECT_LIBRARY_SONGS)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							userID: parent.userID,
-							columnNames: join(COLUMN_NAMES.SONG, "songs"),
-						},
-					})
-				)
-			),
-		),
-	)
-
-export const librarySongsTotal =
-	resolver<number | null>(
-		checkAuthorization(
-			({ parent, context }) => (
-				query(context.pg)(SELECT_LIBRARY_SONGS)({
-					parse: getResultRowCountOrNull,
-					variables: {
-						userID: parent.userID,
-						columnNames: join(COLUMN_NAMES.SONG, "songs"),
-					},
-				})
-			),
-		),
-	)
-
-export const libraryArtists =
-	resolver<Artist[], LibraryObjectsArgs>(
-		checkAuthorization(
-			({ parent, args, context }) => (
-				args.input ? (
-					query(context.pg)(SELECT_LIBRARY_ARTISTS_PAGINATED)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							page: args.input.page,
-							userID: parent.userID,
-							paginationPageSize: PAGINATION_PAGE_SIZE,
-							columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
-							orderByDirection: args.input.orderBy?.direction || "ASC",
-							orderByField: args.input.orderBy?.field.toLowerCase() || "title",
-							orderByTableName: args.input.orderBy?.field === "DATE_ADDED" ?
-								"library_artists" : "artists",
-						},
-					})
-				) : (
-					query(context.pg)(SELECT_LIBRARY_ARTISTS)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							userID: parent.userID,
-							columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
-						},
-					})
-				)
-			),
-		),
-	)
-
-export const libraryArtistsTotal =
-	resolver<number | null>(
-		checkAuthorization(
-			({ parent, context }) => (
-				query(context.pg)(SELECT_LIBRARY_ARTISTS)({
-					parse: getResultRowCountOrNull,
-					variables: { userID: parent.userID },
-				})
-			),
-		),
-	)
+interface GetUserPlaylistsOptions<T>
+	extends UserIDBase, GetObjectsOptions<T> {}
 
 const getUserPlaylists =
 	(client: PoolOrClient) =>
-		(userID: string) =>
-			<T>(parse: Parse<T>) =>
-				query(client)(SELECT_LIBRARY_PLAYLISTS)({
-					parse,
-					variables: {
-						userID,
-						columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
-					},
-				})
+		<T>({ userID, columnNames, parse }: GetUserPlaylistsOptions<T>) =>
+			query(client)(SELECT_USER_PLAYLISTS)({
+				parse,
+				variables: {
+					userID,
+					columnNames,
+				},
+			})
 
 export const playlists =
-	resolver<Playlist[]>(
+	resolver(
 		checkAuthorization(
 			({ parent, context }) => (
-				getUserPlaylists(context.pg)(parent.userID)(
-					convertTableToCamelCase(),
-				)
+				getUserPlaylists(context.pg)({
+					userID: parent.userID,
+					parse: convertTableToCamelCaseOrNull<Playlist>(),
+					columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
+				})
 			),
 		),
 	)
 
 export const playlistsTotal =
-	resolver<number | null>(
+	resolver(
 		checkAuthorization(
 			({ parent, context }) => (
-				getUserPlaylists(context.pg)(parent.userID)(
-					getResultRowCountOrNull,
-				)
+				getUserPlaylists(context.pg)({
+					userID: parent.userID,
+					parse: getResultRowCountOrNull,
+					columnNames: `playlists.${COLUMN_NAMES.PLAYLIST[0]}`,
+				})
 			),
 		),
 	)
@@ -366,52 +112,6 @@ export const playlistsFilteredByAlbum =
 			({ parent, args, context }) => (
 				query(context.pg)("")({
 					parse: convertTableToCamelCase(),
-				})
-			),
-		),
-	)
-
-export const libraryPlaylists =
-	resolver<Playlist[], LibraryObjectsArgs>(
-		checkAuthorization(
-			({ parent, args, context }) => (
-				args.input ? (
-					query(context.pg)(SELECT_LIBRARY_PLAYLISTS_PAGINATED)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							userID: parent.userID,
-							page: args.input.page,
-							paginationPageSize: PAGINATION_PAGE_SIZE,
-							orderByField: args.input.orderBy?.field || "title",
-							columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
-							orderByDirection: args.input.orderBy?.direction || "ASC",
-							orderByTableName: args.input.orderBy?.field === "DATE_ADDED" ?
-								"library_playlists" : "playlists",
-						},
-					})
-				) : (
-					query(context.pg)(SELECT_LIBRARY_PLAYLISTS)({
-						parse: convertTableToCamelCase(),
-						variables: {
-							userID: parent.userID,
-							columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
-						},
-					})
-				)
-			),
-		),
-	)
-
-export const libraryPlaylistsTotal =
-	resolver<number | null>(
-		checkAuthorization(
-			({ parent, context }) => (
-				query(context.pg)(SELECT_LIBRARY_PLAYLISTS)({
-					parse: getResultRowCountOrNull,
-					variables: {
-						userID: parent.userID,
-						columnNames: join(COLUMN_NAMES.PLAYLIST),
-					},
 				})
 			),
 		),

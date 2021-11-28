@@ -1,11 +1,11 @@
 mutation playSong($songID: UUID!) {
   playSong(songID: $songID) {
-    userID
     nowPlaying {
       mix
       title
       songID
       duration
+      playsTotal
       featuring {
         artistID
         name

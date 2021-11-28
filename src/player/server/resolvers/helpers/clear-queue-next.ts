@@ -1,10 +1,11 @@
 import { query, PoolOrClient } from "@oly_op/pg-helpers"
+import { UserIDBase } from "@oly_op/music-app-common/types"
 
 import { DELETE_QUEUE_BY_USER } from "../../sql"
 
 export const clearQueueNext =
 	(client: PoolOrClient) =>
-		(userID: string) =>
+		({ userID }: UserIDBase) =>
 			query(client)(DELETE_QUEUE_BY_USER)({
 				variables: {
 					userID,

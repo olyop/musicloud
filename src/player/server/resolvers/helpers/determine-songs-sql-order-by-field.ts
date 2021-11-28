@@ -1,12 +1,13 @@
 export const determineSongsSQLOrderByField =
 	(field: string) => {
-		if (field === "album") {
+		const fieldLowerCase = field.toLowerCase()
+		if (fieldLowerCase === "album") {
 			return "albums.title"
-		} else if (field === "released") {
+		} else if (fieldLowerCase === "released") {
 			return "albums.released"
-		} else if (field === "date_added") {
+		} else if (fieldLowerCase === "date_added") {
 			return "library_songs.date_added"
 		} else {
-			return `songs.${field}`
+			return `songs.${fieldLowerCase}`
 		}
 	}

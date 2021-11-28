@@ -1,6 +1,6 @@
 import isNull from "lodash/isNull"
 import { BEMInput } from "@oly_op/bem"
-import { createElement, FC, Fragment } from "react"
+import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 import { ImageDimensions, ImageSizes, SongIDBase } from "@oly_op/music-app-common/types"
@@ -29,7 +29,7 @@ import QUEUE_SONG_LATER from "./queue-song-later.gql"
 import { User, Song as SongType, Handler } from "../../types"
 import { useToggleInLibrary, useMutation, usePlaySong } from "../../hooks"
 
-const ModalPlayButton: FC<ModalPlayButtonPropTypes> = ({
+const ModalPlayButton: VFC<ModalPlayButtonPropTypes> = ({
 	onClose,
 	onClick,
 	isPlaying,
@@ -52,7 +52,7 @@ interface ModalPlayButtonPropTypes {
 	isPlaying: boolean,
 }
 
-const Song: FC<PropTypes> = ({
+const Song: VFC<PropTypes> = ({
 	song,
 	index,
 	onRemove,

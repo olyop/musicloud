@@ -1,6 +1,6 @@
-import { useEffect, useState, createElement, FC, Fragment, ReactNode } from "react"
+import { useEffect, useState, createElement, VFC, Fragment, ReactNode } from "react"
 
-const Window: FC<PropTypes> = ({ children }) => {
+const Window: VFC<PropTypes> = ({ children }) => {
 	const [ dimensions, setDimensions ] =
 		useState<Dimensions>({
 			width: window.innerWidth,

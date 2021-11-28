@@ -1,11 +1,11 @@
-import isEmpty from "lodash/isEmpty"
-import { createElement, FC } from "react"
+import isNull from "lodash/isNull"
+import { createElement, VFC } from "react"
 import Metadata from "@oly_op/react-metadata"
 
 import {
-	User,
 	SettingsListStyle,
 	LibraryArtistsOrderBy,
+	LibraryArtistsPaginated,
 	LibraryArtistsOrderByField,
 } from "../../types"
 
@@ -15,20 +15,22 @@ import Artists from "../../components/artists"
 import GET_LIBRARY_ARTISTS from "./get-library-artists.gql"
 import { useStateOrderBy, useStateListStyle } from "../../redux"
 
-const LibraryArtists: FC = () => {
-	const orderBy = useStateOrderBy<LibraryArtistsOrderByField>("libraryArtists")
+const LibraryArtists: VFC = () => {
 	const listStyle = useStateListStyle()
 	const isList = listStyle === SettingsListStyle.LIST
+	const orderBy = useStateOrderBy<LibraryArtistsOrderByField>("libraryArtists")
 	return (
 		<Metadata title="Library Artists">
-			<Feed<Data, Vars>
+			<Feed<GetLibraryArtistsData, LibraryArtistsVars>
 				variables={{ orderBy }}
 				query={GET_LIBRARY_ARTISTS}
-				dataToObjectsLength={({ user }) => user.libraryArtists.length}
-				children={
+				dataToObjectsLength={
+					data => data.getLibrary.artistsPaginated?.length || 0
+				}
+				render={
 					({ data }) => {
 						if (data) {
-							if (isEmpty(data.user.libraryArtists)) {
+							if (isNull(data.getLibrary.artistsPaginated)) {
 								return (
 									<LibraryEmpty
 										name="artists"
@@ -37,11 +39,12 @@ const LibraryArtists: FC = () => {
 							} else {
 								return (
 									<Artists
-										orderByKey="libraryArtists"
-										artists={data.user.libraryArtists}
-										hideOrderBy={isEmpty(data.user.libraryArtists)}
-										orderByFields={Object.keys(LibraryArtistsOrderByField)}
+										artists={data.getLibrary.artistsPaginated}
 										className={isList ? "Content" : "PaddingLeft PaddingRight"}
+										orderBy={{
+											key: "libraryArtists",
+											fields: Object.keys(LibraryArtistsOrderByField),
+										}}
 									/>
 								)
 							}
@@ -55,12 +58,12 @@ const LibraryArtists: FC = () => {
 	)
 }
 
-interface Data {
-	user: User,
+interface LibraryArtistsVars {
+	orderBy: LibraryArtistsOrderBy,
 }
 
-interface Vars {
-	orderBy: LibraryArtistsOrderBy,
+interface GetLibraryArtistsData {
+	getLibrary: LibraryArtistsPaginated,
 }
 
 export default LibraryArtists

@@ -17,24 +17,19 @@ import {
 export type Key =
 	KeyBase
 
-export interface UserNowPlaying {
-	nowPlaying: string | null,
-}
-
-export interface User extends UserNowPlaying, UserBase {
+export interface User extends UserBase {
 	password: string,
-	queueNext?: string[],
-	queueLater?: string[],
-	queuePrevious: string[],
 }
 
 export interface Album extends AlbumBase {
 	released: Date,
 }
 
-export interface Genre extends GenreBase {}
+export type Genre =
+	GenreBase
 
-export interface Artist extends ArtistBase {}
+export type Artist =
+	ArtistBase
 
 export interface Playlist extends UserIDBase, PlaylistBase {}
 
@@ -53,7 +48,22 @@ export interface QueueSong extends UserIDBase, SongIDBase {
 	index: number,
 }
 
+export interface NowPlaying extends UserIDBase, SongIDBase {}
+
+export interface QueueNowPlaying {
+	nowPlaying: NowPlaying | null,
+}
+
+export interface Queue extends QueueNowPlaying {
+	next: QueueSong[] | null,
+	later: QueueSong[] | null,
+	previous: QueueSong[] | null,
+}
+
 export interface PlaylistSong extends SongIDBase, PlaylistIDBase {
 	index: number,
 	dateAdded: number,
 }
+
+export type Search =
+	User | Song | Genre | Album | Artist | Playlist

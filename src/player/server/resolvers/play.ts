@@ -1,8 +1,5 @@
-import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
-
-import { createResolver } from "./helpers"
-import { Play, User, Song } from "../types"
-import { SELECT_USER_BY_ID, SELECT_SONG_BY_ID } from "../sql"
+import { Play } from "../types"
+import { createResolver, getSong, getUser } from "./helpers"
 
 const resolver =
 	createResolver<Play>()
@@ -15,19 +12,13 @@ export const dateCreated =
 export const user =
 	resolver(
 		({ parent, context }) => (
-			query(context.pg)(SELECT_USER_BY_ID)({
-				parse: convertFirstRowToCamelCase<User>(),
-				variables: { userID: parent.userID },
-			})
+			getUser(context.pg)({ userID: parent.userID })
 		),
 	)
 
 export const song =
 	resolver(
 		({ parent, context }) => (
-			query(context.pg)(SELECT_SONG_BY_ID)({
-				parse: convertFirstRowToCamelCase<Song>(),
-				variables: { songID: parent.songID },
-			})
+			getSong(context.pg)({ songID: parent.songID })
 		),
 	)

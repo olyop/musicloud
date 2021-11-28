@@ -1,5 +1,3 @@
 mutation deleteLibrary {
-	deleteLibrary {
-		userID
-	}
+	deleteLibrary
 }

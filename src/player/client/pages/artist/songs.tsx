@@ -1,20 +1,21 @@
-import { createElement, FC } from "react"
-import { RouteComponentProps } from "react-router-dom"
+import { createElement, VFC } from "react"
+import { useParams } from "react-router-dom"
+import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { ArtistIDBase } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"
 import { useStateOrderBy } from "../../redux"
-import getArtistIDFromURL from "./get-id-from-url"
 import GET_ARTIST_PAGE_SONGS from "./get-artist-page-songs.gql"
-import { Artist, SongsOrderBy, SongsOrderByField } from "../../types"
+import { ArtistSongs, SongsOrderBy, SongsOrderByField } from "../../types"
 
-const ArtistPageSongs: FC<RouteComponentProps> = ({ match }) => {
-	const artistID = getArtistIDFromURL(match.path)
+const ArtistPageSongs: VFC = () => {
+	const params = useParams<keyof ArtistIDBase>()
+	const artistID = addDashesToUUID(params.artistID!)
 	const songsOrderBy = useStateOrderBy<SongsOrderByField>("songs")
 
 	const { data } =
-		useQuery<Data, SongsVars>(
+		useQuery<ArtistPageSongsData, ArtistPageSongsVars>(
 			GET_ARTIST_PAGE_SONGS,
 			{ variables: { artistID, songsOrderBy } },
 		)
@@ -25,20 +26,22 @@ const ArtistPageSongs: FC<RouteComponentProps> = ({ match }) => {
 				hidePlays
 				hideIndex
 				hideTrackNumber
-				orderByKey="songs"
 				className="Content"
-				songs={data?.artist.songs}
-				orderByFields={Object.keys(SongsOrderByField)}
+				songs={data?.getArtistByID.songs}
+				orderBy={{
+					key: "songs",
+					fields: Object.keys(SongsOrderByField),
+				}}
 			/>
 		</div>
 	)
 }
 
-interface Data {
-	artist: Artist,
+interface ArtistPageSongsData {
+	getArtistByID: ArtistSongs,
 }
 
-interface SongsVars extends ArtistIDBase {
+interface ArtistPageSongsVars extends ArtistIDBase {
 	songsOrderBy: SongsOrderBy,
 }
 

@@ -1,9 +1,13 @@
+import { GenreIDBase, UserIDBase } from "@oly_op/music-app-common/types"
+
 import {
 	join,
 	query,
 	PoolOrClient,
-	convertTableToCamelCase,
+	getResultRowCount,
 	getResultRowCountOrNull,
+	convertTableToCamelCase,
+	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
 import {
@@ -14,48 +18,29 @@ import {
 	GetObjectsOptions,
 } from "../types"
 
+import {
+	SELECT_GENRE_SONGS,
+	SELECT_OBJECT_SONG_PLAYS,
+	SELECT_GENRE_SONGS_ORDER_BY,
+} from "../sql"
+
 import { COLUMN_NAMES } from "../globals"
-import { SELECT_GENRE_SONGS, SELECT_OBJECT_SONG_PLAYS } from "../sql"
 import { createResolver, determineSongsSQLOrderByField } from "./helpers"
 
 const resolver =
 	createResolver<Genre>()
 
-const getSongs =
-	(client: PoolOrClient) =>
-		<T>({ objectID, parse, orderBy }: GetObjectsOptions<T>) =>
-			query(client)(SELECT_GENRE_SONGS)({
-				parse,
-				variables: {
-					genreID: objectID,
-					columnNames: join(COLUMN_NAMES.SONG, "songs"),
-					orderByDirection: orderBy?.direction || "ASC",
-					orderByField: determineSongsSQLOrderByField(
-						orderBy?.field.toLowerCase() || "title",
-					),
-				},
-			})
-
-const getUserPlays =
-	(client: PoolOrClient) =>
-		(userID: string) =>
-			<T>({ objectID, parse }: GetObjectsOptions<T>) =>
-				query(client)(SELECT_OBJECT_SONG_PLAYS)({
-					parse,
-					variables: {
-						userID,
-						genreID: objectID,
-						columnNames: join(COLUMN_NAMES.PLAY),
-					},
-				})
-
 export const songs =
 	resolver<Song[], OrderByArgs>(
 		({ parent, args, context }) => (
-			getSongs(context.pg)({
-				orderBy: args.orderBy,
-				objectID: parent.genreID,
+			query(context.pg)(SELECT_GENRE_SONGS_ORDER_BY)({
 				parse: convertTableToCamelCase(),
+				variables: {
+					genreID: parent.genreID,
+					orderByDirection: args.orderBy.direction,
+					columnNames: join(COLUMN_NAMES.SONG, "songs"),
+					orderByField: determineSongsSQLOrderByField(args.orderBy.field),
+				},
 			})
 		),
 	)
@@ -63,19 +48,39 @@ export const songs =
 export const songsTotal =
 	resolver(
 		({ parent, context }) => (
-			getSongs(context.pg)({
-				objectID: parent.genreID,
-				parse: getResultRowCountOrNull,
+			query(context.pg)(SELECT_GENRE_SONGS)({
+				parse: getResultRowCount,
+				variables: {
+					genreID: parent.genreID,
+					columnNames: COLUMN_NAMES.SONG[0],
+				},
 			})
 		),
 	)
 
+interface GetUserGenrePlays<T>
+	extends UserIDBase, GenreIDBase, GetObjectsOptions<T> {}
+
+const getUserGenrePlays =
+	(client: PoolOrClient) =>
+		<T>({ userID, genreID, columnNames, parse }: GetUserGenrePlays<T>) =>
+			query(client)(SELECT_OBJECT_SONG_PLAYS)({
+				parse,
+				variables: {
+					userID,
+					genreID,
+					columnNames,
+				},
+			})
+
 export const userPlays =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				objectID: parent.genreID,
-				parse: convertTableToCamelCase<Play>(),
+			getUserGenrePlays(context.pg)({
+				genreID: parent.genreID,
+				userID: context.authorization!.userID,
+				columnNames: join(COLUMN_NAMES.GENRE),
+				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
 		),
 	)
@@ -83,9 +88,11 @@ export const userPlays =
 export const userPlaysTotal =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				objectID: parent.genreID,
+			getUserGenrePlays(context.pg)({
+				genreID: parent.genreID,
 				parse: getResultRowCountOrNull,
+				userID: context.authorization!.userID,
+				columnNames: join(COLUMN_NAMES.GENRE),
 			})
 		),
 	)

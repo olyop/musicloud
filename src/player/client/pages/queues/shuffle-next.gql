@@ -1,12 +1,12 @@
 mutation shuffleNext {
 	shuffleNext {
-		userID
-    queueNext {
+    next {
       mix
       title
       songID
       duration
-			inLibrary
+      inLibrary
+      queueIndex
       featuring {
         artistID
         name
@@ -28,12 +28,13 @@ mutation shuffleNext {
         title
       }
     }
-    queueLater {
+    later {
       mix
       title
       songID
       duration
-			inLibrary
+      inLibrary
+      queueIndex
       featuring {
         artistID
         name

@@ -2,7 +2,7 @@ query getArtistPageAlbums(
 	$artistID: UUID!
 	$albumsOrderBy: AlbumsOrderByInput!
 ) {
-	artist(artistID: $artistID) {
+	getArtistByID(artistID: $artistID) {
 		artistID
 		albums(orderBy: $albumsOrderBy) {
 			title

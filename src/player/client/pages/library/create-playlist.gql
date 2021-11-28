@@ -1,8 +1,0 @@
-mutation createPlaylist($input: PlaylistInput!) {
-	createPlaylist(playlist: $input) {
-		title
-		playlistID
-		songsTotal
-		dateCreated
-	}
-}

@@ -9,9 +9,4 @@ JOIN
 	albums
 		ON songs.album_id = albums.album_id
 WHERE
-	songs_genres.genre_id = '{{ genreID }}'
-ORDER BY
-	{{ orderByField }} {{ orderByDirection }},
-	songs.album_id ASC,
-	songs.disc_number ASC,
-	songs.track_number ASC;
+	songs_genres.genre_id = '{{ genreID }}';

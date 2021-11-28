@@ -1,35 +1,21 @@
 import { MutationResult } from "@apollo/client"
 import { ArtistIDBase } from "@oly_op/music-app-common/types"
 
-import { useUserID } from "../user-id"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import SHUFFLE_ARTIST from "./shuffle-artist.gql"
 import { useDispatch, updatePlay } from "../../redux"
-import { Handler, UserQueuesNowPlayingExtracted } from "../../types"
+import { Handler, QueueNowPlaying } from "../../types"
 
 export const useShuffleArtist =
-	(artistID: string) => {
-		const userID = useUserID()
+	({ artistID }: ArtistIDBase) => {
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
 		const [ shuffleArtist, result ] =
-			useMutation<Data, ArtistIDBase>(
+			useMutation<ShuffleArtistData, ArtistIDBase>(
 				SHUFFLE_ARTIST,
-				{
-					variables: { artistID },
-					optimisticResponse: {
-						shuffleArtist: {
-							userID,
-							queueNext: [],
-							queueLater: [],
-							nowPlaying: null,
-							queuePrevious: [],
-							__typename: "User",
-						},
-					},
-				},
+				{ variables: { artistID } },
 			)
 
 		const handleShuffleArtist =
@@ -39,15 +25,14 @@ export const useShuffleArtist =
 				dispatch(updatePlay(true))
 			}
 
-		return [
-			handleShuffleArtist,
-			result,
-		] as [
-			shuffleArtist: Handler,
-			result: MutationResult<Data>,
-		]
+		return [ handleShuffleArtist, result ] as UseShuffleArtistResult
 	}
 
-interface Data {
-	shuffleArtist: UserQueuesNowPlayingExtracted,
+type UseShuffleArtistResult = [
+	shuffleArtist: Handler,
+	result: MutationResult<ShuffleArtistData>,
+]
+
+interface ShuffleArtistData {
+	shuffleArtist: QueueNowPlaying,
 }

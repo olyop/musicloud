@@ -1,32 +1,33 @@
 type Mutation {
-  # authorization
+  # user
+  deleteUser: Void
 	logIn(input: LogInInput!): JWT!
 
   # queue
-  clearQueues: User!
-  clearNextQueues: User!
-  nextQueueSong: User!
-  previousQueueSong: User!
-  queueSongNext(songID: UUID!): User!
-  queueSongAfter(songID: UUID!): User!
-  queueSongLater(songID: UUID!): User!
-  playLibrary: User!
-  playTopOneHundredSongs: User!
-  playSong(songID: UUID!): User!
-  playAlbum(albumID: UUID!): User!
-  playPlaylist(playlistID: UUID!): User!
-  shuffleNext: User!
-  shuffleLibrary: User!
-  shuffleAlbum(albumID: UUID!): User!
-  shuffleArtist(artistID: UUID!): User!
-  shufflePlaylist(playlistID: UUID!): User!
-  jumpToSongInQueueNext(index: NonNegativeInt!): User!
-  jumpToSongInQueueLater(index: NonNegativeInt!): User!
-  removeSongFromQueueNext(index: NonNegativeInt!): User!
-  removeSongFromQueueLater(index: NonNegativeInt!): User!
+  clearQueues: Queue!
+  clearNextQueues: Queue!
+  nextQueueSong: Queue!
+  previousQueueSong: Queue!
+  queueSongNext(songID: UUID!): Queue!
+  queueSongAfter(songID: UUID!): Queue!
+  queueSongLater(songID: UUID!): Queue!
+  playLibrary: Queue!
+  playTopOneHundredSongs: Queue!
+  playSong(songID: UUID!): Queue!
+  playAlbum(albumID: UUID!): Queue!
+  playPlaylist(playlistID: UUID!): Queue!
+  shuffleNext: Queue!
+  shuffleLibrary: Queue!
+  shuffleAlbum(albumID: UUID!): Queue!
+  shuffleArtist(artistID: UUID!): Queue!
+  shufflePlaylist(playlistID: UUID!): Queue!
+  jumpToSongInQueueNext(index: NonNegativeInt!): Queue!
+  jumpToSongInQueueLater(index: NonNegativeInt!): Queue!
+  removeSongFromQueueNext(index: NonNegativeInt!): Queue!
+  removeSongFromQueueLater(index: NonNegativeInt!): Queue!
 
   # library
-  deleteLibrary: User!
+  deleteLibrary: Void
   addSongToLibrary(songID: UUID!): Song!
   addAlbumToLibrary(albumID: UUID!): Album!
   addArtistToLibrary(artistID: UUID!): Artist!
@@ -36,12 +37,11 @@ type Mutation {
   removeArtistFromLibrary(artistID: UUID!): Artist!
   removePlaylistFromLibrary(playlistID: UUID!): Playlist!
   
-  # other
-  deleteUser: Void
-  deletePlaylist(playlistID: UUID!): User!
-  createPlaylist(playlist: PlaylistInput!): Playlist!
+  # playlist
+  deletePlaylistByID(playlistID: UUID!): Void
+  createPlaylist(input: CreatePlaylistInput!): Playlist!
+  renamePlaylist(input: RenamePlaylistInput!): Playlist!
   addSongToPlaylist(songID: UUID!, playlistID: UUID!): Playlist!
   addAlbumToPlaylist(albumID: UUID!, playlistID: UUID!): Playlist!
-  removeSongFromPlaylist(playlistID: UUID!, songID: UUID!): Playlist!
-  renamePlaylist(playlistID: UUID!, title: NonEmptyString!): Playlist!
+  removeSongFromPlaylist(songID: UUID!, playlistID: UUID!): Playlist!
 }

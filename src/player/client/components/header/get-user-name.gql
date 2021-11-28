@@ -1,7 +1,0 @@
-query getUserName($userID: UUID!) {
-	user(userID: $userID) {
-		name
-		userID
-		dateJoined
-	}
-}

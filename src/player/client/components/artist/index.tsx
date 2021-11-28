@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import Item, {
@@ -25,14 +25,15 @@ import { ModalButton, ModalButtons } from "../modal"
 const bem =
 	createBEM("Artist")
 
-const Artist: FC<PropTypes> = ({
+const Artist: VFC<PropTypes> = ({
 	artist,
 	className,
 	leftIcon = false,
 	alwaysList = false,
 }) => {
+	const { artistID } = artist
 	const listStyle = useStateListStyle()
-	const [ shuffle ] = useShuffleArtist(artist.artistID)
+	const [ shuffle ] = useShuffleArtist({ artistID })
 	const [ toggleInLibrary, inLibrary ] = useToggleInLibrary(artist)
 
 	const handleShuffleClick =
@@ -50,8 +51,10 @@ const Artist: FC<PropTypes> = ({
 		header: {
 			text: (
 				<ObjectLink
-					text={artist.name}
-					path={determineObjectPath("artist", artist.artistID)}
+					link={{
+						text: artist.name,
+						path: determineObjectPath("artist", artist.artistID),
+					}}
 				/>
 			),
 			imgPropTypes: {
@@ -84,8 +87,10 @@ const Artist: FC<PropTypes> = ({
 		lowerLeft: determineArtistLower(artist),
 		upperLeft: (
 			<ObjectLink
-				text={artist.name}
-				path={determineObjectPath("artist", artist.artistID)}
+				link={{
+					text: artist.name,
+					path: determineObjectPath("artist", artist.artistID),
+				}}
 			/>
 		),
 	}

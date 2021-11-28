@@ -2,10 +2,11 @@ import {
 	join,
 	query,
 	PoolOrClient,
+	isResultEmpty,
 	convertTableToCamelCase,
 	getResultRowCountOrNull,
 	convertFirstRowToCamelCase,
-	Parse,
+	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
 import pipe from "@oly_op/pipe"
@@ -13,13 +14,11 @@ import { random } from "lodash"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 import { NAME } from "@oly_op/music-app-common/metadata"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { PlaylistIDBase, SongIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistIDBase, SongIDBase, UserIDBase } from "@oly_op/music-app-common/types"
 
 import {
-	Key,
 	Song,
 	Play,
-	Album,
 	Genre,
 	Artist,
 	PlaylistSong,
@@ -27,15 +26,15 @@ import {
 } from "../types"
 
 import {
+	getKey,
+	getAlbum,
 	createResolver,
 	getObjectInLibrary,
 	getObjectDateAddedToLibrary,
 } from "./helpers"
 
 import {
-	SELECT_KEY_BY_ID,
 	SELECT_SONG_PLAYS,
-	SELECT_ALBUM_BY_ID,
 	SELECT_SONG_GENRES,
 	SELECT_SONG_ARTISTS,
 	SELECT_SONG_REMIXERS,
@@ -53,37 +52,24 @@ export const size =
 	resolver(
 		async ({ parent, context }) => {
 			const songID = removeDashesFromUUID(parent.songID)
-			const command = new GetObjectCommand({
-				Bucket: NAME,
-				Key: `catalog/${songID}/audio/index.mp3`,
-			})
-			return (await context.s3.send(command)).ContentLength!
+			const Key = `catalog/${songID}/audio/index.mp3`
+			const command = new GetObjectCommand({ Bucket: NAME, Key })
+			const content = await context.s3.send(command)
+			return content.ContentLength!
 		},
 	)
 
 export const key =
 	resolver(
 		({ parent, context }) => (
-			query(context.pg)(SELECT_KEY_BY_ID)({
-				parse: convertFirstRowToCamelCase<Key>(),
-				variables: {
-					keyID: parent.keyID,
-					columnNames: join(COLUMN_NAMES.KEY),
-				},
-			})
+			getKey(context.pg)({ keyID: parent.keyID })
 		),
 	)
 
 export const album =
 	resolver(
 		({ parent, context }) => (
-			query(context.pg)(SELECT_ALBUM_BY_ID)({
-				parse: convertFirstRowToCamelCase<Album>(),
-				variables: {
-					albumID: parent.albumID,
-					columnNames: join(COLUMN_NAMES.ALBUM),
-				},
-			})
+			getAlbum(context.pg)({ albumID: parent.albumID })
 		),
 	)
 
@@ -156,25 +142,29 @@ export const playsTotal =
 		),
 	)
 
-const getUserPlays =
+interface GetUserSongPlaysOptions<T>
+	extends UserIDBase, SongIDBase, GetObjectsOptions<T> {}
+
+const getUserSongPlays =
 	(client: PoolOrClient) =>
-		(userID: string) =>
-			<T>({ objectID, parse }: GetObjectsOptions<T>) =>
-				query(client)(SELECT_OBJECT_SONG_PLAYS)({
-					parse,
-					variables: {
-						userID,
-						songID: objectID,
-						columnNames: join(COLUMN_NAMES.PLAY),
-					},
-				})
+		<T>({ userID, songID, columnNames, parse }: GetUserSongPlaysOptions<T>) =>
+			query(client)(SELECT_OBJECT_SONG_PLAYS)({
+				parse,
+				variables: {
+					userID,
+					songID,
+					columnNames,
+				},
+			})
 
 export const userPlays =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				objectID: parent.songID,
-				parse: convertTableToCamelCase<Play>(),
+			getUserSongPlays(context.pg)({
+				songID: parent.songID,
+				columnNames: join(COLUMN_NAMES.PLAY),
+				userID: context.authorization!.userID,
+				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
 		),
 	)
@@ -182,9 +172,11 @@ export const userPlays =
 export const userPlaysTotal =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				objectID: parent.songID,
+			getUserSongPlays(context.pg)({
+				songID: parent.songID,
 				parse: getResultRowCountOrNull,
+				columnNames: COLUMN_NAMES.PLAY[0],
+				userID: context.authorization!.userID,
 			})
 		),
 	)
@@ -193,9 +185,9 @@ export const dateAddedToLibrary =
 	resolver(
 		({ parent, context }) => (
 			getObjectDateAddedToLibrary(context.pg)({
-				columnName: "song_id",
 				objectID: parent.songID,
-				libraryTableName: "library_songs",
+				tableName: "library_songs",
+				columnName: COLUMN_NAMES.SONG[0],
 				userID: context.authorization!.userID,
 			})
 		),
@@ -205,36 +197,36 @@ export const inLibrary =
 	resolver(
 		({ parent, context }) => (
 			getObjectInLibrary(context.pg)({
-				columnName: "song_id",
 				objectID: parent.songID,
-				libraryTableName: "library_songs",
+				tableName: "library_songs",
+				columnName: COLUMN_NAMES.SONG[0],
 				userID: context.authorization!.userID,
 			})
 		),
 	)
 
-interface GetPlaylistSongOptions<T> extends SongIDBase, PlaylistIDBase {
-	parse: Parse<T>,
-}
+interface GetSongPlaylistSongOptions<T>
+	extends SongIDBase, PlaylistIDBase, GetObjectsOptions<T> {}
 
-const getPlaylistSong =
+const getSongPlaylistSong =
 	(client: PoolOrClient) =>
-		<T>({ parse, songID, playlistID }: GetPlaylistSongOptions<T>) =>
+		<T>({ songID, playlistID, columnNames, parse }: GetSongPlaylistSongOptions<T>) =>
 			query(client)(SELECT_PLAYLIST_SONG)({
 				parse,
 				variables: {
 					songID,
 					playlistID,
-					columnNames: join(COLUMN_NAMES.PLAYLIST_SONG),
+					columnNames,
 				},
 			})
 
 export const playlistIndex =
 	resolver<number, PlaylistIDBase>(
 		({ parent, context, args }) => (
-			getPlaylistSong(context.pg)({
+			getSongPlaylistSong(context.pg)({
 				songID: parent.songID,
 				playlistID: args.playlistID,
+				columnNames: join(COLUMN_NAMES.PLAYLIST_SONG),
 				parse: pipe(
 					convertFirstRowToCamelCase<PlaylistSong>(),
 					({ index }) => index,
@@ -243,17 +235,31 @@ export const playlistIndex =
 		),
 	)
 
+export const isInPlaylist =
+	resolver<boolean, PlaylistIDBase>(
+		({ parent, context, args }) => (
+			getSongPlaylistSong(context.pg)({
+				songID: parent.songID,
+				playlistID: args.playlistID,
+				parse: result => !isResultEmpty(result),
+				columnNames: join(COLUMN_NAMES.PLAYLIST_SONG),
+			})
+		),
+	)
+
 export const dateAddedToPlaylist =
 	resolver<number | null, PlaylistIDBase>(
 		({ parent, context, args }) => (
-			getPlaylistSong(context.pg)({
+			getSongPlaylistSong(context.pg)({
 				songID: parent.songID,
 				playlistID: args.playlistID,
-				parse: result => (
-					result.rowCount === 0 ?
-						null :
-						convertFirstRowToCamelCase<PlaylistSong>()(result).dateAdded * 1000
-				),
+				columnNames: COLUMN_NAMES.PLAYLIST_SONG[0],
+				parse:
+					result => (
+						result.rowCount === 0 ?
+							null :
+							convertFirstRowToCamelCase<PlaylistSong>()(result).dateAdded * 1000
+					),
 			})
 		),
 	)

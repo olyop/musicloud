@@ -1,23 +1,20 @@
 import { v4 as createUUID } from "uuid"
+import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { join, query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
+import resolver from "./resolver"
 import { Playlist } from "../../types"
-import { createResolver } from "../helpers"
 import { COLUMN_NAMES } from "../../globals"
 import { INSERT_PLAYLIST, INSERT_LIBRARY_OBJECT } from "../../sql"
 
-const resolver =
-	createResolver()
-
-interface Args {
-	playlist: Pick<Playlist, "title">,
-}
+type Args =
+	InterfaceWithInput<Pick<Playlist, "title">>
 
 export const createPlaylist =
 	resolver<Playlist, Args>(
 		async ({ args, context }) => {
 			const playlistID = createUUID()
-			const { playlist: { title } } = args
+			const { input: { title } } = args
 
 			const playlist =
 				await query(context.pg)(INSERT_PLAYLIST)({
@@ -47,9 +44,9 @@ export const createPlaylist =
 			await query(context.pg)(INSERT_LIBRARY_OBJECT)({
 				variables: {
 					inLibrary: true,
-					columnName: "playlist_id",
 					objectID: playlist.playlistID,
 					tableName: "library_playlists",
+					columnName: COLUMN_NAMES.PLAYLIST[0],
 					userID: context.authorization!.userID,
 				},
 			})

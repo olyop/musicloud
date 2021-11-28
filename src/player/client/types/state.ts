@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import {
 	SettingsTheme,
 	OrderByDirection,
@@ -12,7 +13,7 @@ import {
 	LibraryPlaylistsOrderByField,
 } from "./enums"
 
-import { UserQueues } from "./objects"
+import { QueuePreviousNextLater } from "./objects"
 
 export interface OrderBy<F = string> {
 	field: F,
@@ -28,18 +29,39 @@ export type LibrarySongsOrderBy = OrderBy<LibrarySongsOrderByField>
 export type LibraryArtistsOrderBy = OrderBy<LibraryArtistsOrderByField>
 export type LibraryPlaylistsOrderBy = OrderBy<LibraryPlaylistsOrderByField>
 
-export type SettingsQueuesDisclosure = Record<keyof UserQueues, boolean>
+export type SettingsQueuesDisclosureKeys = keyof QueuePreviousNextLater
+export type SettingsQueuesDisclosure = Record<SettingsQueuesDisclosureKeys, boolean>
 
-export interface SettingsOrderBy {
+export interface SettingsOrderBySongs {
 	songs: SongsOrderBy,
-	genres: GenresOrderBy,
-	albums: AlbumsOrderBy,
-	artists: ArtistsOrderBy,
-	playlists: PlaylistsOrderBy,
 	librarySongs: LibrarySongsOrderBy,
+}
+
+export interface SettingsOrderByGenres {
+	genres: GenresOrderBy,
+}
+
+export interface SettingsOrderByAlbums {
+	albums: AlbumsOrderBy,
+}
+
+export interface SettingsOrderByArtists {
+	artists: ArtistsOrderBy,
 	libraryArtists: LibraryArtistsOrderBy,
+}
+
+export interface SettingsOrderByPlaylists {
+	playlists: PlaylistsOrderBy,
 	libraryPlaylists: LibraryPlaylistsOrderBy,
 }
+
+export interface SettingsOrderBy
+	extends
+		SettingsOrderBySongs,
+		SettingsOrderByGenres,
+		SettingsOrderByAlbums,
+		SettingsOrderByArtists,
+		SettingsOrderByPlaylists {}
 
 export interface Settings {
 	volume: number,

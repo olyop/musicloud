@@ -3,13 +3,7 @@ import { Link } from "react-router-dom"
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { useState, createElement, FC } from "react"
-
-import Modal, {
-	ModalHeader,
-	ModalButton,
-	ModalButtons,
-} from "../modal"
+import { useState, createElement, VFC } from "react"
 
 import {
 	PropTypes,
@@ -23,13 +17,14 @@ import {
 import Window from "../window"
 import PlayButton from "./play-button"
 import InLibraryButton from "./in-library-button"
+import Modal, { ModalHeader, ModalButton, ModalButtons } from "../modal"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Item")
 
-const Item: FC<PropTypes> = ({
+const Item: VFC<PropTypes> = ({
 	left,
 	onClick,
 	onRemove,

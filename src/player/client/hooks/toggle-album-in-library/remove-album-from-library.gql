@@ -1,0 +1,10 @@
+mutation removeAlbumFromLibrary($albumID: UUID!) {
+  removeAlbumFromLibrary(albumID: $albumID) {
+    albumID
+    inLibrary
+    songs {
+      songID
+      inLibrary
+    }
+  }
+}

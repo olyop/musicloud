@@ -1,37 +1,28 @@
 import {
 	join,
-	query as pgQuery,
 	exists as pgExists,
-	convertTableToCamelCase,
+	query as pgHelpersQuery,
+	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
+import { isNull } from "lodash"
 import { UserInputError } from "apollo-server-fastify"
 import { SongIDBase } from "@oly_op/music-app-common/types"
 
-import {
-	SELECT_QUEUE,
-	INSERT_QUEUE_SONG,
-	UPDATE_USER_QUEUE_SONG,
-} from "../../sql"
-
-import { User, QueueSong } from "../../types"
+import resolver from "./resolver"
+import { QueueSong } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
-import { createResolver, getUserWithQueues } from "../helpers"
-
-const resolver =
-	createResolver()
+import { SELECT_QUEUE, INSERT_QUEUE_SONG, UPDATE_QUEUE_SONG } from "../../sql"
 
 export const queueSongLater =
-	resolver<User, SongIDBase>(
+	resolver<Record<string, never>, SongIDBase>(
 		async ({ args, context }) => {
 			const { songID } = args
 			const { userID } = context.authorization!
 
 			const client = await context.pg.connect()
-			const query = pgQuery(client)
+			const query = pgHelpersQuery(client)
 			const exists = pgExists(client)
-
-			let user: User
 
 			try {
 				await query("BEGIN")()
@@ -40,16 +31,16 @@ export const queueSongLater =
 					await exists({
 						value: songID,
 						table: "songs",
-						column: "song_id",
+						column: COLUMN_NAMES.SONG[0],
 					})
 
 				if (!songExists) {
-					throw new UserInputError("Song does not exist.")
+					throw new UserInputError("Song does not exist")
 				}
 
 				const nexts =
 					await query(SELECT_QUEUE)({
-						parse: convertTableToCamelCase<QueueSong>(),
+						parse: convertTableToCamelCaseOrNull<QueueSong>(),
 						variables: {
 							userID,
 							tableName: "queue_laters",
@@ -57,28 +48,32 @@ export const queueSongLater =
 						},
 					})
 
-				for (const next of nexts) {
-					await query(UPDATE_USER_QUEUE_SONG)({
+				if (!isNull(nexts)) {
+					await Promise.all(
+						nexts.map(
+							next => (
+								query(UPDATE_QUEUE_SONG)({
+									variables: {
+										userID,
+										addSubtract: "+",
+										index: next.index,
+										songID: next.songID,
+										tableName: "queue_laters",
+									},
+								})
+							),
+						),
+					)
+
+					await query(INSERT_QUEUE_SONG)({
 						variables: {
 							userID,
-							addSubtract: "+",
-							index: next.index,
-							songID: next.songID,
+							songID,
+							index: 0,
 							tableName: "queue_laters",
 						},
 					})
 				}
-
-				await query(INSERT_QUEUE_SONG)({
-					variables: {
-						userID,
-						songID,
-						index: 0,
-						tableName: "queue_laters",
-					},
-				})
-
-				user = await getUserWithQueues(client)(userID)
 
 				await query("COMMIT")()
 			} catch (error) {
@@ -88,6 +83,6 @@ export const queueSongLater =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

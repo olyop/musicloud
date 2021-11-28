@@ -1,5 +1,5 @@
 query getUserPlaylistsFilteredBySong($songID: UUID!) {
-	user {
+	getUser {
 		userID
 		playlistsFilteredBySong(songID: $songID) {
 			title

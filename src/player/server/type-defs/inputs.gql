@@ -3,8 +3,18 @@ input LogInInput {
 	password: NonEmptyString!
 }
 
-input PlaylistInput {
+input CreatePlaylistInput {
 	title: NonEmptyString!
+}
+
+input RenamePlaylistInput {
+	playlistID: UUID!
+	title: NonEmptyString!
+}
+
+input GetSearchResultsInput {
+	value: NonEmptyString!
+	length: NonNegativeInt!
 }
 
 input SongsOrderByInput {

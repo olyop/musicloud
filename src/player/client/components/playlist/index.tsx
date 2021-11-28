@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { createBEM, BEMPropTypes } from "@oly_op/bem"
-import { useState, createElement, FC, Fragment } from "react"
+import { useState, createElement, Fragment, VFC } from "react"
 
 import {
 	useUserID,
@@ -15,12 +15,12 @@ import TextField from "../text-field"
 import ObjectLink from "../object-link"
 import Modal, { ModalButton, ModalButtons } from "../modal"
 import { determineObjectPath } from "../../helpers"
-import { OnClickPropTypes, Playlist as PlaylistType } from "../../types"
+import { Handler, OnClickPropTypes, Playlist as PlaylistType } from "../../types"
 
 const bem =
 	createBEM("Playlist")
 
-const Playlist: FC<PropTypes> = ({
+const Playlist: VFC<PropTypes> = ({
 	onClick,
 	playlist,
 	className,
@@ -28,8 +28,8 @@ const Playlist: FC<PropTypes> = ({
 	hideModal = false,
 	hideInLibrary = false,
 }) => {
-	const userID =
-		useUserID()
+	const userID = useUserID()
+	const { playlistID } = playlist
 
 	const [ renameModal, setRenameModal ] =
 		useState(false)
@@ -41,19 +41,22 @@ const Playlist: FC<PropTypes> = ({
 		useToggleInLibrary(playlist)
 
 	const [ playPlaylist, isPlaying ] =
-		usePlayPlaylist(playlist.playlistID)
+		usePlayPlaylist({ playlistID })
 
 	const [ renamePlaylist ] =
-		useRenamePlaylist(playlist.playlistID)
+		useRenamePlaylist({ playlistID })
 
 	const [ deletePlaylist ] =
-		useDeletePlaylist(playlist.playlistID)
-
-	const handleRenameModalOpen =
-		() => setRenameModal(true)
+		useDeletePlaylist({ playlistID })
 
 	const handleRenameModalClose =
 		() => setRenameModal(false)
+
+	const handleRenameModalOpen =
+		(onClose: Handler) => () => {
+			void onClose()
+			setRenameModal(true)
+		}
 
 	const handleTitleRenameChange =
 		(value: string) =>
@@ -61,8 +64,8 @@ const Playlist: FC<PropTypes> = ({
 
 	const handleTitleRenameSubmit =
 		async () => {
-			await renamePlaylist(renameTitle)
 			handleRenameModalClose()
+			await renamePlaylist({ title: renameTitle })
 		}
 
 	return (
@@ -74,14 +77,18 @@ const Playlist: FC<PropTypes> = ({
 				infoOptions={{
 					upperLeft: onClick ? playlist.title : (
 						<ObjectLink
-							text={playlist.title}
-							path={determineObjectPath("playlist", playlist.playlistID)}
+							link={{
+								text: playlist.title,
+								path: determineObjectPath("playlist", playlist.playlistID),
+							}}
 						/>
 					),
 					lowerLeft: (
 						<ObjectLink
-							text={playlist.user.name}
-							path={determineObjectPath("user", playlist.user.userID)}
+							link={{
+								text: playlist.user.name,
+								path: determineObjectPath("user", playlist.user.userID),
+							}}
 						/>
 					),
 				}}
@@ -97,8 +104,10 @@ const Playlist: FC<PropTypes> = ({
 					header: {
 						text: (
 							<ObjectLink
-								text={playlist.title}
-								path={determineObjectPath("playlist", playlist.playlistID)}
+								link={{
+									text: playlist.title,
+									path: determineObjectPath("playlist", playlist.playlistID),
+								}}
 							/>
 						),
 					},
@@ -116,7 +125,7 @@ const Playlist: FC<PropTypes> = ({
 									<ModalButton
 										icon="edit"
 										text="Rename"
-										onClick={handleRenameModalOpen}
+										onClick={handleRenameModalOpen(onClose)}
 									/>
 									<ModalButton
 										icon="delete"

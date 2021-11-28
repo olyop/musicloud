@@ -9,9 +9,5 @@
 		"webpack.base.ts",
 		"webpack.player.ts",
 		"webpack.upload.ts"
-	],
-	"exclude": [
-		"build",
-		"node_modules"
 	]
 }

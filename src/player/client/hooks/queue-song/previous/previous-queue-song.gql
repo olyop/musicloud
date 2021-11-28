@@ -1,6 +1,5 @@
 mutation previousQueueSong {
 	previousQueueSong {
-		userID
 		nowPlaying {
 			mix
 			title
@@ -26,6 +25,6 @@ mutation previousQueueSong {
 				albumID
 				title
 			}
-		}
+			}
 	}
 }

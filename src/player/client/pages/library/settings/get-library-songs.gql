@@ -1,7 +1,6 @@
 query getLibrarySongs {
-	user {
-		userID
-		librarySongs {
+	getLibrary {
+		songs {
 			mix
 			title
 			songID

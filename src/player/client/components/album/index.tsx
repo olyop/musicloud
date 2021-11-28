@@ -1,19 +1,19 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC, Fragment } from "react"
+import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import Cover from "../cover"
 import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
-import Item, { ModalOptions } from "../item"
 import { ModalButton, ModalButtons } from "../modal"
-import { useShuffleAlbum, usePlayAlbum } from "../../hooks"
+import Item, { ModalOptions, InLibraryOptions } from "../item"
+import { useShuffleAlbum, usePlayAlbum, useToggleAlbumInLibrary } from "../../hooks"
 import { Album as AlbumType, Handler, SettingsListStyle } from "../../types"
 import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
 import { useStateListStyle, useStatePlay, useStateShowReleased } from "../../redux"
 
-const ModalPlayButton: FC<ModalPlayButtonPropTypes> = ({
+const ModalPlayButton: VFC<ModalPlayButtonPropTypes> = ({
 	onClose,
 	onClick,
 	isPlaying,
@@ -39,7 +39,7 @@ interface ModalPlayButtonPropTypes {
 const bem =
 	createBEM("Album")
 
-const Album: FC<PropTypes> = ({
+const Album: VFC<PropTypes> = ({
 	album,
 	className,
 	leftIcon = false,
@@ -48,21 +48,27 @@ const Album: FC<PropTypes> = ({
 	alwaysList = false,
 	hideReleased = false,
 }) => {
+	const { albumID } = album
 	const listStyle = useStateListStyle()
 	const showReleased = useStateShowReleased()
 
 	const [ shuffleAlbum ] =
-		useShuffleAlbum(album.albumID)
+		useShuffleAlbum({ albumID })
 
 	const [ playAlbum, isPlaying ] =
-		usePlayAlbum(album.albumID)
+		usePlayAlbum({ albumID })
+
+	const [ toggleAlbumInLibrary, inLibrary ] =
+		useToggleAlbumInLibrary({ albumID })
 
 	const modalOptions: ModalOptions = {
 		header: {
 			text: (
 				<ObjectLink
-					text={album.title}
-					path={determineObjectPath("album", album.albumID)}
+					link={{
+						text: album.title,
+						path: determineObjectPath("album", album.albumID),
+					}}
 				/>
 			),
 			imgPropTypes: {
@@ -83,6 +89,12 @@ const Album: FC<PropTypes> = ({
 					isPlaying={isPlaying}
 				/>
 				<ModalButton
+					onClose={onClose}
+					onClick={toggleAlbumInLibrary}
+					icon={inLibrary ? "done" : "add"}
+					text={inLibrary ? "Remove" : "Add"}
+				/>
+				<ModalButton
 					text="Playlist"
 					icon="playlist_add"
 					link={`/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`}
@@ -96,12 +108,18 @@ const Album: FC<PropTypes> = ({
 		),
 	}
 
+	const inLibraryOptions: InLibraryOptions = {
+		inLibrary,
+		onClick: toggleAlbumInLibrary,
+	}
+
 	const path =
 		determineObjectPath("album", album.albumID)
 
 	return (
-		listStyle === SettingsListStyle.LIST || alwaysList ? (
+		alwaysList || listStyle === SettingsListStyle.LIST ? (
 			<Item
+				inLibraryOptions={inLibraryOptions}
 				leftIcon={leftIcon ? "album" : undefined}
 				modalOptions={hideModal ? undefined : modalOptions}
 				className={bem(className, "PaddingHalf ItemBorder")}
@@ -122,8 +140,10 @@ const Album: FC<PropTypes> = ({
 				infoOptions={{
 					upperLeft: (
 						<ObjectLink
-							path={path}
-							text={album.title}
+							link={{
+								path,
+								text: album.title,
+							}}
 						/>
 					),
 					lowerLeft: (
@@ -151,6 +171,7 @@ const Album: FC<PropTypes> = ({
 				/>
 				<Item
 					className="PaddingHalf"
+					inLibraryOptions={inLibraryOptions}
 					modalOptions={hideModal ? undefined : modalOptions}
 					playOptions={{
 						isPlaying,
@@ -160,8 +181,10 @@ const Album: FC<PropTypes> = ({
 						upperLeft: (
 							<Fragment>
 								<ObjectLink
-									path={path}
-									text={album.title}
+									link={{
+										path,
+										text: album.title,
+									}}
 								/>
 								{showReleased && (
 									<span

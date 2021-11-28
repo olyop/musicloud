@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import Item from "../item"
@@ -10,7 +10,7 @@ import { determineObjectPath, determineCatalogImageURL } from "../../helpers"
 const bem =
 	createBEM("User")
 
-const User: FC<PropTypes> = ({
+const User: VFC<PropTypes> = ({
 	user,
 	className,
 	showIcon = false,
@@ -20,8 +20,10 @@ const User: FC<PropTypes> = ({
 		infoOptions={{
 			upperLeft: (
 				<ObjectLink
-					text={user.name}
-					path={determineObjectPath("user", user.userID)}
+					link={{
+						text: user.name,
+						path: determineObjectPath("user", user.userID),
+					}}
 				/>
 			),
 		}}

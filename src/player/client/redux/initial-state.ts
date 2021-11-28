@@ -23,9 +23,9 @@ const settings: Settings = {
 	theme: SettingsTheme.SYSTEM,
 	listStyle: SettingsListStyle.GRID,
 	queuesDisclosure: {
-		queueNext: true,
-		queueLater: false,
-		queuePrevious: false,
+		next: true,
+		later: false,
+		previous: false,
 	},
 	orderBy: {
 		songs: {

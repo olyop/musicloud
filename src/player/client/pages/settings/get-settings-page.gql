@@ -1,7 +1,0 @@
-query getSettingsPage {
-	user {
-		userID
-		librarySongsTotal
-		libraryArtistsTotal
-	}
-}

@@ -9,10 +9,13 @@ type Album {
 	songs: [Song!]!
 	genres: [Genre!]!
 	artists: [Artist!]!
-	songsTotal: NonNegativeInt!
-	playsTotal: NonNegativeInt!
+	playsTotal: PositiveInt
+	songsTotal: PositiveInt!
 
 	# user
-	userPlays: [Play!]!
-	userPlaysTotal: NonNegativeInt!
+	userPlays: [Play!]
+	userPlaysTotal: PositiveInt
+
+	# library
+	inLibrary: Boolean!
 }

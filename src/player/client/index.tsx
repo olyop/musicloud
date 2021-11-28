@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom"
-import { createElement, FC } from "react"
+import { createElement, FC, VFC } from "react"
 import { ApolloProvider } from "@apollo/client"
 import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as ReactRouter } from "react-router-dom"
@@ -27,7 +27,7 @@ const ApolloClient: FC = ({ children }) => (
 	</ApolloProvider>
 )
 
-const Root: FC = () => (
+const Root: VFC = () => (
 	<ReactRedux>
 		<ReactRouter>
 			<ApolloClient>
@@ -55,7 +55,9 @@ ReactDOM.render(
 if (process.env.SERVICE_WORKER === "true") {
 	if ("serviceWorker" in navigator) {
 		window.addEventListener("load", () => {
-			navigator.serviceWorker.register("/service-worker.js")
+			navigator.serviceWorker
+				.register("/service-worker.js")
+				.catch(console.error)
 		})
 	}
 }

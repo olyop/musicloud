@@ -1,12 +1,11 @@
 mutation shuffleAlbum($albumID: UUID!) {
 	shuffleAlbum(albumID: $albumID) {
-    userID
     nowPlaying {
       mix
       title
       songID
       duration
-			inLibrary
+      inLibrary
       featuring {
         artistID
         name

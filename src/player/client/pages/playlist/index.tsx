@@ -1,8 +1,8 @@
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { useParams, useHistory } from "react-router-dom"
-import { createElement, FC, Fragment, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import { createElement, VFC, Fragment, useState } from "react"
 import { PlaylistIDBase, SongIDBase } from "@oly_op/music-app-common/types"
 
 import {
@@ -12,23 +12,25 @@ import {
 	usePlayPlaylist,
 	useDeletePlaylist,
 	useRenamePlaylist,
+	useShufflePlaylist,
 } from "../../hooks"
 
+import { Playlist } from "../../types"
 import Modal from "../../components/modal"
-import { Playlist, User } from "../../types"
+import { useStatePlay } from "../../redux"
 import TextField from "../../components/text-field"
 import ObjectLink from "../../components/object-link"
-import SHUFFLE_PLAYLIST from "./shuffle-playlist.gql"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
 import Songs, { OnRemoveOptions } from "../../components/songs"
 import { determinePlural, determineObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
-const PlaylistPage: FC = () => {
+const PlaylistPage: VFC = () => {
 	const userID = useUserID()
-	const history = useHistory()
-	const params = useParams<PlaylistIDBase>()
-	const playlistID = addDashesToUUID(params.playlistID)
+	const play = useStatePlay()
+	const navigate = useNavigate()
+	const params = useParams<keyof PlaylistIDBase>()
+	const playlistID = addDashesToUUID(params.playlistID!)
 
 	const variables: PlaylistIDBase =
 		{ playlistID }
@@ -40,23 +42,20 @@ const PlaylistPage: FC = () => {
 		useState("")
 
 	const [ renamePlaylist ] =
-		useRenamePlaylist(playlistID)
+		useRenamePlaylist({ playlistID })
 
 	const [ deletePlaylist ] =
-		useDeletePlaylist(playlistID)
+		useDeletePlaylist({ playlistID })
 
 	const [ playPlaylist, isPlaying ] =
-		usePlayPlaylist(playlistID)
-
-	const { data } =
-		useQuery<PlaylistPageData, PlaylistIDBase>(
-			GET_PLAYLIST_PAGE,
-			{ variables },
-		)
+		usePlayPlaylist({ playlistID })
 
 	const [ shufflePlaylist ] =
-		useMutation<ShufflePlaylistData, PlaylistIDBase>(
-			SHUFFLE_PLAYLIST,
+		useShufflePlaylist({ playlistID })
+
+	const { data } =
+		useQuery<GetPlaylistPageData, PlaylistIDBase>(
+			GET_PLAYLIST_PAGE,
 			{ variables },
 		)
 
@@ -66,12 +65,12 @@ const PlaylistPage: FC = () => {
 		)
 
 	const isUsers =
-		data?.playlist.user.userID === userID
+		data?.getPlaylistByID.user.userID === userID
 
 	const handleDeletePlaylist =
 		async () => {
 			await deletePlaylist()
-			history.goBack()
+			navigate(-1)
 		}
 
 	const handleShufflePlaylist =
@@ -102,43 +101,45 @@ const PlaylistPage: FC = () => {
 
 	const handleTitleRenameSubmit =
 		async () => {
-			await renamePlaylist(renameTitle)
 			handleRenameModalClose()
+			await renamePlaylist({ title: renameTitle })
 		}
 
 	return (
 		<Fragment>
 			<div className="Content PaddingTopBottom">
 				{data && (
-					<Metadata title={data.playlist.title}>
+					<Metadata title={data.getPlaylistByID.title}>
 						<div className="MarginBottom FlexColumnGapHalf">
 							<div className="FlexListGapHalf">
 								<h1 className="HeadingFour">
-									{data.playlist.title}
+									{data.getPlaylistByID.title}
 								</h1>
 								<Button
 									text="Play"
 									transparent
 									className="Border"
 									onClick={playPlaylist}
-									icon={isPlaying ? "pause" : "play_arrow"}
+									icon={play && isPlaying ? "pause" : "play_arrow"}
 								/>
 							</div>
 							<p className="BodyOne LightColor">
-								{new Date(data.playlist.dateCreated).toLocaleDateString()}
+								{new Date(data.getPlaylistByID.dateCreated).toLocaleDateString()}
 							</p>
 							<h2 className="BodyOne">
 								<ObjectLink
-									text={data.playlist.user.name}
-									path={determineObjectPath("user", data.playlist.user.userID)}
+									link={{
+										text: data.getPlaylistByID.user.name,
+										path: determineObjectPath("user", data.getPlaylistByID.user.userID),
+									}}
 								/>
 							</h2>
 						</div>
-						{data.playlist.songsTotal ? (
+						{data.getPlaylistByID.songsTotal ? (
 							<Songs
-								hideOrderBy
+								orderBy={false}
 								className="MarginBottom"
-								songs={data.playlist.songs}
+								songs={data.getPlaylistByID.songs}
 								onRemove={handleRemoveSongFromPlaylist}
 							/>
 						) : (
@@ -167,11 +168,12 @@ const PlaylistPage: FC = () => {
 								</Fragment>
 							)}
 						</div>
-						{data.playlist.songsTotal && (
+						{data.getPlaylistByID.songsTotal && (
 							<p className="MarginTop BodyTwoBold">
-								{data.playlist.songsTotal}
-								<Fragment> song</Fragment>
-								{determinePlural(data.playlist.songsTotal)}
+								{data.getPlaylistByID.songsTotal}
+								{" "}
+								song
+								{determinePlural(data.getPlaylistByID.songsTotal)}
 							</p>
 						)}
 					</Metadata>
@@ -211,20 +213,15 @@ const PlaylistPage: FC = () => {
 	)
 }
 
-interface PlaylistPageData {
-	playlist: Playlist,
-}
-
-interface ShufflePlaylistData {
-	shufflePlaylist: User,
+interface GetPlaylistPageData {
+	getPlaylistByID: Playlist,
 }
 
 interface RemoveSongFromPlaylistData {
 	removeSongFromPlaylist: Playlist,
 }
 
-interface RemoveSongFromPlaylistVars extends
-	SongIDBase,
-	PlaylistIDBase {}
+interface RemoveSongFromPlaylistVars
+	extends SongIDBase, PlaylistIDBase {}
 
 export default PlaylistPage

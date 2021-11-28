@@ -1,30 +1,26 @@
 import {
-	query as pgQuery,
-	exists as pgExists,
 	convertTableToCamelCase,
+	query as pgHelpersQuery,
+	exists as pgHelpersExists,
 } from "@oly_op/pg-helpers"
 
 import { UserInputError } from "apollo-server-fastify"
 import { SongIDBase } from "@oly_op/music-app-common/types"
 
-import { User, QueuesNowPlaying } from "../../types"
-import { createResolver, getUserWithQueues } from "../helpers"
+import resolver from "./resolver"
+import { QueueSong } from "../../types"
+import { COLUMN_NAMES } from "../../globals"
 import { SELECT_QUEUE, INSERT_QUEUE_SONG } from "../../sql"
 
-const resolver =
-	createResolver()
-
 export const queueSongAfter =
-	resolver<User, SongIDBase>(
+	resolver<Record<string, never>, SongIDBase>(
 		async ({ args, context }) => {
 			const { songID } = args
 			const { userID } = context.authorization!
 
 			const client = await context.pg.connect()
-			const query = pgQuery(client)
-			const exists = pgExists(client)
-
-			let user: User
+			const query = pgHelpersQuery(client)
+			const exists = pgHelpersExists(client)
 
 			try {
 				await query("BEGIN")()
@@ -33,16 +29,16 @@ export const queueSongAfter =
 					await exists({
 						value: songID,
 						table: "songs",
-						column: "song_id",
+						column: COLUMN_NAMES.SONG[0],
 					})
 
 				if (!songExists) {
-					throw new UserInputError("Song does not exist.")
+					throw new UserInputError("Song does not exist")
 				}
 
 				const nexts =
 					await query(SELECT_QUEUE)({
-						parse: convertTableToCamelCase<QueuesNowPlaying>(),
+						parse: convertTableToCamelCase<QueueSong>(),
 						variables: {
 							userID,
 							columnNames: "*",
@@ -59,8 +55,6 @@ export const queueSongAfter =
 					},
 				})
 
-				user = await getUserWithQueues(client)(userID)
-
 				await query("COMMIT")()
 			} catch (error) {
 				await query("ROLLBACK")()
@@ -69,6 +63,6 @@ export const queueSongAfter =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

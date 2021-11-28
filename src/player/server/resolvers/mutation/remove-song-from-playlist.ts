@@ -1,16 +1,13 @@
+import { query } from "@oly_op/pg-helpers"
 import { PlaylistIDBase, SongIDBase } from "@oly_op/music-app-common/types"
-import { join, convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
 
+import resolver from "./resolver"
 import { Playlist } from "../../types"
-import { createResolver } from "../helpers"
-import { COLUMN_NAMES } from "../../globals"
-import { DELETE_PLAYLIST_SONG, SELECT_PLAYLIST_BY_ID } from "../../sql"
+import { getPlaylist } from "../helpers"
+import { DELETE_PLAYLIST_SONG } from "../../sql"
 
 interface Args
 	extends SongIDBase, PlaylistIDBase {}
-
-const resolver =
-	createResolver()
 
 export const removeSongFromPlaylist =
 	resolver<Playlist, Args>(
@@ -21,15 +18,6 @@ export const removeSongFromPlaylist =
 				variables: { songID, playlistID },
 			})
 
-			return query(context.pg)(SELECT_PLAYLIST_BY_ID)({
-				parse: convertFirstRowToCamelCase(),
-				variables: [{
-					key: "playlistID",
-					value: args.playlistID,
-				},{
-					key: "columnNames",
-					value: join(COLUMN_NAMES.PLAYLIST),
-				}],
-			})
+			return getPlaylist(context.pg)({ playlistID })
 		},
 	)

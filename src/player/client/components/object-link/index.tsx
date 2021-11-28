@@ -1,4 +1,4 @@
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { NavLink } from "react-router-dom"
 import { createBEM, BEMPropTypes } from "@oly_op/bem"
 
@@ -9,17 +9,16 @@ import "./index.scss"
 const bem =
 	createBEM("ObjectLink")
 
-const ObjectLink: FC<PropTypes> = ({
-	path,
-	text,
+const ObjectLink: VFC<PropTypes> = ({
+	link,
 	onClick,
 	className,
 }) => (
 	<NavLink
-		to={path}
-		title={text}
-		children={text}
+		to={link.path}
+		title={link.text}
 		onClick={onClick}
+		children={link.text}
 		className={bem(className, "")}
 	/>
 )
@@ -30,6 +29,8 @@ export interface ObjectLinkOptions {
 }
 
 interface PropTypes
-	extends BEMPropTypes, OnClickPropTypes, ObjectLinkOptions {}
+	extends BEMPropTypes, OnClickPropTypes {
+	link: ObjectLinkOptions,
+}
 
 export default ObjectLink

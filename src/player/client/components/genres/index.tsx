@@ -1,25 +1,26 @@
 import isEmpty from "lodash/isEmpty"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { createBEM, BEMPropTypes } from "@oly_op/bem"
 
 import Genre from "../genre"
 import SelectOrderBy from "../select-order-by"
-import { Genre as GenreType } from "../../types"
+import { Genre as GenreType, GenresOrderByField } from "../../types"
 
 const bem =
 	createBEM("Genre")
 
-const Genres: FC<PropTypes> = ({
+const Genres: VFC<PropTypes> = ({
 	className,
 	genres = [],
-	orderByFields,
-	hideOrderBy = false,
+	orderBy = false,
 }) => (
 	<div className={bem(className, isEmpty(genres) || "Elevated")}>
-		{hideOrderBy || (
+		{orderBy && (
 			<SelectOrderBy
-				settingsKey="genres"
-				fieldOptions={orderByFields}
+				orderBy={{
+					key: "genres",
+					fields: Object.keys(GenresOrderByField),
+				}}
 				className="PaddingHalf ItemBorder FlexListRight"
 			/>
 		)}
@@ -36,9 +37,8 @@ const Genres: FC<PropTypes> = ({
 )
 
 interface PropTypes extends BEMPropTypes {
+	orderBy?: boolean,
 	genres?: GenreType[],
-	hideOrderBy?: boolean,
-	orderByFields: string[],
 }
 
 export default Genres

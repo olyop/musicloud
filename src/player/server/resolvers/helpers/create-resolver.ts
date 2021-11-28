@@ -1,22 +1,30 @@
+import { GraphQLResolveInfo } from "graphql"
 import { isNull, isUndefined } from "lodash"
 import { AuthenticationError } from "apollo-server-fastify"
 
-import { Context, ResolverParameter } from "../../types"
+import { Context } from "../../types"
+
+export interface ResolverParameter<Parent, Args> {
+	args: Args,
+	parent: Parent,
+	context: Context,
+	info: GraphQLResolveInfo,
+}
+
+export type ResolverCallback<Parent, Args, Return> =
+	(props: ResolverParameter<Parent, Args>) => Return | Promise<Return>
 
 export const createResolver =
-	<P = undefined>() =>
-		<R, A = undefined>(callback: Callback<P, R, A>, authenticate = true) =>
-			async (parent: P, args: A, context: Context) => {
+	<Parent = undefined>() =>
+		<Return, Args = undefined>(callback: ResolverCallback<Parent, Args, Return>, authenticate = true) =>
+			async (parent: Parent, args: Args, context: Context, info: GraphQLResolveInfo) => {
 				const { authorization } = context
 				if (authenticate) {
 					if (isUndefined(authorization)) {
-						throw new AuthenticationError("Token not provided.")
+						throw new AuthenticationError("Token not provided")
 					} else if (isNull(authorization)) {
-						throw new AuthenticationError("Token expired.")
+						throw new AuthenticationError("Token expired")
 					}
 				}
-				return callback({ parent, args, context })
+				return callback({ parent, args, context, info })
 			}
-
-type Callback<P, R, A> =
-	(props: ResolverParameter<P, A>) => R | Promise<R>

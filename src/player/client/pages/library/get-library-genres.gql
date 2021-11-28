@@ -1,7 +1,6 @@
 query getLibraryGenres($input: LibraryGenresInput!) {
-	user {
-		userID
-		libraryGenres(input: $input) {
+	getLibrary {
+		genresPaginated(input: $input) {
 			name
 			genreID
 		}

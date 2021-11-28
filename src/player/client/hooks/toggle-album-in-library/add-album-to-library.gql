@@ -1,0 +1,10 @@
+mutation addAlbumToLibrary($albumID: UUID!) {
+  addAlbumToLibrary(albumID: $albumID) {
+    albumID
+    inLibrary
+    songs {
+      songID
+      inLibrary
+    }
+  }
+}

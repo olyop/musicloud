@@ -1,7 +1,6 @@
 query getLibraryAlbums {
-	user {
-		userID
-		libraryAlbums {
+	getLibrary {
+		albums {
 			title
 			albumID
 			released

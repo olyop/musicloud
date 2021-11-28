@@ -1,43 +1,41 @@
-import { query as pgQuery } from "@oly_op/pg-helpers"
+import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
 import {
 	shuffle,
 	getQueueSongs,
-	createResolver,
 	clearQueueNext,
 	clearQueueLater,
-	getUserWithQueues,
 } from "../helpers"
 
-import { Song, User } from "../../types"
+import resolver from "./resolver"
+import { Song } from "../../types"
 import { INSERT_QUEUE_SONG } from "../../sql"
 
-const resolver =
-	createResolver()
-
 export const shuffleNext =
-	resolver<User>(
+	resolver(
 		async ({ context }) => {
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
-			const query = pgQuery(client)
-
-			let user: User
+			const query = pgHelpersQuery(client)
 
 			try {
 				await query("BEGIN")()
 
 				const nextSongs =
-					await getQueueSongs(client)(userID)("queue_nexts")
-
+					await getQueueSongs(client)({ userID, tableName: "queue_nexts" })
 				const laterSongs =
-					await getQueueSongs(client)(userID)("queue_laters")
+					await getQueueSongs(client)({ userID, tableName: "queue_laters" })
 
-				await clearQueueNext(client)(userID)
-				await clearQueueLater(client)(userID)
+				const nextSongsShuffled =
+					shuffle<Song>()(nextSongs)
+				const laterSongsShuffled =
+					shuffle<Song>()(laterSongs)
 
-				await Promise.all(
-					shuffle<Song>()(nextSongs).map(
+				await clearQueueNext(client)({ userID })
+				await clearQueueLater(client)({ userID })
+
+				await Promise.all([
+					...nextSongsShuffled.map(
 						({ songID }, index) => (
 							query(INSERT_QUEUE_SONG)({
 								variables: {
@@ -49,10 +47,7 @@ export const shuffleNext =
 							})
 						),
 					),
-				)
-
-				await Promise.all(
-					shuffle<Song>()(laterSongs).map(
+					...laterSongsShuffled.map(
 						({ songID }, index) => (
 							query(INSERT_QUEUE_SONG)({
 								variables: {
@@ -64,9 +59,7 @@ export const shuffleNext =
 							})
 						),
 					),
-				)
-
-				user = await getUserWithQueues(client)(userID)
+				])
 
 				await query("COMMIT")()
 			} catch (error) {
@@ -75,7 +68,5 @@ export const shuffleNext =
 			} finally {
 				client.release()
 			}
-
-			return user
 		},
 	)

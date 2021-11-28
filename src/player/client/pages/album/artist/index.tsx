@@ -1,6 +1,6 @@
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import {
@@ -16,7 +16,7 @@ import "./index.scss"
 const bem =
 	createBEM("AlbumArtist")
 
-const AlbumArtist: FC<PropTypes> = ({ artist }) => (
+const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
 	<h2 className="HeadingFive FlexListGapQuart">
 		<Image
 			title={artist.name}
@@ -29,9 +29,11 @@ const AlbumArtist: FC<PropTypes> = ({ artist }) => (
 			)}
 		/>
 		<ObjectLink
-			text={artist.name}
 			className={bem("link")}
-			path={determineObjectPath("artist", artist.artistID)}
+			link={{
+				text: artist.name,
+				path: determineObjectPath("artist", artist.artistID),
+			}}
 		/>
 	</h2>
 )

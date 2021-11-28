@@ -1,11 +1,11 @@
 query getQueuePrevious {
-  user {
-    userID
-    queuePrevious {
+  getQueue {
+    later {
       mix
       title
       songID
       duration
+      inLibrary
       queueIndex
       featuring {
         artistID

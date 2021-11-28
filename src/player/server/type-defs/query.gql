@@ -1,22 +1,18 @@
 type Query {
-	# object
-	user(userID: UUID): User!
-	play(playID: UUID!): Play!
-	song(songID: UUID!): Song!
-	album(albumID: UUID!): Album!
-	genre(genreID: UUID!): Genre!
-	artist(artistID: UUID!): Artist!
-	playlist(playlistID: UUID!): Playlist!
-	
-	# other
-	topTenSongs: [Song!]!
-	topOneHundredSongs: [Song!]!
-	# trendingSongs: [Song!]!
-	trendingAlbums: [Album!]!
-	# trendingArtists: [Artist!]!
-
-	search(
-		value: String!
-		length: NonNegativeInt!
-	): [Search!]!
+	getUser: User!
+	getQueue: Queue!
+	getLibrary: Library!
+	getTopTenSongs: [Song!]!
+	getTrendingSongs: [Song!]!
+	getTrendingAlbums: [Album!]!
+	getTrendingArtists: [Artist!]!
+	getTopOneHundredSongs: [Song!]!
+	getUserByID(userID: UUID!): User!
+	getPlayByID(playID: UUID!): Play!
+	getSongByID(songID: UUID!): Song!
+	getAlbumByID(albumID: UUID!): Album!
+	getGenreByID(genreID: UUID!): Genre!
+	getArtistByID(artistID: UUID!): Artist!
+	getPlaylistByID(playlistID: UUID!): Playlist!
+	getSearchResults(input: GetSearchResultsInput!): [Search!]!
 }

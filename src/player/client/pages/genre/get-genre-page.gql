@@ -2,7 +2,7 @@ query getGenrePage(
   $genreID: UUID!
   $songsOrderBy: SongsOrderByInput!
 ) {
-  genre(genreID: $genreID) {
+  getGenreByID(genreID: $genreID) {
     name
     genreID
     songs(orderBy: $songsOrderBy) {

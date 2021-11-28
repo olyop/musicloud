@@ -1,8 +1,8 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { createElement, FC, useEffect, useState } from "react"
-import { useHistory, useLocation, NavLink } from "react-router-dom"
+import { createElement, VFC, useEffect, useState } from "react"
+import { useNavigate, useLocation, NavLink } from "react-router-dom"
 import { ImageSizes, ImageDimensions } from "@oly_op/music-app-common/types"
 
 import {
@@ -54,7 +54,7 @@ const checkOnlineStatus =
 		}
 	}
 
-const HeaderSearchButton: FC = () => {
+const HeaderSearchButton: VFC = () => {
 	const { pathname } = useLocation()
 	return (
 		<NavLink to="/search">
@@ -70,10 +70,10 @@ const HeaderSearchButton: FC = () => {
 const bem =
 	createBEM("Header")
 
-const Header: FC = () => {
+const Header: VFC = () => {
 	const userID = useUserID()
 	const signOut = useSignOut()
-	const history = useHistory()
+	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const isOnline = useStateIsOnline()
 	const isFullscreen = useStateIsFullscreen()
@@ -86,10 +86,10 @@ const Header: FC = () => {
 		useState(false)
 
 	const handleBack =
-		() => history.goBack()
+		() => navigate(-1)
 
 	const handleFoward =
-		() => history.goForward()
+		() => navigate(1)
 
 	const handleMenuClick =
 		() => {

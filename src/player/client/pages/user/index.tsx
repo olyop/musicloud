@@ -11,11 +11,13 @@ import GET_USER_PAGE from "./get-user-page.gql"
 import { determineCatalogImageURL } from "../../helpers"
 
 const UserPage: FC = () => {
-	const params = useParams<UserIDBase>()
-	const userID = addDashesToUUID(params.userID)
+	const params = useParams<keyof UserIDBase>()
+	const userID = addDashesToUUID(params.userID!)
 
 	const { data, error } =
-		useQuery<Data, UserIDBase>(GET_USER_PAGE, { variables: { userID } })
+		useQuery<GetUserPageData, UserIDBase>(GET_USER_PAGE, {
+			variables: { userID },
+		})
 
 	if (error) {
 		return (
@@ -27,17 +29,17 @@ const UserPage: FC = () => {
 		)
 	} else if (data) {
 		return (
-			<Metadata title={data.user.name}>
+			<Metadata title={data.getUserByID.name}>
 				<Banner
-					title={data.user.name}
+					title={data.getUserByID.name}
 					coverURL={determineCatalogImageURL(
-						data.user.userID,
+						data.getUserByID.userID,
 						"cover",
 						ImageSizes.FULL,
 						ImageDimensions.LANDSCAPE,
 					)}
 					profileURL={determineCatalogImageURL(
-						data.user.userID,
+						data.getUserByID.userID,
 						"profile",
 						ImageSizes.HALF,
 						ImageDimensions.SQUARE,
@@ -55,8 +57,8 @@ const UserPage: FC = () => {
 	}
 }
 
-interface Data {
-	user: User,
+interface GetUserPageData {
+	getUserByID: User,
 }
 
 export default UserPage

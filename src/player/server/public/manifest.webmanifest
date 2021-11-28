@@ -51,6 +51,17 @@
 				"type":"image/png",
 				"sizes": "192x192"
 			}]
+		},
+		{
+			"url": "/settings",
+			"name": "Settings",
+			"short_name": "Settings",
+			"description": "Settings",
+			"icons": [{
+				"src": "/icons/192.png",
+				"type":"image/png",
+				"sizes": "192x192"
+			}]
 		}
 	]
 }

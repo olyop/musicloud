@@ -1,5 +1,5 @@
 import { createBEM, BEMPropTypes } from "@oly_op/bem"
-import { useEffect, createElement, ChangeEventHandler, FC } from "react"
+import { useEffect, createElement, ChangeEventHandler, VFC } from "react"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 
 import {
@@ -14,7 +14,7 @@ import "./index.scss"
 const bem =
 	createBEM("Progress")
 
-const Progress: FC<PropTypes> = ({ duration, className }) => {
+const Progress: VFC<ProgressPropTypes> = ({ duration, className }) => {
 	const play = useStatePlay()
 	const dispatch = useDispatch()
 	const current = useStateCurrent()
@@ -58,9 +58,10 @@ const Progress: FC<PropTypes> = ({ duration, className }) => {
 	)
 }
 
-type HandleChange = ChangeEventHandler<HTMLInputElement>
+type HandleChange =
+	ChangeEventHandler<HTMLInputElement>
 
-interface PropTypes extends BEMPropTypes {
+interface ProgressPropTypes extends BEMPropTypes {
 	duration: number,
 }
 

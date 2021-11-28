@@ -19,7 +19,7 @@ type Song {
 	playsTotal: PositiveInt
 
 	# user
-	userPlays: [Play!]!
+	userPlays: [Play!]
 	userPlaysTotal: PositiveInt
 
 	# library
@@ -30,6 +30,7 @@ type Song {
 	queueIndex: NonNegativeInt
 
 	# other
+	isInPlaylist(playlistID: UUID!): Boolean!
 	playlistIndex(playlistID: UUID!): NonNegativeInt
 	dateAddedToPlaylist(playlistID: UUID!): Timestamp
 }

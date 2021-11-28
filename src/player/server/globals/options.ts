@@ -1,6 +1,6 @@
+import { PoolConfig } from "pg"
 import { SignOptions } from "jsonwebtoken"
 import { fastifyHelmet } from "fastify-helmet"
-import { PoolConfig } from "@oly_op/pg-helpers"
 import { FastifyCorsOptions } from "fastify-cors"
 import { FastifyStaticOptions } from "fastify-static"
 import { ServerRegistration } from "apollo-server-fastify"
@@ -36,7 +36,7 @@ export const SERVE_STATIC_OPTIONS: FastifyStaticOptions = {
 }
 
 export const JWT_SIGN_OPTIONS: SignOptions = {
-	expiresIn: "3d",
+	expiresIn: "1d",
 	algorithm: "HS256",
 }
 

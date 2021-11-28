@@ -1,8 +1,0 @@
-query getUserNowPlaying {
-	user {
-		userID
-		nowPlaying {
-			songID
-		}
-	}
-}

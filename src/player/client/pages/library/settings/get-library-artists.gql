@@ -1,7 +1,6 @@
 query getLibraryArtists {
-	user {
-		userID
-		libraryArtists {
+	getLibrary {
+		artists {
 			name
 			artistID
 			inLibrary

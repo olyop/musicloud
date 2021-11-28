@@ -1,44 +1,36 @@
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { createBEM, BEMPropTypes } from "@oly_op/bem"
 
-import {
-	useDispatch,
-	updateOrderBy,
-	useStateOrderBy,
-} from "../../redux"
-
-import {
-	OrderBy,
-	SettingsOrderBy,
-	OrderByDirection,
-} from "../../types"
-
 import Select from "../select"
+import { OrderBy, SettingsOrderBy, OrderByDirection, OrderByOptions } from "../../types"
+import { useDispatch, updateOrderBy, useStateOrderBy } from "../../redux"
 
 import "./index.scss"
 
 const bem =
 	createBEM("SelectOrderBy")
 
-const SelectOrderBy: FC<PropTypes> = ({
-	className,
-	settingsKey,
-	fieldOptions,
-}) => {
+const SelectOrderBy: VFC<PropTypes> = ({ orderBy, className }) => {
 	const dispatch = useDispatch()
-	const state = useStateOrderBy(settingsKey)
+	const state = useStateOrderBy(orderBy.key)
 
 	const handleChange =
 		(key: keyof OrderBy) =>
 			(value: string) => {
-				dispatch(updateOrderBy({ key, value, settingsKey }))
+				dispatch(
+					updateOrderBy({
+						key,
+						value,
+						settingsKey: orderBy.key,
+					}),
+				)
 			}
 
 	return (
 		<div className={bem(className, "")}>
 			<Select
 				value={state.field}
-				options={fieldOptions}
+				options={orderBy.fields}
 				onChange={handleChange("field")}
 			/>
 			<Select
@@ -52,8 +44,7 @@ const SelectOrderBy: FC<PropTypes> = ({
 }
 
 interface PropTypes extends BEMPropTypes {
-	fieldOptions: string[],
-	settingsKey: keyof SettingsOrderBy,
+	orderBy: OrderByOptions<SettingsOrderBy>,
 }
 
 export default SelectOrderBy

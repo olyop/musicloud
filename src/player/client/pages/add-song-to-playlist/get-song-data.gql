@@ -1,10 +1,10 @@
 query getSongData($songID: UUID!) {
-  song(songID: $songID) {
+  getSongByID(songID: $songID) {
     title
     songID
     album {
-      title
       albumID
+      title
     }
   }
 }

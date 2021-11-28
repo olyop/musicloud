@@ -1,5 +1,5 @@
 import {
-	FC,
+	VFC,
 	useRef,
 	useState,
 	useEffect,
@@ -9,21 +9,21 @@ import {
 
 import isEmpty from "lodash/isEmpty"
 import debounce from "lodash/debounce"
-import uniqueId from "lodash/uniqueId"
+import uniqueID from "lodash/uniqueId"
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import isUndefined from "lodash/isUndefined"
 import Metadata from "@oly_op/react-metadata"
 import { useLazyQuery } from "@apollo/client"
-import { useHistory, useLocation } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { BASE_S3_URL } from "@oly_op/music-app-common/globals"
 
 import Search from "./search"
 import determineID from "./determine-id"
-import GET_SEARCH from "./get-search.gql"
 import { useHasMounted } from "../../hooks"
 import { Search as SearchType } from "../../types"
+import GET_SEARCH_RESULTS from "./get-search-results.gql"
 import { addLoading, useDispatch, removeLoading } from "../../redux"
 
 import "./index.scss"
@@ -31,11 +31,11 @@ import "./index.scss"
 const bem =
 	createBEM("SearchPage")
 
-const SearchPage: FC = () => {
-	const history = useHistory()
+const SearchPage: VFC = () => {
+	const navigate = useNavigate()
 	const location = useLocation()
 	const dispatch = useDispatch()
-	const queryID = useRef(uniqueId())
+	const queryID = useRef(uniqueID())
 	const hasMounted = useHasMounted()
 
 	const params = new URLSearchParams(location.search)
@@ -45,7 +45,7 @@ const SearchPage: FC = () => {
 		useState(initQuery)
 
 	const [ search, { data, loading } ] =
-		useLazyQuery<Data, Vars>(GET_SEARCH)
+		useLazyQuery<GetSearchResultsData, GetSearchResultsVars>(GET_SEARCH_RESULTS)
 
 	const delayedQuery =
 		useRef(debounce<DelayedQuery>(
@@ -75,7 +75,7 @@ const SearchPage: FC = () => {
 	useEffect(() => {
 		if (hasMounted) {
 			const newParams = new URLSearchParams({ query: input })
-			history.push({ search: newParams.toString() })
+			navigate({ search: newParams.toString() })
 		}
 	}, [input, history])
 
@@ -110,7 +110,7 @@ const SearchPage: FC = () => {
 				</div>
 				{!isEmpty(input) && !isUndefined(data) && (
 					<div className="Content Elevated">
-						{data.search.map(
+						{data.getSearchResults.map(
 							object => (
 								<Search
 									object={object}
@@ -129,15 +129,16 @@ const SearchPage: FC = () => {
 	)
 }
 
-interface Vars {
+type DelayedQuery =
+	(x: string) => void
+
+interface GetSearchResultsVars {
 	value: string,
 	length: number,
 }
 
-type DelayedQuery = (x: string) => void
-
-export interface Data {
-	search: SearchType[],
+export interface GetSearchResultsData {
+	getSearchResults: SearchType[],
 }
 
 export default SearchPage

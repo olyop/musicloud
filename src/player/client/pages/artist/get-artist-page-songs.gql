@@ -2,7 +2,7 @@ query getArtistPageSongs(
 	$artistID: UUID!
 	$songsOrderBy: SongsOrderByInput!
 ) {
-	artist(artistID: $artistID) {
+	getArtistByID(artistID: $artistID) {
 		artistID
 		songs(orderBy: $songsOrderBy) {
 			mix

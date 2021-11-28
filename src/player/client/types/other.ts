@@ -1,8 +1,6 @@
-import { FC } from "react"
-import { RouteComponentProps } from "react-router-dom"
+import { PathRouteProps } from "react-router-dom"
 
-import { QueueKeys } from "./unions"
-import { Song, UserQueues, UserClientBase, UserNowPlaying } from "./objects"
+import { Song } from "./objects"
 
 export interface Disc {
 	songs: Song[],
@@ -10,21 +8,12 @@ export interface Disc {
 	hideLabel: boolean,
 }
 
-export interface Route {
-	path: string,
+export interface Route extends PathRouteProps {
 	icon?: string,
 	name?: string,
-	exact?: boolean,
 	routeID: string,
 	ignore?: boolean,
 	underline?: boolean,
-	component: FC<RouteComponentProps>,
-}
-
-export interface Queue {
-	name: string,
-	songs: Song[],
-	queueID: QueueKeys,
 }
 
 export type HandlerReturn = void | Promise<void>
@@ -34,11 +23,7 @@ export interface OnClickPropTypes {
 	onClick?: Handler,
 }
 
-export interface UserQueuesExtracted extends
-	UserQueues,
-	UserClientBase {}
-
-export interface UserQueuesNowPlayingExtracted extends
-	UserQueues,
-	UserClientBase,
-	UserNowPlaying {}
+export interface OrderByOptions<T> {
+	key: keyof T,
+	fields: string[],
+}

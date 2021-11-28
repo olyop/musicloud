@@ -2,12 +2,12 @@ import isEmpty from "lodash/isEmpty"
 import orderBy from "lodash/orderBy"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import { createElement, FC } from "react"
 import Metadata from "@oly_op/react-metadata"
-import { createElement, FC, Fragment } from "react"
 
 import {
+	Data,
 	RemoveVars,
-	NowPlayingData,
 	QueuePropTypes,
 	RemoveNextData,
 	ClearQueuesData,
@@ -32,9 +32,9 @@ import GET_QUEUE_NEXT from "./get-queue-next.gql"
 import GET_QUEUE_LATER from "./get-queue-later.gql"
 import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql"
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql"
-import GET_USER_NOW_PLAYING from "./get-user-now-playing.gql"
 import { useQuery, useMutation, useUserID } from "../../hooks"
 import Songs, { OnRemoveOptions } from "../../components/songs"
+import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
 import REMOVE_SONG_FROM_QUEUE_LATER from "./remove-song-from-queue-later.gql"
 
@@ -43,16 +43,27 @@ import "./index.scss"
 const bem =
 	createBEM("Queues")
 
+const NowPlaying: FC = () => {
+	const { data } =
+		useQuery<Data>(GET_QUEUE_NOW_PLAYING)
+	return data?.getQueue.nowPlaying ? (
+		<Song
+			hidePlay
+			hidePlays
+			hideTrackNumber
+			song={data.getQueue.nowPlaying}
+			className="Elevated PaddingHalf Rounded MarginBottom"
+		/>
+	) : null
+}
+
 const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 	const userID = useUserID()
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
 
 	const { data } =
-		useQuery<NowPlayingData>(
-			query,
-			{ fetchPolicy: "network-only" },
-		)
+		useQuery<Data>(query)
 
 	const [ removeNext ] =
 		useMutation<RemoveNextData, RemoveVars>(
@@ -69,16 +80,10 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 			dispatch(toggleQueueDisclosure(queueKey))
 		}
 
-	const handleJump =
-		({ index }: OnRemoveOptions) =>
-			async () => {
-				console.log({ index })
-			}
-
 	const handleRemove =
 		({ index }: OnRemoveOptions) =>
 			async () => {
-				if (queueKey === "queueNext") {
+				if (queueKey === "next") {
 					await removeNext({
 						variables: { index },
 						update: cache => {
@@ -91,7 +96,7 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 							})
 						},
 					})
-				} else if (queueKey === "queueLater") {
+				} else if (queueKey === "later") {
 					await removeLater({
 						variables: { index },
 						update: cache => {
@@ -118,18 +123,18 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 			/>
 			{(
 				data &&
-				!isEmpty(data.user[queueKey]) &&
+				!isEmpty(data.getQueue[queueKey]) &&
 				queuesDisclosure[queueKey]
 			) && (
 				<Songs
 					hidePlay
 					hidePlays
 					hideIndex
-					hideOrderBy
 					hideElevated
+					orderBy={false}
 					onRemove={handleRemove}
 					className={bem("section")}
-					songs={orderBy(data.user[queueKey], "queueIndex")}
+					songs={orderBy(data.getQueue[queueKey], "queueIndex")}
 				/>
 			)}
 		</div>
@@ -137,14 +142,8 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 }
 
 const Queues: FC = () => {
-	const userID = useUserID()
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
-
-	const { data: nowPlayingData } =
-		useQuery<NowPlayingData>(GET_USER_NOW_PLAYING, {
-			fetchPolicy: "cache-first",
-		})
 
 	const [ shuffleNext ] =
 		useMutation<ShuffleNextData>(SHUFFLE_NEXT)
@@ -153,11 +152,8 @@ const Queues: FC = () => {
 		useMutation<ClearNextQueuesData>(CLEAR_NEXT_QUEUES, {
 			optimisticResponse: {
 				clearNextQueues: {
-					userID,
-					queueNext: [],
-					queueLater: [],
-					queuePrevious: [],
-					__typename: "User",
+					next: [],
+					later: [],
 				},
 			},
 		})
@@ -166,12 +162,10 @@ const Queues: FC = () => {
 		useMutation<ClearQueuesData>(CLEAR_QUEUES, {
 			optimisticResponse: {
 				clearQueues: {
-					userID,
-					queueNext: [],
-					queueLater: [],
+					next: [],
+					later: [],
+					previous: [],
 					nowPlaying: null,
-					queuePrevious: [],
-					__typename: "User",
 				},
 			},
 		})
@@ -207,71 +201,61 @@ const Queues: FC = () => {
 		() => location.reload()
 
 	const areQueuesCollapsed =
-		queuesDisclosure.queueNext &&
-		queuesDisclosure.queueLater &&
-		queuesDisclosure.queuePrevious
+		queuesDisclosure.next &&
+		queuesDisclosure.later &&
+		queuesDisclosure.previous
 
 	return (
 		<Metadata title="Queue">
 			<div className="Content PaddingTopBottom">
-				{nowPlayingData?.user.nowPlaying && (
-					<Fragment>
-						<Queue
-							name="Previous"
-							queueKey="queuePrevious"
-							className="MarginBottom"
-							query={GET_QUEUE_PREVIOUS}
-						/>
-						<Song
-							hidePlay
-							hidePlays
-							hideTrackNumber
-							song={nowPlayingData.user.nowPlaying}
-							className=" Elevated PaddingHalf Rounded MarginBottom"
-						/>
-						<Queue
-							name="Next"
-							queueKey="queueNext"
-							query={GET_QUEUE_NEXT}
-							className="MarginBottom"
-							removeQuery={REMOVE_SONG_FROM_QUEUE_NEXT}
-						/>
-						<Queue
-							name="Later"
-							queueKey="queueLater"
-							query={GET_QUEUE_LATER}
-							removeQuery={REMOVE_SONG_FROM_QUEUE_LATER}
-						/>
-						<div className={bem("actions", "MarginTop")}>
-							<Button
-								text={areQueuesCollapsed ? "Collapse" : "Expand"}
-								icon={areQueuesCollapsed ? "unfold_more" : "unfold_less"}
-								onClick={areQueuesCollapsed ? handleCollapseDisclosure : handleExpandDisclosure}
-							/>
-							<Button
-								icon="shuffle"
-								text="Shuffle Next"
-								onClick={handleShuffleNext}
-							/>
-							<Button
-								icon="clear_all"
-								text="Clear Next"
-								onClick={handleClearNextQueues}
-							/>
-							<Button
-								icon="close"
-								text="Clear Queue"
-								onClick={handleClearQueues}
-							/>
-							<Button
-								transparent
-								icon="refresh"
-								onClick={handleRefresh}
-								className={bem("actions-refresh")}
-							/>
-						</div>
-					</Fragment>
-				)}
+				<Queue
+					name="Previous"
+					queueKey="previous"
+					className="MarginBottom"
+					query={GET_QUEUE_PREVIOUS}
+				/>
+				<NowPlaying/>
+				<Queue
+					name="Next"
+					queueKey="next"
+					query={GET_QUEUE_NEXT}
+					className="MarginBottom"
+					removeQuery={REMOVE_SONG_FROM_QUEUE_NEXT}
+				/>
+				<Queue
+					name="Later"
+					queueKey="later"
+					query={GET_QUEUE_LATER}
+					removeQuery={REMOVE_SONG_FROM_QUEUE_LATER}
+				/>
+				<div className={bem("actions", "MarginTop")}>
+					<Button
+						text={areQueuesCollapsed ? "Collapse" : "Expand"}
+						icon={areQueuesCollapsed ? "unfold_more" : "unfold_less"}
+						onClick={areQueuesCollapsed ? handleCollapseDisclosure : handleExpandDisclosure}
+					/>
+					<Button
+						icon="shuffle"
+						text="Shuffle Next"
+						onClick={handleShuffleNext}
+					/>
+					<Button
+						icon="clear_all"
+						text="Clear Next"
+						onClick={handleClearNextQueues}
+					/>
+					<Button
+						icon="close"
+						text="Clear Queue"
+						onClick={handleClearQueues}
+					/>
+					<Button
+						transparent
+						icon="refresh"
+						onClick={handleRefresh}
+						className={bem("actions-refresh")}
+					/>
+				</div>
 			</div>
 		</Metadata>
 	)

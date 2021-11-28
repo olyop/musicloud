@@ -1,7 +1,6 @@
 query getLibraryGenres {
-	user {
-		userID
-		libraryGenres {
+	getLibrary {
+		genres {
 			name
 			genreID
 		}

@@ -5,11 +5,13 @@ import {
 	getResultRowCount,
 	getResultRowCountOrNull,
 	convertTableToCamelCase,
+	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
 import { sum } from "lodash"
 import pipe from "@oly_op/pipe"
 import { map } from "lodash/fp"
+import { UserIDBase, AlbumIDBase } from "@oly_op/music-app-common/types"
 
 import {
 	Song,
@@ -29,27 +31,31 @@ import {
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
-import { createResolver } from "./helpers"
+import { createResolver, getObjectInLibrary } from "./helpers"
 
 const resolver =
 	createResolver<Album>()
 
-const getSongs =
+interface GetAlbumSongsOptions<T>
+	extends AlbumIDBase, GetObjectsOptions<T> {}
+
+const getAlbumSongs =
 	(client: PoolOrClient) =>
-		<T>({ objectID, parse }: GetObjectsOptions<T>) =>
+		<T>({ albumID, columnNames, parse }: GetAlbumSongsOptions<T>) =>
 			query(client)(SELECT_ALBUM_SONGS)({
 				parse,
 				variables: {
-					albumID: objectID,
-					columnNames: join(COLUMN_NAMES.SONG),
+					albumID,
+					columnNames,
 				},
 			})
 
 export const songs =
 	resolver(
 		({ parent, context }) => (
-			getSongs(context.pg)({
-				objectID: parent.albumID,
+			getAlbumSongs(context.pg)({
+				albumID: parent.albumID,
+				columnNames: join(COLUMN_NAMES.SONG),
 				parse: convertTableToCamelCase<Song>(),
 			})
 		),
@@ -58,9 +64,10 @@ export const songs =
 export const songsTotal =
 	resolver(
 		({ parent, context }) => (
-			getSongs(context.pg)({
-				objectID: parent.albumID,
+			getAlbumSongs(context.pg)({
+				albumID: parent.albumID,
 				parse: getResultRowCount,
+				columnNames: COLUMN_NAMES.SONG[0],
 			})
 		),
 	)
@@ -68,8 +75,9 @@ export const songsTotal =
 export const duration =
 	resolver(
 		({ parent, context }) => (
-			getSongs(context.pg)({
-				objectID: parent.albumID,
+			getAlbumSongs(context.pg)({
+				columnNames: "duration",
+				albumID: parent.albumID,
 				parse: pipe(
 					convertTableToCamelCase<Song>(),
 					map(song => song.duration),
@@ -130,25 +138,29 @@ export const playsTotal =
 		),
 	)
 
-const getUserPlays =
+interface GetUserAlbumPlaysOptions<T>
+	extends UserIDBase, AlbumIDBase, GetObjectsOptions<T> {}
+
+const getUserAlbumPlays =
 	(client: PoolOrClient) =>
-		(userID: string) =>
-			<T>({ objectID, parse }: GetObjectsOptions<T>) =>
-				query(client)(SELECT_USER_ALBUM_PLAYS)({
-					parse,
-					variables: {
-						userID,
-						albumID: objectID,
-						columnNames: join(COLUMN_NAMES.PLAY),
-					},
-				})
+		<T>({ userID, albumID, columnNames, parse }: GetUserAlbumPlaysOptions<T>) =>
+			query(client)(SELECT_USER_ALBUM_PLAYS)({
+				parse,
+				variables: {
+					userID,
+					albumID,
+					columnNames,
+				},
+			})
 
 export const userPlays =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				objectID: parent.albumID,
-				parse: convertTableToCamelCase<Play>(),
+			getUserAlbumPlays(context.pg)({
+				albumID: parent.albumID,
+				columnNames: join(COLUMN_NAMES.PLAY),
+				userID: context.authorization!.userID,
+				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
 		),
 	)
@@ -156,9 +168,37 @@ export const userPlays =
 export const userPlaysTotal =
 	resolver(
 		({ parent, context }) => (
-			getUserPlays(context.pg)(context.authorization!.userID)({
-				parse: getResultRowCount,
-				objectID: parent.albumID,
+			getUserAlbumPlays(context.pg)({
+				albumID: parent.albumID,
+				parse: getResultRowCountOrNull,
+				columnNames: COLUMN_NAMES.PLAY[0],
+				userID: context.authorization!.userID,
 			})
 		),
+	)
+
+export const inLibrary =
+	resolver(
+		async ({ parent, context }) => {
+			const albumSongs =
+				await getAlbumSongs(context.pg)({
+					albumID: parent.albumID,
+					columnNames: COLUMN_NAMES.SONG[0],
+					parse: convertTableToCamelCase<Song>(),
+				})
+			const songsInLibrary =
+				await Promise.all(
+					albumSongs.map(
+						({ songID }) => (
+							getObjectInLibrary(context.pg)({
+								objectID: songID,
+								tableName: "library_songs",
+								columnName: COLUMN_NAMES.SONG[0],
+								userID: context.authorization!.userID,
+							})
+						),
+					),
+				)
+			return songsInLibrary.every(Boolean)
+		},
 	)

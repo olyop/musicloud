@@ -6,7 +6,7 @@ import { Song } from "../../types"
 const formatItems =
 	(items: string[]) => (
 		items.length ?
-			`${items.join(", ")} & ${items.pop()}` :
+			`${items.join(", ")} & ${items.pop()!}` :
 			items.pop()!
 	)
 

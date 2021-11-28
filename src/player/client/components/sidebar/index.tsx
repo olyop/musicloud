@@ -1,14 +1,10 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC, Fragment } from "react"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
+import { createElement, VFC, Fragment } from "react"
 import { VERSION } from "@oly_op/music-app-common/globals"
 
-import {
-	useDispatch,
-	toggleSidebar,
-	useStateSidebar,
-} from "../../redux"
+import { useDispatch, toggleSidebar, useStateSidebar } from "../../redux"
 
 import "./index.scss"
 
@@ -19,7 +15,7 @@ const ADD_URL = `http://${HOST}:${UPLOAD_PORT}/artist`
 const bem =
 	createBEM("Sidebar")
 
-const Sidebar: FC = () => {
+const Sidebar: VFC = () => {
 	const dispatch = useDispatch()
 	const sidebar = useStateSidebar()
 

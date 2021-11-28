@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { createBEM, BEMInput } from "@oly_op/bem"
-import { createElement, FC, useEffect } from "react"
+import { useEffect, createElement, VFC } from "react"
 
 import { togglePlay, useDispatch, useStatePlay } from "../../../redux"
 import { useKeyPress, useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
@@ -10,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("BarControls")
 
-const BarControlsPlayButton: FC<ButtonPropTypes> = ({
+const BarControlsPlayButton: VFC<ButtonPropTypes> = ({
 	loading,
 	buttonClassName,
 	buttonIconClassName,
@@ -50,13 +50,12 @@ const BarControlsPlayButton: FC<ButtonPropTypes> = ({
 	)
 }
 
-const BarControls: FC<PropTypes> = ({
+const BarControls: VFC<PropTypes> = ({
 	className,
 	buttonClassName,
 	buttonIconClassName,
 	playButtonClassName,
 	playButtonIconClassName,
-	hidePreviousNext = false,
 }) => {
 	const [ nextQueueSong, { loading: nextLoading } ] =
 		useNextQueueSong()
@@ -69,15 +68,13 @@ const BarControls: FC<PropTypes> = ({
 
 	return (
 		<div className={bem(className, "")}>
-			{hidePreviousNext || (
-				<Button
-					transparent
-					icon="skip_previous"
-					onClick={previousQueueSong}
-					className={buttonClassName}
-					iconClassName={buttonIconClassName}
-				/>
-			)}
+			<Button
+				transparent
+				icon="skip_previous"
+				onClick={previousQueueSong}
+				className={buttonClassName}
+				iconClassName={buttonIconClassName}
+			/>
 			<BarControlsPlayButton
 				loading={loading}
 				buttonClassName={buttonClassName}
@@ -85,15 +82,13 @@ const BarControls: FC<PropTypes> = ({
 				playButtonClassName={playButtonClassName}
 				playButtonIconClassName={playButtonIconClassName}
 			/>
-			{hidePreviousNext || (
-				<Button
-					transparent
-					icon="skip_next"
-					onClick={nextQueueSong}
-					className={buttonClassName}
-					iconClassName={buttonIconClassName}
-				/>
-			)}
+			<Button
+				transparent
+				icon="skip_next"
+				onClick={nextQueueSong}
+				className={buttonClassName}
+				iconClassName={buttonIconClassName}
+			/>
 		</div>
 	)
 }
@@ -111,7 +106,6 @@ interface ButtonPropTypes extends PropTypesBase {
 
 interface PropTypes extends PropTypesBase {
 	className?: BEMInput,
-	hidePreviousNext?: boolean,
 }
 
 export default BarControls

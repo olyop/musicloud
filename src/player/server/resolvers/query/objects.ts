@@ -1,11 +1,4 @@
 import {
-	join,
-	query,
-	Result,
-	convertFirstRowToCamelCase,
-} from "@oly_op/pg-helpers"
-
-import {
 	UserIDBase,
 	PlayIDBase,
 	SongIDBase,
@@ -14,9 +7,6 @@ import {
 	ArtistIDBase,
 	PlaylistIDBase,
 } from "@oly_op/music-app-common/types"
-
-import { isEmpty } from "lodash"
-import { UserInputError } from "apollo-server-fastify"
 
 import {
 	User,
@@ -29,118 +19,77 @@ import {
 } from "../../types"
 
 import {
-	SELECT_USER_BY_ID,
-	SELECT_SONG_BY_ID,
-	SELECT_PLAY_BY_ID,
-	SELECT_ALBUM_BY_ID,
-	SELECT_GENRE_BY_ID,
-	SELECT_ARTIST_BY_ID,
-	SELECT_PLAYLIST_BY_ID,
-} from "../../sql"
+	getPlay,
+	getSong,
+	getAlbum,
+	getGenre,
+	getArtist,
+	getPlaylist,
+	getUser as getUserHelper,
+} from "../helpers"
 
-import { createResolver } from "../helpers"
-import { COLUMN_NAMES } from "../../globals"
+import resolver from "./resolver"
 
-const convertFirstRowToCamelCaseOrError =
-	<T>(typeName: string) =>
-		(result: Result) => {
-			if (isEmpty(result.rows)) {
-				throw new UserInputError(`${typeName} does not exist.`)
-			} else {
-				return convertFirstRowToCamelCase<T>()(result)
-			}
-		}
+export const getQueue =
+	resolver<Record<string, never>>(
+		() => ({}),
+	)
 
-const resolver =
-	createResolver()
+export const getLibrary =
+	resolver<Record<string, never>>(
+		() => ({}),
+	)
 
-export const user =
-	resolver<User, Partial<UserIDBase>>(
+export const getUser =
+	resolver<User>(
 		({ args, context }) => (
-			query(context.pg)(SELECT_USER_BY_ID)({
-				parse: convertFirstRowToCamelCaseOrError("User"),
-				variables: {
-					columnNames: join(COLUMN_NAMES.USER),
-					userID: args.userID || context.authorization!.userID,
-				},
-			})
+			getUserHelper(context.pg)({ userID: context.authorization!.userID })
 		),
 	)
 
-export const song	=
+export const getUserByID =
+	resolver<User, UserIDBase>(
+		({ args, context }) => (
+			getUserHelper(context.pg)(args)
+		),
+	)
+
+export const getSongByID	=
 	resolver<Song, SongIDBase>(
 		({ args, context }) => (
-			query(context.pg)(SELECT_SONG_BY_ID)({
-				parse: convertFirstRowToCamelCaseOrError("Song"),
-				variables: {
-					songID: args.songID,
-					columnNames: join(COLUMN_NAMES.SONG),
-				},
-			})
+			getSong(context.pg)(args)
 		),
 	)
 
-export const play =
+export const getPlayByID =
 	resolver<Play, PlayIDBase>(
 		({ args, context }) => (
-			query(context.pg)(SELECT_PLAY_BY_ID)({
-				parse: convertFirstRowToCamelCaseOrError("Play"),
-				variables: {
-					playID: args.playID,
-					columnNames: join(COLUMN_NAMES.PLAY),
-				},
-			})
+			getPlay(context.pg)(args)
 		),
 	)
 
-export const album =
+export const getAlbumByID =
 	resolver<Album, AlbumIDBase>(
 		({ args, context }) => (
-			query(context.pg)(SELECT_ALBUM_BY_ID)({
-				parse: convertFirstRowToCamelCaseOrError("Album"),
-				variables: {
-					albumID: args.albumID,
-					columnNames: join(COLUMN_NAMES.ALBUM),
-				},
-			})
+			getAlbum(context.pg)(args)
 		),
 	)
 
-export const genre =
+export const getGenreByID =
 	resolver<Genre, GenreIDBase>(
 		({ args, context }) => (
-			query(context.pg)(SELECT_GENRE_BY_ID)({
-				parse: convertFirstRowToCamelCaseOrError("Genre"),
-				variables: {
-					genreID: args.genreID,
-					columnNames: join(COLUMN_NAMES.GENRE),
-				},
-			})
+			getGenre(context.pg)(args)
 		),
 	)
 
-export const artist =
+export const getArtistByID =
 	resolver<Artist, ArtistIDBase>(
-		async ({ args, context }) => (
-			query(context.pg)(SELECT_ARTIST_BY_ID)({
-				parse: convertFirstRowToCamelCaseOrError("Artist"),
-				variables: {
-					artistID: args.artistID,
-					columnNames: join(COLUMN_NAMES.ARTIST),
-				},
-			})
-		),
+		({ args, context }) => getArtist(context.pg)(args),
 	)
 
-export const playlist =
+export const getPlaylistByID =
 	resolver<Playlist, PlaylistIDBase>(
-		async ({ args, context }) => (
-			query(context.pg)(SELECT_PLAYLIST_BY_ID)({
-				parse: convertFirstRowToCamelCaseOrError("Playlist"),
-				variables: {
-					playlistID: args.playlistID,
-					columnNames: join(COLUMN_NAMES.PLAYLIST),
-				},
-			})
+		({ args, context }) => (
+			getPlaylist(context.pg)(args)
 		),
 	)

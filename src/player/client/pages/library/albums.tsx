@@ -1,12 +1,12 @@
-import isEmpty from "lodash/isEmpty"
-import { createElement, FC } from "react"
+import isNull from "lodash/isNull"
+import { createElement, VFC } from "react"
 import Metadata from "@oly_op/react-metadata"
 
 import {
-	User,
 	AlbumsOrderBy,
 	SettingsListStyle,
 	AlbumsOrderByField,
+	LibraryAlbumsPaginated,
 } from "../../types"
 
 import LibraryEmpty from "./empty"
@@ -15,20 +15,22 @@ import Albums from "../../components/albums"
 import GET_LIBRARY_ALBUMS from "./get-library-albums.gql"
 import { useStateOrderBy, useStateListStyle } from "../../redux"
 
-const LibraryAlbums: FC = () => {
+const LibraryAlbums: VFC = () => {
 	const listStyle = useStateListStyle()
-	const orderBy = useStateOrderBy<AlbumsOrderByField>("albums")
 	const isList = listStyle === SettingsListStyle.LIST
+	const orderBy = useStateOrderBy<AlbumsOrderByField>("albums")
 	return (
-		<Metadata title="Library Artists">
-			<Feed<Data, Vars>
-				query={GET_LIBRARY_ALBUMS}
+		<Metadata title="Library Albums">
+			<Feed<GetLibraryAlbumsData, GetLibraryAlbumsVars>
 				variables={{ orderBy }}
-				dataToObjectsLength={({ user }) => user.libraryAlbums.length}
-				children={
+				query={GET_LIBRARY_ALBUMS}
+				dataToObjectsLength={
+					data => data.getLibrary.albumsPaginated?.length || 0
+				}
+				render={
 					({ data }) => {
 						if (data) {
-							if (isEmpty(data.user.libraryAlbums)) {
+							if (isNull(data.getLibrary.albumsPaginated)) {
 								return (
 									<LibraryEmpty
 										name="albums"
@@ -37,9 +39,8 @@ const LibraryAlbums: FC = () => {
 							} else {
 								return (
 									<Albums
-										albums={data.user.libraryAlbums}
-										hideOrderBy={isEmpty(data.user.libraryAlbums)}
-										orderByFields={Object.keys(AlbumsOrderByField)}
+										orderBy
+										albums={data.getLibrary.albumsPaginated}
 										className={isList ? "Content" : "PaddingLeft PaddingRight"}
 									/>
 								)
@@ -54,12 +55,12 @@ const LibraryAlbums: FC = () => {
 	)
 }
 
-interface Data {
-	user: User,
+interface GetLibraryAlbumsVars {
+	orderBy: AlbumsOrderBy,
 }
 
-interface Vars {
-	orderBy: AlbumsOrderBy,
+interface GetLibraryAlbumsData {
+	getLibrary: LibraryAlbumsPaginated,
 }
 
 export default LibraryAlbums

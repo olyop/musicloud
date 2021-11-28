@@ -6,24 +6,35 @@ import {
 } from "@oly_op/pg-helpers"
 
 import pipe from "@oly_op/pipe"
+import { UserIDBase } from "@oly_op/music-app-common/types"
 
-import { Song } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
 import { SELECT_QUEUE_SONGS } from "../../sql"
-import { addQueueIndexToSongs } from "./add-queue-index-to-songs"
+import { Song, TableNameOptions } from "../../types"
+
+export const addQueueIndexToSongs =
+	(songs: Song[]) =>
+		songs.map<Song>(
+			(song, queueIndex) => ({
+				...song,
+				queueIndex,
+			}),
+		)
+
+export interface GetQueueSongsOptions
+	extends UserIDBase, TableNameOptions {}
 
 export const getQueueSongs =
 	(client: PoolOrClient) =>
-		(userID: string) =>
-			(tableName: string) =>
-				query(client)(SELECT_QUEUE_SONGS)({
-					parse: pipe(
-						convertTableToCamelCase<Song>(),
-						addQueueIndexToSongs,
-					),
-					variables: {
-						userID,
-						tableName,
-						columnNames: join(COLUMN_NAMES.SONG, "songs"),
-					},
-				})
+		({ userID, tableName }: GetQueueSongsOptions) =>
+			query(client)(SELECT_QUEUE_SONGS)({
+				parse: pipe(
+					convertTableToCamelCase<Song>(),
+					addQueueIndexToSongs,
+				),
+				variables: {
+					userID,
+					tableName,
+					columnNames: join(COLUMN_NAMES.SONG, "songs"),
+				},
+			})

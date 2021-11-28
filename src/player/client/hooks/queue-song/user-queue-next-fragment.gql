@@ -1,7 +1,0 @@
-fragment UserQueueNextFragment on User {
-	userID
-	queueNext {
-		songID
-		queueIndex
-	}
-}

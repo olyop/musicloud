@@ -2,24 +2,28 @@ import Howler from "react-howler"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useLocation, NavLink } from "react-router-dom"
-import { createElement, FC, Fragment, useEffect, useState } from "react"
+import { SongIDBase } from "@oly_op/music-app-common/types"
+import { useEffect, useState, createElement, VFC } from "react"
 
 import Song from "../song"
 import Modal from "../modal"
 import BarVolume from "./volume"
 import Progress from "../progress"
-import { User } from "../../types"
 import BarControls from "./controls"
 import setMetadata from "./set-metadata"
 import BarFullscreen from "./fullscreen"
-import GET_USER_QUEUES from "./get-user-queues.gql"
+import { QueueNowPlaying } from "../../types"
 import { determineCatalogMP3URL } from "../../helpers"
 import { useQuery, useResetPlayer } from "../../hooks"
 import { useStatePlay, useStateVolume } from "../../redux"
+import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 import "./index.scss"
 
-const BarQueueButton: FC = () => {
+const bem =
+	createBEM("Bar")
+
+const BarQueueButton: VFC = () => {
 	const { pathname } = useLocation()
 	return (
 		<NavLink to="/queues">
@@ -32,19 +36,26 @@ const BarQueueButton: FC = () => {
 	)
 }
 
-const bem =
-	createBEM("Bar")
-
-const Bar: FC = () => {
+const BarHowler: VFC<SongIDBase> = ({ songID }) => {
 	const play = useStatePlay()
 	const volume = useStateVolume()
 	const resetPlayer = useResetPlayer()
+	return play ? (
+		<Howler
+			playing={play}
+			onEnd={resetPlayer}
+			volume={volume / 100}
+			src={determineCatalogMP3URL(songID)}
+		/>
+	) : null
+}
 
+const Bar: VFC = () => {
 	const [ expand, setExpand ] =
 		useState(false)
 
-	const { data } =
-		useQuery<Data>(GET_USER_QUEUES)
+	const { data, loading } =
+		useQuery<GetQueueNowPlayingData>(GET_QUEUE_NOW_PLAYING)
 
 	const handleExpandOpen =
 		() => setExpand(true)
@@ -53,81 +64,82 @@ const Bar: FC = () => {
 		() => setExpand(false)
 
 	useEffect(() => {
-		if (data?.user.nowPlaying) {
-			setMetadata(data.user.nowPlaying)
+		if (data?.getQueue.nowPlaying) {
+			setMetadata(data.getQueue.nowPlaying)
 		}
 	}, [data])
 
-	return (
-		<footer className={bem("", "Elevated")}>
-			{data?.user.nowPlaying ? (
-				<Fragment>
-					<Howler
-						playing={play}
-						onEnd={resetPlayer}
-						volume={volume / 100}
-						onLoadError={resetPlayer}
-						src={determineCatalogMP3URL(data.user.nowPlaying.songID)}
-					/>
-					<BarControls
-						className={bem("controls")}
-						buttonClassName={bem("controls-button")}
-						buttonIconClassName={bem("controls-button-icon")}
-					/>
-					<div className={bem("main", "PaddingHalf")}>
-						<div className={bem("main-content-wrapper")}>
-							<div className={bem("main-content")}>
-								<Song
-									hidePlay
-									hidePlays
-									hideDuration
-									song={data.user.nowPlaying}
+	if (loading) {
+		return (
+			<footer className={bem("", "Elevated")}/>
+		)
+	} else if (data?.getQueue.nowPlaying) {
+		return (
+			<footer className={bem("", "Elevated")}>
+				<BarHowler
+					songID={data.getQueue.nowPlaying.songID}
+				/>
+				<BarControls
+					className={bem("controls")}
+					buttonClassName={bem("controls-button")}
+					buttonIconClassName={bem("controls-button-icon")}
+				/>
+				<div className={bem("main", "PaddingHalf")}>
+					<div className={bem("main-content-wrapper")}>
+						<div className={bem("main-content")}>
+							<Song
+								hidePlay
+								hidePlays
+								hideDuration
+								song={data.getQueue.nowPlaying}
+							/>
+							<div className="FlexListRight">
+								<BarVolume/>
+								<BarQueueButton/>
+								<Button
+									transparent
+									title="Player"
+									icon="unfold_more"
+									onClick={handleExpandOpen}
 								/>
-								<div className="FlexListRight">
-									<BarVolume/>
-									<BarQueueButton/>
-									<Button
-										transparent
-										title="Player"
-										icon="unfold_more"
-										onClick={handleExpandOpen}
-									/>
-								</div>
 							</div>
 						</div>
-						<Progress
-							duration={data.user.nowPlaying.duration}
-						/>
 					</div>
-					<Modal
+					<Progress
+						duration={data.getQueue.nowPlaying.duration}
+					/>
+				</div>
+				<Modal
+					open={expand}
+					onClose={handleExpandClose}
+					contentClassName={bem("expand")}
+				>
+					<Button
+						transparent
+						icon="close"
+						title="Close Player"
+						onClick={handleExpandClose}
+						className={bem("expand-close")}
+					/>
+					<BarFullscreen
 						open={expand}
-						onClose={handleExpandClose}
-						contentClassName={bem("expand")}
-					>
-						<Button
-							transparent
-							icon="close"
-							title="Close Player"
-							onClick={handleExpandClose}
-							className={bem("expand-close")}
-						/>
-						<BarFullscreen
-							onExit={handleExpandClose}
-							nowPlaying={data.user.nowPlaying}
-						/>
-					</Modal>
-				</Fragment>
-			) : (
-				<p className="BodyOne">
-					Queue empty.
-				</p>
-			)}
-		</footer>
-	)
+						onExit={handleExpandClose}
+						nowPlaying={data.getQueue.nowPlaying}
+					/>
+				</Modal>
+			</footer>
+		)
+	} else {
+		return (
+			<p className="BodyOne">
+				Queue empty.
+			</p>
+		)
+	}
 }
 
-interface Data {
-	user: User,
+interface GetQueueNowPlayingData {
+	getQueue: QueueNowPlaying,
 }
 
 export default Bar

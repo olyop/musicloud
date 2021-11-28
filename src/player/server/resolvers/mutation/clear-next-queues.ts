@@ -1,31 +1,19 @@
 import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
-import { User } from "../../types"
-
-import {
-	createResolver,
-	clearQueueNext,
-	clearQueueLater,
-	getUserWithQueues,
-} from "../helpers"
-
-const resolver =
-	createResolver()
+import resolver from "./resolver"
+import { clearQueueNext, clearQueueLater } from "../helpers"
 
 export const clearNextQueues =
-	resolver<User>(
+	resolver<Record<string, never>>(
 		async ({ context }) => {
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
-			let user: User
-
 			try {
 				await query("BEGIN")()
-				await clearQueueNext(client)(userID)
-				await clearQueueLater(client)(userID)
-				user = await getUserWithQueues(client)(userID)
+				await clearQueueNext(client)({ userID })
+				await clearQueueLater(client)({ userID })
 				await query("COMMIT")()
 			} catch (error) {
 				await query("ROLLBACK")()
@@ -34,6 +22,6 @@ export const clearNextQueues =
 				client.release()
 			}
 
-			return user
+			return {}
 		},
 	)

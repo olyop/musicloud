@@ -7,7 +7,7 @@ import uniqueID from "lodash/uniqueId"
 import { useRef, useEffect } from "react"
 import type { DocumentNode } from "graphql"
 
-import { addLoading, useDispatch, removeLoading } from "../redux"
+import { addLoading, useDispatch, removeLoading, updateAccessToken } from "../redux"
 
 export const useMutation = <Data, Vars = Record<string, unknown>>(
 	mutation: DocumentNode,
@@ -19,7 +19,7 @@ export const useMutation = <Data, Vars = Record<string, unknown>>(
 	const tuple =
 		useBaseMutation<Data, Vars>(mutation, options)
 
-	const { loading } =
+	const { loading, error } =
 		tuple[1]
 
 	useEffect(() => {
@@ -36,6 +36,12 @@ export const useMutation = <Data, Vars = Record<string, unknown>>(
 			}
 		}
 	}, [loading])
+
+	useEffect(() => {
+		if (error?.message === "Token expired") {
+			dispatch(updateAccessToken(null))
+		}
+	}, [error])
 
 	return tuple
 }

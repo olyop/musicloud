@@ -1,39 +1,45 @@
 import { BEMPropTypes } from "@oly_op/bem"
 import type { DocumentNode } from "graphql"
 
-import { UserQueues, UserPartial } from "../../types"
+import {
+	Queue,
+	QueueNext,
+	QueueLater,
+	QueueNextLater,
+	SettingsQueuesDisclosureKeys,
+} from "../../types"
+
+export interface Data {
+	getQueue: Queue,
+}
 
 export interface RemoveVars {
 	index: number,
 }
 
-export interface NowPlayingData {
-	user: UserPartial,
-}
-
 export interface ClearQueuesData {
-	clearQueues: UserPartial,
+	clearQueues: Queue,
 }
 
 export interface ShuffleNextData {
-	shuffleNext: UserPartial,
+	shuffleNext: QueueNext & QueueLater,
 }
 
 export interface ClearNextQueuesData {
-	clearNextQueues: UserPartial,
+	clearNextQueues: QueueNextLater,
 }
 
 export interface RemoveNextData {
-	removeSongFromQueueNext: UserPartial,
+	removeSongFromQueueNext: QueueNext,
 }
 
 export interface RemoveLaterData {
-	removeSongFromQueueLater: UserPartial,
+	removeSongFromQueueLater: QueueLater,
 }
 
 export interface QueuePropTypes extends BEMPropTypes {
 	name: string,
 	query: DocumentNode,
-	queueKey: keyof UserQueues,
 	removeQuery?: DocumentNode,
+	queueKey: SettingsQueuesDisclosureKeys,
 }
