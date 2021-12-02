@@ -1,6 +1,6 @@
 import {
 	ImageSizes,
-	AlbumIDBase,
+	AlbumID,
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
 
@@ -30,14 +30,14 @@ const bem =
 	createBEM("AlbumPage")
 
 const AlbumPage: VFC = () => {
-	const params = useParams<keyof AlbumIDBase>()
+	const params = useParams<keyof AlbumID>()
 	const albumID = addDashesToUUID(params.albumID!)
 
-	const variables: AlbumIDBase =
+	const variables: AlbumID =
 		{ albumID }
 
 	const { data, error } =
-		useQuery<GetAlbumData, AlbumIDBase>(
+		useQuery<GetAlbumData, AlbumID>(
 			GET_ALBUM_PAGE,
 			{ variables },
 		)

@@ -1,8 +1,8 @@
-import { ObjectIDBase } from "@oly_op/music-app-common/types"
+import { ObjectID } from "@oly_op/music-app-common/types"
 
 import { ag } from "../../../services"
 
-interface Input extends ObjectIDBase {
+interface Input extends ObjectID {
 	text: string,
 	image?: string,
 	typeName: string,

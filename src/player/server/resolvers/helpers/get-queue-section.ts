@@ -1,4 +1,4 @@
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 
 import {
 	join,
@@ -12,7 +12,7 @@ import { COLUMN_NAMES } from "../../globals"
 import { QueueSong, TableNameOptions } from "../../types"
 
 export interface GetQueueOptions
-	extends UserIDBase, TableNameOptions {}
+	extends UserID, TableNameOptions {}
 
 export const getQueueSection =
 	(client: PoolOrClient) =>

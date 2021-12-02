@@ -1,8 +1,15 @@
+import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
+
+import {
+	OrderBy,
+	OrderByOptions,
+	SettingsOrderBy,
+	OrderByDirection,
+	ClassNameBEMPropTypes,
+} from "../../types"
 
 import Select from "../select"
-import { OrderBy, SettingsOrderBy, OrderByDirection, OrderByOptions } from "../../types"
 import { useDispatch, updateOrderBy, useStateOrderBy } from "../../redux"
 
 import "./index.scss"
@@ -43,7 +50,7 @@ const SelectOrderBy: VFC<PropTypes> = ({ orderBy, className }) => {
 	)
 }
 
-interface PropTypes extends BEMPropTypes {
+interface PropTypes extends ClassNameBEMPropTypes {
 	orderBy: OrderByOptions<SettingsOrderBy>,
 }
 

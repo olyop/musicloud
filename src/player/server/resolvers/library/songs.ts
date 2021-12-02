@@ -6,7 +6,7 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 import { PAGINATION_PAGE_SIZE } from "@oly_op/music-app-common/globals"
 
 import resolver from "./resolver"
@@ -16,7 +16,7 @@ import { SELECT_LIBRARY_SONGS, SELECT_LIBRARY_SONGS_PAGINATED } from "../../sql"
 import { Song, GetObjectsOptions, LibraryObjectsPaginatedArgs } from "../../types"
 
 interface GetLibrarySongsInput<T>
-	extends UserIDBase, GetObjectsOptions<T> {}
+	extends UserID, GetObjectsOptions<T> {}
 
 const getLibrarySongs =
 	(client: PoolOrClient) =>

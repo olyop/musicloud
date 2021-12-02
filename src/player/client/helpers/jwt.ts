@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode"
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 
 export const getJWT =
 	() =>
@@ -11,7 +11,7 @@ export const removeJWT =
 
 export const getUserID =
 	() =>
-		jwtDecode<UserIDBase>(getJWT()!).userID
+		jwtDecode<UserID>(getJWT()!).userID
 
 export const setJWT =
 	(value: string) =>

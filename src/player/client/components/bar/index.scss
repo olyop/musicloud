@@ -45,5 +45,5 @@
 		border-radius: 0;
 		&-close {
 			position: absolute;
-			left: var(--space-half);
+			right: var(--space-half);
 			top: calc(var(--space-half) + env(safe-area-inset-top)); } } }

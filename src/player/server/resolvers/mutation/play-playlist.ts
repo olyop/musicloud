@@ -7,7 +7,7 @@ import {
 
 import { isEmpty } from "lodash"
 import { UserInputError } from "apollo-server-fastify"
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { Song } from "../../types"
@@ -16,7 +16,7 @@ import { clearQueue, updateQueueNowPlaying } from "../helpers"
 import { INSERT_QUEUE_SONG, SELECT_PLAYLIST_SONGS } from "../../sql"
 
 export const playPlaylist =
-	resolver<Record<string, never>, PlaylistIDBase>(
+	resolver<Record<string, never>, PlaylistID>(
 		async ({ parent, args, context }) => {
 			const { playlistID } = args
 			const { userID } = context.authorization!

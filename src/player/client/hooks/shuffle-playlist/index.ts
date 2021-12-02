@@ -1,19 +1,17 @@
 import { MutationResult } from "@apollo/client"
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import SHUFFLE_PLAYLIST from "./shuffle-playlist.gql"
-import { useDispatch, updatePlay } from "../../redux"
 import { Handler, QueueNowPlaying } from "../../types"
 
 export const useShufflePlaylist =
-	({ playlistID }: PlaylistIDBase) => {
-		const dispatch = useDispatch()
+	({ playlistID }: PlaylistID) => {
 		const resetPlayer = useResetPlayer()
 
 		const [ shufflePlaylist, result ] =
-			useMutation<ShufflePlaylistData, PlaylistIDBase>(
+			useMutation<ShufflePlaylistData, PlaylistID>(
 				SHUFFLE_PLAYLIST,
 				{ variables: { playlistID } },
 			)
@@ -22,7 +20,6 @@ export const useShufflePlaylist =
 			async () => {
 				resetPlayer()
 				await shufflePlaylist()
-				dispatch(updatePlay(true))
 			}
 
 		return [ handleShufflePlaylist, result ] as UseShufflePlaylistResult

@@ -1,0 +1,6 @@
+mutation makePlaylistPublic($playlistID: UUID!) {
+	makePlaylistPublic(playlistID: $playlistID) {
+		isPublic
+		playlistID
+	}
+}

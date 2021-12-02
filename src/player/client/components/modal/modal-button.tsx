@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
+import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { BEMPropTypes, createBEM } from "@oly_op/bem"
 import { createElement, FC, Fragment, AnchorHTMLAttributes } from "react"
 
-import { Handler } from "../../types"
+import { ClassNameBEMPropTypes, Handler } from "../../types"
 
 const bem =
 	createBEM("ModalButton")
@@ -64,7 +64,7 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 	) : jsx
 }
 
-export interface ModalButtonPropTypes extends BEMPropTypes {
+export interface ModalButtonPropTypes extends ClassNameBEMPropTypes {
 	text: string,
 	icon?: string,
 	link?: string,

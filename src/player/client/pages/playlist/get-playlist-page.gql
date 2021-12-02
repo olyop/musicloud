@@ -1,6 +1,7 @@
 query getPlaylistPage($playlistID: UUID!) {
 	getPlaylistByID(playlistID: $playlistID) {
 		title
+		isPublic
 		inLibrary
 		songsTotal
 		playlistID

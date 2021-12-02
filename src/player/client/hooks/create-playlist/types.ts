@@ -15,7 +15,7 @@ export interface CreatePlaylistData {
 }
 
 export type CreatePlayliistInput =
-	Pick<Playlist, "title">
+	Pick<Playlist, "title" | "isPublic">
 
 export type CreatePlaylistVars =
 	InterfaceWithInput<CreatePlayliistInput>

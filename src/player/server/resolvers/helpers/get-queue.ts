@@ -1,5 +1,5 @@
 import { PoolOrClient } from "@oly_op/pg-helpers"
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 
 import { Queue } from "../../types"
 import { getQueueSection } from "./get-queue-section"
@@ -7,7 +7,7 @@ import { getQueueNowPlaying } from "./get-queue-now-playing"
 
 export const getQueue =
 	(client: PoolOrClient) =>
-		async ({ userID }: UserIDBase): Promise<Queue> => {
+		async ({ userID }: UserID): Promise<Queue> => {
 			const [ nowPlaying, next, later, previous ] =
 				await Promise.all([
 					getQueueNowPlaying(client)({ userID }),

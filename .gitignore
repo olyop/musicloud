@@ -1,7 +1,3 @@
-# folders
+.env
 build/
 node_modules/
-
-# files
-.env
-**/*.pem

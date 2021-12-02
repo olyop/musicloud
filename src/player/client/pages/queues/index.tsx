@@ -2,7 +2,7 @@ import isEmpty from "lodash/isEmpty"
 import orderBy from "lodash/orderBy"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import Metadata from "@oly_op/react-metadata"
 
 import {
@@ -43,7 +43,7 @@ import "./index.scss"
 const bem =
 	createBEM("Queues")
 
-const NowPlaying: FC = () => {
+const NowPlaying: VFC = () => {
 	const { data } =
 		useQuery<Data>(GET_QUEUE_NOW_PLAYING)
 	return data?.getQueue.nowPlaying ? (
@@ -57,7 +57,7 @@ const NowPlaying: FC = () => {
 	) : null
 }
 
-const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
+const Queue: VFC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 	const userID = useUserID()
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
@@ -141,7 +141,7 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 	)
 }
 
-const Queues: FC = () => {
+const Queues: VFC = () => {
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
 

@@ -1,5 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import { useApolloClient } from "@apollo/client"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { createElement, VFC, useEffect, useState } from "react"
 import { useNavigate, useLocation, NavLink } from "react-router-dom"
@@ -75,6 +76,7 @@ const Header: VFC = () => {
 	const signOut = useSignOut()
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
+	const client = useApolloClient()
 	const isOnline = useStateIsOnline()
 	const isFullscreen = useStateIsFullscreen()
 
@@ -108,13 +110,21 @@ const Header: VFC = () => {
 			handleAccountModalClose()
 		}
 
+	const handleRefresh =
+		() => {
+			void client.refetchQueries({ include: "all" })
+			handleAccountModalClose()
+		}
+
 	useEffect(() => {
 		window.addEventListener("offline", () => {
 			dispatch(updateIsOnline(false))
 		})
 
 		const id =
-			setInterval(() => checkStatus(), 10000)
+			setInterval(() => {
+				void checkStatus()
+			}, 10000)
 
 		return () => {
 			window.removeEventListener("offline", () => {
@@ -206,6 +216,13 @@ const Header: VFC = () => {
 								)}
 							/>
 						)}
+					/>
+					<Button
+						transparent
+						icon="refresh"
+						text="Refresh"
+						onClick={handleRefresh}
+						className={bem("account-modal-content-button")}
 					/>
 					<Button
 						text={isFullscreen ? "Exit PWA" : "PWA"}

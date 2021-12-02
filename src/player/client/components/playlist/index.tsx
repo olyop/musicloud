@@ -1,5 +1,5 @@
+import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
 import { useState, createElement, Fragment, VFC } from "react"
 
 import {
@@ -7,7 +7,7 @@ import {
 	usePlayPlaylist,
 	useRenamePlaylist,
 	useDeletePlaylist,
-	useToggleInLibrary,
+	useToggleObjectInLibrary,
 } from "../../hooks"
 
 import Item from "../item"
@@ -15,7 +15,7 @@ import TextField from "../text-field"
 import ObjectLink from "../object-link"
 import Modal, { ModalButton, ModalButtons } from "../modal"
 import { determineObjectPath } from "../../helpers"
-import { Handler, OnClickPropTypes, Playlist as PlaylistType } from "../../types"
+import { ClassNameBEMPropTypes, Handler, OnClickPropTypes, Playlist as PlaylistType } from "../../types"
 
 const bem =
 	createBEM("Playlist")
@@ -38,7 +38,7 @@ const Playlist: VFC<PropTypes> = ({
 		useState("")
 
 	const [ toggleInLibrary, inLibrary ] =
-		useToggleInLibrary(playlist)
+		useToggleObjectInLibrary(playlist)
 
 	const [ playPlaylist, isPlaying ] =
 		usePlayPlaylist({ playlistID })
@@ -172,7 +172,7 @@ const Playlist: VFC<PropTypes> = ({
 	)
 }
 
-interface PropTypes extends BEMPropTypes, OnClickPropTypes {
+interface PropTypes extends ClassNameBEMPropTypes, OnClickPropTypes {
 	leftIcon?: boolean,
 	hideModal?: boolean,
 	playlist: PlaylistType,

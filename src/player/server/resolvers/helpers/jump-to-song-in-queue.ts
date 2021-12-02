@@ -7,7 +7,7 @@ import {
 
 import { Pool } from "pg"
 import { UserInputError } from "apollo-server-fastify"
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 
 import {
 	SELECT_QUEUE,
@@ -20,7 +20,7 @@ import { COLUMN_NAMES } from "../../globals"
 import { IndexOptions, QueueSong, TableNameOptions } from "../../types"
 
 export interface JumpToSongInQueueOptions
-	extends UserIDBase, TableNameOptions, IndexOptions {}
+	extends UserID, TableNameOptions, IndexOptions {}
 
 export const jumpToSongInQueue =
 	(pool: Pool) =>

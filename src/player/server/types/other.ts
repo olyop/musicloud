@@ -2,7 +2,7 @@ import { Pool } from "pg"
 import { JwtPayload } from "jsonwebtoken"
 import { SearchIndex } from "algoliasearch"
 import { S3Client } from "@aws-sdk/client-s3"
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 
 export interface OrderBy {
 	field: string,
@@ -17,4 +17,4 @@ export interface Context {
 }
 
 export interface JWTPayload
-	extends UserIDBase, JwtPayload {}
+	extends UserID, JwtPayload {}

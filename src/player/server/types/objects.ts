@@ -5,13 +5,13 @@ import {
 	SongBase,
 	AlbumBase,
 	GenreBase,
-	KeyIDBase,
-	UserIDBase,
+	KeyID,
+	UserID,
 	ArtistBase,
-	SongIDBase,
-	AlbumIDBase,
+	SongID,
+	AlbumID,
 	PlaylistBase,
-	PlaylistIDBase,
+	PlaylistID,
 } from "@oly_op/music-app-common/types"
 
 export type Key =
@@ -31,24 +31,24 @@ export type Genre =
 export type Artist =
 	ArtistBase
 
-export interface Playlist extends UserIDBase, PlaylistBase {}
+export interface Playlist extends UserID, PlaylistBase {}
 
-export interface Play extends PlayBase, UserIDBase, SongIDBase {}
+export interface Play extends PlayBase, UserID, SongID {}
 
-export interface Song extends SongBase, KeyIDBase, AlbumIDBase {
+export interface Song extends SongBase, KeyID, AlbumID {
 	queueIndex: number | null,
 }
 
-export interface LibraryObject extends UserIDBase {
+export interface LibraryObject extends UserID {
 	dateAdded: number,
 	inLibrary: boolean,
 }
 
-export interface QueueSong extends UserIDBase, SongIDBase {
+export interface QueueSong extends UserID, SongID {
 	index: number,
 }
 
-export interface NowPlaying extends UserIDBase, SongIDBase {}
+export interface NowPlaying extends UserID, SongID {}
 
 export interface QueueNowPlaying {
 	nowPlaying: NowPlaying | null,
@@ -60,7 +60,7 @@ export interface Queue extends QueueNowPlaying {
 	previous: QueueSong[] | null,
 }
 
-export interface PlaylistSong extends SongIDBase, PlaylistIDBase {
+export interface PlaylistSong extends SongID, PlaylistID {
 	index: number,
 	dateAdded: number,
 }

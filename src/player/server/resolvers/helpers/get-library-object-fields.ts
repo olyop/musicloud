@@ -5,7 +5,7 @@ import {
 	convertFirstRowToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { ObjectIDBase, UserIDBase } from "@oly_op/music-app-common/types"
+import { ObjectID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	EXISTS_OBJECT_IN_LIBRARY,
@@ -15,7 +15,7 @@ import {
 import { TableNameOptions, ColumnNameOptions, LibraryObject } from "../../types"
 
 export interface GetLibraryObjectOptions
-	extends ObjectIDBase, UserIDBase, TableNameOptions, ColumnNameOptions {}
+	extends ObjectID, UserID, TableNameOptions, ColumnNameOptions {}
 
 export const getObjectDateAddedToLibrary =
 	(client: PoolOrClient) =>

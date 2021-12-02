@@ -1,8 +1,8 @@
+import { createBEM } from "@oly_op/bem"
 import startCase from "lodash/startCase"
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
 import { createElement, ReactElement, ChangeEventHandler } from "react"
 
-import { HandlerReturn } from "../../types"
+import { ClassNameBEMPropTypes, HandlerReturn } from "../../types"
 
 import "./index.scss"
 
@@ -37,7 +37,7 @@ const Select = <T,>({
 	)
 }
 
-interface PropTypes<T> extends BEMPropTypes {
+interface PropTypes<T> extends ClassNameBEMPropTypes {
 	value: string,
 	options: string[],
 	onChange: (value: T) => HandlerReturn,

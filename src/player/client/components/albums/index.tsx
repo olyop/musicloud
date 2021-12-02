@@ -2,11 +2,17 @@ import isEmpty from "lodash/isEmpty"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
 
+import {
+	SettingsListStyle,
+	Album as AlbumType,
+	AlbumsOrderByField,
+	ClassNameBEMPropTypes,
+} from "../../types"
+
 import List from "../list"
 import Album from "../album"
 import SelectOrderBy from "../select-order-by"
 import { useStateListStyle } from "../../redux"
-import { SettingsListStyle, Album as AlbumType, AlbumsOrderByField } from "../../types"
 
 const bem =
 	createBEM("Albums")
@@ -52,9 +58,8 @@ const Albums: VFC<AlbumsPropTypes> = ({
 	)
 }
 
-export interface AlbumsPropTypes {
+export interface AlbumsPropTypes extends ClassNameBEMPropTypes {
 	orderBy?: boolean,
-	className?: string,
 	hideModal?: boolean,
 	albums?: AlbumType[],
 	alwaysList?: boolean,

@@ -7,7 +7,6 @@ import Window from "../../components/window"
 import SHUFFLE_LIBRARY from "./shuffle-library.gql"
 import Navigation from "../../components/navigation"
 import LibraryCreatePlaylist from "./create-playlist"
-import { useDispatch, updatePlay } from "../../redux"
 import { useMutation, useResetPlayer } from "../../hooks"
 import Modal, { ModalButton, ModalButtons } from "../../components/modal"
 
@@ -25,7 +24,6 @@ const LibrarySettings: VFC = () => {
 }
 
 const Library: VFC = () => {
-	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
 
 	const [ modals, setModals ] =
@@ -63,7 +61,6 @@ const Library: VFC = () => {
 			handleModalsClose()
 			resetPlayer()
 			await libraryShuffle()
-			dispatch(updatePlay(true))
 		}
 
 	return (

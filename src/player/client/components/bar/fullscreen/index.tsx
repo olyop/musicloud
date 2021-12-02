@@ -17,13 +17,13 @@ import "./index.scss"
 const bem =
 	createBEM("BarFullscreen")
 
-const BarFullscreen: VFC<PropTypes> = ({ open, nowPlaying, onExit }) => (
+const BarFullscreen: VFC<PropTypes> = ({ song, onExit }) => (
 	<div className={bem("")}>
 		<Image
-			title={nowPlaying.album.title}
+			title={song.album.title}
 			className={bem("cover", "Card")}
 			url={determineCatalogImageURL(
-				nowPlaying.album.albumID,
+				song.album.albumID,
 				"cover",
 				ImageSizes.FULL,
 				ImageDimensions.SQUARE,
@@ -31,50 +31,47 @@ const BarFullscreen: VFC<PropTypes> = ({ open, nowPlaying, onExit }) => (
 		/>
 		<h1 className={bem("title", "text", "MarginBottomHalf")}>
 			<SongTitle
+				song={song}
 				showRemixers
-				song={nowPlaying}
 			/>
 		</h1>
 		<h3 className={bem("artists", "text", "MarginBottomHalf")}>
 			<FeaturingArtists
+				song={song}
 				onClick={onExit}
-				song={nowPlaying}
 			/>
 		</h3>
 		<h2 className={bem("album", "text", "MarginBottomHalf")}>
 			<ObjectLink
 				onClick={onExit}
 				link={{
-					text: nowPlaying.album.title,
-					path: determineObjectPath("album", nowPlaying.album.albumID),
+					text: song.album.title,
+					path: determineObjectPath("album", song.album.albumID),
 				}}
 			/>
 			<Fragment> - </Fragment>
 			<ObjectLinks
 				onClick={onExit}
-				links={nowPlaying.genres.map(({ genreID, name }) => ({
+				links={song.genres.map(({ genreID, name }) => ({
 					text: name,
 					path: determineObjectPath("genre", genreID),
 				}))}
 			/>
 		</h2>
 		<Progress
-			duration={nowPlaying.duration}
+			duration={song.duration}
 		/>
-		{open && (
-			<BarControls
-				className={bem("controls")}
-				buttonClassName={bem("button")}
-				buttonIconClassName={bem("button-icon")}
-			/>
-		)}
+		<BarControls
+			className={bem("controls")}
+			buttonClassName={bem("button")}
+			buttonIconClassName={bem("button-icon")}
+		/>
 	</div>
 )
 
 interface PropTypes {
-	open: boolean,
+	song: Song,
 	onExit: Handler,
-	nowPlaying: Song,
 }
 
 export default BarFullscreen

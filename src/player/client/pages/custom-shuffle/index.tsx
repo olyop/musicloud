@@ -1,8 +1,8 @@
 import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import Metadata from "@oly_op/react-metadata"
 
-const CustomShufflePage: FC = () => (
+const CustomShufflePage: VFC = () => (
 	<Metadata title="Custom Shuffle">
 		<div className="Content PaddingTopBottom">
 			<div className="FlexListGapHalf">

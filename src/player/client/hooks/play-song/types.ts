@@ -1,4 +1,4 @@
-import { SongIDBase } from "@oly_op/music-app-common/types"
+import { SongID } from "@oly_op/music-app-common/types"
 import { ApolloCache, MutationResult, MutationUpdaterFunction } from "@apollo/client"
 
 import { Handler, QueueNowPlaying } from "../../types"
@@ -20,7 +20,7 @@ export interface PlaySongData {
 export type PlaySongUpdate =
 	MutationUpdaterFunction<
 		PlaySongData,
-		SongIDBase,
+		SongID,
 		unknown,
 		ApolloCache<unknown>
 	>

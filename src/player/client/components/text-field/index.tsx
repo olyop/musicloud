@@ -6,7 +6,9 @@ import {
 	InputHTMLAttributes,
 } from "react"
 
-import { createBEM , BEMPropTypes } from "@oly_op/bem"
+import { createBEM } from "@oly_op/bem"
+
+import { ClassNameBEMPropTypes } from "../../types"
 
 import "./index.scss"
 
@@ -75,10 +77,16 @@ const TextField: VFC<TextFieldPropTypes> = ({
 type InputPropTypes =
 	Omit<InputHTMLAttributes<HTMLInputElement>, "className" | "onChange">
 
-export interface TextFieldPropTypes extends BEMPropTypes, InputPropTypes {
-	name: string,
+export interface FieldID {
 	fieldID: string,
-	onChange: (value: string) => void,
+}
+
+export type TextFieldOnChange =
+	(value: string) => void
+
+export interface TextFieldPropTypes extends FieldID, ClassNameBEMPropTypes, InputPropTypes {
+	name: string,
+	onChange: TextFieldOnChange,
 }
 
 export default TextField

@@ -1,4 +1,4 @@
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
+import { createBEM } from "@oly_op/bem"
 import { useEffect, createElement, ChangeEventHandler, VFC } from "react"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 
@@ -10,6 +10,7 @@ import {
 } from "../../redux"
 
 import "./index.scss"
+import { ClassNameBEMPropTypes } from "../../types"
 
 const bem =
 	createBEM("Progress")
@@ -61,7 +62,7 @@ const Progress: VFC<ProgressPropTypes> = ({ duration, className }) => {
 type HandleChange =
 	ChangeEventHandler<HTMLInputElement>
 
-interface ProgressPropTypes extends BEMPropTypes {
+interface ProgressPropTypes extends ClassNameBEMPropTypes {
 	duration: number,
 }
 

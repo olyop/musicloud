@@ -1,9 +1,9 @@
+import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
 import { createElement, ReactNode, VFC } from "react"
 
-import { Route } from "../../types"
+import { ClassNamePropTypes, Route } from "../../types"
 
 import "./index.scss"
 
@@ -61,7 +61,7 @@ const Navigation: VFC<PropTypes> = ({
 	</nav>
 )
 
-interface PropTypes extends BEMPropTypes {
+interface PropTypes extends ClassNamePropTypes {
 	routes: Route[],
 	right?: ReactNode,
 }

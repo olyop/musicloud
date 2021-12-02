@@ -1,12 +1,12 @@
 import { MutationResult } from "@apollo/client"
-import { PlaylistIDBase, InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { PlaylistID, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import { Playlist } from "../../types"
 import { useMutation } from "../mutation"
 import RENAME_PLAYLIST from "./rename-playlist.gql"
 
 export const useRenamePlaylist =
-	({ playlistID }: PlaylistIDBase) => {
+	({ playlistID }: PlaylistID) => {
 		const [ deletePlaylist, result ] =
 			useMutation<RenamePlaylistData, Vars>(RENAME_PLAYLIST, {
 				optimisticResponse: ({ input: { title } }) => ({
@@ -37,7 +37,7 @@ type InputBase =
 	Pick<Playlist, "title">
 
 interface Input
-	extends PlaylistIDBase, InputBase {}
+	extends PlaylistID, InputBase {}
 
 type Vars =
 	InterfaceWithInput<Input>

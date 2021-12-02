@@ -6,8 +6,8 @@ import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 import Cover from "../cover"
 import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
+import Item, { ModalOptions } from "../item"
 import { ModalButton, ModalButtons } from "../modal"
-import Item, { ModalOptions, InLibraryOptions } from "../item"
 import { useShuffleAlbum, usePlayAlbum, useToggleAlbumInLibrary } from "../../hooks"
 import { Album as AlbumType, Handler, SettingsListStyle } from "../../types"
 import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
@@ -108,24 +108,22 @@ const Album: VFC<PropTypes> = ({
 		),
 	}
 
-	const inLibraryOptions: InLibraryOptions = {
-		inLibrary,
-		onClick: toggleAlbumInLibrary,
-	}
-
 	const path =
 		determineObjectPath("album", album.albumID)
 
 	return (
 		alwaysList || listStyle === SettingsListStyle.LIST ? (
 			<Item
-				inLibraryOptions={inLibraryOptions}
 				leftIcon={leftIcon ? "album" : undefined}
 				modalOptions={hideModal ? undefined : modalOptions}
 				className={bem(className, "PaddingHalf ItemBorder")}
 				playOptions={hidePlay ? undefined : {
 					isPlaying,
 					onClick: playAlbum,
+				}}
+				inLibraryOptions={{
+					inLibrary,
+					onClick: toggleAlbumInLibrary,
 				}}
 				imageOptions={{
 					path,
@@ -171,7 +169,6 @@ const Album: VFC<PropTypes> = ({
 				/>
 				<Item
 					className="PaddingHalf"
-					inLibraryOptions={inLibraryOptions}
 					modalOptions={hideModal ? undefined : modalOptions}
 					playOptions={{
 						isPlaying,

@@ -3,7 +3,7 @@ import { BEMInput } from "@oly_op/bem"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
-import { ImageDimensions, ImageSizes, SongIDBase } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, SongID } from "@oly_op/music-app-common/types"
 
 import {
 	numberWithCommas,
@@ -27,7 +27,7 @@ import { ModalButton, ModalButtons } from "../modal"
 import QUEUE_SONG_AFTER from "./queue-song-after.gql"
 import QUEUE_SONG_LATER from "./queue-song-later.gql"
 import { User, Song as SongType, Handler } from "../../types"
-import { useToggleInLibrary, useMutation, usePlaySong } from "../../hooks"
+import { useToggleObjectInLibrary, useMutation, usePlaySong } from "../../hooks"
 
 const ModalPlayButton: VFC<ModalPlayButtonPropTypes> = ({
 	onClose,
@@ -76,7 +76,7 @@ const Song: VFC<PropTypes> = ({
 		trackNumber,
 	} = song
 
-	const variables: SongIDBase =
+	const variables: SongID =
 		{ songID }
 
 	const showGenres =
@@ -89,22 +89,22 @@ const Song: VFC<PropTypes> = ({
 		usePlaySong(song)
 
 	const [ toggleInLibrary, inLibrary ] =
-		useToggleInLibrary(song)
+		useToggleObjectInLibrary(song)
 
 	const [ next, { loading: nextLoading } ] =
-		useMutation<QueueData, SongIDBase>(
+		useMutation<QueueData, SongID>(
 			QUEUE_SONG_NEXT,
 			{ variables },
 		)
 
 	const [ after, { loading: afterLoading } ] =
-		useMutation<QueueData, SongIDBase>(
+		useMutation<QueueData, SongID>(
 			QUEUE_SONG_AFTER,
 			{ variables },
 		)
 
 	const [ later, { loading: laterLoading } ] =
-		useMutation<QueueData, SongIDBase>(
+		useMutation<QueueData, SongID>(
 			QUEUE_SONG_LATER,
 			{ variables },
 		)

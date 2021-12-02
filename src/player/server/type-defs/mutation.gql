@@ -39,6 +39,8 @@ type Mutation {
   
   # playlist
   deletePlaylistByID(playlistID: UUID!): Void
+  makePlaylistPublic(playlistID: UUID!): Playlist!
+  makePlaylistPrivate(playlistID: UUID!): Playlist!
   createPlaylist(input: CreatePlaylistInput!): Playlist!
   renamePlaylist(input: RenamePlaylistInput!): Playlist!
   addSongToPlaylist(songID: UUID!, playlistID: UUID!): Playlist!

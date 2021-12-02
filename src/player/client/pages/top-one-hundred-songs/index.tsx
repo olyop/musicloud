@@ -1,16 +1,16 @@
 import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import isUndefined from "lodash/isUndefined"
 import Metadata from "@oly_op/react-metadata"
 
 import { Song, Queue } from "../../types"
 import Songs from "../../components/songs"
-import { updatePlay, useDispatch } from "../../redux"
+import { useDispatch } from "../../redux"
 import { useQuery, useMutation, useResetPlayer } from "../../hooks"
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
 import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
 
-const TopOneHundredSongsPage: FC = () => {
+const TopOneHundredSongsPage: VFC = () => {
 	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
 
@@ -25,7 +25,6 @@ const TopOneHundredSongsPage: FC = () => {
 			if (!loading) {
 				resetPlayer()
 				await playTopOneHundredSongs()
-				dispatch(updatePlay(true))
 			}
 		}
 

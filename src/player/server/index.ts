@@ -17,7 +17,7 @@ import apollo from "./apollo"
 import serveClient from "./serve-client"
 
 const listenCallback =
-	(error: Error, address: string) => {
+	(error: Error | null, address: string) => {
 		if (error) {
 			console.error(error)
 		} else {
@@ -40,4 +40,4 @@ const start =
 			.listen(FASTIFY_LISTEN_OPTIONS, listenCallback)
 	}
 
-start()
+void start()

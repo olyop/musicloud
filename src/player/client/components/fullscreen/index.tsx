@@ -14,9 +14,9 @@ const Fullscreen: FC = ({ children }) => {
 	useEffect(() => {
 		if (hasMounted) {
 			if (isFullscreen) {
-				fullscreen.enter()
+				void fullscreen.enter()
 			} else {
-				fullscreen.exit()
+				void fullscreen.exit()
 			}
 		}
 	}, [isFullscreen])

@@ -1,15 +1,15 @@
 import isNull from "lodash/isNull"
 import { Reference } from "@apollo/client"
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import { useMutation } from "../mutation"
 import DELETE_PLAYLIST from "./delete-playlist.gql"
 import { DeletePlaylistData, UseDeletePlaylistResult } from "./types"
 
 export const useDeletePlaylist =
-	({ playlistID }: PlaylistIDBase): UseDeletePlaylistResult => {
+	({ playlistID }: PlaylistID): UseDeletePlaylistResult => {
 		const [ deletePlaylist, result ] =
-			useMutation<DeletePlaylistData, PlaylistIDBase>(DELETE_PLAYLIST, {
+			useMutation<DeletePlaylistData, PlaylistID>(DELETE_PLAYLIST, {
 				variables: { playlistID },
 				update: cache => {
 					cache.modify({

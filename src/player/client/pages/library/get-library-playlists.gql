@@ -2,6 +2,7 @@ query getLibraryPlaylists($input: LibraryPlaylistsInput!) {
 	getLibrary {
 		playlistsPaginated(input: $input) {
 			title
+			inLibrary
 			playlistID
 			songsTotal
 			dateAddedToLibrary

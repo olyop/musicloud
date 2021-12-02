@@ -7,7 +7,7 @@ import {
 	AlbumBase,
 	GenreBase,
 	ArtistBase,
-	UserIDBase,
+	UserID,
 	PlaylistBase,
 } from "@oly_op/music-app-common/types"
 
@@ -26,7 +26,7 @@ export interface InLibraryBase {
 export interface UserClientBase
 	extends
 		StoreObject<"User">,
-		UserIDBase {}
+		UserID {}
 
 export interface UserPlaylists {
 	playlists: Playlist[],

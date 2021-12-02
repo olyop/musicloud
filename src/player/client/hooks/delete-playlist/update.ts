@@ -1,11 +1,11 @@
 import isNull from "lodash/isNull"
 import { Reference } from "@apollo/client"
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import { DeletePlaylistUpdate } from "./types"
 
 const update =
-	({ playlistID }: PlaylistIDBase): DeletePlaylistUpdate =>
+	({ playlistID }: PlaylistID): DeletePlaylistUpdate =>
 		cache => {
 			cache.modify({
 				id: cache.identify({ __typename: "Library" }),

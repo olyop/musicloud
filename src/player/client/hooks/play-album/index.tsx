@@ -1,20 +1,20 @@
-import { AlbumIDBase } from "@oly_op/music-app-common/types"
+import { AlbumID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../query"
 import PLAY_ALBUM from "./play-album.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
+import { useDispatch, togglePlay } from "../../redux"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
-import { useDispatch, updatePlay, togglePlay } from "../../redux"
 import { PlayAlbumData, GetQueueNowPlayingData, UsePlayAlbumResult } from "./types"
 
 export const usePlayAlbum =
-	({ albumID }: AlbumIDBase): UsePlayAlbumResult => {
+	({ albumID }: AlbumID): UsePlayAlbumResult => {
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
 		const [ playAlbum, result ] =
-			useMutation<PlayAlbumData, AlbumIDBase>(PLAY_ALBUM, {
+			useMutation<PlayAlbumData, AlbumID>(PLAY_ALBUM, {
 				variables: { albumID },
 			})
 
@@ -37,7 +37,6 @@ export const usePlayAlbum =
 					} else {
 						resetPlayer()
 						await playAlbum()
-						dispatch(updatePlay(true))
 					}
 				}
 			}

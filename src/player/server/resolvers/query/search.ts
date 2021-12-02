@@ -1,25 +1,15 @@
 import { isEmpty, orderBy } from "lodash"
 import { ApolloError } from "apollo-server-fastify"
-import { ObjectIDBase } from "@oly_op/music-app-common/types"
+import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { Search } from "../../types"
 import { getUser, getSong, getAlbum, getGenre, getArtist, getPlaylist } from "../helpers"
 
-interface Args {
-	value: string,
-	length: number,
-}
-
-interface Result extends ObjectIDBase {
-	text: string,
-	typeName: "User" | "Song" | "Genre" | "Album" | "Artist" | "Playlist",
-}
-
 export const getSearchResults =
-	resolver<Search[], Args>(
+	resolver<Search[], GetSearchResultsArgs>(
 		async ({ args, context }) => {
-			const { value, length } = args
+			const { value, length } = args.input
 
 			const { hits } =
 				await context.ag.search<Result>(value, {
@@ -64,3 +54,16 @@ export const getSearchResults =
 			return results.filter(result => !isEmpty(result))
 		},
 	)
+
+interface GetSearchResultsInput {
+	value: string,
+	length: number,
+}
+
+type GetSearchResultsArgs =
+	InterfaceWithInput<GetSearchResultsInput>
+
+interface Result {
+	text: string,
+	typeName: "User" | "Song" | "Genre" | "Album" | "Artist" | "Playlist",
+}

@@ -9,7 +9,7 @@ import {
 
 import { Pool } from "pg"
 import { UserInputError } from "apollo-server-fastify"
-import { UserIDBase, ObjectIDBase } from "@oly_op/music-app-common/types"
+import { UserID, ObjectID } from "@oly_op/music-app-common/types"
 
 import {
 	INSERT_LIBRARY_OBJECT,
@@ -20,7 +20,7 @@ import {
 import { TableNameOptions, ColumnNameOptions } from "../../types"
 
 export interface HandleInLibraryOptionsBase
-	extends UserIDBase, ObjectIDBase { inLibrary: boolean }
+	extends UserID, ObjectID { inLibrary: boolean }
 
 export interface HandleInLibraryOptions
 	extends HandleInLibraryOptionsBase, TableNameOptions, ColumnNameOptions {
@@ -51,7 +51,6 @@ export const handleInLibrary =
 
 			const doesObjectExist =
 				await exists({
-					log: { sql: true },
 					value: objectID,
 					table: tableName,
 					column: columnName,
@@ -75,14 +74,12 @@ export const handleInLibrary =
 
 				const doesLibraryObjectExist =
 					await query(EXISTS_LIBRARY_OBJECT)({
-						log: { sql: true },
-						parse: getResultExists,
 						variables,
+						parse: getResultExists,
 					})
 
 				if (doesLibraryObjectExist) {
 					await query(UPDATE_OBJECT_IN_LIBRARY)({
-						log: { sql: true },
 						variables: {
 							...variables,
 							inLibrary,
@@ -90,7 +87,6 @@ export const handleInLibrary =
 					})
 				} else {
 					await query(INSERT_LIBRARY_OBJECT)({
-						log: { sql: true },
 						variables: {
 							...variables,
 							inLibrary,
@@ -100,7 +96,6 @@ export const handleInLibrary =
 
 				returnResult =
 					await query(returnQuery)({
-						log: { sql: true },
 						parse: convertFirstRowToCamelCase<T>(),
 						variables: {
 							[columnKey]: objectID,

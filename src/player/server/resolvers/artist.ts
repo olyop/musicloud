@@ -9,7 +9,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import pipe from "@oly_op/pipe"
-import { ArtistIDBase, UserIDBase } from "@oly_op/music-app-common/types"
+import { ArtistID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	Song,
@@ -131,7 +131,7 @@ export const since =
 	)
 
 interface GetUserArtistPlays<T>
-	extends UserIDBase, ArtistIDBase, GetObjectsOptions<T> {}
+	extends UserID, ArtistID, GetObjectsOptions<T> {}
 
 const getUserArtistPlays =
 	(client: PoolOrClient) =>

@@ -1,4 +1,3 @@
-import { BEMPropTypes } from "@oly_op/bem"
 import type { DocumentNode } from "graphql"
 
 import {
@@ -6,6 +5,7 @@ import {
 	QueueNext,
 	QueueLater,
 	QueueNextLater,
+	ClassNameBEMPropTypes,
 	SettingsQueuesDisclosureKeys,
 } from "../../types"
 
@@ -37,7 +37,7 @@ export interface RemoveLaterData {
 	removeSongFromQueueLater: QueueLater,
 }
 
-export interface QueuePropTypes extends BEMPropTypes {
+export interface QueuePropTypes extends ClassNameBEMPropTypes {
 	name: string,
 	query: DocumentNode,
 	removeQuery?: DocumentNode,

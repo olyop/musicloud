@@ -1,12 +1,12 @@
 import {
-	KeyIDBase,
-	UserIDBase,
-	SongIDBase,
-	PlayIDBase,
-	GenreIDBase,
-	AlbumIDBase,
-	ArtistIDBase,
-	PlaylistIDBase,
+	KeyID,
+	UserID,
+	SongID,
+	PlayID,
+	GenreID,
+	AlbumID,
+	ArtistID,
+	PlaylistID,
 } from "@oly_op/music-app-common/types"
 
 import {
@@ -42,7 +42,7 @@ import { COLUMN_NAMES } from "../../globals"
 
 export const getKey =
 	(client: PoolOrClient) =>
-		({ keyID }: KeyIDBase) =>
+		({ keyID }: KeyID) =>
 			query(client)(SELECT_KEY_BY_ID)({
 				parse: convertFirstRowToCamelCase<Key>(),
 				variables: {
@@ -53,7 +53,7 @@ export const getKey =
 
 export const getUser =
 	(client: PoolOrClient) =>
-		({ userID }: UserIDBase) =>
+		({ userID }: UserID) =>
 			query(client)(SELECT_USER_BY_ID)({
 				parse: convertFirstRowToCamelCase<User>(),
 				variables: {
@@ -64,7 +64,7 @@ export const getUser =
 
 export const getSong =
 	(client: PoolOrClient) =>
-		({ songID }: SongIDBase) =>
+		({ songID }: SongID) =>
 			query(client)(SELECT_SONG_BY_ID)({
 				parse: convertFirstRowToCamelCase<Song>(),
 				variables: {
@@ -75,7 +75,7 @@ export const getSong =
 
 export const getPlay =
 	(client: PoolOrClient) =>
-		({ playID }: PlayIDBase) =>
+		({ playID }: PlayID) =>
 			query(client)(SELECT_PLAY_BY_ID)({
 				parse: convertFirstRowToCamelCase<Play>(),
 				variables: {
@@ -86,7 +86,7 @@ export const getPlay =
 
 export const getGenre =
 	(client: PoolOrClient) =>
-		({ genreID }: GenreIDBase) =>
+		({ genreID }: GenreID) =>
 			query(client)(SELECT_GENRE_BY_ID)({
 				parse: convertFirstRowToCamelCase<Genre>(),
 				variables: {
@@ -97,7 +97,7 @@ export const getGenre =
 
 export const getAlbum =
 	(client: PoolOrClient) =>
-		({ albumID }: AlbumIDBase) =>
+		({ albumID }: AlbumID) =>
 			query(client)(SELECT_ALBUM_BY_ID)({
 				parse: convertFirstRowToCamelCase<Album>(),
 				variables: {
@@ -108,7 +108,7 @@ export const getAlbum =
 
 export const getArtist =
 	(client: PoolOrClient) =>
-		({ artistID }: ArtistIDBase) =>
+		({ artistID }: ArtistID) =>
 			query(client)(SELECT_ARTIST_BY_ID)({
 				parse: convertFirstRowToCamelCase<Artist>(),
 				variables: {
@@ -119,7 +119,7 @@ export const getArtist =
 
 export const getPlaylist =
 	(client: PoolOrClient) =>
-		({ playlistID }: PlaylistIDBase) =>
+		({ playlistID }: PlaylistID) =>
 			query(client)(SELECT_PLAYLIST_BY_ID)({
 				parse: convertFirstRowToCamelCase<Playlist>(),
 				variables: {

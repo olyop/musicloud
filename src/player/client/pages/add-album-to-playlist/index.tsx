@@ -1,7 +1,7 @@
 import {
 	ImageSizes,
-	AlbumIDBase,
-	PlaylistIDBase,
+	AlbumID,
+	PlaylistID,
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
 
@@ -29,7 +29,7 @@ const bem =
 
 const AddAlbumToPlaylistPage: VFC = () => {
 	const navigate = useNavigate()
-	const params = useParams<keyof AlbumIDBase>()
+	const params = useParams<keyof AlbumID>()
 	const albumID = addDashesToUUID(params.albumID!)
 
 	const [ playlistID, setPlaylistID ] =
@@ -42,7 +42,7 @@ const AddAlbumToPlaylistPage: VFC = () => {
 		)
 
 	const { data: albumData } =
-		useQuery<GetAlbumData, AlbumIDBase>(
+		useQuery<GetAlbumData, AlbumID>(
 			GET_ALBUM_DATA,
 			{ variables: { albumID } },
 		)
@@ -130,10 +130,10 @@ interface GetUserPlaylistsData {
 }
 
 interface AddAlbumToPlaylistData {
-	addAlbumToPlaylist: PlaylistIDBase,
+	addAlbumToPlaylist: PlaylistID,
 }
 
 interface AddAlbumToPlaylistVars
-	extends AlbumIDBase, PlaylistIDBase {}
+	extends AlbumID, PlaylistID {}
 
 export default AddAlbumToPlaylistPage

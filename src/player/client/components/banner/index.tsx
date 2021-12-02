@@ -1,18 +1,17 @@
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC, ReactNode } from "react"
+import { createElement, VFC, ReactNode } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Banner")
 
-const Banner: FC<PropTypes> = ({
+const Banner: VFC<PropTypes> = ({
 	title,
 	buttons,
 	content,
 	subTitle,
-	children,
 	coverURL,
 	profileURL,
 }) => (

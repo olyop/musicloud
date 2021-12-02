@@ -7,8 +7,10 @@ const determineReturn =
 				return song
 			} else if (__typename === "Artist") {
 				return artist
-			} else {
+			} else if (__typename === "Playlist") {
 				return playlist
+			} else {
+				throw new Error("Invald typename")
 			}
 		}
 

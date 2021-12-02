@@ -1,6 +1,6 @@
 import { query as pgHelpersQuery, exists as pgHelpersExists } from "@oly_op/pg-helpers"
 
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 import { ForbiddenError, UserInputError } from "apollo-server-fastify"
 
 import resolver from "./resolver"
@@ -9,7 +9,7 @@ import { isNotUsersPlaylist } from "../helpers"
 import { DELETE_PLAYLIST_BY_ID } from "../../sql"
 
 export const deletePlaylistByID =
-	resolver<void, PlaylistIDBase>(
+	resolver<void, PlaylistID>(
 		async ({ args, context }) => {
 			const { playlistID } = args
 			const { userID } = context.authorization!
@@ -35,5 +35,7 @@ export const deletePlaylistByID =
 			await query(DELETE_PLAYLIST_BY_ID)({
 				variables: { playlistID },
 			})
+
+			await context.ag.deleteObject(playlistID)
 		},
 	)

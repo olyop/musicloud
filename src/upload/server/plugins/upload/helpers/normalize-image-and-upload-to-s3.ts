@@ -1,7 +1,7 @@
 import {
 	ImageInput,
 	ImageSizes,
-	ObjectIDBase,
+	ObjectID,
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
 
@@ -10,7 +10,7 @@ import sharp, { ResizeOptions } from "sharp"
 import { uploadFileToS3 } from "./upload-file-to-s3"
 import { determineS3ImagePath } from "./determine-s3-image-path"
 
-interface BaseInput extends ObjectIDBase {
+interface BaseInput extends ObjectID {
 	buffer: Buffer,
 }
 

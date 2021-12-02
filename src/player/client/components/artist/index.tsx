@@ -18,9 +18,9 @@ import {
 import Cover from "../cover"
 import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
-import { useToggleInLibrary, useShuffleArtist } from "../../hooks"
-import { Artist as ArtistType, SettingsListStyle } from "../../types"
 import { ModalButton, ModalButtons } from "../modal"
+import { Artist as ArtistType, SettingsListStyle } from "../../types"
+import { useToggleObjectInLibrary, useShuffleArtist } from "../../hooks"
 
 const bem =
 	createBEM("Artist")
@@ -33,8 +33,12 @@ const Artist: VFC<PropTypes> = ({
 }) => {
 	const { artistID } = artist
 	const listStyle = useStateListStyle()
-	const [ shuffle ] = useShuffleArtist({ artistID })
-	const [ toggleInLibrary, inLibrary ] = useToggleInLibrary(artist)
+
+	const [ shuffle ] =
+		useShuffleArtist({ artistID })
+
+	const [ toggleInLibrary, inLibrary ] =
+		useToggleObjectInLibrary(artist)
 
 	const handleShuffleClick =
 		async () => { await shuffle() }

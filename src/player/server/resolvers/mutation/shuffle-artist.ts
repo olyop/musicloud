@@ -1,5 +1,5 @@
 import pipe from "@oly_op/pipe"
-import { ArtistIDBase } from "@oly_op/music-app-common/types"
+import { ArtistID } from "@oly_op/music-app-common/types"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
@@ -9,7 +9,7 @@ import { INSERT_QUEUE_SONG, SELECT_ARTIST_SONGS } from "../../sql"
 import { shuffle, clearQueue, updateQueueNowPlaying } from "../helpers"
 
 export const shuffleArtist =
-	resolver<Record<string, never>, ArtistIDBase>(
+	resolver<Record<string, never>, ArtistID>(
 		async ({ args, context }) => {
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()

@@ -1,4 +1,4 @@
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 import { ApolloCache, MutationResult, MutationUpdaterFunction } from "@apollo/client"
 
 import { Handler } from "../../types"
@@ -15,7 +15,7 @@ export interface DeletePlaylistData {
 export type DeletePlaylistUpdate =
 	MutationUpdaterFunction<
 		DeletePlaylistData,
-		PlaylistIDBase,
+		PlaylistID,
 		unknown,
 		ApolloCache<unknown>
 	>

@@ -1,8 +1,9 @@
-import { createElement, FC } from "react"
-import { createBEM, BEMInput, BEMPropTypes } from "@oly_op/bem"
+import isFunction from "lodash/isFunction"
+import { createBEM, BEMInput } from "@oly_op/bem"
+import { createElement, VFC, ReactNode } from "react"
 
-import { Handler } from "../../types"
 import ModalButtons from "./modal-buttons"
+import { ClassNameBEMPropTypes, Handler } from "../../types"
 import ModalHeader, { ModalHeaderPropTypes } from "./modal-header"
 import ModalButton, { ModalButtonPropTypes } from "./modal-button"
 
@@ -11,7 +12,7 @@ import "./index.scss"
 const bem =
 	createBEM("Modal")
 
-const Modal: FC<ModalPropTypes> = ({
+const Modal: VFC<ModalPropTypes> = ({
 	open,
 	onClose,
 	children,
@@ -38,16 +39,17 @@ const Modal: FC<ModalPropTypes> = ({
 				"Elevated Rounded OverflowHidden",
 			)}
 		>
-			{children}
+			{isFunction(children) ? children(onClose) : children}
 		</div>
 	</div>
 )
 
-export interface ModalPropTypes extends BEMPropTypes {
+export interface ModalPropTypes extends ClassNameBEMPropTypes {
 	open: boolean,
 	onClose: Handler,
 	contentClassName?: BEMInput,
 	backgroundClassName?: BEMInput,
+	children: ReactNode | ((onClose: Handler) => ReactNode),
 }
 
 export { ModalHeader, ModalButtons, ModalButton }

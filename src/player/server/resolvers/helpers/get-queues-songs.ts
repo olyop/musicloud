@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import pipe from "@oly_op/pipe"
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 
 import { COLUMN_NAMES } from "../../globals"
 import { SELECT_QUEUE_SONGS } from "../../sql"
@@ -22,7 +22,7 @@ export const addQueueIndexToSongs =
 		)
 
 export interface GetQueueSongsOptions
-	extends UserIDBase, TableNameOptions {}
+	extends UserID, TableNameOptions {}
 
 export const getQueueSongs =
 	(client: PoolOrClient) =>

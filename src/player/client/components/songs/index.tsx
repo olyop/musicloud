@@ -1,10 +1,10 @@
 import isEmpty from "lodash/isEmpty"
+import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
 
 import Song from "../song"
 import SelectOrderBy from "../select-order-by"
-import { Handler, OrderByOptions, SettingsOrderBySongs, Song as SongType } from "../../types"
+import { ClassNameBEMPropTypes, Handler, OrderByOptions, SettingsOrderBySongs, Song as SongType } from "../../types"
 
 const bem =
 	createBEM("Songs")
@@ -62,7 +62,7 @@ export interface OnRemoveOptions {
 	song: SongType,
 }
 
-export interface SongsPropTypes extends BEMPropTypes {
+export interface SongsPropTypes extends ClassNameBEMPropTypes {
 	songs?: SongType[],
 	hidePlay?: boolean,
 	hideMore?: boolean,

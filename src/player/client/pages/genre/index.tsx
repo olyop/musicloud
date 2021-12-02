@@ -4,7 +4,7 @@ import isUndefined from "lodash/isUndefined"
 import { useParams } from "react-router-dom"
 import Metadata from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { GenreIDBase } from "@oly_op/music-app-common/types"
+import { GenreID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"
@@ -18,7 +18,7 @@ const bem =
 	createBEM("GenrePage")
 
 const GenrePage: FC = () => {
-	const params = useParams<keyof GenreIDBase>()
+	const params = useParams<keyof GenreID>()
 	const genreID = addDashesToUUID(params.genreID!)
 	const songsOrderBy = useStateOrderBy<SongsOrderByField>("songs")
 
@@ -60,7 +60,7 @@ interface GetGenrePageData {
 	getGenreByID: Genre,
 }
 
-interface GetGenrePageVars extends GenreIDBase {
+interface GetGenrePageVars extends GenreID {
 	songsOrderBy: SongsOrderBy,
 }
 

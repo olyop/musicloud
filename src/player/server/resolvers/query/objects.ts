@@ -1,12 +1,14 @@
 import {
-	UserIDBase,
-	PlayIDBase,
-	SongIDBase,
-	AlbumIDBase,
-	GenreIDBase,
-	ArtistIDBase,
-	PlaylistIDBase,
+	UserID,
+	PlayID,
+	SongID,
+	AlbumID,
+	GenreID,
+	ArtistID,
+	PlaylistID,
 } from "@oly_op/music-app-common/types"
+
+import { ForbiddenError } from "apollo-server-fastify"
 
 import {
 	User,
@@ -48,48 +50,60 @@ export const getUser =
 	)
 
 export const getUserByID =
-	resolver<User, UserIDBase>(
+	resolver<User, UserID>(
 		({ args, context }) => (
 			getUserHelper(context.pg)(args)
 		),
 	)
 
 export const getSongByID	=
-	resolver<Song, SongIDBase>(
+	resolver<Song, SongID>(
 		({ args, context }) => (
 			getSong(context.pg)(args)
 		),
 	)
 
 export const getPlayByID =
-	resolver<Play, PlayIDBase>(
+	resolver<Play, PlayID>(
 		({ args, context }) => (
 			getPlay(context.pg)(args)
 		),
 	)
 
 export const getAlbumByID =
-	resolver<Album, AlbumIDBase>(
+	resolver<Album, AlbumID>(
 		({ args, context }) => (
 			getAlbum(context.pg)(args)
 		),
 	)
 
 export const getGenreByID =
-	resolver<Genre, GenreIDBase>(
+	resolver<Genre, GenreID>(
 		({ args, context }) => (
 			getGenre(context.pg)(args)
 		),
 	)
 
 export const getArtistByID =
-	resolver<Artist, ArtistIDBase>(
-		({ args, context }) => getArtist(context.pg)(args),
+	resolver<Artist, ArtistID>(
+		({ args, context }) => (
+			getArtist(context.pg)(args)
+		),
 	)
 
 export const getPlaylistByID =
-	resolver<Playlist, PlaylistIDBase>(
-		({ args, context }) => (
-			getPlaylist(context.pg)(args)
-		),
+	resolver<Playlist, PlaylistID>(
+		async ({ args, context }) => {
+			const playlist =
+				await getPlaylist(context.pg)(args)
+			if (playlist.isPublic) {
+				return playlist
+			} else {
+				if (playlist.userID === context.authorization!.userID) {
+					return playlist
+				} else {
+					throw new ForbiddenError("Unauthorized access to this playlist")
+				}
+			}
+		},
 	)

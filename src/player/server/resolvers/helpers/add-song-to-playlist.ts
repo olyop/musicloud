@@ -1,10 +1,10 @@
 import { query, getResultExists, PoolOrClient } from "@oly_op/pg-helpers"
-import { PlaylistIDBase, SongIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID, SongID } from "@oly_op/music-app-common/types"
 
 import { EXISTS_PLAYLIST_SONG, INSERT_PLAYLIST_SONG } from "../../sql"
 
 interface AddSongToPlaylistOptions
-	extends SongIDBase, PlaylistIDBase {}
+	extends SongID, PlaylistID {}
 
 export const addSongToPlaylist =
 	(client: PoolOrClient) =>

@@ -1,9 +1,9 @@
 import Image from "@oly_op/react-image"
 import { Link } from "react-router-dom"
 import { createElement, FC } from "react"
-import { createBEM, BEMInput, BEMPropTypes } from "@oly_op/bem"
+import { createBEM, BEMInput } from "@oly_op/bem"
 
-import { OnClickPropTypes } from "../../types"
+import { ClassNameBEMPropTypes, OnClickPropTypes } from "../../types"
 
 import "./index.scss"
 
@@ -35,7 +35,7 @@ const Cover: FC<PropTypes> = ({
 	</Image>
 )
 
-interface PropTypes extends BEMPropTypes, OnClickPropTypes {
+interface PropTypes extends ClassNameBEMPropTypes, OnClickPropTypes {
 	url: string,
 	link: string,
 	title: string,

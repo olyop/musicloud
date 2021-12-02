@@ -8,6 +8,7 @@ query getArtistPageAlbums(
 			title
 			albumID
 			released
+			inLibrary
 			artists {
 				artistID
 				name

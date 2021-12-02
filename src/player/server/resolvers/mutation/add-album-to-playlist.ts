@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { ForbiddenError, UserInputError } from "apollo-server-fastify"
-import { AlbumIDBase, PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { AlbumID, PlaylistID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
@@ -15,7 +15,7 @@ import { SELECT_ALBUM_SONGS } from "../../sql"
 import { addSongToPlaylist, getPlaylist, isNotUsersPlaylist } from "../helpers"
 
 interface Args
-	extends AlbumIDBase, PlaylistIDBase {}
+	extends AlbumID, PlaylistID {}
 
 export const addAlbumToPlaylist =
 	resolver<Playlist, Args>(

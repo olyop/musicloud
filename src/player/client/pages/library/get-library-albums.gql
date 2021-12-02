@@ -4,6 +4,7 @@ query getLibraryAlbums($input: LibraryAlbumsInput!) {
 			title
 			albumID
 			released
+			inLibrary
 			artists {
 				artistID
 				name

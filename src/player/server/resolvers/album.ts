@@ -11,7 +11,7 @@ import {
 import { sum } from "lodash"
 import pipe from "@oly_op/pipe"
 import { map } from "lodash/fp"
-import { UserIDBase, AlbumIDBase } from "@oly_op/music-app-common/types"
+import { UserID, AlbumID } from "@oly_op/music-app-common/types"
 
 import {
 	Song,
@@ -37,7 +37,7 @@ const resolver =
 	createResolver<Album>()
 
 interface GetAlbumSongsOptions<T>
-	extends AlbumIDBase, GetObjectsOptions<T> {}
+	extends AlbumID, GetObjectsOptions<T> {}
 
 const getAlbumSongs =
 	(client: PoolOrClient) =>
@@ -139,7 +139,7 @@ export const playsTotal =
 	)
 
 interface GetUserAlbumPlaysOptions<T>
-	extends UserIDBase, AlbumIDBase, GetObjectsOptions<T> {}
+	extends UserID, AlbumID, GetObjectsOptions<T> {}
 
 const getUserAlbumPlays =
 	(client: PoolOrClient) =>

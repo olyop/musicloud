@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { UserInputError } from "apollo-server-fastify"
-import { AlbumIDBase } from "@oly_op/music-app-common/types"
+import { AlbumID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { Song } from "../../types"
@@ -15,7 +15,7 @@ import { clearQueue, updateQueueNowPlaying } from "../helpers"
 import { INSERT_QUEUE_SONG, SELECT_ALBUM_SONGS } from "../../sql"
 
 export const playAlbum =
-	resolver<Record<string, never>, AlbumIDBase>(
+	resolver<Record<string, never>, AlbumID>(
 		async ({ args, context }) => {
 			const { albumID } = args
 			const { userID } = context.authorization!

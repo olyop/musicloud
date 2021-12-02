@@ -1,7 +1,7 @@
 import { createElement, VFC } from "react"
 import { useParams } from "react-router-dom"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { ArtistIDBase } from "@oly_op/music-app-common/types"
+import { ArtistID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"
@@ -9,11 +9,11 @@ import { ArtistTopTenSongs } from "../../types"
 import GET_ARTIST_PAGE_HOME from "./get-artist-page-home.gql"
 
 const ArtistPageHome: VFC = () => {
-	const params = useParams<keyof ArtistIDBase>()
+	const params = useParams<keyof ArtistID>()
 	const artistID = addDashesToUUID(params.artistID!)
 
 	const { data } =
-		useQuery<ArtistPageHomeData, ArtistIDBase>(
+		useQuery<ArtistPageHomeData, ArtistID>(
 			GET_ARTIST_PAGE_HOME,
 			{ variables: { artistID } },
 		)

@@ -8,7 +8,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import pipe from "@oly_op/pipe"
-import { PlaylistIDBase, UserIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	getUser,
@@ -40,7 +40,7 @@ export const user =
 	)
 
 interface GetPlaylistSongsOptions<T>
-	extends PlaylistIDBase, GetObjectsOptions<T> {}
+	extends PlaylistID, GetObjectsOptions<T> {}
 
 const getPlaylistSongs =
 	(client: PoolOrClient) =>
@@ -90,7 +90,7 @@ export const duration =
 	)
 
 interface GetUserPlaylistPlaysOptions<T>
-	extends UserIDBase, PlaylistIDBase, GetObjectsOptions<T> {}
+	extends UserID, PlaylistID, GetObjectsOptions<T> {}
 
 const getUserPlaylistPlays =
 	(client: PoolOrClient) =>

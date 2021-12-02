@@ -14,7 +14,7 @@ import { random } from "lodash"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 import { NAME } from "@oly_op/music-app-common/metadata"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { PlaylistIDBase, SongIDBase, UserIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID, SongID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	Song,
@@ -143,7 +143,7 @@ export const playsTotal =
 	)
 
 interface GetUserSongPlaysOptions<T>
-	extends UserIDBase, SongIDBase, GetObjectsOptions<T> {}
+	extends UserID, SongID, GetObjectsOptions<T> {}
 
 const getUserSongPlays =
 	(client: PoolOrClient) =>
@@ -206,7 +206,7 @@ export const inLibrary =
 	)
 
 interface GetSongPlaylistSongOptions<T>
-	extends SongIDBase, PlaylistIDBase, GetObjectsOptions<T> {}
+	extends SongID, PlaylistID, GetObjectsOptions<T> {}
 
 const getSongPlaylistSong =
 	(client: PoolOrClient) =>
@@ -221,7 +221,7 @@ const getSongPlaylistSong =
 			})
 
 export const playlistIndex =
-	resolver<number, PlaylistIDBase>(
+	resolver<number, PlaylistID>(
 		({ parent, context, args }) => (
 			getSongPlaylistSong(context.pg)({
 				songID: parent.songID,
@@ -236,7 +236,7 @@ export const playlistIndex =
 	)
 
 export const isInPlaylist =
-	resolver<boolean, PlaylistIDBase>(
+	resolver<boolean, PlaylistID>(
 		({ parent, context, args }) => (
 			getSongPlaylistSong(context.pg)({
 				songID: parent.songID,
@@ -248,7 +248,7 @@ export const isInPlaylist =
 	)
 
 export const dateAddedToPlaylist =
-	resolver<number | null, PlaylistIDBase>(
+	resolver<number | null, PlaylistID>(
 		({ parent, context, args }) => (
 			getSongPlaylistSong(context.pg)({
 				songID: parent.songID,

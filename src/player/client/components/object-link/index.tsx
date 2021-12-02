@@ -1,8 +1,8 @@
+import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
 import { NavLink } from "react-router-dom"
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
 
-import { OnClickPropTypes } from "../../types"
+import { ClassNameBEMPropTypes, OnClickPropTypes } from "../../types"
 
 import "./index.scss"
 
@@ -28,8 +28,7 @@ export interface ObjectLinkOptions {
 	text: string,
 }
 
-interface PropTypes
-	extends BEMPropTypes, OnClickPropTypes {
+interface PropTypes extends ClassNameBEMPropTypes, OnClickPropTypes {
 	link: ObjectLinkOptions,
 }
 

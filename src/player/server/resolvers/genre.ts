@@ -1,4 +1,4 @@
-import { GenreIDBase, UserIDBase } from "@oly_op/music-app-common/types"
+import { GenreID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	join,
@@ -59,7 +59,7 @@ export const songsTotal =
 	)
 
 interface GetUserGenrePlays<T>
-	extends UserIDBase, GenreIDBase, GetObjectsOptions<T> {}
+	extends UserID, GenreID, GetObjectsOptions<T> {}
 
 const getUserGenrePlays =
 	(client: PoolOrClient) =>

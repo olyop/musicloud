@@ -1,8 +1,8 @@
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { useParams } from "react-router-dom"
 import Metadata from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { ImageDimensions, ImageSizes, UserIDBase } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
 
 import { User } from "../../types"
 import { useQuery } from "../../hooks"
@@ -10,12 +10,12 @@ import Banner from "../../components/banner"
 import GET_USER_PAGE from "./get-user-page.gql"
 import { determineCatalogImageURL } from "../../helpers"
 
-const UserPage: FC = () => {
-	const params = useParams<keyof UserIDBase>()
+const UserPage: VFC = () => {
+	const params = useParams<keyof UserID>()
 	const userID = addDashesToUUID(params.userID!)
 
 	const { data, error } =
-		useQuery<GetUserPageData, UserIDBase>(GET_USER_PAGE, {
+		useQuery<GetUserPageData, UserID>(GET_USER_PAGE, {
 			variables: { userID },
 		})
 

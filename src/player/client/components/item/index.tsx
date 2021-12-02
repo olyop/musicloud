@@ -60,6 +60,7 @@ const Item: VFC<PropTypes> = ({
 					<Button
 						transparent
 						icon={leftIcon}
+						title="Placeholder"
 						className={bem("icon")}
 					/>
 				)}
@@ -129,6 +130,7 @@ const Item: VFC<PropTypes> = ({
 				{modalOptions && (
 					<Button
 						transparent
+						title="Options"
 						icon="more_vert"
 						onClick={handleModalOpen}
 						className={iconClassName}
@@ -138,6 +140,7 @@ const Item: VFC<PropTypes> = ({
 					<Button
 						transparent
 						icon="close"
+						title="Close"
 						onClick={onRemove}
 						className={iconClassName}
 					/>

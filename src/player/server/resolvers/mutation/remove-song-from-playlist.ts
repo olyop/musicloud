@@ -1,5 +1,5 @@
 import { query } from "@oly_op/pg-helpers"
-import { PlaylistIDBase, SongIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID, SongID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { Playlist } from "../../types"
@@ -7,7 +7,7 @@ import { getPlaylist } from "../helpers"
 import { DELETE_PLAYLIST_SONG } from "../../sql"
 
 interface Args
-	extends SongIDBase, PlaylistIDBase {}
+	extends SongID, PlaylistID {}
 
 export const removeSongFromPlaylist =
 	resolver<Playlist, Args>(

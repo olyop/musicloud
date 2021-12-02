@@ -3,6 +3,7 @@ query getLibraryArtists($input: LibraryArtistsInput!) {
 		artistsPaginated(input: $input) {
 			name
 			artistID
+			inLibrary
 			albumsTotal
 			dateAddedToLibrary
 		}

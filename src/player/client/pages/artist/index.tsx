@@ -2,7 +2,7 @@ import { useParams, Route, Routes } from "react-router-dom"
 
 import {
 	ImageSizes,
-	ArtistIDBase,
+	ArtistID,
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
 
@@ -15,7 +15,7 @@ import {
 	useQuery,
 	useResetPlayer,
 	useShuffleArtist,
-	useToggleInLibrary,
+	useToggleObjectInLibrary,
 } from "../../hooks"
 
 import {
@@ -29,13 +29,12 @@ import { Artist } from "../../types"
 import Banner from "../../components/banner"
 import GET_ARTIST_PAGE from "./get-artist-page.gql"
 import Navigation from "../../components/navigation"
-import { updatePlay, useDispatch } from "../../redux"
 
 const googleMapsBaseURL =
 	"https://www.google.com.au/maps/search"
 
 const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
-	const [ toggleInLibrary, inLibrary ] = useToggleInLibrary(artist)
+	const [ toggleInLibrary, inLibrary ] = useToggleObjectInLibrary(artist)
 	return (
 		<Button
 			onClick={toggleInLibrary}
@@ -46,13 +45,12 @@ const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
 }
 
 const ArtistPage: VFC = () => {
-	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
-	const params = useParams<keyof ArtistIDBase>()
+	const params = useParams<keyof ArtistID>()
 	const artistID = addDashesToUUID(params.artistID!)
 
 	const { data, error } =
-		useQuery<GetArtistData, ArtistIDBase>(GET_ARTIST_PAGE, {
+		useQuery<GetArtistData, ArtistID>(GET_ARTIST_PAGE, {
 			variables: { artistID },
 		})
 
@@ -63,7 +61,6 @@ const ArtistPage: VFC = () => {
 		async () => {
 			resetPlayer()
 			await shuffleArtist()
-			dispatch(updatePlay(true))
 		}
 
 	if (error) {

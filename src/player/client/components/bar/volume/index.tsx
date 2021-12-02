@@ -7,12 +7,13 @@ import {
 } from "react"
 
 import Button from "@oly_op/react-button"
-import { BEMInput, BEMPropTypes, createBEM } from "@oly_op/bem"
+import { BEMInput, createBEM } from "@oly_op/bem"
 
 import Modal from "../../modal"
 import { useDispatch, updateVolume, useStateVolume } from "../../../redux"
 
 import "./index.scss"
+import { ClassNameBEMPropTypes } from "../../../types"
 
 const bem =
 	createBEM("BarVolume")
@@ -84,7 +85,7 @@ const BarVolume: VFC<PropTypes> = ({ className, iconClassName }) => {
 	)
 }
 
-interface PropTypes extends BEMPropTypes {
+interface PropTypes extends ClassNameBEMPropTypes {
 	iconClassName?: BEMInput,
 }
 

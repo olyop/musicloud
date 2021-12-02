@@ -8,24 +8,27 @@ import { COLUMN_NAMES } from "../../globals"
 import { INSERT_PLAYLIST, INSERT_LIBRARY_OBJECT } from "../../sql"
 
 type Args =
-	InterfaceWithInput<Pick<Playlist, "title">>
+	InterfaceWithInput<Pick<Playlist, "title" | "isPublic">>
 
 export const createPlaylist =
 	resolver<Playlist, Args>(
 		async ({ args, context }) => {
 			const playlistID = createUUID()
-			const { input: { title } } = args
+			const { input: { title, isPublic } } = args
 
 			const playlist =
 				await query(context.pg)(INSERT_PLAYLIST)({
 					parse: convertFirstRowToCamelCase<Playlist>(),
 					variables: [{
-						key: "title",
-						value: title,
-						parameterized: true,
+						key: "isPublic",
+						value: isPublic,
 					},{
 						key: "playlistID",
 						value: playlistID,
+					},{
+						key: "title",
+						value: title,
+						parameterized: true,
 					},{
 						key: "columnNames",
 						value: join(COLUMN_NAMES.PLAYLIST),
@@ -35,11 +38,13 @@ export const createPlaylist =
 					}],
 				})
 
-			await context.ag.saveObject({
-				text: title,
-				typeName: "Playlist",
-				objectID: playlistID,
-			})
+			if (isPublic) {
+				await context.ag.saveObject({
+					text: title,
+					typeName: "Playlist",
+					objectID: playlistID,
+				})
+			}
 
 			await query(context.pg)(INSERT_LIBRARY_OBJECT)({
 				variables: {

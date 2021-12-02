@@ -1,4 +1,5 @@
 import { PoolConfig } from "pg"
+import { FastifyInstance } from "fastify"
 import { SignOptions } from "jsonwebtoken"
 import { fastifyHelmet } from "fastify-helmet"
 import { FastifyCorsOptions } from "fastify-cors"
@@ -18,7 +19,7 @@ import {
 
 import { PUBLIC_PATH } from "./paths"
 
-export const FASTIFY_LISTEN_OPTIONS = {
+export const FASTIFY_LISTEN_OPTIONS: Parameters<FastifyInstance["listen"]>[0] = {
 	host: HOST,
 	port: PORT,
 }

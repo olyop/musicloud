@@ -6,7 +6,7 @@ import Metadata from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
-import { ImageDimensions, ImageSizes, SongIDBase } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, SongID } from "@oly_op/music-app-common/types"
 
 import {
 	numberWithCommas,
@@ -33,6 +33,7 @@ const SongPagePlayButton: VFC<PropTypes> = ({ song }) => {
 	return (
 		<Button
 			transparent
+			title="Play"
 			onClick={playSong}
 			className="Border"
 			text={play && isPlaying ? "Pause" : "Play"}
@@ -128,11 +129,11 @@ interface PropTypes {
 }
 
 const SongPageWrapper: VFC = () => {
-	const params = useParams<keyof SongIDBase>()
+	const params = useParams<keyof SongID>()
 	const songID = addDashesToUUID(params.songID!)
 
 	const { data, error } =
-		useQuery<GetSongPageData, SongIDBase>(GET_SONG_PAGE, {
+		useQuery<GetSongPageData, SongID>(GET_SONG_PAGE, {
 			variables: { songID },
 		})
 

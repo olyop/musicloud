@@ -1,51 +1,51 @@
-export interface ObjectIDBase {
+export interface ObjectID {
 	objectID: string,
 }
 
-export interface KeyIDBase {
+export interface KeyID {
 	keyID: string,
 }
 
-export interface UserIDBase {
+export interface UserID {
 	userID: string,
 }
 
-export interface SongIDBase {
+export interface SongID {
 	songID: string,
 }
 
-export interface PlayIDBase {
+export interface PlayID {
 	playID: string,
 }
 
-export interface AlbumIDBase {
+export interface AlbumID {
 	albumID: string,
 }
 
-export interface GenreIDBase {
+export interface GenreID {
 	genreID: string,
 }
 
-export interface ArtistIDBase {
+export interface ArtistID {
 	artistID: string,
 }
 
-export interface PlaylistIDBase {
+export interface PlaylistID {
 	playlistID: string,
 }
 
-export interface KeyBase extends KeyIDBase {
+export interface KeyBase extends KeyID {
 	flat: string,
 	sharp: string,
 	camelot: string,
 }
 
-export interface UserBase extends UserIDBase {
+export interface UserBase extends UserID {
 	name: string,
 	dateJoined: number,
 }
 
-export interface SongBase extends SongIDBase {
+export interface SongBase extends SongID {
 	mix: string,
 	bpm: string,
 	title: string,
@@ -54,24 +54,25 @@ export interface SongBase extends SongIDBase {
 	trackNumber: number,
 }
 
-export interface PlayBase extends PlayIDBase {
+export interface PlayBase extends PlayID {
 	dateCreated: number,
 }
 
-export interface AlbumBase extends AlbumIDBase {
+export interface AlbumBase extends AlbumID {
 	title: string,
 }
 
-export interface GenreBase extends GenreIDBase {
+export interface GenreBase extends GenreID {
 	name: string,
 }
 
-export interface ArtistBase extends ArtistIDBase {
+export interface ArtistBase extends ArtistID {
 	name: string,
 }
 
-export interface PlaylistBase extends PlaylistIDBase {
+export interface PlaylistBase extends PlaylistID {
 	title: string,
+	isPublic: boolean,
 	dateCreated: number,
 }
 

@@ -14,54 +14,6 @@ interface OrderByPayload {
 	settingsKey: keyof SettingsOrderBy,
 }
 
-const withPayloadType =
-	<T>() =>
-		(payload: T) =>
-			({ payload })
-
-export const addLoading =
-	createAction("ADD_LOADING",
-		withPayloadType<string>())
-
-export const updatePlay =
-	createAction("UPDATE_PLAY",
-		withPayloadType<boolean>())
-
-export const updateVolume =
-	createAction("UPDATE_VOLUME",
-		withPayloadType<number>())
-
-export const updateCurrent =
-	createAction("UPDATE_CURRENT",
-		withPayloadType<number>())
-
-export const removeLoading =
-	createAction("REMOVE_LOADING",
-		withPayloadType<string>())
-
-export const updateIsOnline =
-	createAction("UPDATE_IS_ONLINE",
-		withPayloadType<boolean>())
-
-export const updateAccessToken =
-	createAction("UPDATE_ACCESS_TOKEN",
-		withPayloadType<string | null>())
-
-export const updateTheme =
-	createAction("UPDATE_THEME",
-		withPayloadType<SettingsTheme>())
-
-export const toggleIsFullscreen =
-	createAction("TOGGLE_IS_FULLSCREEN")
-
-export const updateOrderBy =
-	createAction("UPDATE_ORDER_BY",
-		withPayloadType<OrderByPayload>())
-
-export const updateListStyle =
-	createAction("UPDATE_LIST_STYLE",
-		withPayloadType<SettingsListStyle>())
-
 export const togglePlay =
 	createAction("TOGGLE_PLAY")
 
@@ -73,6 +25,9 @@ export const toggleShowGenres =
 
 export const toggleShowReleased =
 	createAction("TOGGLE_SHOW_RELEASED")
+
+export const toggleIsFullscreen =
+	createAction("TOGGLE_IS_FULLSCREEN")
 
 export const toggleShowDuration =
 	createAction("TOGGLE_SHOW_DURATION")
@@ -86,6 +41,73 @@ export const expandQueuesDisclosure =
 export const collapseQueuesDisclosure =
 	createAction("COLLAPSE_QUEUES_DISCLOSURE")
 
+const withPayloadType =
+	<T>() =>
+		(payload: T) =>
+			({ payload })
+
+export const addLoading =
+	createAction(
+		"ADD_LOADING",
+		withPayloadType<string>(),
+	)
+
+export const updatePlay =
+	createAction(
+		"UPDATE_PLAY",
+		withPayloadType<boolean>(),
+	)
+
+export const updateVolume =
+	createAction(
+		"UPDATE_VOLUME",
+		withPayloadType<number>(),
+	)
+
+export const updateCurrent =
+	createAction(
+		"UPDATE_CURRENT",
+		withPayloadType<number>(),
+	)
+
+export const removeLoading =
+	createAction(
+		"REMOVE_LOADING",
+		withPayloadType<string>(),
+	)
+
+export const updateIsOnline =
+	createAction(
+		"UPDATE_IS_ONLINE",
+		withPayloadType<boolean>(),
+	)
+
+export const updateAccessToken =
+	createAction(
+		"UPDATE_ACCESS_TOKEN",
+		withPayloadType<string | null>(),
+	)
+
+export const updateTheme =
+	createAction(
+		"UPDATE_THEME",
+		withPayloadType<SettingsTheme>(),
+	)
+
+export const updateOrderBy =
+	createAction(
+		"UPDATE_ORDER_BY",
+		withPayloadType<OrderByPayload>(),
+	)
+
+export const updateListStyle =
+	createAction(
+		"UPDATE_LIST_STYLE",
+		withPayloadType<SettingsListStyle>(),
+	)
+
 export const toggleQueueDisclosure =
-	createAction("TOGGLE_QUEUE_DISCLOSURE",
-		withPayloadType<keyof SettingsQueuesDisclosure>())
+	createAction(
+		"TOGGLE_QUEUE_DISCLOSURE",
+		withPayloadType<keyof SettingsQueuesDisclosure>(),
+	)

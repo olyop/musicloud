@@ -1,7 +1,7 @@
 import { createElement, VFC } from "react"
 import { useParams } from "react-router-dom"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { ArtistIDBase } from "@oly_op/music-app-common/types"
+import { ArtistID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"
@@ -10,7 +10,7 @@ import GET_ARTIST_PAGE_SONGS from "./get-artist-page-songs.gql"
 import { ArtistSongs, SongsOrderBy, SongsOrderByField } from "../../types"
 
 const ArtistPageSongs: VFC = () => {
-	const params = useParams<keyof ArtistIDBase>()
+	const params = useParams<keyof ArtistID>()
 	const artistID = addDashesToUUID(params.artistID!)
 	const songsOrderBy = useStateOrderBy<SongsOrderByField>("songs")
 
@@ -41,7 +41,7 @@ interface ArtistPageSongsData {
 	getArtistByID: ArtistSongs,
 }
 
-interface ArtistPageSongsVars extends ArtistIDBase {
+interface ArtistPageSongsVars extends ArtistID {
 	songsOrderBy: SongsOrderBy,
 }
 

@@ -1,28 +1,28 @@
 import isNull from "lodash/isNull"
 import isUndefined from "lodash/isUndefined"
 import { MutationResult } from "@apollo/client"
-import { PlaylistIDBase } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../query"
 import { useMutation } from "../mutation"
 import PLAY_PLAYLIST from "./play-playlist.gql"
 import { useResetPlayer } from "../reset-player"
+import { useDispatch, togglePlay } from "../../redux"
 import { Handler, QueueNowPlaying } from "../../types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
-import { useDispatch, updatePlay, togglePlay, useStatePlay } from "../../redux"
 
 export const usePlayPlaylist =
-	({ playlistID }: PlaylistIDBase) => {
+	({ playlistID }: PlaylistID) => {
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
 		const [ playPlaylist, result ] =
-			useMutation<PlayPlaylistData, PlaylistIDBase>(PLAY_PLAYLIST, {
+			useMutation<PlayPlaylistData, PlaylistID>(PLAY_PLAYLIST, {
 				variables: { playlistID },
 			})
 
 		const { data } =
-			useQuery<GetQueueNowPlayingData, PlaylistIDBase>(GET_QUEUE_NOW_PLAYING, {
+			useQuery<GetQueueNowPlayingData, PlaylistID>(GET_QUEUE_NOW_PLAYING, {
 				variables: { playlistID },
 				fetchPolicy: "cache-first",
 			})
@@ -41,7 +41,6 @@ export const usePlayPlaylist =
 					} else {
 						resetPlayer()
 						await playPlaylist()
-						dispatch(updatePlay(true))
 					}
 				}
 			}

@@ -2,7 +2,7 @@ import Howler from "react-howler"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useLocation, NavLink } from "react-router-dom"
-import { SongIDBase } from "@oly_op/music-app-common/types"
+import { SongID } from "@oly_op/music-app-common/types"
 import { useEffect, useState, createElement, VFC } from "react"
 
 import Song from "../song"
@@ -23,32 +23,34 @@ import "./index.scss"
 const bem =
 	createBEM("Bar")
 
-const BarQueueButton: VFC = () => {
-	const { pathname } = useLocation()
-	return (
-		<NavLink to="/queues">
-			<Button
-				title="Queue"
-				icon="queue_music"
-				transparent={pathname !== "/queues"}
-			/>
-		</NavLink>
-	)
-}
+const BarQueueButton: VFC =
+	() => {
+		const { pathname } = useLocation()
+		return (
+			<NavLink to="/queues">
+				<Button
+					title="Queue"
+					icon="queue_music"
+					transparent={pathname !== "/queues"}
+				/>
+			</NavLink>
+		)
+	}
 
-const BarHowler: VFC<SongIDBase> = ({ songID }) => {
-	const play = useStatePlay()
-	const volume = useStateVolume()
-	const resetPlayer = useResetPlayer()
-	return play ? (
-		<Howler
-			playing={play}
-			onEnd={resetPlayer}
-			volume={volume / 100}
-			src={determineCatalogMP3URL(songID)}
-		/>
-	) : null
-}
+const BarHowler: VFC<SongID> =
+	({ songID }) => {
+		const play = useStatePlay()
+		const volume = useStateVolume()
+		const resetPlayer = useResetPlayer()
+		return (
+			<Howler
+				playing={play}
+				onEnd={resetPlayer}
+				volume={volume / 100}
+				src={determineCatalogMP3URL(songID)}
+			/>
+		)
+	}
 
 const Bar: VFC = () => {
 	const [ expand, setExpand ] =
@@ -122,9 +124,8 @@ const Bar: VFC = () => {
 						className={bem("expand-close")}
 					/>
 					<BarFullscreen
-						open={expand}
 						onExit={handleExpandClose}
-						nowPlaying={data.getQueue.nowPlaying}
+						song={data.getQueue.nowPlaying}
 					/>
 				</Modal>
 			</footer>

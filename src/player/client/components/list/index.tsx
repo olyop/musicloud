@@ -1,8 +1,8 @@
+import { createBEM } from "@oly_op/bem"
 import { createElement, FC } from "react"
-import { createBEM, BEMPropTypes } from "@oly_op/bem"
 
 import { useStateListStyle } from "../../redux"
-import { SettingsListStyle } from "../../types"
+import { ClassNameBEMPropTypes, SettingsListStyle } from "../../types"
 
 import "./index.scss"
 
@@ -23,7 +23,7 @@ const List: FC<PropTypes> = ({
 	)
 }
 
-interface PropTypes extends BEMPropTypes {
+interface PropTypes extends ClassNameBEMPropTypes {
 	alwaysList?: boolean,
 }
 

@@ -18,6 +18,7 @@ import Metadata from "@oly_op/react-metadata"
 import { useLazyQuery } from "@apollo/client"
 import { useNavigate, useLocation } from "react-router-dom"
 import { BASE_S3_URL } from "@oly_op/music-app-common/globals"
+import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import Search from "./search"
 import determineID from "./determine-id"
@@ -49,7 +50,7 @@ const SearchPage: VFC = () => {
 
 	const delayedQuery =
 		useRef(debounce<DelayedQuery>(
-			value => search({ variables: { value, length: 30 } }),
+			value => search({ variables: { input: { value, length: 30 } } }),
 			500,
 		)).current
 
@@ -132,10 +133,13 @@ const SearchPage: VFC = () => {
 type DelayedQuery =
 	(x: string) => void
 
-interface GetSearchResultsVars {
+interface GetSearchResultsInput {
 	value: string,
 	length: number,
 }
+
+type GetSearchResultsVars =
+	InterfaceWithInput<GetSearchResultsInput>
 
 export interface GetSearchResultsData {
 	getSearchResults: SearchType[],

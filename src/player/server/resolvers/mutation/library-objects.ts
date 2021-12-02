@@ -7,10 +7,10 @@ import {
 } from "@oly_op/pg-helpers"
 
 import {
-	SongIDBase,
-	AlbumIDBase,
-	ArtistIDBase,
-	PlaylistIDBase,
+	SongID,
+	AlbumID,
+	ArtistID,
+	PlaylistID,
 } from "@oly_op/music-app-common/types"
 
 import { UserInputError } from "apollo-server-fastify"
@@ -76,7 +76,7 @@ const createPlaylistConfig: ConfigFunc =
 	})
 
 export const addSongToLibrary =
-	resolver<Song, SongIDBase>(
+	resolver<Song, SongID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createSongConfig({
@@ -89,7 +89,7 @@ export const addSongToLibrary =
 	)
 
 export const removeSongFromLibrary =
-	resolver<Song, SongIDBase>(
+	resolver<Song, SongID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createSongConfig({
@@ -102,7 +102,7 @@ export const removeSongFromLibrary =
 	)
 
 export const addArtistToLibrary =
-	resolver<Artist, ArtistIDBase>(
+	resolver<Artist, ArtistID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createArtistConfig({
@@ -115,7 +115,7 @@ export const addArtistToLibrary =
 	)
 
 export const removeArtistFromLibrary =
-	resolver<Artist, ArtistIDBase>(
+	resolver<Artist, ArtistID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createArtistConfig({
@@ -128,7 +128,7 @@ export const removeArtistFromLibrary =
 	)
 
 export const addPlaylistToLibrary =
-	resolver<Playlist, PlaylistIDBase>(
+	resolver<Playlist, PlaylistID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createPlaylistConfig({
@@ -141,7 +141,7 @@ export const addPlaylistToLibrary =
 	)
 
 export const removePlaylistFromLibrary =
-	resolver<Playlist, PlaylistIDBase>(
+	resolver<Playlist, PlaylistID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createPlaylistConfig({
@@ -154,7 +154,7 @@ export const removePlaylistFromLibrary =
 	)
 
 export const addAlbumToLibrary =
-	resolver<Album, AlbumIDBase>(
+	resolver<Album, AlbumID>(
 		async ({ args, context }) => {
 			const { albumID } = args
 
@@ -199,7 +199,7 @@ export const addAlbumToLibrary =
 	)
 
 export const removeAlbumFromLibrary =
-	resolver<Album, AlbumIDBase>(
+	resolver<Album, AlbumID>(
 		async ({ args, context }) => {
 			const { albumID } = args
 

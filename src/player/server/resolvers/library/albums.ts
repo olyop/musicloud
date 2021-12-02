@@ -6,7 +6,7 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 import { PAGINATION_PAGE_SIZE } from "@oly_op/music-app-common/globals"
 
 import resolver from "./resolver"
@@ -15,7 +15,7 @@ import { SELECT_LIBRARY_ALBUMS, SELECT_LIBRARY_ALBUMS_PAGINATED } from "../../sq
 import { Album, GetObjectsOptions, LibraryObjectsPaginatedArgs } from "../../types"
 
 interface GetLibraryAlbumsOptions<T>
-	extends UserIDBase, GetObjectsOptions<T> {}
+	extends UserID, GetObjectsOptions<T> {}
 
 const getLibraryAlbums =
 	(client: PoolOrClient) =>

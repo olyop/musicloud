@@ -6,7 +6,7 @@ import {
 
 import { isNull } from "lodash"
 import { v4 as createUUID } from "uuid"
-import { UserIDBase } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/music-app-common/types"
 
 import {
 	INSERT_PLAY,
@@ -18,7 +18,7 @@ import {
 import { COLUMN_NAMES } from "../../globals"
 
 export interface UpdateQueueNowPlayingOptions
-	extends UserIDBase { value: string | null }
+	extends UserID { value: string | null }
 
 export const updateQueueNowPlaying =
 	(client: PoolOrClient) =>

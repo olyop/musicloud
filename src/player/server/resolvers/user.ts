@@ -8,7 +8,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { ForbiddenError } from "apollo-server-fastify"
-import { SongIDBase, AlbumIDBase, UserIDBase } from "@oly_op/music-app-common/types"
+import { SongID, AlbumID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	SELECT_USER_PLAYS,
@@ -51,7 +51,7 @@ export const plays =
 	)
 
 interface GetUserPlaylistsOptions<T>
-	extends UserIDBase, GetObjectsOptions<T> {}
+	extends UserID, GetObjectsOptions<T> {}
 
 const getUserPlaylists =
 	(client: PoolOrClient) =>
@@ -91,7 +91,7 @@ export const playlistsTotal =
 	)
 
 export const playlistsFilteredBySong =
-	resolver<Playlist[], SongIDBase>(
+	resolver<Playlist[], SongID>(
 		checkAuthorization(
 			({ parent, args, context }) => (
 				query(context.pg)(SELECT_USER_PLAYLISTS_FILTERED)({
@@ -107,7 +107,7 @@ export const playlistsFilteredBySong =
 	)
 
 export const playlistsFilteredByAlbum =
-	resolver<Playlist[], AlbumIDBase>(
+	resolver<Playlist[], AlbumID>(
 		checkAuthorization(
 			({ parent, args, context }) => (
 				query(context.pg)("")({

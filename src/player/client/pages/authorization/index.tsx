@@ -11,7 +11,7 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { UserIDBase, InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { UserID, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import LOG_IN from "./log-in.gql"
 import { useMutation } from "../../hooks"
@@ -24,7 +24,7 @@ interface Data {
 	logIn: string,
 }
 
-interface Form extends UserIDBase {
+interface Form extends UserID {
 	password: string,
 }
 

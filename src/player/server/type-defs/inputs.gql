@@ -4,6 +4,7 @@ input LogInInput {
 }
 
 input CreatePlaylistInput {
+	isPublic: Boolean!
 	title: NonEmptyString!
 }
 
