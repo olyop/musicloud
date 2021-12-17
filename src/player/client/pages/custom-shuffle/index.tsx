@@ -5,7 +5,7 @@ import Metadata from "@oly_op/react-metadata"
 const CustomShufflePage: VFC = () => (
 	<Metadata title="Custom Shuffle">
 		<div className="Content PaddingTopBottom">
-			<div className="FlexListGapHalf">
+			<div className="FlexRowGapHalf">
 				<Button
 					icon="add"
 					text="Genre"

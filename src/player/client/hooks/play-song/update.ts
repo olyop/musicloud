@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { MutableRefObject } from "react"
 
-import { PlaySongUpdate } from "./types"
+import { Update } from "./types"
 
 const update =
-	(isOptimistic: MutableRefObject<boolean>): PlaySongUpdate =>
+	(isOptimistic: MutableRefObject<boolean>): Update =>
 		(cache, result) => {
 			if (result.data?.playSong.nowPlaying) {
 				const { songID } =
@@ -14,12 +14,10 @@ const update =
 					fields: {
 						nowPlaying:
 							(existing, { toReference }) =>
-								toReference(
-									cache.identify({
-										songID,
-										__typename: "Song",
-									})!,
-								)!,
+								toReference({
+									songID,
+									__typename: "Song",
+								})!,
 					},
 				})
 				if (isOptimistic.current) {

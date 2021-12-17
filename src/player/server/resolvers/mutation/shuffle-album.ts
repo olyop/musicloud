@@ -51,7 +51,7 @@ export const shuffleAlbum =
 						},
 					})
 
-				await updateQueueNowPlaying(client)({
+				await updateQueueNowPlaying(client, context.ag)({
 					userID,
 					value: nowPlaying.songID,
 				})

@@ -1,22 +1,29 @@
 import head from "lodash/head"
 import isNull from "lodash/isNull"
+import { from, HttpLink } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
 import { setContext } from "@apollo/client/link/context"
-import { from, Context, HttpLink } from "@apollo/client"
 
-import { getJWT, removeJWT } from "../helpers"
+import { store, updateAccessToken } from "../redux"
 
 const httpLink =
 	new HttpLink()
 
 const authLink =
 	setContext(
-		(_request, { headers }: Context) => ({
-			headers: isNull(getJWT()) ? headers : {
-				...headers,
-				Authorization: `Bearer ${getJWT()}`,
-			},
-		}),
+		(_, { headers }: { headers: Record<string, unknown> }) => {
+			const { accessToken } = store.getState()
+			if (isNull(accessToken)) {
+				return { headers }
+			} else {
+				return {
+					headers: {
+						...headers,
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			}
+		},
 	)
 
 const checkForAuthErrorLink =
@@ -25,8 +32,8 @@ const checkForAuthErrorLink =
 			const error = head(graphQLErrors)
 			const code = error?.extensions?.code as string
 			if (code === "UNAUTHENTICATED") {
-				removeJWT()
-				location.reload()
+				store.dispatch(updateAccessToken(null))
+				forward(operation)
 			} else {
 				forward(operation)
 			}

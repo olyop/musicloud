@@ -3,7 +3,6 @@ INSERT INTO songs (
 	mix,
 	title,
 	key_id,
-	song_id,
 	album_id,
 	duration,
 	disc_number,
@@ -13,9 +12,9 @@ INSERT INTO songs (
 	{{ mix }},
 	{{ title }},
 	'{{ keyID }}',
-	'{{ songID }}',
 	'{{ albumID }}',
 	{{ duration }},
 	{{ discNumber }},
 	{{ trackNumber }}
-);
+) RETURNING
+	song_id;

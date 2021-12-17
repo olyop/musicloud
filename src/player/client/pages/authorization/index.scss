@@ -9,9 +9,9 @@
 		height: calc(100% - var(--footer-height));
 		&-content {
 			width: 361rem;
-			transition: var(--transition-duration) background-color;
-			&-error {
-				background-color: rgba(#f44336, 0.1); } } }
+			transition: var(--transition-duration) background-color; }
+		&-error {
+			color: #f44336; } }
 	&__footer {
 		width: 100%;
 		display: block;

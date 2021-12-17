@@ -1,42 +1,42 @@
-import { createElement, FC } from "react"
-import { Route, Redirect, Switch } from "react-router-dom"
+import { createElement, VFC } from "react"
+import { Route, Routes, Navigate } from "react-router-dom"
 
-import User from "../user"
-import Genre from "../genre"
-import Album from "../album"
-import Artist from "../artist"
+import UserForm from "../user-form"
+import GenreForm from "../genre-form"
+import AlbumForm from "../album-form"
+import ArtistForm from "../artist-form"
 
 import "./index.scss"
 
-const Pages: FC = () => (
+const Pages: VFC = () => (
 	<div className="Padding BodyOne Pages">
-		<Switch>
-			<Redirect
-				exact
-				from="/"
-				to="/artist"
+		<Routes>
+			<Route
+				path="*"
+				element={(
+					<Navigate
+						replace
+						to="user"
+					/>
+				)}
 			/>
 			<Route
-				exact
-				path="/user"
-				component={User}
+				path="user"
+				element={<UserForm/>}
 			/>
 			<Route
-				exact
-				path="/genre"
-				component={Genre}
+				path="genre"
+				element={<GenreForm/>}
 			/>
 			<Route
-				exact
-				path="/artist"
-				component={Artist}
+				path="album"
+				element={<AlbumForm/>}
 			/>
 			<Route
-				exact
-				path="/album"
-				component={Album}
+				path="artist"
+				element={<ArtistForm/>}
 			/>
-		</Switch>
+		</Routes>
 	</div>
 )
 

@@ -36,7 +36,7 @@ const Banner: VFC<PropTypes> = ({
 				)}
 				{content}
 				{buttons && (
-					<div className={bem("content-buttons", "MarginTop FlexListGapHalf")}>
+					<div className={bem("content-buttons", "MarginTop FlexRowGapHalf")}>
 						{buttons}
 					</div>
 				)}

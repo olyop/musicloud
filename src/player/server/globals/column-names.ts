@@ -50,7 +50,7 @@ export const PLAYLIST = [
 	"playlist_id",
 	"title",
 	USER[0],
-	"is_public",
+	"privacy",
 	"date_created",
 ]
 

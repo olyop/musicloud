@@ -6,6 +6,7 @@ import {
 	GenreID,
 	ArtistID,
 	PlaylistID,
+	PlaylistPrivacy,
 } from "@oly_op/music-app-common/types"
 
 import { ForbiddenError } from "apollo-server-fastify"
@@ -96,7 +97,10 @@ export const getPlaylistByID =
 		async ({ args, context }) => {
 			const playlist =
 				await getPlaylist(context.pg)(args)
-			if (playlist.isPublic) {
+			if (
+				playlist.privacy === PlaylistPrivacy.PUBLIC ||
+				playlist.privacy === PlaylistPrivacy.FRIENDS
+			) {
 				return playlist
 			} else {
 				if (playlist.userID === context.authorization!.userID) {

@@ -1,6 +1,6 @@
 import {
-	ImageSizes,
 	AlbumID,
+	ImageSizes,
 	PlaylistID,
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
@@ -105,7 +105,7 @@ const AddAlbumToPlaylistPage: VFC = () => {
 					No playlists to add to.
 				</p>
 			)}
-			<div className="FlexListGapHalf">
+			<div className="FlexRowGapHalf">
 				<Button
 					text="Back"
 					icon="arrow_back"

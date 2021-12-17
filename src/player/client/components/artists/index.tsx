@@ -31,7 +31,7 @@ const Artists: VFC<ArtistsPropTypes> = ({
 				<SelectOrderBy
 					orderBy={orderBy}
 					className={bem(
-						"FlexListRight",
+						"FlexRowRight",
 						isList && !empty && "ItemBorder",
 						isList ? "PaddingHalf" : "MarginBottomHalf",
 					)}

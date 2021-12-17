@@ -1,0 +1,6 @@
+mutation updatePlaylistTitle($input: UpdatePlaylistTitleInput!) {
+	updatePlaylistTitle(input: $input) {
+		playlistID
+		title
+	}
+}

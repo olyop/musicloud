@@ -109,7 +109,7 @@ const AddSongToPlaylistPage: VFC = () => {
 							No playlists to add to.
 						</p>
 					)}
-					<div className="FlexListGapHalf">
+					<div className="FlexRowGapHalf">
 						<Button
 							text="Back"
 							icon="arrow_back"

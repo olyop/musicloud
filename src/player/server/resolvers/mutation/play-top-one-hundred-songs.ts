@@ -27,7 +27,7 @@ export const playTopOneHundredSongs =
 				const [ nowPlaying, ...songs ] =
 					await getTopSongs(context.pg)(100)
 
-				await updateQueueNowPlaying(client)({
+				await updateQueueNowPlaying(client, context.ag)({
 					userID,
 					value: nowPlaying.songID,
 				})

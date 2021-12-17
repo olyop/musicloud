@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { useState, createElement, VFC } from "react"
+import { useState, createElement, VFC, Fragment } from "react"
 
 import {
 	PropTypes,
@@ -26,6 +26,7 @@ const bem =
 
 const Item: VFC<PropTypes> = ({
 	left,
+	style,
 	onClick,
 	onRemove,
 	leftIcon,
@@ -54,7 +55,7 @@ const Item: VFC<PropTypes> = ({
 		() => setShowModal(false)
 
 	return (
-		<div className={className}>
+		<div style={style} className={className}>
 			<div className={bem("")} onClick={onClick}>
 				{leftIcon && (
 					<Button
@@ -78,17 +79,26 @@ const Item: VFC<PropTypes> = ({
 					/>
 				)}
 				{imageOptions && (
-					<Link
-						to={imageOptions.path}
-						title={imageOptions.title}
-						className={bem("img-link")}
-						children={(
+					<Fragment>
+						{imageOptions.path ? (
+							<Link
+								to={imageOptions.path}
+								title={imageOptions.title}
+								className={bem("img-link")}
+								children={(
+									<Image
+										url={imageOptions.url}
+										className={bem("img", "Card")}
+									/>
+								)}
+							/>
+						) : (
 							<Image
 								url={imageOptions.url}
-								className={bem("img", "Card")}
+								className={bem("img-link", "img", "Card")}
 							/>
 						)}
-					/>
+					</Fragment>
 				)}
 				<div className={bem(infoClassName, "info", "MarginRightHalf")}>
 					<div

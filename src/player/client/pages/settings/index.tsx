@@ -138,7 +138,7 @@ const SettingsPage: VFC = () => {
 								<p className="BodyTwoBold MarginBottomQuart">
 									Song Duration:
 								</p>
-								<div className="FlexListGapFifth">
+								<div className="FlexRowGapFifth">
 									<input
 										type="checkbox"
 										checked={showDuration}
@@ -154,7 +154,7 @@ const SettingsPage: VFC = () => {
 								<p className="BodyTwoBold MarginBottomQuart">
 									Song Genres:
 								</p>
-								<div className="FlexListGapFifth">
+								<div className="FlexRowGapFifth">
 									<input
 										type="checkbox"
 										checked={showGenres}
@@ -170,7 +170,7 @@ const SettingsPage: VFC = () => {
 								<p className="BodyTwoBold MarginBottomQuart">
 									Album Released:
 								</p>
-								<div className="FlexListGapFifth">
+								<div className="FlexRowGapFifth">
 									<input
 										type="checkbox"
 										className="Text"
@@ -186,7 +186,7 @@ const SettingsPage: VFC = () => {
 								<p className="BodyTwoBold MarginBottomQuart">
 									Tranitions:
 								</p>
-								<div className="FlexListGapFifth">
+								<div className="FlexRowGapFifth">
 									<input
 										type="checkbox"
 										className="Text"

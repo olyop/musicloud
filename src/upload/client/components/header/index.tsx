@@ -1,20 +1,20 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
-import { useLocation, useHistory } from "react-router-dom"
+import { createElement, VFC } from "react"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Header")
 
-const Header: FC = () => {
-	const history = useHistory()
+const Header: VFC = () => {
+	const navigate = useNavigate()
 	const { pathname } = useLocation()
 
 	const handleRouteChange =
 		(path: string) =>
-			() => history.push(path)
+			() => navigate(path)
 
 	return (
 		<div className={bem("", "Elevated")}>

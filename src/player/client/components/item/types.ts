@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, CSSProperties } from "react"
 import { BEMInput } from "@oly_op/bem"
 
 import { Handler, OnClickPropTypes } from "../../types"
@@ -6,7 +6,7 @@ import { ModalButtonPropTypes, ModalHeaderPropTypes } from "../modal"
 
 export interface ImageOptions {
 	url: string,
-	path: string,
+	path?: string,
 	title: string,
 }
 
@@ -33,14 +33,14 @@ export interface ModalOptions {
 	content?: (onClose: Handler) => ReactNode,
 }
 
-interface PropTypesClassNames {
+interface ClassNames {
 	className?: string,
 	infoClassName?: BEMInput,
 	iconClassName?: BEMInput,
 	rightClassName?: BEMInput,
 }
 
-interface PropTypesOptions {
+interface Options {
 	infoOptions: InfoOptions,
 	playOptions?: PlayOptions,
 	modalOptions?: ModalOptions,
@@ -48,14 +48,19 @@ interface PropTypesOptions {
 	inLibraryOptions?: InLibraryOptions,
 }
 
-interface PropTypesOther {
+interface Other {
 	left?: ReactNode,
 	leftIcon?: string,
 	onRemove?: Handler,
 }
 
+interface Style {
+	style?: CSSProperties,
+}
+
 export interface PropTypes extends
 	OnClickPropTypes,
-	PropTypesClassNames,
-	PropTypesOptions,
-	PropTypesOther {}
+	ClassNames,
+	Options,
+	Other,
+	Style {}

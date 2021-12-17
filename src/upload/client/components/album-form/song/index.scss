@@ -1,0 +1,33 @@
+.AlbumFormSong {
+	--dimension: 24rem;
+	--font-size: calc(var(--dimension) - var(--space-half));
+	display: grid;
+	align-items: end;
+	gap: var(--space-quart);
+	grid-template-columns: 16rem 1fr 1fr 1fr 1fr 1fr var(--dimension);
+	&__index {
+		text-align: left;
+		padding-bottom: 4rem;
+		font-size: var(--font-size); }
+	&__field {
+		&-label {
+			font-size: 12rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			margin-bottom: var(--space-quart); }
+		&-input {
+			width: 100%;
+			height: var(--dimension);
+			font-size: var(--font-size); }
+		&-title {
+			display: flex;
+			justify-content: space-between; }
+		&-remove {
+			--dimension: 24rem;
+			width: var(--dimension);
+			height: var(--dimension);
+			min-width: var(--dimension);
+			&-icon {
+				width: var(--dimension);
+				height: var(--dimension);
+				font-size: var(--dimension); } } } }

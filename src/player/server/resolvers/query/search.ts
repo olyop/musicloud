@@ -1,10 +1,18 @@
-import { isEmpty, orderBy } from "lodash"
+import { isEmpty } from "lodash"
 import { ApolloError } from "apollo-server-fastify"
 import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 
+import {
+	getUser,
+	getSong,
+	getAlbum,
+	getGenre,
+	getArtist,
+	getPlaylist,
+} from "../helpers"
+
 import resolver from "./resolver"
 import { Search } from "../../types"
-import { getUser, getSong, getAlbum, getGenre, getArtist, getPlaylist } from "../helpers"
 
 export const getSearchResults =
 	resolver<Search[], GetSearchResultsArgs>(
@@ -17,19 +25,13 @@ export const getSearchResults =
 					hitsPerPage: length,
 					getRankingInfo: true,
 					attributesToHighlight: [],
+					// filters: "NOT privacy:PRIVATE",
 					attributesToRetrieve: ["*", "-image"],
 				})
 
-			const hitsRanked =
-				orderBy(
-					hits,
-					["_rankingInfo.firstMatchedWord", "_rankingInfo.userScore"],
-					["asc", "desc"],
-				)
-
 			const results =
 				await Promise.all<Search>(
-					hitsRanked.map(
+					hits.map(
 						({ objectID, typeName }) => {
 							switch (typeName) {
 								case "User":

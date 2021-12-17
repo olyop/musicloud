@@ -1,6 +1,0 @@
-mutation makePlaylistPrivate($playlistID: UUID!) {
-	makePlaylistPrivate(playlistID: $playlistID) {
-		isPublic
-		playlistID
-	}
-}

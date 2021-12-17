@@ -10,11 +10,15 @@ import PLAY_SONG from "./play-song.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import { togglePlay, useDispatch } from "../../redux"
+import { Input, QueryData, Data, Result } from "./types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
-import { GetQueueNowPlayingData, PlaySongData, UsePlaySongResult } from "./types"
+
+const isSong =
+	(song: Input): song is Song =>
+		"__typeName" in song
 
 export const usePlaySong =
-	(song: Song) => {
+	(song: Input) => {
 		const { songID } = song
 		const dispatch = useDispatch()
 		const isOptimistic = useRef(true)
@@ -22,19 +26,19 @@ export const usePlaySong =
 		const variables: SongID = { songID }
 
 		const { data } =
-			useQuery<GetQueueNowPlayingData>(
+			useQuery<QueryData>(
 				GET_QUEUE_NOW_PLAYING,
 				{ fetchPolicy: "cache-first" },
 			)
 
 		const [ playSong, result ] =
-			useMutation<PlaySongData, SongID>(PLAY_SONG, {
+			useMutation<Data, SongID>(PLAY_SONG, {
 				variables,
-				optimisticResponse: {
+				optimisticResponse: isSong(song) ? {
 					playSong: {
 						nowPlaying: song,
 					},
-				},
+				} : undefined,
 				update: update(isOptimistic),
 			})
 
@@ -56,5 +60,5 @@ export const usePlaySong =
 				}
 			}
 
-		return [ handlePlaySong, isPlaying, result ] as UsePlaySongResult
+		return [ handlePlaySong, isPlaying, result ] as Result
 	}

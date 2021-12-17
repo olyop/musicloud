@@ -79,7 +79,7 @@ export const previousQueueSong =
 						},
 					})
 
-					await updateQueueNowPlaying(client)({
+					await updateQueueNowPlaying(client, context.ag)({
 						userID,
 						value: newNowPlaying.songID,
 					})

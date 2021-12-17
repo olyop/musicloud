@@ -1,18 +1,18 @@
 import Button from "@oly_op/react-button"
 import { createElement, Fragment, useState, VFC } from "react"
 
-import Modal from "../../components/modal"
-import { useRenamePlaylist } from "../../hooks"
-import TextField from "../../components/text-field"
 import { Playlist } from "../../types"
+import Modal from "../../components/modal"
+import TextField from "../../components/text-field"
+import { useUpdatePlaylistTitle } from "../../hooks"
 
 const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
 	const { playlistID } = playlist
 	const [ modal, setModal ] = useState(false)
 	const [ title, setTitle ] = useState(playlist.title)
 
-	const [ renamePlaylist ] =
-		useRenamePlaylist({ playlistID })
+	const [ updatePlaylistTitle ] =
+		useUpdatePlaylistTitle({ playlistID })
 
 	const handleModalOpen =
 		() => setModal(true)
@@ -27,7 +27,7 @@ const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
 	const handleSubmit =
 		async () => {
 			handleModalClose()
-			await renamePlaylist({ title })
+			await updatePlaylistTitle({ title })
 		}
 
 	return (
@@ -51,7 +51,7 @@ const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
 							className="MarginBottom"
 							fieldID="addToPlaylistTitle"
 						/>
-						<div className="FlexListGapHalf">
+						<div className="FlexRowGapHalf">
 							<Button
 								icon="edit"
 								text="Rename"

@@ -33,7 +33,7 @@ const Songs: VFC<SongsPropTypes> = ({
 		{orderBy && (
 			<SelectOrderBy
 				orderBy={orderBy}
-				className="PaddingHalf ItemBorder FlexListRight"
+				className="PaddingHalf ItemBorder FlexRowRight"
 			/>
 		)}
 		{songs.map(

@@ -1,10 +1,10 @@
 type Playlist {
 	# base
 	playlistID: UUID!
-	isPublic: Boolean!
 	duration: PositiveInt
 	title: NonEmptyString!
 	dateCreated: Timestamp!
+	privacy: PlaylistPrivacy!
 	
 	# relationships
 	user: User!

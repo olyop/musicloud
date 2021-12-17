@@ -1,7 +1,7 @@
 mutation createPlaylist($input: CreatePlaylistInput!) {
 	createPlaylist(input: $input) {
 		title
-		isPublic
+		privacy
 		inLibrary
 		playlistID
 		songsTotal

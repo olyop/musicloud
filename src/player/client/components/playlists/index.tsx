@@ -25,7 +25,7 @@ const Playlists: VFC<PlaylistsPropTypes> = ({
 		{orderBy && (
 			<SelectOrderBy
 				orderBy={orderBy}
-				className="PaddingHalf ItemBorder FlexListRight"
+				className="PaddingHalf ItemBorder FlexRowRight"
 			/>
 		)}
 		{playlists.map(

@@ -53,7 +53,7 @@ export const playPlaylist =
 					const [ nowPlaying, ...songs ] =
 						playlistSongs
 
-					await updateQueueNowPlaying(client)({
+					await updateQueueNowPlaying(client, context.ag)({
 						userID,
 						value: nowPlaying.songID,
 					})

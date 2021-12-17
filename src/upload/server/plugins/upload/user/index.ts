@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt"
 import { join } from "path"
+import { trim } from "lodash"
 import { readFileSync } from "fs"
-import { v4 as createUUID } from "uuid"
-import { query } from "@oly_op/pg-helpers"
 import { FastifyPluginCallback } from "fastify"
-import { ImageInput, ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
+import { ImageDimensions, ImageSizes, UserBase, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	addIndexToAlgolia,
@@ -12,16 +12,17 @@ import {
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
-import { BodyEntry } from "../types"
+import { BodyEntry, ImageInput } from "../types"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
+interface User extends Pick<UserBase, "name"> {
+	password: string,
+	cover: BodyEntry[],
+	profile: BodyEntry[],
+}
+
 interface Route {
-	Body: {
-		name: string,
-		password: string,
-		cover: BodyEntry[],
-		profile: BodyEntry[],
-	},
+	Body: User,
 }
 
 const coverImages: ImageInput[] = [{
@@ -56,11 +57,24 @@ export const uploadUser: FastifyPluginCallback =
 		fastify.post<Route>(
 			"/upload/user",
 			async (request, reply) => {
-				const userID = createUUID()
-				const { name } = request.body
+				const name = trim(request.body.name)
 				const cover = request.body.cover[0].data
 				const profile = request.body.profile[0].data
 				const password = await bcrypt.hash(request.body.password, 12)
+
+				const { userID } =
+					await query(fastify.pg.pool)(INSERT_USER)({
+						parse: convertFirstRowToCamelCase<UserID>(),
+						variables: [{
+							key: "name",
+							value: name,
+							parameterized: true,
+						},{
+							key: "password",
+							value: password,
+							parameterized: true,
+						}],
+					})
 
 				await normalizeImageAndUploadToS3({
 					buffer: cover,
@@ -75,25 +89,10 @@ export const uploadUser: FastifyPluginCallback =
 				})
 
 				await addIndexToAlgolia({
-					text: name,
+					name,
 					typeName: "User",
 					objectID: userID,
 					image: determineS3ImageURL(userID, profileImages[2]),
-				})
-
-				await query(fastify.pg.pool)(INSERT_USER)({
-					variables: [{
-						key: "userID",
-						value: userID,
-					},{
-						key: "name",
-						value: name,
-						parameterized: true,
-					},{
-						key: "password",
-						value: password,
-						parameterized: true,
-					}],
 				})
 
 				return reply.send()

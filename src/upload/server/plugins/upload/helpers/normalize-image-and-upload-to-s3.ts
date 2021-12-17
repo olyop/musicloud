@@ -1,12 +1,7 @@
-import {
-	ImageInput,
-	ImageSizes,
-	ObjectID,
-	ImageDimensions,
-} from "@oly_op/music-app-common/types"
-
 import sharp, { ResizeOptions } from "sharp"
+import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/music-app-common/types"
 
+import { ImageInput } from "../types"
 import { uploadFileToS3 } from "./upload-file-to-s3"
 import { determineS3ImagePath } from "./determine-s3-image-path"
 
@@ -45,7 +40,10 @@ const determineImageDimesnions =
 
 const uploadImageToS3 =
 	({ objectID, buffer, image }: UploadInput) =>
-		uploadFileToS3(determineS3ImagePath(objectID, image), buffer)
+		uploadFileToS3(
+			determineS3ImagePath(objectID, image),
+			buffer,
+		)
 
 const resizeImage =
 	(image: ImageInput, buffer: Buffer) =>

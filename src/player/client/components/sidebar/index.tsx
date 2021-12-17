@@ -8,9 +8,8 @@ import { useDispatch, toggleSidebar, useStateSidebar } from "../../redux"
 
 import "./index.scss"
 
-const HOST = process.env.HOST!
-const UPLOAD_PORT = parseInt(process.env.UPLOAD_CLIENT_PORT!)
-const ADD_URL = `http://${HOST}:${UPLOAD_PORT}/artist`
+const ADD_URL =
+	`http://${process.env.HOST}:${parseInt(process.env.UPLOAD_CLIENT_PORT)}/artist`
 
 const bem =
 	createBEM("Sidebar")
@@ -32,7 +31,7 @@ const Sidebar: VFC = () => {
 			/>
 			<nav className={bem("content", "Elevated PaddingBottom")}>
 				<div>
-					<div className={bem("content-header", "FlexList PaddingLeftRightHalf")}>
+					<div className={bem("content-header", "FlexRow PaddingLeftRightHalf")}>
 						<Button
 							icon="close"
 							transparent

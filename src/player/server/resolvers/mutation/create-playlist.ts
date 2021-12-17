@@ -1,4 +1,3 @@
-import { v4 as createUUID } from "uuid"
 import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { join, query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
@@ -8,43 +7,43 @@ import { COLUMN_NAMES } from "../../globals"
 import { INSERT_PLAYLIST, INSERT_LIBRARY_OBJECT } from "../../sql"
 
 type Args =
-	InterfaceWithInput<Pick<Playlist, "title" | "isPublic">>
+	InterfaceWithInput<Pick<Playlist, "title" | "privacy">>
 
 export const createPlaylist =
 	resolver<Playlist, Args>(
 		async ({ args, context }) => {
-			const playlistID = createUUID()
-			const { input: { title, isPublic } } = args
+			const { userID } = context.authorization!
+			const { input: { title, privacy } } = args
 
 			const playlist =
 				await query(context.pg)(INSERT_PLAYLIST)({
+					log: { sql: true },
 					parse: convertFirstRowToCamelCase<Playlist>(),
 					variables: [{
-						key: "isPublic",
-						value: isPublic,
-					},{
-						key: "playlistID",
-						value: playlistID,
-					},{
 						key: "title",
 						value: title,
 						parameterized: true,
+					},{
+						key: "privacy",
+						value: privacy.toLowerCase(),
 					},{
 						key: "columnNames",
 						value: join(COLUMN_NAMES.PLAYLIST),
 					},{
 						key: "userID",
-						value: context.authorization!.userID,
+						value: userID,
 					}],
 				})
 
-			if (isPublic) {
-				await context.ag.saveObject({
-					text: title,
-					typeName: "Playlist",
-					objectID: playlistID,
-				})
-			}
+			const { playlistID } = playlist
+
+			await context.ag.saveObject({
+				userID,
+				privacy,
+				text: title,
+				typeName: "Playlist",
+				objectID: playlistID,
+			})
 
 			await query(context.pg)(INSERT_LIBRARY_OBJECT)({
 				variables: {

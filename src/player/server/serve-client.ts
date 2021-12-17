@@ -7,8 +7,8 @@ const serveClient: FastifyPluginCallback =
 	(fastify, options, next) => {
 		fastify.setNotFoundHandler(
 			(request, reply) => {
-				reply.type("text/html")
-						 .send(fs.createReadStream(CLIENT_ENTRY_PATH))
+				void reply.type("text/html")
+					.send(fs.createReadStream(CLIENT_ENTRY_PATH))
 			},
 		)
 		next()

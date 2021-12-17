@@ -4,6 +4,6 @@ const importFile = importSql("update")()
 
 export const UPDATE_QUEUE_SONG = importFile("queue-song")
 export const UPDATE_PLAYLIST_TITLE = importFile("playlist-title")
+export const UPDATE_PLAYLIST_PRIVACY = importFile("playlist-privacy")
 export const UPDATE_QUEUE_NOW_PLAYING = importFile("queue-now-playing")
 export const UPDATE_OBJECT_IN_LIBRARY = importFile("object-in-library")
-export const UPDATE_PLAYLIST_IS_PUBLIC = importFile("playlist-is-public")

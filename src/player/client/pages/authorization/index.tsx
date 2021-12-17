@@ -6,6 +6,7 @@ import {
 	FormEventHandler,
 } from "react"
 
+import noop from "lodash/noop"
 import isNull from "lodash/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
@@ -32,14 +33,11 @@ const bem =
 	createBEM("Authorization")
 
 const uploadClientURL =
-	`http://${process.env.HOST!}:${process.env.UPLOAD_CLIENT_PORT!}`
+	`http://${process.env.HOST}:${process.env.UPLOAD_CLIENT_PORT}`
 
 const Authorization: FC = ({ children }) => {
 	const dispatch = useDispatch()
 	const accessToken = useStateAccessToken()
-
-	const [ isError, setIsError ] =
-		useState(false)
 
 	const [ { userID, password }, setForm ] =
 		useState<Form>({
@@ -47,7 +45,7 @@ const Authorization: FC = ({ children }) => {
 			password: "",
 		})
 
-	const [ logIn ] =
+	const [ logIn, { error } ] =
 		useMutation<Data, InterfaceWithInput<Form>>(LOG_IN)
 
 	const handleSubmit: FormEventHandler =
@@ -67,8 +65,8 @@ const Authorization: FC = ({ children }) => {
 					if (data) {
 						dispatch(updateAccessToken(data.logIn))
 					}
-				} catch (error) {
-					setIsError(true)
+				} catch (err) {
+					noop(err)
 				}
 			}
 		}
@@ -86,13 +84,7 @@ const Authorization: FC = ({ children }) => {
 			<Metadata title="Log In">
 				<div className={bem("", "FullWidthAndHeight")}>
 					<div className={bem("main")}>
-						<div
-							className={bem(
-								isError && "error",
-								"main-content",
-								"Elevated Padding",
-							)}
-						>
+						<div className={bem("main-content", "Elevated Padding")}>
 							<h1 className="HeadingFour MarginBottomQuart">
 								Musicloud
 							</h1>
@@ -118,6 +110,12 @@ const Authorization: FC = ({ children }) => {
 									autoComplete="current-password"
 									onChange={handleFormChange("password")}
 								/>
+								{error && (
+									<p className={bem("main-error", "BodyTwo")}>
+										<Fragment>Error: </Fragment>
+										{error.message}
+									</p>
+								)}
 								<Button
 									icon="login"
 									type="submit"

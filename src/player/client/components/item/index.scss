@@ -23,11 +23,11 @@
 		--fix: -3px;
 		margin-left: var(--fix);
 		margin-right: calc(var(--gap) + var(--fix)); }
-	&__img-link {
-		margin-right: var(--gap); }
 	&__img {
 		width: var(--button-dimension);
-		height: var(--button-dimension); }
+		height: var(--button-dimension);
+		&-link {
+			margin-right: var(--gap); } }
 	&__info {
 		flex-grow: 1;
 		display: flex;

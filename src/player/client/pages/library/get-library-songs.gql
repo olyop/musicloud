@@ -6,6 +6,7 @@ query getLibrarySongs($input: LibrarySongsInput!) {
 			songID
 			duration
 			inLibrary
+			playsTotal
 			dateAddedToLibrary
 			featuring {
 				artistID

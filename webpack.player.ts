@@ -39,11 +39,11 @@ const config = merge(baseConfig, {
 		path: BUILD_PATH,
 	},
 	devServer: {
-		port: parseInt(process.env.PLAYER_CLIENT_PORT!),
+		port: parseInt(process.env.PLAYER_CLIENT_PORT),
 		proxy: [{
 			logLevel: "silent",
 			context: [ ...baseProxy, ...proxy ],
-			target: `http://${process.env.HOST!}:${process.env.PLAYER_SERVER_PORT!}`,
+			target: `http://${process.env.HOST}:${process.env.PLAYER_SERVER_PORT}`,
 		}],
 	},
 	plugins: [

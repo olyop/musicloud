@@ -1,12 +1,10 @@
 INSERT INTO playlists (
 	title,
 	user_id,
-	is_public,
-	playlist_id
+	privacy
 ) VALUES (
 	{{ title }},
 	'{{ userID }}',
-	{{ isPublic }},
-	'{{ playlistID }}'
+	'{{ privacy }}'
 ) RETURNING
 	{{ columnNames }};

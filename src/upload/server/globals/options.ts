@@ -1,26 +1,15 @@
-import { FastifyServerOptions } from "fastify"
-import { PoolConfig } from "@oly_op/pg-helpers"
+import { PoolConfig } from "pg"
+import { fastifyHelmet } from "fastify-helmet"
 import { FastifyCorsOptions } from "fastify-cors"
-import { FastifyHelmetOptions } from "fastify-helmet"
 import { FastifyStaticOptions } from "fastify-static"
 import { FastifyMultipartOptions } from "fastify-multipart"
-
-import {
-	HOST,
-	PORT,
-	ALGOLIA_API_KEY,
-	AWS_RDS_USERNAME,
-	AWS_RDS_DATABASE,
-	AWS_RDS_ENDPOINT,
-	AWS_RDS_PASSWORD,
-	ALGOLIA_APPLICATION_ID,
-} from "./environment"
+import { FastifyInstance, FastifyServerOptions } from "fastify"
 
 import { PUBLIC_PATH } from "./paths"
 
-export const FASTIFY_LISTEN_OPTIONS = {
-	host: HOST,
-	port: PORT,
+export const FASTIFY_LISTEN_OPTIONS: Parameters<FastifyInstance["listen"]>[0] = {
+	host: process.env.HOST,
+	port: parseInt(process.env.UPLOAD_SERVER_PORT),
 }
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
@@ -31,7 +20,7 @@ export const MULTIPART_OPTIONS: FastifyMultipartOptions = {
 	addToBody: true,
 }
 
-export const HELMET_OPTIONS: FastifyHelmetOptions = {
+export const HELMET_OPTIONS: Parameters<typeof fastifyHelmet>[1] = {
 	contentSecurityPolicy: false,
 }
 
@@ -40,12 +29,12 @@ export const CORS_OPTIONS: FastifyCorsOptions = {
 }
 
 export const PG_POOL_OPTIONS: PoolConfig = {
-	user: AWS_RDS_USERNAME,
-	host: AWS_RDS_ENDPOINT,
-	database: AWS_RDS_DATABASE,
-	password: AWS_RDS_PASSWORD,
 	parseInputDatesAsUTC: true,
 	idleTimeoutMillis: 1000 * 2,
+	user: process.env.AWS_RDS_USERNAME,
+	host: process.env.AWS_RDS_ENDPOINT,
+	database: process.env.AWS_RDS_DATABASE,
+	password: process.env.AWS_RDS_PASSWORD,
 }
 
 export const SERVE_STATIC_OPTIONS: FastifyStaticOptions = {
@@ -54,6 +43,6 @@ export const SERVE_STATIC_OPTIONS: FastifyStaticOptions = {
 }
 
 export const ALGOLIA_OPTIONS = [
-	ALGOLIA_APPLICATION_ID,
-	ALGOLIA_API_KEY,
+	process.env.ALGOLIA_APPLICATION_ID,
+	process.env.ALGOLIA_ADMIN_API_KEY,
 ] as const

@@ -1,10 +1,8 @@
 {
 	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"typeRoots": ["src/types"]
-	},
 	"include": [
 		"src",
+		"scripts",
 		"jest.config.ts",
 		"webpack.base.ts",
 		"webpack.player.ts",

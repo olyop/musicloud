@@ -1,28 +1,26 @@
 import { join } from "path"
+import { trim } from "lodash"
 import { readFileSync } from "fs"
-import { v4 as createUUID } from "uuid"
 import { FastifyPluginCallback } from "fastify"
-import { query, exists } from "@oly_op/pg-helpers"
+import { GenreBase, GenreID } from "@oly_op/music-app-common/types"
+import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import { addIndexToAlgolia } from "../helpers"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
 interface Route {
-	Body: {
-		name: string,
-	},
+	Body: Pick<GenreBase, "name">,
 }
 
 const INSERT_GENRE =
-	readFileSync(join(UPLOAD_PLUGINS_PATH, "genre", "insert-genre.sql")).toString()
+	readFileSync(join(UPLOAD_PLUGINS_PATH, "genre", "insert.sql")).toString()
 
 export const uploadGenre: FastifyPluginCallback =
 	(fastify, options, done) => {
 		fastify.post<Route>(
 			"/upload/genre",
 			async (request, reply) => {
-				const genreID = createUUID()
-				const { name } = request.body
+				const name = trim(request.body.name)
 
 				const doesGenreAlreadyExist =
 					await exists(fastify.pg.pool)({
@@ -35,21 +33,20 @@ export const uploadGenre: FastifyPluginCallback =
 					throw new Error("Genre already exists")
 				}
 
+				const { genreID } =
+					await query(fastify.pg.pool)(INSERT_GENRE)({
+						parse: convertFirstRowToCamelCase<GenreID>(),
+						variables: [{
+							key: "name",
+							value: name,
+							parameterized: true,
+						}],
+					})
+
 				await addIndexToAlgolia({
-					text: name,
+					name,
 					typeName: "Genre",
 					objectID: genreID,
-				})
-
-				await query(fastify.pg.pool)(INSERT_GENRE)({
-					variables: [{
-						key: "genreID",
-						value: genreID,
-					},{
-						key: "name",
-						value: name,
-						parameterized: true,
-					}],
 				})
 
 				return reply.send()

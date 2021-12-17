@@ -10,28 +10,28 @@ export type PlaylistDataPick =
 export interface PlaylistData extends
 	PlaylistBase, PlaylistDataPick {}
 
-export interface CreatePlaylistData {
+export interface Data {
 	createPlaylist: PlaylistData,
 }
 
-export type CreatePlayliistInput =
-	Pick<Playlist, "title" | "isPublic">
+export type Input =
+	Pick<Playlist, "title" | "privacy">
 
-export type CreatePlaylistVars =
-	InterfaceWithInput<CreatePlayliistInput>
+export type Vars =
+	InterfaceWithInput<Input>
 
-export type UseCreatePlaylistResult = [
-	createPlaylist: (input: CreatePlayliistInput) => HandlerReturn,
-	result: MutationResult<CreatePlaylistData>,
+export type Result = [
+	createPlaylist: (input: Input) => HandlerReturn,
+	result: MutationResult<Data>,
 ]
 
-export type CreatePlaylistModifer =
+export type Modifer =
 	Modifier<(Reference | PlaylistDataPick)[] | null>
 
-export type CreatePlaylistUpdate =
+export type Update =
 	MutationUpdaterFunction<
-		CreatePlaylistData,
-		CreatePlaylistVars,
+		Data,
+		Vars,
 		unknown,
 		ApolloCache<unknown>
 	>

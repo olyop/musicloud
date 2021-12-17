@@ -1,3 +1,9 @@
+enum PlaylistPrivacy {
+	PUBLIC
+	PRIVATE
+	FRIENDS
+}
+
 enum OrderByDirection {
 	ASC
 	DESC

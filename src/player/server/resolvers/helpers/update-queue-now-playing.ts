@@ -5,7 +5,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { isNull } from "lodash"
-import { v4 as createUUID } from "uuid"
+import { SearchIndex } from "algoliasearch"
 import { UserID } from "@oly_op/music-app-common/types"
 
 import {
@@ -21,11 +21,11 @@ export interface UpdateQueueNowPlayingOptions
 	extends UserID { value: string | null }
 
 export const updateQueueNowPlaying =
-	(client: PoolOrClient) =>
+	(pg: PoolOrClient, ag?: SearchIndex) =>
 		async (options: UpdateQueueNowPlayingOptions) => {
 			const { userID, value } = options
 
-			const query = pgHelpersQuery(client)
+			const query = pgHelpersQuery(pg)
 
 			if (isNull(value)) {
 				await query(DELETE_QUEUE_NOW_PLAYING)({
@@ -33,7 +33,7 @@ export const updateQueueNowPlaying =
 				})
 			} else {
 				const doesUserHaveNowPlaying =
-					await exists(client)({
+					await exists(pg)({
 						value: userID,
 						table: "now_playing",
 						column: COLUMN_NAMES.USER[0],
@@ -53,8 +53,17 @@ export const updateQueueNowPlaying =
 					variables: {
 						userID,
 						songID: value,
-						playID: createUUID(),
 					},
 				})
+
+				if (ag) {
+					await ag.partialUpdateObject({
+						objectID: value,
+						plays: {
+							value: 1,
+							_operation: "Increment",
+						},
+					})
+				}
 			}
 		}

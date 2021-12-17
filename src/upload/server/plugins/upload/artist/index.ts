@@ -1,9 +1,9 @@
 import { join } from "path"
+import { trim } from "lodash"
 import { readFileSync } from "fs"
-import { v4 as createUUID } from "uuid"
 import { FastifyPluginCallback } from "fastify"
-import { query, exists } from "@oly_op/pg-helpers"
-import { ImageInput, ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
+import { ImageDimensions, ImageSizes, ArtistBase, ArtistID } from "@oly_op/music-app-common/types"
 
 import {
 	addIndexToAlgolia,
@@ -11,17 +11,16 @@ import {
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
-import { BodyEntry } from "../types"
+import { BodyEntry, ImageInput } from "../types"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
+interface Artist extends Omit<ArtistBase, "artistID"> {
+	cover: BodyEntry[],
+	profile: BodyEntry[],
+}
+
 interface Route {
-	Body: {
-		name: string,
-		city: string,
-		country: string,
-		cover: BodyEntry[],
-		profile: BodyEntry[],
-	},
+	Body: Artist,
 }
 
 const coverImages: ImageInput[] = [{
@@ -60,10 +59,11 @@ export const uploadArtist: FastifyPluginCallback =
 		fastify.post<Route>(
 			"/upload/artist",
 			async (request, reply) => {
-				const artistID = createUUID()
+				const name = trim(request.body.name)
+				const city = trim(request.body.city)
+				const country = trim(request.body.country)
 				const cover = request.body.cover[0].data
 				const profile = request.body.profile[0].data
-				const { name, city, country } = request.body
 
 				const doesArtistAlreadyExist =
 					await exists(fastify.pg.pool)({
@@ -75,6 +75,24 @@ export const uploadArtist: FastifyPluginCallback =
 				if (doesArtistAlreadyExist) {
 					throw new Error("Artist already exists")
 				}
+
+				const { artistID } =
+					await query(fastify.pg.pool)(INSERT_ARTIST)({
+						parse: convertFirstRowToCamelCase<ArtistID>(),
+						variables: [{
+							key: "name",
+							value: name,
+							parameterized: true,
+						},{
+							key: "city",
+							value: city,
+							parameterized: true,
+						},{
+							key: "country",
+							value: country,
+							parameterized: true,
+						}],
+					})
 
 				await normalizeImageAndUploadToS3({
 					buffer: cover,
@@ -89,29 +107,11 @@ export const uploadArtist: FastifyPluginCallback =
 				})
 
 				await addIndexToAlgolia({
-					text: name,
+					name,
 					typeName: "Artist",
 					objectID: artistID,
 					image: determineS3ImageURL(artistID, profileImages[2]),
-				})
-
-				await query(fastify.pg.pool)(INSERT_ARTIST)({
-					variables: [{
-						key: "artistID",
-						value: artistID,
-					},{
-						key: "name",
-						value: name,
-						parameterized: true,
-					},{
-						key: "city",
-						value: city,
-						parameterized: true,
-					},{
-						key: "country",
-						value: country,
-						parameterized: true,
-					}],
+					origin: city && country ? `${city}, ${country}` : undefined,
 				})
 
 				return reply.send()

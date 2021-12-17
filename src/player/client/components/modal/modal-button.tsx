@@ -50,14 +50,14 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 					href={link}
 					children={jsx}
 					{...externalLinkProps}
-					className={bem(className, "FlexListCenter ItemBorder")}
+					className={bem(className, "FlexRowCenter ItemBorder")}
 				/>
 			) : (
 				<Link
 					to={link}
 					children={jsx}
 					onClick={handleOnClick}
-					className={bem(className, "FlexListCenter ItemBorder")}
+					className={bem(className, "FlexRowCenter ItemBorder")}
 				/>
 			)}
 		</Fragment>

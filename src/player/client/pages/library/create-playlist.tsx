@@ -1,14 +1,16 @@
 import isEmpty from "lodash/isEmpty"
 import Button from "@oly_op/react-button"
 import { useState, createElement, VFC, Fragment } from "react"
+import { PlaylistPrivacy } from "@oly_op/music-app-common/types"
 
 import { Handler } from "../../types"
+import Select from "../../components/select"
 import { useCreatePlaylist } from "../../hooks"
 import TextField, { TextFieldOnChange } from "../../components/text-field"
 
 const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 	const [ title, setTitle ] = useState("")
-	const [ isPublic, setIsPublic ] = useState(false)
+	const [ privacy, setPrivacy ] = useState(PlaylistPrivacy.PUBLIC)
 
 	const [ createPlaylist ] =
 		useCreatePlaylist()
@@ -17,15 +19,12 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 		(value: string) =>
 			setTitle(value)
 
-	const handleIsPublicChange =
-		() => setIsPublic(prevState => !prevState)
-
 	const handleSubmit =
 		async () => {
 			if (!isEmpty(title)) {
 				setTitle("")
 				await onClose()
-				await createPlaylist({ title, isPublic })
+				await createPlaylist({ title, privacy })
 			}
 		}
 
@@ -38,22 +37,22 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 				name="Title"
 				value={title}
 				placeholder="Title"
-				className="MarginBottomHalf"
 				onChange={handleTitleChange}
 				fieldID="addToPlaylistTitle"
+				className="MarginBottomThreeQuart"
 			/>
-			<div className="MarginBottom FlexListGapFifth">
-				<input
-					type="checkbox"
-					checked={isPublic}
-					className="BodyOne"
-					onChange={handleIsPublicChange}
-				/>
-				<p className="BodyOne LightWeight">
-					Public
+			<div className="MarginBottom FlexColumnGapFifth">
+				<p className="BodyTwoBold MarginBottomQuart">
+					Privacy:
 				</p>
+				<Select
+					value={privacy}
+					onChange={setPrivacy}
+					className="BodyTwo MarginRightQuart"
+					options={Object.keys(PlaylistPrivacy)}
+				/>
 			</div>
-			<div className="FlexListGapHalf">
+			<div className="FlexRowGapHalf">
 				<Button
 					icon="add"
 					text="Create"

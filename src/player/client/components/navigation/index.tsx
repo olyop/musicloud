@@ -15,8 +15,8 @@ const Navigation: VFC<PropTypes> = ({
 	routes,
 	className,
 }) => (
-	<nav className={bem(className, "Content FlexListSpaceBetween")}>
-		<div className={bem("links", "FlexListGapHalf")}>
+	<nav className={bem(className, "Content FlexRowSpaceBetween")}>
+		<div className={bem("links", "FlexRowGapHalf")}>
 			{routes.map(({
 				icon,
 				path,
@@ -55,7 +55,7 @@ const Navigation: VFC<PropTypes> = ({
 		{right && (
 			<div
 				children={right}
-				className="FlexListGapHalf"
+				className="FlexRowGapHalf"
 			/>
 		)}
 	</nav>

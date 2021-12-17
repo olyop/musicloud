@@ -33,7 +33,7 @@ const Form: FC<PropTypes> = ({ title, loading, onSubmit, children }) => {
 				<Button
 					icon="send"
 					type="submit"
-					text="Register"
+					text="Submit"
 					className="Elevated"
 				/>
 			</form>

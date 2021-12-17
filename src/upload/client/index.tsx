@@ -1,12 +1,12 @@
 import ReactDOM from "react-dom"
-import { createElement, FC } from "react"
+import { createElement, VFC } from "react"
 import { BrowserRouter as ReactRouter } from "react-router-dom"
 
 import Pages from "./components/pages"
 import Header from "./components/header"
 import Footer from "./components/footer"
 
-const Root: FC = () => (
+const Root: VFC = () => (
 	<ReactRouter>
 		<Header/>
 		<Pages/>

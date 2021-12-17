@@ -36,7 +36,7 @@ export const shuffleLibrary =
 					const [ nowPlaying, ...shuffled ] =
 						librarySongs
 
-					await updateQueueNowPlaying(client)({
+					await updateQueueNowPlaying(client, context.ag)({
 						userID,
 						value: nowPlaying.songID,
 					})

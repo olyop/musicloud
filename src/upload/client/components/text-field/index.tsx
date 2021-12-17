@@ -1,5 +1,5 @@
 import {
-	FC,
+	VFC,
 	useState,
 	useEffect,
 	createElement,
@@ -10,7 +10,7 @@ import {
 import isEmpty from "lodash/isEmpty"
 import Image from "@oly_op/react-image"
 import Button from "@oly_op/react-button"
-import { createBEM , BEMPropTypes } from "@oly_op/bem"
+import { createBEM, BEMInput } from "@oly_op/bem"
 
 import { Item } from "../../types"
 
@@ -19,12 +19,13 @@ import "./index.scss"
 const bem =
 	createBEM("TextField")
 
-const TextField: FC<TextFieldPropTypes> = ({
+const TextField: VFC<TextFieldPropTypes> = ({
 	id,
 	type,
 	name,
 	list,
 	image,
+	value,
 	onChange,
 	className,
 	onItemAdd,
@@ -33,9 +34,9 @@ const TextField: FC<TextFieldPropTypes> = ({
 	imageOrientation = "portrait",
 	...inputPropTypes
 }) => {
-	const [ value, setValue ] = useState("")
 	const [ hover, setHover ] = useState(false)
 	const [ focus, setFocus ] = useState(false)
+	const [ privateValue, setPrivateValue ] = useState("")
 
 	const [ imageURL, setImageURL ] =
 		useState<string | undefined>(undefined)
@@ -54,9 +55,17 @@ const TextField: FC<TextFieldPropTypes> = ({
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> =
 		event => {
-			setValue(event.target.value)
+			setPrivateValue(event.target.value)
 			if (onChange) {
 				onChange(event)
+			}
+		}
+
+	const handleItemAdd =
+		() => {
+			if (onItemAdd && !isEmpty(privateValue)) {
+				onItemAdd(privateValue)()
+				setPrivateValue("")
 			}
 		}
 
@@ -101,10 +110,10 @@ const TextField: FC<TextFieldPropTypes> = ({
 				/>
 			)}
 			{list && !isEmpty(list) && (
-				<div className={bem("list", "FlexListGapHalf MarginBottomHalf")}>
+				<div className={bem("list", "FlexRowGapHalf MarginBottomHalf")}>
 					{list.map(
 						item => (
-							<div key={item.index} className="Elevated FlexList Rounded PaddingQuart">
+							<div key={item.index} className="Elevated FlexRow Rounded PaddingQuart">
 								<p className="BodyOne">
 									{item.value}
 								</p>
@@ -124,6 +133,7 @@ const TextField: FC<TextFieldPropTypes> = ({
 				id={id}
 				name={id}
 				type={type}
+				value={privateValue}
 				style={{ borderRadius }}
 				onBlur={handleInputBlur}
 				onChange={handleOnChange}
@@ -142,7 +152,7 @@ const TextField: FC<TextFieldPropTypes> = ({
 					icon="add"
 					text="Add"
 					transparent
-					onClick={onItemAdd!(value)}
+					onClick={handleItemAdd}
 					className={bem("list-add")}
 				/>
 			)}
@@ -151,12 +161,14 @@ const TextField: FC<TextFieldPropTypes> = ({
 }
 
 type InputPropTypes =
-	Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "list" | "className">
+	Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "list" | "className">
 
-export interface TextFieldPropTypes extends BEMPropTypes, InputPropTypes {
+export interface TextFieldPropTypes extends InputPropTypes {
 	type: string,
 	image?: File,
 	list?: Item[],
+	value?: string,
+	className?: BEMInput,
 	onItemAdd?: (value: string) => () => void,
 	imageOrientation?: "portrait" | "landscape",
 	onItemRemove?: (index: number) => () => void,

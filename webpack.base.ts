@@ -9,12 +9,8 @@ import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin"
 
-type NodeEnv = "development" | "production"
-
-const NODE_ENV = process.env.NODE_ENV! as NodeEnv
-const IS_DEV = NODE_ENV === "development"
-
-const HOST = process.env.HOST!
+const IS_DEV =
+	process.env.NODE_ENV === "development"
 
 const ROOT_PATH = __dirname
 export const BASE_SRC_PATH = path.join(ROOT_PATH, "src")
@@ -56,7 +52,7 @@ export const baseProxy = [
 ]
 
 export const baseConfig: Configuration = {
-	mode: NODE_ENV,
+	mode: process.env.NODE_ENV,
 	devtool: IS_DEV ? "inline-source-map" : false,
 	output: {
 		publicPath: "/",
@@ -67,7 +63,7 @@ export const baseConfig: Configuration = {
 	],
 	devServer: {
 		hot: true,
-		host: HOST,
+		host: process.env.HOST,
 		historyApiFallback: true,
 	},
 	resolve: {

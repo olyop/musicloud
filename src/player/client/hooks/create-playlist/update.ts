@@ -1,10 +1,10 @@
 import isNull from "lodash/isNull"
 
-import { CreatePlaylistUpdate, PlaylistDataPick, CreatePlaylistModifer } from "./types"
+import { Update, PlaylistDataPick, Modifer } from "./types"
 
 const modifer =
-	(playlist: PlaylistDataPick): CreatePlaylistModifer =>
-		(existing, { toReference }) => {
+	(playlist: PlaylistDataPick): Modifer =>
+		existing => {
 			if (isNull(existing)) {
 				return [ playlist ]
 			} else {
@@ -12,7 +12,7 @@ const modifer =
 			}
 		}
 
-const update: CreatePlaylistUpdate =
+const update: Update =
 	(cache, { data }) => {
 		cache.modify({
 			id: cache.identify({ __typename: "Library" }),

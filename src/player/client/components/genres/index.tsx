@@ -21,7 +21,7 @@ const Genres: VFC<PropTypes> = ({
 					key: "genres",
 					fields: Object.keys(GenresOrderByField),
 				}}
-				className="PaddingHalf ItemBorder FlexListRight"
+				className="PaddingHalf ItemBorder FlexRowRight"
 			/>
 		)}
 		{genres.map(

@@ -8,7 +8,7 @@ import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 import resolver from "./resolver"
 import { User } from "../../types"
 import { SELECT_USER_PASSWORD } from "../../sql"
-import { JWT_TOKEN_SECRET, JWT_SIGN_OPTIONS, COLUMN_NAMES } from "../../globals"
+import { JWT_SIGN_OPTIONS, COLUMN_NAMES } from "../../globals"
 
 const generateAccessToken =
 	(userID: string) =>
@@ -16,7 +16,7 @@ const generateAccessToken =
 			(resolve, reject) => {
 				jwt.sign(
 					{ userID },
-					JWT_TOKEN_SECRET,
+					process.env.JWT_TOKEN_SECRET,
 					JWT_SIGN_OPTIONS,
 					(error, token) => {
 						if (!isNull(error) || isUndefined(token)) {
@@ -55,7 +55,7 @@ export const logIn =
 				if (isPasswordCorrect) {
 					return generateAccessToken(args.input.userID)
 				} else {
-					throw new AuthenticationError("Password is not correct")
+					throw new AuthenticationError("Password is incorrect")
 				}
 			} else {
 				throw new AuthenticationError("User does not exist")

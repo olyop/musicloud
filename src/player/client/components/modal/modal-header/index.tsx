@@ -8,7 +8,7 @@ const bem =
 	createBEM("ModalHeader")
 
 const ModalHeader: VFC<ModalHeaderPropTypes> = ({ text, imgPropTypes }) => (
-	<div className="ItemBorder FlexListGapHalfCenter PaddingHalf">
+	<div className="ItemBorder FlexRowGapHalfCenter PaddingHalf">
 		{imgPropTypes && (
 			<Image
 				className={bem("img", "Rounded")}

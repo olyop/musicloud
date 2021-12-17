@@ -1,3 +1,5 @@
+import toLower from "lodash/toLower"
+import startCase from "lodash/startCase"
 import Button from "@oly_op/react-button"
 import Metadata from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
@@ -16,10 +18,10 @@ import {
 
 import { Playlist } from "../../types"
 import { useStatePlay } from "../../redux"
+import RenameButton from "./rename-button"
+import PrivacyButton from "./privacy-button"
 import ObjectLink from "../../components/object-link"
-import PlaylistPageRenameButton from "./rename-button"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
-import PlaylistPageIsPublicButton from "./is-public-button"
 import Songs, { OnRemoveOptions } from "../../components/songs"
 import { determinePlural, determineObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
@@ -84,7 +86,7 @@ const PlaylistPage: VFC = () => {
 			{data && (
 				<Metadata title={data.getPlaylistByID.title}>
 					<div className="MarginBottom FlexColumnGapHalf">
-						<div className="FlexListGapHalf">
+						<div className="FlexRowGapHalf">
 							<h1 className="HeadingFour">
 								{data.getPlaylistByID.title}
 							</h1>
@@ -104,7 +106,7 @@ const PlaylistPage: VFC = () => {
 								}}
 							/>
 							<Fragment> - </Fragment>
-							{data.getPlaylistByID.isPublic ? "Public" : "Private"}
+							{startCase(toLower(data.getPlaylistByID.privacy))}
 						</h2>
 						<p className="BodyOne LightColor">
 							{new Date(data.getPlaylistByID.dateCreated).toLocaleDateString()}
@@ -122,7 +124,7 @@ const PlaylistPage: VFC = () => {
 							No songs.
 						</p>
 					)}
-					<div className="FlexListGapHalf">
+					<div className="FlexRowGapHalf">
 						<Button
 							icon="shuffle"
 							text="Shuffle"
@@ -130,10 +132,10 @@ const PlaylistPage: VFC = () => {
 						/>
 						{isUsers && (
 							<Fragment>
-								<PlaylistPageIsPublicButton
+								<PrivacyButton
 									playlist={data.getPlaylistByID}
 								/>
-								<PlaylistPageRenameButton
+								<RenameButton
 									playlist={data.getPlaylistByID}
 								/>
 								<Button

@@ -15,7 +15,6 @@ import {
 } from "./plugins"
 
 import {
-	IS_DEV,
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	PG_POOL_OPTIONS,
@@ -26,18 +25,14 @@ import {
 } from "./globals"
 
 const listenCallback =
-	(error: Error, address: string) => {
+	(error: Error | null) => {
 		if (error) {
 			console.error(error)
-		} else {
-			if (!IS_DEV) {
-				console.log(address)
-			}
 		}
 	}
 
 const start =
-	async () => (
+	() => (
 		fastify(FASTIFY_SERVER_OPTIONS)
 			.register(helmet, HELMET_OPTIONS)
 			.register(cors, CORS_OPTIONS)

@@ -25,6 +25,13 @@ import { SELECT_PLAYLIST_SONGS, SELECT_OBJECT_SONG_PLAYS } from "../sql"
 const resolver =
 	createResolver<Playlist>()
 
+export const privacy =
+	resolver(
+		({ parent }) => (
+			parent.privacy.toUpperCase()
+		),
+	)
+
 export const dateCreated =
 	resolver(
 		({ parent }) => (

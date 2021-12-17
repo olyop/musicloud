@@ -1,27 +1,17 @@
 import { PoolConfig } from "pg"
 import { FastifyInstance } from "fastify"
 import { SignOptions } from "jsonwebtoken"
+import { SearchIndex } from "algoliasearch"
 import { fastifyHelmet } from "fastify-helmet"
 import { FastifyCorsOptions } from "fastify-cors"
 import { FastifyStaticOptions } from "fastify-static"
 import { ServerRegistration } from "apollo-server-fastify"
 
-import {
-	HOST,
-	PORT,
-	ALGOLIA_API_KEY,
-	AWS_RDS_USERNAME,
-	AWS_RDS_DATABASE,
-	AWS_RDS_ENDPOINT,
-	AWS_RDS_PASSWORD,
-	ALGOLIA_APPLICATION_ID,
-} from "./environment"
-
 import { PUBLIC_PATH } from "./paths"
 
 export const FASTIFY_LISTEN_OPTIONS: Parameters<FastifyInstance["listen"]>[0] = {
-	host: HOST,
-	port: PORT,
+	host: process.env.HOST,
+	port: parseInt(process.env.PLAYER_SERVER_PORT),
 }
 
 export const CORS_OPTIONS: FastifyCorsOptions = {
@@ -46,15 +36,21 @@ export const APOLLO_REGISTRATION_OPTIONS: ServerRegistration = {
 }
 
 export const PG_POOL_OPTIONS: PoolConfig = {
-	user: AWS_RDS_USERNAME,
-	host: AWS_RDS_ENDPOINT,
-	password: AWS_RDS_PASSWORD,
-	database: AWS_RDS_DATABASE,
 	parseInputDatesAsUTC: true,
 	idleTimeoutMillis: 1000 * 2,
+	user: process.env.AWS_RDS_USERNAME,
+	host: process.env.AWS_RDS_ENDPOINT,
+	password: process.env.AWS_RDS_PASSWORD,
+	database: process.env.AWS_RDS_DATABASE,
 }
 
-export const ALGOLIA_OPTIONS: [string, string] = [
-	ALGOLIA_APPLICATION_ID,
-	ALGOLIA_API_KEY,
-]
+export const ALGOLIA_OPTIONS = [
+	process.env.ALGOLIA_APPLICATION_ID,
+	process.env.ALGOLIA_ADMIN_API_KEY,
+] as const
+
+export const ALGOLIA_SEARCH_OPTIONS: Parameters<SearchIndex["setSettings"]>[0] = {
+	customRanking: ["asc(text)"],
+	searchableAttributes: ["ordered(text)"],
+	attributesForFaceting: ["filter(privacy)"],
+}

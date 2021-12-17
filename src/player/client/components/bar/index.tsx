@@ -95,7 +95,7 @@ const Bar: VFC = () => {
 								hideDuration
 								song={data.getQueue.nowPlaying}
 							/>
-							<div className="FlexListRight">
+							<div className="FlexRowRight">
 								<BarVolume/>
 								<BarQueueButton/>
 								<Button

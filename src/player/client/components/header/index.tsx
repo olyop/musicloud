@@ -135,10 +135,10 @@ const Header: VFC = () => {
 	}, [])
 
 	return (
-		<header className={bem("", "Elevated PaddingLeftRightHalf FlexListSpaceBetween")}>
+		<header className={bem("", "Elevated PaddingLeftRightHalf FlexRowSpaceBetween")}>
 			<Window>
 				{({ width }) => (
-					<div className={bem(width >= 700 || "left", "FlexList")}>
+					<div className={bem(width >= 700 || "left", "FlexRow")}>
 						<Button
 							icon="menu"
 							transparent
@@ -147,7 +147,7 @@ const Header: VFC = () => {
 							className={bem("icon")}
 						/>
 						{width <= 700 && (
-							<div className="MarginRightQuart FlexList">
+							<div className="MarginRightQuart FlexRow">
 								<Button
 									transparent
 									title="Back"
@@ -167,7 +167,7 @@ const Header: VFC = () => {
 					</div>
 				)}
 			</Window>
-			<div className="FlexListGapQuart">
+			<div className="FlexRowGapQuart">
 				<HeaderSearchButton/>
 				{isOnline || (
 					<Button

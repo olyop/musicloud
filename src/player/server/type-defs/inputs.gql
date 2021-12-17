@@ -4,13 +4,18 @@ input LogInInput {
 }
 
 input CreatePlaylistInput {
-	isPublic: Boolean!
+	title: NonEmptyString!
+	privacy: PlaylistPrivacy!
+}
+
+input UpdatePlaylistTitleInput {
+	playlistID: UUID!
 	title: NonEmptyString!
 }
 
-input RenamePlaylistInput {
+input UpdatePlaylistPrivacyInput {
 	playlistID: UUID!
-	title: NonEmptyString!
+	privacy: PlaylistPrivacy!
 }
 
 input GetSearchResultsInput {

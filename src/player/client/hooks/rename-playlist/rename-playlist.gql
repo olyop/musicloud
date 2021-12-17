@@ -1,6 +1,0 @@
-mutation renamePlaylist($input: RenamePlaylistInput!) {
-	renamePlaylist(input: $input) {
-		playlistID
-		title
-	}
-}

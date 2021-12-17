@@ -1,0 +1,14 @@
+.AlbumFormSongList {
+	&__text {
+		width: 150rem;
+		min-width: var(--dimension);
+		min-height: var(--dimension); }
+	&__add {
+		--dimension: 24rem;
+		width: var(--dimension);
+		height: var(--dimension);
+		min-width: var(--dimension);
+		&-icon {
+			width: var(--dimension);
+			height: var(--dimension);
+			font-size: var(--dimension); } } }

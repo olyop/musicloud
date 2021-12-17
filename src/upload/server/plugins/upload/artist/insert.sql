@@ -1,12 +1,10 @@
 INSERT INTO artists (
 	name,
 	city,
-	country,
-	artist_id
+	country
 ) VALUES (
 	{{ name }},
 	{{ city }},
-	{{ country }},
-	'{{ artistID }}'
+	{{ country }}
 ) RETURNING
-	*;
+	artist_id;

@@ -1,20 +1,16 @@
 import {
-	SongBase,
-	GenreBase,
-	ImageInput,
+	SongID,
+	AlbumID,
 	ImageSizes,
-	ArtistBase,
 	ImageDimensions,
+	ArtistIDNameBase,
+	GenreIDNameBase,
 } from "@oly_op/music-app-common/types"
 
-import { join } from "path"
-import pipe from "@oly_op/pipe"
-import { random } from "lodash"
-import { readFileSync } from "fs"
 import * as mm from "music-metadata"
-import { v4 as createUUID } from "uuid"
+import { random, trim } from "lodash"
 import { FastifyPluginCallback } from "fastify"
-import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
+import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import {
 	uploadFileToS3,
@@ -24,35 +20,13 @@ import {
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
-import { BodyEntry } from "../types"
-import { UPLOAD_PLUGINS_PATH } from "../../../globals"
+import importSQL from "./import-sql"
+import getGenreID from "./get-genre-id"
+import getArtistID from "./get-artist-id"
+import { List, Route, Song } from "./types"
+import { BodyEntry, ImageInput } from "../types"
+import checkRelationships from "./check-relationships"
 
-interface Item {
-	index: number,
-	value: string,
-}
-
-interface Body extends Record<string, unknown> {
-	title: string,
-	songs: string,
-	artists: string,
-	released: string,
-	cover: BodyEntry[],
-}
-
-interface Route {
-	Body: Body,
-}
-
-type SongBaseBase =
-	Omit<SongBase, "songID" | "bpm" | "key" | "duration">
-
-interface Song extends SongBaseBase {
-	genres: Item[],
-	artists: Item[],
-	remixers: Item[],
-	featuring: Item[],
-}
 const keyID =
 	"13e9c04a-a1e5-4405-870c-8520fbc2854f"
 
@@ -70,29 +44,41 @@ const images: ImageInput[] = [{
 	dimension: ImageDimensions.SQUARE,
 }]
 
-const importSQL =
-	(fileName: string) =>
-		readFileSync(join(UPLOAD_PLUGINS_PATH, "album", fileName)).toString()
-
-const INSERT_SONG = importSQL("insert-song.sql")
-const INSERT_ALBUM = importSQL("insert-album.sql")
-const SELECT_GENRE = importSQL("select-genre.sql")
-const SELECT_ARTIST = importSQL("select-artist.sql")
-const INSERT_SONG_GENRE = importSQL("insert-song-genre.sql")
-const INSERT_SONG_ARTIST = importSQL("insert-song-artist.sql")
-const INSERT_SONG_REMIXER = importSQL("insert-song-remixer.sql")
-const INSERT_ALBUM_ARTIST = importSQL("insert-album-artist.sql")
-const INSERT_SONG_FEATURING = importSQL("insert-song-featuring.sql")
+const INSERT_SONG = importSQL("insert-song")
+const INSERT_ALBUM = importSQL("insert-album")
+const INSERT_SONG_GENRE = importSQL("insert-song-genre")
+const INSERT_SONG_ARTIST = importSQL("insert-song-artist")
+const INSERT_ALBUM_ARTIST = importSQL("insert-album-artist")
+const INSERT_SONG_REMIXER = importSQL("insert-song-remixer")
+const INSERT_SONG_FEATURE = importSQL("insert-song-feature")
 
 export const uploadAlbum: FastifyPluginCallback =
 	(fastify, options, done) => {
 		fastify.post<Route>(
 			"/upload/album",
 			async (request, reply) => {
-				const albumID = createUUID()
-				const { title, cover, released } = request.body
+				const { cover, released } = request.body
+				const albumTitle = trim(request.body.title)
 				const songs = JSON.parse(request.body.songs) as Song[]
-				const artists = JSON.parse(request.body.artists) as Item[]
+				const albumArtistsList = JSON.parse(request.body.artists) as List
+
+				await checkRelationships(fastify.pg.pool)(
+					albumArtistsList,
+					songs,
+				)
+
+				const { albumID } =
+					await query(fastify.pg.pool)(INSERT_ALBUM)({
+						parse: convertFirstRowToCamelCase<AlbumID>(),
+						variables: [{
+							key: "released",
+							value: released,
+						},{
+							key: "title",
+							value: albumTitle,
+							parameterized: true,
+						}],
+					})
 
 				await normalizeImageAndUploadToS3({
 					images,
@@ -100,54 +86,40 @@ export const uploadAlbum: FastifyPluginCallback =
 					buffer: cover[0].data,
 				})
 
-				await addIndexToAlgolia({
-					text: title,
-					typeName: "Album",
-					objectID: albumID,
-					image: determineS3ImageURL(albumID, images[2]),
-				})
+				const albumCoverURL =
+					determineS3ImageURL(albumID, images[2])
 
-				await query(fastify.pg.pool)(INSERT_ALBUM)({
-					variables: [{
-						key: "albumID",
-						value: albumID,
-					},{
-						key: "released",
-						value: released,
-					},{
-						key: "title",
-						value: title,
-						parameterized: true,
-					}],
-				})
+				const albumArtists: ArtistIDNameBase[] = []
 
-				for (const artist of artists) {
+				for (const artistItem of albumArtistsList) {
+					const { index } = artistItem
+					const name = trim(artistItem.value)
+
+					const artistID =
+						await getArtistID(fastify.pg.pool)(name)
+
 					await query(fastify.pg.pool)(INSERT_ALBUM_ARTIST)({
-						variables: [{
-							key: "albumID",
-							value: albumID,
-						},{
-							key: "index",
-							value: artist.index,
-						},{
-							key: "artistID",
-							value: await query(fastify.pg.pool)(SELECT_ARTIST)({
-								parse: pipe(
-									convertFirstRowToCamelCase<ArtistBase>(),
-									({ artistID }) => artistID,
-								),
-								variables: [{
-									key: "name",
-									value: artist.value,
-									parameterized: true,
-								}],
-							}),
-						}],
+						variables: {
+							index,
+							albumID,
+							artistID,
+						},
 					})
+
+					albumArtists.push({ artistID, name })
 				}
 
+				await addIndexToAlgolia({
+					name: albumTitle,
+					typeName: "Album",
+					objectID: albumID,
+					image: albumCoverURL,
+					artists: albumArtists,
+				})
+
 				for (const song of songs) {
-					const songID = createUUID()
+					const mix = trim(song.mix)
+					const songTitle = trim(song.title)
 
 					const audio =
 						(request.body[`${song.trackNumber}-audio`] as BodyEntry[])[0].data
@@ -155,149 +127,134 @@ export const uploadAlbum: FastifyPluginCallback =
 					const duration =
 						(await mm.parseBuffer(audio)).format.duration!
 
+					const { songID } =
+						await query(fastify.pg.pool)(INSERT_SONG)({
+							parse: convertFirstRowToCamelCase<SongID>(),
+							variables: [{
+								key: "keyID",
+								value: keyID,
+							},{
+								key: "albumID",
+								value: albumID,
+							},{
+								key: "duration",
+								value: duration,
+							},{
+								key: "mix",
+								value: mix,
+								parameterized: true,
+							},{
+								key: "title",
+								value: songTitle,
+								parameterized: true,
+							},{
+								key: "bpm",
+								value: random(85, 130),
+							},{
+								key: "discNumber",
+								value: song.discNumber,
+							},{
+								key: "trackNumber",
+								value: song.trackNumber,
+							}],
+						})
+
+					const songGenreList = song.genres
+					const songArtistList = song.artists
+					const songRemixerList = song.remixers
+					const songFeatureList = song.featuring
+					const songGenres: GenreIDNameBase[] = []
+					const songArtists: ArtistIDNameBase[] = []
+					const songRemixers: ArtistIDNameBase[] = []
+					const songFeaturing: ArtistIDNameBase[] = []
+
+					for (const genreItem of songGenreList) {
+						const { index } = genreItem
+						const name = trim(genreItem.value)
+
+						const genreID =
+							await getGenreID(fastify.pg.pool)(name)
+
+						await query(fastify.pg.pool)(INSERT_SONG_GENRE)({
+							variables: {
+								index,
+								songID,
+								genreID,
+							},
+						})
+
+						songGenres.push({ genreID, name })
+					}
+
+					for (const songArtistItem of songArtistList) {
+						const { index } = songArtistItem
+						const name = trim(songArtistItem.value)
+
+						const artistID =
+							await getArtistID(fastify.pg.pool)(name)
+
+						await query(fastify.pg.pool)(INSERT_SONG_ARTIST)({
+							variables: {
+								index,
+								songID,
+								artistID,
+							},
+						})
+
+						songArtists.push({ artistID, name })
+					}
+
+					for (const songRemixerItem of songRemixerList) {
+						const { index } = songRemixerItem
+						const name = trim(songRemixerItem.value)
+
+						const artistID =
+							await getArtistID(fastify.pg.pool)(name)
+
+						await query(fastify.pg.pool)(INSERT_SONG_REMIXER)({
+							variables: {
+								index,
+								songID,
+								artistID,
+							},
+						})
+
+						songRemixers.push({ artistID, name })
+					}
+
+					for (const songFeatureItem of songFeatureList) {
+						const { index } = songFeatureItem
+						const name = trim(songFeatureItem.value)
+
+						const artistID =
+							await getArtistID(fastify.pg.pool)(name)
+
+						await query(fastify.pg.pool)(INSERT_SONG_FEATURE)({
+							variables: {
+								index,
+								songID,
+								artistID,
+							},
+						})
+
+						songFeaturing.push({ artistID, name })
+					}
+
 					await uploadFileToS3(
 						determineS3AudioPath(songID),
 						audio,
 					)
 
 					await addIndexToAlgolia({
-						text: song.title,
-						objectID: songID,
+						name: songTitle,
 						typeName: "Song",
+						objectID: songID,
+						genres: songGenres,
+						artists: songArtists,
+						image: albumCoverURL,
+						remixers: songRemixers,
+						featuring: songFeaturing,
 					})
-
-					await query(fastify.pg.pool)(INSERT_SONG)({
-						variables: [{
-							key: "keyID",
-							value: keyID,
-						},{
-							key: "songID",
-							value: songID,
-						},{
-							key: "albumID",
-							value: albumID,
-						},{
-							key: "duration",
-							value: duration,
-						},{
-							key: "mix",
-							value: song.mix,
-							parameterized: true,
-						},{
-							key: "title",
-							value: song.title,
-							parameterized: true,
-						},{
-							key: "discNumber",
-							value: song.discNumber,
-						},{
-							key: "trackNumber",
-							value: song.trackNumber,
-						},{
-							key: "bpm",
-							value: random(85, 130),
-						}],
-					})
-
-					for (const genre of song.genres) {
-						await query(fastify.pg.pool)(INSERT_SONG_GENRE)({
-							variables: [{
-								key: "songID",
-								value: songID,
-							},{
-								key: "index",
-								value: genre.index,
-							},{
-								key: "genreID",
-								value: await query(fastify.pg.pool)(SELECT_GENRE)({
-									parse: pipe(
-										convertFirstRowToCamelCase<GenreBase>(),
-										({ genreID }) => genreID,
-									),
-									variables: [{
-										key: "name",
-										value: genre.value,
-										parameterized: true,
-									}],
-								}),
-							}],
-						})
-					}
-
-					for (const artist of song.artists) {
-						await query(fastify.pg.pool)(INSERT_SONG_ARTIST)({
-							variables: [{
-								key: "songID",
-								value: songID,
-							},{
-								key: "index",
-								value: artist.index,
-							},{
-								key: "artistID",
-								value: await query(fastify.pg.pool)(SELECT_ARTIST)({
-									parse: pipe(
-										convertFirstRowToCamelCase<ArtistBase>(),
-										({ artistID }) => artistID,
-									),
-									variables: [{
-										key: "name",
-										parameterized: true,
-										value: artist.value,
-									}],
-								}),
-							}],
-						})
-					}
-
-					for (const remixer of song.remixers) {
-						await query(fastify.pg.pool)(INSERT_SONG_REMIXER)({
-							variables: [{
-								key: "songID",
-								value: songID,
-							},{
-								key: "index",
-								value: remixer.index,
-							},{
-								key: "artistID",
-								value: await query(fastify.pg.pool)(SELECT_ARTIST)({
-									parse: pipe(
-										convertFirstRowToCamelCase<ArtistBase>(),
-										({ artistID }) => artistID,
-									),
-									variables: [{
-										key: "name",
-										parameterized: true,
-										value: remixer.value,
-									}],
-								}),
-							}],
-						})
-					}
-
-					for (const featuring of song.featuring) {
-						await query(fastify.pg.pool)(INSERT_SONG_FEATURING)({
-							variables: [{
-								key: "songID",
-								value: songID,
-							},{
-								key: "index",
-								value: featuring.index,
-							},{
-								key: "artistID",
-								value: await query(fastify.pg.pool)(SELECT_ARTIST)({
-									parse: pipe(
-										convertFirstRowToCamelCase<ArtistBase>(),
-										({ artistID }) => artistID,
-									),
-									variables: [{
-										key: "name",
-										parameterized: true,
-										value: featuring.value,
-									}],
-								}),
-							}],
-						})
-					}
 				}
 
 				return reply.send()

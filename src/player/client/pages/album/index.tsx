@@ -89,7 +89,7 @@ const AlbumPage: VFC = () => {
 								albumID={albumID}
 							/>
 						</div>
-						<div className="FlexListGapHalf MarginBottomHalf">
+						<div className="FlexRowGapHalf MarginBottomHalf">
 							{data.getAlbumByID.artists.map(
 								artist => (
 									<AlbumArtist
@@ -134,7 +134,7 @@ const AlbumPage: VFC = () => {
 								</p>
 							)}
 						</div>
-						<div className="FlexListGapHalf MarginBottom">
+						<div className="FlexRowGapHalf MarginBottom">
 							<Button
 								icon="shuffle"
 								text="Shuffle"
@@ -156,7 +156,7 @@ const AlbumPage: VFC = () => {
 							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>
 								Downloads
 							</summary>
-							<div className="FlexListGapHalf MarginBottom">
+							<div className="FlexRowGapHalf MarginBottom">
 								<Button
 									text="Songs"
 									icon="download"

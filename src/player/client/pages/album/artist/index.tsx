@@ -17,7 +17,7 @@ const bem =
 	createBEM("AlbumArtist")
 
 const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
-	<h2 className="HeadingFive FlexListGapQuart">
+	<h2 className="HeadingFive FlexRowGapQuart">
 		<Image
 			title={artist.name}
 			className={bem("", "Elevated")}

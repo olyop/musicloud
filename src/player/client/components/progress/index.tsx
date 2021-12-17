@@ -37,7 +37,7 @@ const Progress: VFC<ProgressPropTypes> = ({ duration, className }) => {
 	}, [play, current])
 
 	return (
-		<div className={bem(className, "", "FlexListGapHalf")}>
+		<div className={bem(className, "", "FlexRowGapHalf")}>
 			<p
 				className={bem("text", "BodyTwo")}
 				children={deserializeDuration(current)}

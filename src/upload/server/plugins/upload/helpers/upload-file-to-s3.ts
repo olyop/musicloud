@@ -5,9 +5,11 @@ import { s3 } from "../../../services"
 
 export const uploadFileToS3 =
 	(path: string, buffer: Buffer) =>
-		s3.send(new PutObjectCommand({
-			Key: path,
-			Body: buffer,
-			Bucket: NAME,
-			ACL: "public-read",
-		}))
+		s3.send(
+			new PutObjectCommand({
+				Key: path,
+				Body: buffer,
+				Bucket: NAME,
+				ACL: "public-read",
+			}),
+		)

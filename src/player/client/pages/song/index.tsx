@@ -56,7 +56,7 @@ const SongPage: VFC<PropTypes> = ({ song }) => (
 				)}
 			/>
 			<div>
-				<div className="FlexListGapHalf MarginBottomHalf">
+				<div className="FlexRowGapHalf MarginBottomHalf">
 					<h1 className="HeadingFour">
 						{song.title}
 					</h1>

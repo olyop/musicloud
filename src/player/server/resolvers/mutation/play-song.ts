@@ -25,7 +25,7 @@ export const playSong =
 
 			await clearQueue(context.pg)({ userID })
 
-			await updateQueueNowPlaying(context.pg)({
+			await updateQueueNowPlaying(context.pg, context.ag)({
 				userID,
 				value: songID,
 			})

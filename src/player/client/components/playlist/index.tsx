@@ -5,8 +5,9 @@ import { useState, createElement, Fragment, VFC } from "react"
 import {
 	useUserID,
 	usePlayPlaylist,
-	useRenamePlaylist,
 	useDeletePlaylist,
+	useShufflePlaylist,
+	useUpdatePlaylistTitle,
 	useToggleObjectInLibrary,
 } from "../../hooks"
 
@@ -43,8 +44,11 @@ const Playlist: VFC<PropTypes> = ({
 	const [ playPlaylist, isPlaying ] =
 		usePlayPlaylist({ playlistID })
 
+	const [ shufflePlaylist ] =
+		useShufflePlaylist({ playlistID })
+
 	const [ renamePlaylist ] =
-		useRenamePlaylist({ playlistID })
+		useUpdatePlaylistTitle({ playlistID })
 
 	const [ deletePlaylist ] =
 		useDeletePlaylist({ playlistID })
@@ -120,6 +124,11 @@ const Playlist: VFC<PropTypes> = ({
 									text={inLibrary ? "Remove" : "Add"}
 								/>
 							)}
+							<ModalButton
+								icon="shuffle"
+								text="Shuffle"
+								onClick={shufflePlaylist}
+							/>
 							{userID === playlist.user.userID && (
 								<Fragment>
 									<ModalButton
@@ -154,7 +163,7 @@ const Playlist: VFC<PropTypes> = ({
 					fieldID="addToPlaylistTitle"
 					onChange={handleTitleRenameChange}
 				/>
-				<div className="FlexListGapHalf">
+				<div className="FlexRowGapHalf">
 					<Button
 						icon="edit"
 						text="Rename"

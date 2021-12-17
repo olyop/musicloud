@@ -5,7 +5,6 @@ import compress from "fastify-compress"
 import serveStatic from "fastify-static"
 
 import {
-	IS_DEV,
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	SERVE_STATIC_OPTIONS,
@@ -21,7 +20,7 @@ const listenCallback =
 		if (error) {
 			console.error(error)
 		} else {
-			if (!IS_DEV) {
+			if (process.env.NODE_ENV === "production") {
 				console.log(address)
 			}
 		}

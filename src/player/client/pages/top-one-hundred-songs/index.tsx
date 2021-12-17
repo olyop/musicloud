@@ -31,7 +31,7 @@ const TopOneHundredSongsPage: VFC = () => {
 	return (
 		<Metadata title="#100 Songs">
 			<div className="Content PaddingTopBottom">
-				<div className="FlexListGapHalf MarginBottom">
+				<div className="FlexRowGapHalf MarginBottom">
 					<h1
 						children="#100 Songs"
 						className="HeadingFour"

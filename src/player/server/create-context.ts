@@ -6,7 +6,7 @@ import { isString, isUndefined } from "lodash"
 import jwt, { TokenExpiredError } from "jsonwebtoken"
 
 import { Context, JWTPayload } from "./types"
-import { ALGOLIA_OPTIONS, PG_POOL_OPTIONS, JWT_TOKEN_SECRET } from "./globals"
+import { ALGOLIA_OPTIONS, PG_POOL_OPTIONS } from "./globals"
 
 const determineAuthorization =
 	(request: FastifyRequest) => {
@@ -16,7 +16,7 @@ const determineAuthorization =
 		} else {
 			try {
 				const accessToken = authorization.substring(7)
-				const payload = jwt.verify(accessToken, JWT_TOKEN_SECRET)
+				const payload = jwt.verify(accessToken, process.env.JWT_TOKEN_SECRET)
 				if (isString(payload)) {
 					return undefined
 				} else if ("userID" in payload) {
@@ -34,12 +34,15 @@ const determineAuthorization =
 		}
 	}
 
+type ContextFunction =
+	(input: { request: FastifyRequest }) => Context
+
 const createContext =
-	() => {
+	(): ContextFunction => {
 		const s3 = new S3({})
 		const pg = new Pool(PG_POOL_OPTIONS)
 		const ag = algolia(...ALGOLIA_OPTIONS).initIndex("search")
-		return ({ request }: { request: FastifyRequest }): Context => ({
+		return ({ request }) => ({
 			s3,
 			pg,
 			ag,

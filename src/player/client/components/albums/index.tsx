@@ -36,7 +36,7 @@ const Albums: VFC<AlbumsPropTypes> = ({
 						fields: Object.keys(AlbumsOrderByField),
 					}}
 					className={bem(
-						"FlexListRight",
+						"FlexRowRight",
 						isList && !empty && "ItemBorder",
 						isList ? "PaddingHalf" : "MarginBottomHalf",
 					)}

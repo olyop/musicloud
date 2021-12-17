@@ -1,4 +1,5 @@
 import pipe from "@oly_op/pipe"
+import isEmpty from "lodash/isEmpty"
 import { PlaylistID } from "@oly_op/music-app-common/types"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
@@ -18,9 +19,7 @@ export const shufflePlaylist =
 			try {
 				await query("BEGIN")()
 
-				await clearQueue(client)({ userID })
-
-				const [ nowPlaying, ...shuffled ] =
+				const songs =
 					await query(SELECT_PLAYLIST_SONGS)({
 						parse: pipe(
 							convertTableToCamelCase<Song>(),
@@ -32,25 +31,31 @@ export const shufflePlaylist =
 						},
 					})
 
-				await updateQueueNowPlaying(client)({
-					userID,
-					value: nowPlaying.songID,
-				})
+				if (!isEmpty(songs)) {
+					await clearQueue(client)({ userID })
 
-				await Promise.all(
-					shuffled.map(
-						({ songID }, index) => (
-							query(INSERT_QUEUE_SONG)({
-								variables: {
-									index,
-									userID,
-									songID,
-									tableName: "queue_laters",
-								},
-							})
+					const [ nowPlaying, ...shuffled ] = songs
+
+					await updateQueueNowPlaying(client, context.ag)({
+						userID,
+						value: nowPlaying.songID,
+					})
+
+					await Promise.all(
+						shuffled.map(
+							({ songID }, index) => (
+								query(INSERT_QUEUE_SONG)({
+									variables: {
+										index,
+										userID,
+										songID,
+										tableName: "queue_laters",
+									},
+								})
+							),
 						),
-					),
-				)
+					)
+				}
 
 				await query("COMMIT")()
 			} catch (error) {
