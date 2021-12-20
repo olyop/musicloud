@@ -1,6 +1,6 @@
 import isNull from "lodash/isNull"
 import { createElement, VFC } from "react"
-import Metadata from "@oly_op/react-metadata"
+import { Metadata } from "@oly_op/react-metadata"
 
 import {
 	AlbumsOrderBy,

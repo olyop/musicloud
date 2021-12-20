@@ -75,12 +75,14 @@ const Bar: VFC = () => {
 		return (
 			<footer className={bem("", "Elevated")}/>
 		)
-	} else if (data?.getQueue.nowPlaying) {
+	} else {
 		return (
 			<footer className={bem("", "Elevated")}>
-				<BarHowler
-					songID={data.getQueue.nowPlaying.songID}
-				/>
+				{data?.getQueue.nowPlaying && (
+					<BarHowler
+						songID={data.getQueue.nowPlaying.songID}
+					/>
+				)}
 				<BarControls
 					className={bem("controls")}
 					buttonClassName={bem("controls-button")}
@@ -89,12 +91,16 @@ const Bar: VFC = () => {
 				<div className={bem("main", "PaddingHalf")}>
 					<div className={bem("main-content-wrapper")}>
 						<div className={bem("main-content")}>
-							<Song
-								hidePlay
-								hidePlays
-								hideDuration
-								song={data.getQueue.nowPlaying}
-							/>
+							{data?.getQueue.nowPlaying ? (
+								<Song
+									hidePlay
+									hidePlays
+									hideDuration
+									song={data.getQueue.nowPlaying}
+								/>
+							) : (
+								<div/>
+							)}
 							<div className="FlexRowRight">
 								<BarVolume/>
 								<BarQueueButton/>
@@ -108,7 +114,7 @@ const Bar: VFC = () => {
 						</div>
 					</div>
 					<Progress
-						duration={data.getQueue.nowPlaying.duration}
+						duration={data?.getQueue.nowPlaying?.duration || 0}
 					/>
 				</div>
 				<Modal
@@ -123,18 +129,14 @@ const Bar: VFC = () => {
 						onClick={handleExpandClose}
 						className={bem("expand-close")}
 					/>
-					<BarFullscreen
-						onExit={handleExpandClose}
-						song={data.getQueue.nowPlaying}
-					/>
+					{data?.getQueue.nowPlaying && (
+						<BarFullscreen
+							onExit={handleExpandClose}
+							song={data?.getQueue.nowPlaying}
+						/>
+					)}
 				</Modal>
 			</footer>
-		)
-	} else {
-		return (
-			<p className="BodyOne">
-				Queue empty.
-			</p>
 		)
 	}
 }

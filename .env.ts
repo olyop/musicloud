@@ -1,10 +1,7 @@
 interface ProcessEnv {
 	HOST: string,
 	PORT: string,
-	TITLE: string,
 	AWS_REGION: string,
-	SERVICE_WORKER: string,
-	ANALYZE_BUNDLE: string,
 	AWS_RDS_USERNAME: string,
 	AWS_RDS_DATABASE: string,
 	AWS_RDS_PASSWORD: string,
@@ -20,5 +17,7 @@ interface ProcessEnv {
 	ALGOLIA_ADMIN_API_KEY: string,
 	ALGOLIA_SEARCH_API_KEY: string,
 	ALGOLIA_APPLICATION_ID: string,
+	SERVICE_WORKER: "true" | "false",
+	ANALYZE_BUNDLE: "true" | "false",
 	NODE_ENV: "development" | "production",
 }

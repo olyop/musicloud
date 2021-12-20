@@ -7,7 +7,7 @@ import {
 } from "@oly_op/music-app-common/types"
 
 import Button from "@oly_op/react-button"
-import Metadata from "@oly_op/react-metadata"
+import { Metadata } from "@oly_op/react-metadata"
 import { createElement, Fragment, VFC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 

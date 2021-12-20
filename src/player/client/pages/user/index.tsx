@@ -1,6 +1,6 @@
 import { createElement, VFC } from "react"
 import { useParams } from "react-router-dom"
-import Metadata from "@oly_op/react-metadata"
+import { Metadata } from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
 

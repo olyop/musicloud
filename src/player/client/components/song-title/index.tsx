@@ -1,11 +1,13 @@
 import isEmpty from "lodash/isEmpty"
 import { createBEM } from "@oly_op/bem"
+import { ArtistIDNameBase } from "@oly_op/music-app-common/types"
 import { createElement, Fragment, VFC, MouseEventHandler } from "react"
 
 import ObjectLinks from "../object-links"
-import { useStatePlay } from "../../redux"
+import { usePlaySong } from "../../hooks"
 import { Song, Handler } from "../../types"
 import { determineObjectPath } from "../../helpers"
+import { updatePlay, useDispatch } from "../../redux"
 
 import "./index.scss"
 
@@ -13,16 +15,18 @@ const bem =
 	createBEM("SongTitle")
 
 const SongTitle: VFC<PropTypes> = ({
-	song,
 	onClick,
 	showRemixers = true,
+	song: { mix, title, songID, remixers },
 }) => {
-	const play = useStatePlay()
-	const { mix, remixers } = song
+	const dispatch = useDispatch()
+	const [ playSong, isPlaying ] = usePlaySong({ songID })
 
 	const handleClick: MouseEventHandler =
-		event => {
+		async event => {
 			event.preventDefault()
+			await playSong()
+			dispatch(updatePlay(true))
 			if (onClick) {
 				void onClick()
 			}
@@ -33,10 +37,10 @@ const SongTitle: VFC<PropTypes> = ({
 			<Fragment>
 				<button
 					type="button"
+					children={title}
 					onClick={handleClick}
-					children={song.title}
 					className={bem("title")}
-					title={play ? "Pause" : "Play"}
+					title={isPlaying ? "Pause" : "Play"}
 				/>
 				{isEmpty(remixers) ? (
 					<Fragment>
@@ -70,8 +74,8 @@ const SongTitle: VFC<PropTypes> = ({
 			<Fragment>
 				<button
 					type="button"
+					children={title}
 					onClick={onClick}
-					children={song.title}
 					className={bem("title")}
 				/>
 				{isEmpty(mix) || (
@@ -86,10 +90,15 @@ const SongTitle: VFC<PropTypes> = ({
 	}
 }
 
+interface PropTypesSong
+	extends Pick<Song, "mix" | "title" | "songID"> {
+	remixers: ArtistIDNameBase[],
+}
+
 interface PropTypes {
-	song: Song,
 	onClick?: Handler,
 	showRemixers?: boolean,
+	song: PropTypesSong,
 }
 
 export default SongTitle

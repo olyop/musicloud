@@ -11,7 +11,11 @@ import {
 } from "./is-object"
 
 import Item from "../../components/item"
-import { determineCatalogImageURL } from "../../helpers"
+import SongTitle from "../../components/song-title"
+import ObjectLink from "../../components/object-link"
+import ObjectLinks from "../../components/object-links"
+import FeaturingArtists from "../../components/featuring-artists"
+import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
 
 const className =
 	"PaddingQuart ItemBorder"
@@ -22,7 +26,16 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 			<Item
 				leftIcon="person"
 				className={className}
-				infoOptions={{ upperLeft: hit.name }}
+				infoOptions={{
+					upperLeft: (
+						<ObjectLink
+							link={{
+								text: hit.name,
+								path: determineObjectPath("user", hit.objectID),
+							}}
+						/>
+					),
+				}}
 				imageOptions={{
 					title: hit.name,
 					url: determineCatalogImageURL(
@@ -39,7 +52,21 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 			<Item
 				leftIcon="audiotrack"
 				className={className}
-				infoOptions={{ upperLeft: hit.title }}
+				infoOptions={{
+					upperLeft: (
+						<SongTitle
+							song={{
+								songID: hit.objectID,
+								...hit,
+							}}
+						/>
+					),
+					lowerLeft: (
+						<FeaturingArtists
+							song={hit}
+						/>
+					),
+				}}
 				imageOptions={{
 					title: hit.title,
 					url: determineCatalogImageURL(
@@ -56,7 +83,16 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 			<Item
 				leftIcon="list"
 				className={className}
-				infoOptions={{ upperLeft: hit.name }}
+				infoOptions={{
+					upperLeft: (
+						<ObjectLink
+							link={{
+								text: hit.name,
+								path: determineObjectPath("genre", hit.objectID),
+							}}
+						/>
+					),
+				}}
 			/>
 		)
 	} else if (isAlbum(hit)) {
@@ -64,7 +100,24 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 			<Item
 				leftIcon="album"
 				className={className}
-				infoOptions={{ upperLeft: hit.title }}
+				infoOptions={{
+					upperLeft: (
+						<ObjectLink
+							link={{
+								text: hit.title,
+								path: determineObjectPath("album", hit.objectID),
+							}}
+						/>
+					),
+					lowerLeft: (
+						<ObjectLinks
+							links={hit.artists.map(({ artistID, name }) => ({
+								text: name,
+								path: determineObjectPath("artist", artistID),
+							}))}
+						/>
+					),
+				}}
 				imageOptions={{
 					title: hit.title,
 					url: determineCatalogImageURL(
@@ -82,7 +135,14 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 				leftIcon="person"
 				className={className}
 				infoOptions={{
-					upperLeft: hit.name,
+					upperLeft: (
+						<ObjectLink
+							link={{
+								text: hit.name,
+								path: determineObjectPath("artist", hit.objectID),
+							}}
+						/>
+					),
 				}}
 				imageOptions={{
 					title: hit.name,

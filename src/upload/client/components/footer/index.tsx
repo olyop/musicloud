@@ -5,7 +5,7 @@ import { createElement, VFC } from "react"
 import "./index.scss"
 
 const musicloudURL =
-	`http://${process.env.HOST}:${process.env.PLAYER_CLIENT_PORT}`
+	`http://localhost:${process.env.PLAYER_CLIENT_PORT}`
 
 const bem =
 	createBEM("Footer")

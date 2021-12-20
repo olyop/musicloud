@@ -2,6 +2,8 @@ import ReactDOM from "react-dom"
 import { createElement, FC, VFC } from "react"
 import { ApolloProvider } from "@apollo/client"
 import { Provider as ReduxProvider } from "react-redux"
+import { TITLE } from "@oly_op/music-app-common/metadata"
+import { MetadataProvider } from "@oly_op/react-metadata"
 import { BrowserRouter as ReactRouter } from "react-router-dom"
 
 import Pages from "./pages"
@@ -27,24 +29,32 @@ const ApolloClient: FC = ({ children }) => (
 	</ApolloProvider>
 )
 
+const Metadata: FC = ({ children }) => (
+	<MetadataProvider value={{ appTitle: TITLE }}>
+		{children}
+	</MetadataProvider>
+)
+
 const Root: VFC = () => (
-	<ReactRedux>
-		<ReactRouter>
-			<ApolloClient>
-				<ApplySettings>
-					<Fullscreen>
-						<Loading/>
-						<Authorization>
-							<Sidebar/>
-							<Header/>
-							<Pages/>
-							<Bar/>
-						</Authorization>
-					</Fullscreen>
-				</ApplySettings>
-			</ApolloClient>
-		</ReactRouter>
-	</ReactRedux>
+	<Metadata>
+		<ReactRedux>
+			<ReactRouter>
+				<ApolloClient>
+					<ApplySettings>
+						<Fullscreen>
+							<Loading/>
+							<Authorization>
+								<Sidebar/>
+								<Header/>
+								<Pages/>
+								<Bar/>
+							</Authorization>
+						</Fullscreen>
+					</ApplySettings>
+				</ApolloClient>
+			</ReactRouter>
+		</ReactRedux>
+	</Metadata>
 )
 
 ReactDOM.render(

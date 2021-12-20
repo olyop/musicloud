@@ -1,9 +1,10 @@
 import isEmpty from "lodash/isEmpty"
 import { createElement, Fragment, VFC } from "react"
+import { ArtistIDNameBase } from "@oly_op/music-app-common/types"
 
 import ObjectLinks from "../object-links"
+import { OnClickPropTypes } from "../../types"
 import { determineObjectPath } from "../../helpers"
-import { Song, OnClickPropTypes } from "../../types"
 
 const FeaturingArtists: VFC<PropTypes> = ({ song, onClick }) => (
 	<Fragment>
@@ -31,8 +32,13 @@ const FeaturingArtists: VFC<PropTypes> = ({ song, onClick }) => (
 	</Fragment>
 )
 
+interface PropTypesSong {
+	artists: ArtistIDNameBase[],
+	featuring: ArtistIDNameBase[],
+}
+
 interface PropTypes extends OnClickPropTypes {
-	song: Song,
+	song: PropTypesSong,
 }
 
 export default FeaturingArtists

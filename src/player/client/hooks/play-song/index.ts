@@ -21,9 +21,9 @@ export const usePlaySong =
 	(song: Input) => {
 		const { songID } = song
 		const dispatch = useDispatch()
-		const isOptimistic = useRef(true)
 		const resetPlayer = useResetPlayer()
 		const variables: SongID = { songID }
+		const isOptimistic = useRef(isSong(song))
 
 		const { data } =
 			useQuery<QueryData>(

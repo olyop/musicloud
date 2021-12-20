@@ -3,7 +3,7 @@ import orderBy from "lodash/orderBy"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, VFC } from "react"
-import Metadata from "@oly_op/react-metadata"
+import { Metadata } from "@oly_op/react-metadata"
 
 import {
 	Data,

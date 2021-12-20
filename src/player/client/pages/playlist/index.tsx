@@ -1,7 +1,7 @@
 import toLower from "lodash/toLower"
 import startCase from "lodash/startCase"
 import Button from "@oly_op/react-button"
-import Metadata from "@oly_op/react-metadata"
+import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useParams, useNavigate } from "react-router-dom"

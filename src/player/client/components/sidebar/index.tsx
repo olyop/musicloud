@@ -9,7 +9,7 @@ import { useDispatch, toggleSidebar, useStateSidebar } from "../../redux"
 import "./index.scss"
 
 const ADD_URL =
-	`http://${process.env.HOST}:${parseInt(process.env.UPLOAD_CLIENT_PORT)}/artist`
+	`http://localhost:${parseInt(process.env.UPLOAD_CLIENT_PORT)}/artist`
 
 const bem =
 	createBEM("Sidebar")

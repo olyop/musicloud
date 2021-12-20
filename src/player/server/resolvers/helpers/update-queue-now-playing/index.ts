@@ -13,9 +13,10 @@ import {
 	INSERT_NOW_PLAYING,
 	DELETE_QUEUE_NOW_PLAYING,
 	UPDATE_QUEUE_NOW_PLAYING,
-} from "../../sql"
+} from "../../../sql"
 
-import { COLUMN_NAMES } from "../../globals"
+import { COLUMN_NAMES } from "../../../globals"
+import incrementPlays from "./increment-plays"
 
 export interface UpdateQueueNowPlayingOptions
 	extends UserID { value: string | null }
@@ -27,11 +28,9 @@ export const updateQueueNowPlaying =
 
 			const query = pgHelpersQuery(pg)
 
-			if (isNull(value)) {
-				await query(DELETE_QUEUE_NOW_PLAYING)({
-					variables: { userID },
-				})
-			} else {
+			if (ag && !isNull(value)) {
+				const songID = value
+
 				const doesUserHaveNowPlaying =
 					await exists(pg)({
 						value: userID,
@@ -41,29 +40,24 @@ export const updateQueueNowPlaying =
 
 				if (doesUserHaveNowPlaying) {
 					await query(UPDATE_QUEUE_NOW_PLAYING)({
-						variables: { userID, songID: value },
+						variables: { userID, songID },
 					})
 				} else {
 					await query(INSERT_NOW_PLAYING)({
-						variables: { userID, songID: value },
+						variables: { userID, songID },
 					})
 				}
 
 				await query(INSERT_PLAY)({
-					variables: {
-						userID,
-						songID: value,
-					},
+					variables: { userID, songID },
 				})
 
-				if (ag) {
-					await ag.partialUpdateObject({
-						objectID: value,
-						plays: {
-							value: 1,
-							_operation: "Increment",
-						},
-					})
-				}
+				await incrementPlays(pg, ag)({
+					songID,
+				})
+			} else {
+				await query(DELETE_QUEUE_NOW_PLAYING)({
+					variables: { userID },
+				})
 			}
 		}

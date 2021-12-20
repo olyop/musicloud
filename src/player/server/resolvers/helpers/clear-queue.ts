@@ -5,8 +5,8 @@ import { updateQueueNowPlaying } from "./update-queue-now-playing"
 import { clearQueuePreviousNextLater } from "./clear-queue-previous-next-later"
 
 export const clearQueue =
-	(client: PoolOrClient) =>
+	(pg: PoolOrClient) =>
 		async ({ userID }: UserID) => {
-			await clearQueuePreviousNextLater(client)({ userID })
-			await updateQueueNowPlaying(client)({ userID, value: null })
+			await clearQueuePreviousNextLater(pg)({ userID })
+			await updateQueueNowPlaying(pg)({ userID, value: null })
 		}

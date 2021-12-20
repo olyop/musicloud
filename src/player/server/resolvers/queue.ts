@@ -1,4 +1,4 @@
-import { join, query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
+import { join, query, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers"
 
 import { Song } from "../types"
 import { COLUMN_NAMES } from "../globals"
@@ -22,7 +22,7 @@ export const nowPlaying =
 	resolver(
 		({ context }) => (
 			query(context.pg)(SELECT_QUEUE_NOW_PLAYING_SONG)({
-				parse: convertFirstRowToCamelCase<Song>(),
+				parse: convertFirstRowToCamelCaseOrNull<Song>(),
 				variables: {
 					userID: context.authorization!.userID,
 					columnNames: join(COLUMN_NAMES.SONG, "songs"),

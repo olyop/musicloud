@@ -99,3 +99,6 @@ export interface PlaylistBase extends PlaylistIDTitleBase {
 	dateCreated: number,
 	privacy: PlaylistPrivacy,
 }
+
+export type TypeNames =
+	"Key" | "User" | "Play" | "Song" | "Genre" | "Album" | "Artist" | "Playlist"

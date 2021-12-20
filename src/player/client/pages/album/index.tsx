@@ -7,7 +7,7 @@ import {
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import Metadata from "@oly_op/react-metadata"
+import { Metadata } from "@oly_op/react-metadata"
 import { createElement, Fragment, VFC } from "react"
 import { NavLink, useParams } from "react-router-dom"
 import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
