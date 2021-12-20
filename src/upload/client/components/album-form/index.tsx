@@ -1,22 +1,13 @@
 import { useFormik } from "formik"
 import isEmpty from "lodash/isEmpty"
-import { AlbumBase } from "@oly_op/music-app-common/types"
 import { useState, createElement, VFC, ChangeEventHandler } from "react"
 
 import Form from "../form"
+import { Album } from "./types"
 import AlbumSongs from "./songs"
-import { Item } from "../../types"
 import TextField from "../text-field"
 import AlbumFormSong, { Song, SongLists } from "./song"
-
-interface AlbumCover {
-	cover?: File,
-}
-
-interface Album extends Pick<AlbumBase, "title">, AlbumCover {
-	artists: Item[],
-	released: string,
-}
+import createFormData from "./create-form-data"
 
 const AlbumForm: VFC = () => {
 	const [ loading, setLoading ] =
@@ -33,22 +24,18 @@ const AlbumForm: VFC = () => {
 				released: "",
 				cover: undefined,
 			},
-			onSubmit: async album => {
+			onSubmit: async (album, { resetForm }) => {
 				try {
 					setLoading(true)
-					const body = new FormData()
-					body.append("title", album.title)
-					body.append("cover", album.cover!)
-					body.append("released", album.released)
-					body.append("artists", JSON.stringify(album.artists))
-					body.append("songs", JSON.stringify(songs.map(({ audio, ...song }) => song)))
-					for (const song of songs) {
-						body.append(`${song.trackNumber}-audio`, song.audio!)
-					}
-					await fetch("/upload/album", { method: "POST", body })
+					await fetch("/upload/album", {
+						method: "POST",
+						body: createFormData(album, songs),
+					})
+				} catch (error) {
+					console.error(error)
 				} finally {
 					setSongs([])
-					formik.resetForm()
+					resetForm()
 					setLoading(false)
 				}
 			},
@@ -73,6 +60,18 @@ const AlbumForm: VFC = () => {
 			() =>
 				setSongs(prevState => prevState.filter(
 					song => song.trackNumber !== trackNumber,
+				))
+
+	const handleSongMixChange =
+		(trackNumber: number) =>
+			(mix: string) =>
+				setSongs(prevState => prevState.map(
+					song => (
+						song.trackNumber === trackNumber ? ({
+							...song,
+							mix,
+						}) : song
+					),
 				))
 
 	const handleSongTitleChange =
@@ -148,6 +147,7 @@ const AlbumForm: VFC = () => {
 		<Form
 			title="Album"
 			loading={loading}
+			errors={formik.errors}
 			onSubmit={formik.handleSubmit}
 		>
 			<TextField
@@ -195,6 +195,7 @@ const AlbumForm: VFC = () => {
 								key={song.trackNumber}
 								onSongRemove={handleSongRemove(song.trackNumber)}
 								onSongListAdd={handleSongListAdd(song.trackNumber)}
+								onMixChange={handleSongMixChange(song.trackNumber)}
 								onTitleChange={handleSongTitleChange(song.trackNumber)}
 								onSongListChange={handleSongListChange(song.trackNumber)}
 							/>

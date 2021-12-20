@@ -3,11 +3,11 @@ import { trim } from "lodash"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
 import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
-import { ImageDimensions, ImageSizes, ArtistBase, ArtistID } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, ArtistBase, ArtistID, AlgoliaRecordArtist } from "@oly_op/music-app-common/types"
 
 import {
-	addIndexToAlgolia,
 	determineS3ImageURL,
+	addRecordToSearchIndex,
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
@@ -106,12 +106,14 @@ export const uploadArtist: FastifyPluginCallback =
 					images: profileImages,
 				})
 
-				await addIndexToAlgolia({
+				await addRecordToSearchIndex<AlgoliaRecordArtist>({
 					name,
+					city,
+					country,
+					plays: 0,
 					typeName: "Artist",
 					objectID: artistID,
 					image: determineS3ImageURL(artistID, profileImages[2]),
-					origin: city && country ? `${city}, ${country}` : undefined,
 				})
 
 				return reply.send()

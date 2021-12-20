@@ -57,6 +57,7 @@ const ArtistForm: VFC = () => {
 		<Form
 			title="Artist"
 			loading={loading}
+			errors={formik.errors}
 			onSubmit={formik.handleSubmit}
 		>
 			<TextField

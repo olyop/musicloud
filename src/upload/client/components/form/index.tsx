@@ -5,12 +5,14 @@ import {
 	FormEventHandler,
 } from "react"
 
+import isEmpty from "lodash/isEmpty"
+import { FormikErrors } from "formik"
 import Button from "@oly_op/react-button"
 
 import getInitialValues from "./get-initial-values"
 import FormField, { Field, FieldValue, FieldTypeEnum } from "./field"
 
-const Form: FC<PropTypes> = ({ title, loading, onSubmit, children }) => {
+const Form: FC<PropTypes> = ({ title, errors, loading, onSubmit, children }) => {
 	if (loading) {
 		return (
 			<p className="HeadingFive">
@@ -30,6 +32,15 @@ const Form: FC<PropTypes> = ({ title, loading, onSubmit, children }) => {
 				<div className="FlexColumnGap">
 					{children}
 				</div>
+				{!isEmpty(errors) && (
+					<p className="Error">
+						{JSON.stringify(
+							errors,
+							undefined,
+							2,
+						)}
+					</p>
+				)}
 				<Button
 					icon="send"
 					type="submit"
@@ -44,6 +55,7 @@ const Form: FC<PropTypes> = ({ title, loading, onSubmit, children }) => {
 interface PropTypes {
 	title: string,
 	loading: boolean,
+	errors: FormikErrors<unknown>,
 	onSubmit: FormEventHandler<HTMLFormElement>,
 }
 

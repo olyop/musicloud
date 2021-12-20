@@ -23,7 +23,9 @@ const SongTitle: VFC<PropTypes> = ({
 	const handleClick: MouseEventHandler =
 		event => {
 			event.preventDefault()
-			if (onClick) onClick()
+			if (onClick) {
+				void onClick()
+			}
 		}
 
 	if (showRemixers) {

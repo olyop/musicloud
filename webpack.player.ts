@@ -31,6 +31,7 @@ const proxy = [
 	"/icons/512.png",
 	"/service-worker.js",
 	"/manifest.webmanifest",
+	"/search-by-algolia.png",
 ]
 
 const config = merge(baseConfig, {

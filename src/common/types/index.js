@@ -13,3 +13,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./enums"), exports);
 __exportStar(require("./other"), exports);
 __exportStar(require("./objects"), exports);
+__exportStar(require("./algolia"), exports);

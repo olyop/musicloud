@@ -5,7 +5,7 @@ import { FastifyPluginCallback } from "fastify"
 import { GenreBase, GenreID } from "@oly_op/music-app-common/types"
 import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
-import { addIndexToAlgolia } from "../helpers"
+import { addRecordToSearchIndex } from "../helpers"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
 interface Route {
@@ -43,8 +43,9 @@ export const uploadGenre: FastifyPluginCallback =
 						}],
 					})
 
-				await addIndexToAlgolia({
+				await addRecordToSearchIndex({
 					name,
+					plays: 0,
 					typeName: "Genre",
 					objectID: genreID,
 				})

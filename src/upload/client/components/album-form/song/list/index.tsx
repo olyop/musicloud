@@ -36,7 +36,6 @@ const AlbumFormSongList: VFC<PropTypes> = ({ list, onAdd, onChange }) => {
 				transparent
 				onClick={onAdd}
 				className={bem("add")}
-				iconClassName={bem("add-icon")}
 			/>
 		</div>
 	)

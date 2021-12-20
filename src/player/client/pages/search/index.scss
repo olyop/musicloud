@@ -1,0 +1,21 @@
+.SearchPage {
+	&__bar {
+		position: relative;
+		&-input {
+			border: 0;
+			width: 100%;
+			outline: none;
+			font-size: 20rem;
+			padding: var(--space-half);
+			background-color: transparent;
+			border-bottom: 2px solid var(--text-color-light);
+			&-close {
+				right: 0;
+				position: absolute;
+				top: calc(var(--space) + 8rem); } } }
+	&__logo {
+		width: 168rem;
+		height: 24rem;
+		display: block;
+		margin-left: auto;
+		margin-right: auto; } }

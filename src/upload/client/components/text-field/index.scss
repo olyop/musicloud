@@ -42,9 +42,12 @@
 		height: 26rem;
 		position: absolute;
 		&-add {
+			--button-dimension: 30rem;
+			--button-dimension-icon: calc(var(--button-dimension) - 2 * var(--space-quart));
 			left: 9rem;
 			bottom: 7rem;
 			position: absolute;
+			gap: var(--space-quart);
 			padding: var(--space-quart); }
 		&-close {
 			--dim: 16rem;

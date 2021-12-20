@@ -34,6 +34,7 @@ const GenreForm: VFC = () => {
 		<Form
 			title="Genre"
 			loading={loading}
+			errors={formik.errors}
 			onSubmit={formik.handleSubmit}
 		>
 			<TextField

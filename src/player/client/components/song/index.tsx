@@ -134,24 +134,30 @@ const Song: VFC<PropTypes> = ({
 			iconClassName={iconClassName}
 			leftIcon={leftIcon ? "audiotrack" : undefined}
 			left={index || (hideTrackNumber ? null : trackNumber)}
-			imageOptions={hideCover ? undefined : {
-				title: album.title,
-				path: determineObjectPath("album", album.albumID),
-				url: determineCatalogImageURL(
-					album.albumID,
-					"cover",
-					ImageSizes.HALF,
-					ImageDimensions.SQUARE,
-				),
-			}}
-			playOptions={hidePlay ? undefined : {
-				isPlaying,
-				onClick: playSong,
-			}}
-			inLibraryOptions={hideInLibrary ? undefined : {
-				inLibrary,
-				onClick: toggleInLibrary,
-			}}
+			imageOptions={
+				hideCover ? undefined : {
+					title: album.title,
+					path: determineObjectPath("album", album.albumID),
+					url: determineCatalogImageURL(
+						album.albumID,
+						"cover",
+						ImageSizes.HALF,
+						ImageDimensions.SQUARE,
+					),
+				}
+			}
+			playOptions={
+				hidePlay ? undefined : {
+					isPlaying,
+					onClick: playSong,
+				}
+			}
+			inLibraryOptions={
+				hideInLibrary ? undefined : {
+					inLibrary,
+					onClick: toggleInLibrary,
+				}
+			}
 			infoOptions={{
 				upperLeft: (
 					<SongTitle
@@ -169,10 +175,12 @@ const Song: VFC<PropTypes> = ({
 								<Fragment> &#8226; </Fragment>
 								<ObjectLinks
 									ampersand
-									links={genres.map(({ genreID, name }) => ({
-										text: name,
-										path: determineObjectPath("genre", genreID),
-									}))}
+									links={genres.map(
+										({ genreID, name }) => ({
+											text: name,
+											path: determineObjectPath("genre", genreID),
+										}),
+									)}
 								/>
 							</Fragment>
 						)}

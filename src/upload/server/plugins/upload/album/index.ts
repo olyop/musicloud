@@ -3,20 +3,23 @@ import {
 	AlbumID,
 	ImageSizes,
 	ImageDimensions,
-	ArtistIDNameBase,
 	GenreIDNameBase,
+	AlbumIDTitleBase,
+	ArtistIDNameBase,
+	AlgoliaRecordAlbum,
+	AlgoliaRecordSong,
 } from "@oly_op/music-app-common/types"
 
-import * as mm from "music-metadata"
 import { random, trim } from "lodash"
 import { FastifyPluginCallback } from "fastify"
+import { parseBuffer } from "music-metadata/lib/core"
 import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import {
 	uploadFileToS3,
-	addIndexToAlgolia,
 	determineS3ImageURL,
 	determineS3AudioPath,
+	addRecordToSearchIndex,
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
@@ -86,6 +89,9 @@ export const uploadAlbum: FastifyPluginCallback =
 					buffer: cover[0].data,
 				})
 
+				const album: AlbumIDTitleBase =
+					{ albumID, title: albumTitle }
+
 				const albumCoverURL =
 					determineS3ImageURL(albumID, images[2])
 
@@ -109,8 +115,9 @@ export const uploadAlbum: FastifyPluginCallback =
 					albumArtists.push({ artistID, name })
 				}
 
-				await addIndexToAlgolia({
-					name: albumTitle,
+				await addRecordToSearchIndex<AlgoliaRecordAlbum>({
+					plays: 0,
+					title: albumTitle,
 					typeName: "Album",
 					objectID: albumID,
 					image: albumCoverURL,
@@ -125,7 +132,7 @@ export const uploadAlbum: FastifyPluginCallback =
 						(request.body[`${song.trackNumber}-audio`] as BodyEntry[])[0].data
 
 					const duration =
-						(await mm.parseBuffer(audio)).format.duration!
+						(await parseBuffer(audio)).format.duration!
 
 					const { songID } =
 						await query(fastify.pg.pool)(INSERT_SONG)({
@@ -245,8 +252,11 @@ export const uploadAlbum: FastifyPluginCallback =
 						audio,
 					)
 
-					await addIndexToAlgolia({
-						name: songTitle,
+					await addRecordToSearchIndex<AlgoliaRecordSong>({
+						mix,
+						album,
+						plays: 0,
+						title: songTitle,
 						typeName: "Song",
 						objectID: songID,
 						genres: songGenres,

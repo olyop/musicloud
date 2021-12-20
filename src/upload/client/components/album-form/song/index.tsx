@@ -13,14 +13,16 @@ const bem =
 
 const AlbumFormSong: VFC<PropTypes> = ({
 	song,
+	onMixChange,
 	onSongRemove,
 	onSongListAdd,
 	onTitleChange,
 	onSongListChange,
 }) => {
+	const handleMixChange: ChangeEventHandler<HTMLInputElement> =
+		event => onMixChange(event.target.value)
 	const handleTitleChange: ChangeEventHandler<HTMLInputElement> =
-		({ target: { value } }) =>
-			onTitleChange(value)
+		event => onTitleChange(event.target.value)
 	return (
 		<div className={bem("", "ItemBorder PaddingHalf")}>
 			<p className={bem("index", "BodyTwoBold")}>
@@ -34,6 +36,17 @@ const AlbumFormSong: VFC<PropTypes> = ({
 					type="text"
 					value={song.title}
 					onChange={handleTitleChange}
+					className={bem("field-input")}
+				/>
+			</div>
+			<div>
+				<p className={bem("field-label")}>
+					Mix
+				</p>
+				<input
+					type="text"
+					value={song.mix}
+					onChange={handleMixChange}
 					className={bem("field-input")}
 				/>
 			</div>
@@ -108,6 +121,7 @@ export interface Song
 interface PropTypes {
 	song: Song,
 	onSongRemove: () => void,
+	onMixChange: (value: string) => void,
 	onTitleChange: (value: string) => void,
 	onSongListAdd: (key: keyof SongLists) => () => void,
 	onSongListChange: (key: keyof SongLists) => (index: number) => (value: string) => void,

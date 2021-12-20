@@ -34,7 +34,6 @@ export interface UserIDNameBase extends UserID {
     name: string;
 }
 export interface UserBase extends UserIDNameBase {
-    name: string;
     dateJoined: number;
 }
 export interface SongIDTitleBase extends SongID {

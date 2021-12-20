@@ -7,8 +7,8 @@ import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
 import { ImageDimensions, ImageSizes, UserBase, UserID } from "@oly_op/music-app-common/types"
 
 import {
-	addIndexToAlgolia,
 	determineS3ImageURL,
+	addRecordToSearchIndex,
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
@@ -88,7 +88,7 @@ export const uploadUser: FastifyPluginCallback =
 					images: profileImages,
 				})
 
-				await addIndexToAlgolia({
+				await addRecordToSearchIndex({
 					name,
 					typeName: "User",
 					objectID: userID,

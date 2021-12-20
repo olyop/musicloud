@@ -4,7 +4,7 @@
 	display: grid;
 	align-items: end;
 	gap: var(--space-quart);
-	grid-template-columns: 16rem 1fr 1fr 1fr 1fr 1fr var(--dimension);
+	grid-template-columns: 16rem 1fr 0.5fr 1fr 1fr 1fr 1fr var(--dimension);
 	&__index {
 		text-align: left;
 		padding-bottom: 4rem;

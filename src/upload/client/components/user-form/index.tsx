@@ -1,5 +1,5 @@
-import { UserBase } from "@oly_op/music-app-common/types"
 import { useFormik } from "formik"
+import { UserBase } from "@oly_op/music-app-common/types"
 import { ChangeEventHandler, createElement, VFC, useState } from "react"
 
 import Form from "../form"
@@ -29,7 +29,7 @@ const UserForm: VFC = () => {
 				profile: undefined,
 				password: "password",
 			},
-			onSubmit: async user => {
+			onSubmit: async (user, { resetForm, setErrors }) => {
 				setLoading(true)
 				const body = new FormData()
 				body.append("name", user.name)
@@ -38,8 +38,8 @@ const UserForm: VFC = () => {
 				body.append("password", user.password)
 				try {
 					await fetch("/upload/user", { method: "POST", body })
+					resetForm()
 				} finally {
-					formik.resetForm()
 					setLoading(false)
 				}
 			},
@@ -57,6 +57,7 @@ const UserForm: VFC = () => {
 		<Form
 			title="User"
 			loading={loading}
+			errors={formik.errors}
 			onSubmit={formik.handleSubmit}
 		>
 			<TextField

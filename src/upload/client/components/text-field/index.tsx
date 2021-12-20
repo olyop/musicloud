@@ -36,7 +36,7 @@ const TextField: VFC<TextFieldPropTypes> = ({
 }) => {
 	const [ hover, setHover ] = useState(false)
 	const [ focus, setFocus ] = useState(false)
-	const [ privateValue, setPrivateValue ] = useState("")
+	const [ privateValue, setPrivateValue ] = useState(value || "")
 
 	const [ imageURL, setImageURL ] =
 		useState<string | undefined>(undefined)

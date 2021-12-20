@@ -29,6 +29,7 @@ const Artist: VFC<PropTypes> = ({
 	artist,
 	className,
 	leftIcon = false,
+	hideModal = false,
 	alwaysList = false,
 }) => {
 	const { artistID } = artist
@@ -113,10 +114,10 @@ const Artist: VFC<PropTypes> = ({
 	return listStyle === SettingsListStyle.LIST || alwaysList ? (
 		<Item
 			infoOptions={info}
-			modalOptions={modalOptions}
 			imageOptions={imageOptions}
 			inLibraryOptions={inLibraryConfig}
 			leftIcon={leftIcon ? "person" : undefined}
+			modalOptions={hideModal ? undefined : modalOptions}
 			className={bem(className, "PaddingHalf ItemBorder")}
 			playOptions={{ isPlaying: false, onClick: () => {} }}
 		/>
@@ -147,6 +148,7 @@ interface PropTypes {
 	artist: ArtistType,
 	leftIcon?: boolean,
 	className?: string,
+	hideModal?: boolean,
 	alwaysList?: boolean,
 }
 
