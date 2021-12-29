@@ -1,18 +1,23 @@
 import {
 	join,
+	convertTableToCamelCase,
 	query as pgHelpersQuery,
 	exists as pgHelpersExists,
-	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { isNull } from "lodash"
+import { isEmpty } from "lodash-es"
 import { UserInputError } from "apollo-server-fastify"
 import { SongID } from "@oly_op/music-app-common/types"
+
+import {
+	SELECT_QUEUE,
+	INSERT_QUEUE_SONG,
+	UPDATE_QUEUE_SONG_CREMENT_INDEX,
+} from "../../sql"
 
 import resolver from "./resolver"
 import { QueueSong } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
-import { SELECT_QUEUE, INSERT_QUEUE_SONG, UPDATE_QUEUE_SONG } from "../../sql"
 
 export const queueSongNext =
 	resolver<Record<string, never>, SongID>(
@@ -40,7 +45,7 @@ export const queueSongNext =
 
 				const nexts =
 					await query(SELECT_QUEUE)({
-						parse: convertTableToCamelCaseOrNull<QueueSong>(),
+						parse: convertTableToCamelCase<QueueSong>(),
 						variables: {
 							userID,
 							tableName: "queue_nexts",
@@ -48,30 +53,27 @@ export const queueSongNext =
 						},
 					})
 
-				if (!isNull(nexts)) {
-					await Promise.all(
-						nexts.map(
-							next => (
-								query(UPDATE_QUEUE_SONG)({
-									variables: {
-										userID,
-										addSubtract: "+",
-										index: next.index,
-										tableName: "queue_nexts",
-									},
-								})
-							),
-						),
-					)
-					await query(INSERT_QUEUE_SONG)({
-						variables: {
-							userID,
-							index: 0,
-							songID: args.songID,
-							tableName: "queue_nexts",
-						},
-					})
+				if (!isEmpty(nexts)) {
+					for (const next of nexts) {
+						await query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
+							variables: {
+								userID,
+								crement: "+",
+								index: next.index,
+								tableName: "queue_nexts",
+							},
+						})
+					}
 				}
+
+				await query(INSERT_QUEUE_SONG)({
+					variables: {
+						userID,
+						index: 0,
+						songID: args.songID,
+						tableName: "queue_nexts",
+					},
+				})
 
 				await query("COMMIT")()
 			} catch (error) {

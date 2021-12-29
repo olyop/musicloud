@@ -1,13 +1,13 @@
 import { SongID } from "@oly_op/music-app-common/types"
 import { ApolloCache, MutationResult, MutationUpdaterFunction } from "@apollo/client"
 
-import { Handler, QueueNowPlaying, Song } from "../../types"
+import { HandlerPromise, QueueNowPlaying, Song } from "../../types"
 
 export type Input =
 	Song | SongID
 
 export type Result = [
-	playSong: Handler,
+	playSong: HandlerPromise,
 	isPlaying: boolean,
 	result: MutationResult<Data>,
 ]

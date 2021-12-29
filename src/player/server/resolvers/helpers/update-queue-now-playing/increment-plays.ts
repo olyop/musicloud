@@ -1,8 +1,10 @@
 import { SearchIndex } from "algoliasearch"
-import { ArtistID, SongID } from "@oly_op/music-app-common/types"
+import { ArtistID, GenreID, SongID, UserID } from "@oly_op/music-app-common/types"
 import { convertTableToCamelCase, PoolOrClient, query } from "@oly_op/pg-helpers"
 
 import {
+	INSERT_PLAY,
+	SELECT_SONG_GENRES,
 	SELECT_SONG_ARTISTS,
 	SELECT_SONG_REMIXERS,
 	SELECT_SONG_FEATURING,
@@ -11,70 +13,89 @@ import {
 import { getSong } from "../get-objects"
 import { COLUMN_NAMES } from "../../../globals"
 
+const incrementOne = {
+	value: 1,
+	_operation: "Increment",
+}
+
+interface IncrementPlaysOptions
+	extends UserID, SongID {}
+
 const incrementPlays =
 	(pg: PoolOrClient, ag: SearchIndex) =>
-		async ({ songID }: SongID) => {
-			await ag.partialUpdateObject({
-				objectID: songID,
-				plays: {
-					value: 1,
-					_operation: "Increment",
-				},
-			})
+		async ({ userID, songID }: IncrementPlaysOptions) => {
+			const [
+				{ albumID },
+				genres,
+				artists,
+				remixers,
+				featuring,
+			] =
+				await Promise.all([
+					getSong(pg)({ songID }),
+					query(pg)(SELECT_SONG_GENRES)({
+						parse: convertTableToCamelCase<GenreID>(),
+						variables: {
+							songID,
+							columnNames: `genres.${COLUMN_NAMES.GENRE[0]}`,
+						},
+					}),
+					query(pg)(SELECT_SONG_ARTISTS)({
+						parse: convertTableToCamelCase<ArtistID>(),
+						variables: {
+							songID,
+							columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
+						},
+					}),
+					query(pg)(SELECT_SONG_REMIXERS)({
+						parse: convertTableToCamelCase<ArtistID>(),
+						variables: {
+							songID,
+							columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
+						},
+					}),
+					query(pg)(SELECT_SONG_FEATURING)({
+						parse: convertTableToCamelCase<ArtistID>(),
+						variables: {
+							songID,
+							columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
+						},
+					}),
+					query(pg)(INSERT_PLAY)({
+						variables: { userID, songID },
+					}),
+				])
 
-			const { albumID } =
-				await getSong(pg)({ songID })
-
-			await ag.partialUpdateObject({
-				objectID: albumID,
-				plays: {
-					value: 1,
-					_operation: "Increment",
-				},
-			})
-
-			const songArtists =
-				await query(pg)(SELECT_SONG_ARTISTS)({
-					parse: convertTableToCamelCase<ArtistID>(),
-					variables: {
-						songID,
-						columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
-					},
-				})
-
-			const songRemixers =
-				await query(pg)(SELECT_SONG_REMIXERS)({
-					parse: convertTableToCamelCase<ArtistID>(),
-					variables: {
-						songID,
-						columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
-					},
-				})
-
-			const songFeaturing =
-				await query(pg)(SELECT_SONG_FEATURING)({
-					parse: convertTableToCamelCase<ArtistID>(),
-					variables: {
-						songID,
-						columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
-					},
-				})
-
-			const artists = [
-				...songArtists,
-				...songRemixers,
-				...songFeaturing,
-			]
-
-			for (const artist of artists) {
-				await ag.partialUpdateObject({
-					objectID: artist.artistID,
-					plays: {
-						value: 1,
-						_operation: "Increment",
-					},
-				})
-			}
+			await Promise.all([
+				ag.partialUpdateObject({
+					objectID: albumID,
+					plays: incrementOne,
+				}),
+				ag.partialUpdateObject({
+					objectID: songID,
+					plays: incrementOne,
+				}),
+				Promise.all(
+					genres.map(
+						({ genreID }) => (
+							ag.partialUpdateObject({
+								objectID: genreID,
+								plays: incrementOne,
+							})
+						),
+					),
+				),
+				Promise.all(
+					[ ...artists, ...remixers, ...featuring ].map(
+						({ artistID }) => (
+							ag.partialUpdateObject({
+								objectID: artistID,
+								plays: incrementOne,
+							})
+						),
+					),
+				),
+			])
 		}
 
 export default incrementPlays

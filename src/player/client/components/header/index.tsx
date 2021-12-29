@@ -1,13 +1,16 @@
+import uniqueID from "lodash/uniqueId"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useApolloClient } from "@apollo/client"
+import { useNavigate, NavLink } from "react-router-dom"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { createElement, VFC, useEffect, useState } from "react"
-import { useNavigate, useLocation, NavLink } from "react-router-dom"
 import { ImageSizes, ImageDimensions } from "@oly_op/music-app-common/types"
 
 import {
+	addLoading,
 	useDispatch,
+	removeLoading,
 	toggleSidebar,
 	updateIsOnline,
 	useStateIsOnline,
@@ -17,10 +20,14 @@ import {
 
 import Modal from "../modal"
 import Window from "../window"
-import { useSignOut, useUserID } from "../../hooks"
+import HeaderSearchButton from "./search-button"
+import { useSignOut, useJWTPayload } from "../../hooks"
 import { determineCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
+
+const loadingID =
+	uniqueID()
 
 const timeout =
 	(promise: Promise<unknown>) =>
@@ -55,29 +62,16 @@ const checkOnlineStatus =
 		}
 	}
 
-const HeaderSearchButton: VFC = () => {
-	const { pathname } = useLocation()
-	return (
-		<NavLink to="/search">
-			<Button
-				icon="search"
-				title="Search"
-				transparent={pathname !== "/search"}
-			/>
-		</NavLink>
-	)
-}
-
 const bem =
 	createBEM("Header")
 
 const Header: VFC = () => {
-	const userID = useUserID()
 	const signOut = useSignOut()
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const client = useApolloClient()
 	const isOnline = useStateIsOnline()
+	const { userID, name } = useJWTPayload()
 	const isFullscreen = useStateIsFullscreen()
 
 	const checkStatus =
@@ -111,9 +105,11 @@ const Header: VFC = () => {
 		}
 
 	const handleRefresh =
-		() => {
-			void client.refetchQueries({ include: "all" })
+		async () => {
+			dispatch(addLoading(loadingID))
 			handleAccountModalClose()
+			await client.refetchQueries({ include: "all" })
+			dispatch(removeLoading(loadingID))
 		}
 
 	useEffect(() => {
@@ -143,8 +139,8 @@ const Header: VFC = () => {
 							icon="menu"
 							transparent
 							title="Menu"
-							onClick={handleMenuClick}
 							className={bem("icon")}
+							onClick={handleMenuClick}
 						/>
 						{width <= 700 && (
 							<div className="MarginRightQuart FlexRow">
@@ -181,8 +177,8 @@ const Header: VFC = () => {
 				)}
 				<Button
 					transparent
+					title={name}
 					text="Account"
-					title="Account"
 					className="Border"
 					rightIcon="expand_more"
 					onClick={handleAccountModalOpen}

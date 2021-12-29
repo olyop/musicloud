@@ -1,0 +1,87 @@
+mutation jumpToSongInQueueLater($index: NonNegativeInt!) {
+	jumpToSongInQueueLater(index: $index) {
+    nowPlaying {
+      mix
+      title
+      songID
+      duration
+      inLibrary
+      queueIndex
+      featuring {
+        artistID
+        name
+      }
+      remixers {
+        artistID
+        name
+      }
+      artists {
+        artistID
+        name
+      }
+      genres {
+        genreID
+        name
+      }
+      album {
+        albumID
+        title
+      }
+    }
+    next {
+      mix
+      title
+      songID
+      duration
+      queueIndex
+      featuring {
+        artistID
+        name
+      }
+      remixers {
+        artistID
+        name
+      }
+      artists {
+        artistID
+        name
+      }
+      genres {
+        genreID
+        name
+      }
+      album {
+        albumID
+        title
+      }
+    }
+    later {
+      mix
+      title
+      songID
+      duration
+      inLibrary
+      queueIndex
+      featuring {
+        artistID
+        name
+      }
+      remixers {
+        artistID
+        name
+      }
+      artists {
+        artistID
+        name
+      }
+      genres {
+        genreID
+        name
+      }
+      album {
+        albumID
+        title
+      }
+    }
+	}
+}

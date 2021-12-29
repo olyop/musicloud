@@ -1,6 +1,6 @@
-import { createResolver } from "../helpers"
+import createParentResolver from "../create-parent-resolver"
 
 const resolver =
-	createResolver()
+	createParentResolver()
 
 export default resolver

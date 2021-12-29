@@ -1,52 +1,73 @@
 import { Pool } from "pg"
 import algolia from "algoliasearch"
 import { S3 } from "@aws-sdk/client-s3"
+import { isUndefined } from "lodash-es"
 import { FastifyRequest } from "fastify"
-import { isString, isUndefined } from "lodash"
-import jwt, { TokenExpiredError } from "jsonwebtoken"
+import { IncomingHttpHeaders } from "http"
+import { exists } from "@oly_op/pg-helpers"
+import { createVerifier, TokenError } from "fast-jwt"
+import { JWTPayload } from "@oly_op/music-app-common/types"
 
-import { Context, JWTPayload } from "./types"
-import { ALGOLIA_OPTIONS, PG_POOL_OPTIONS } from "./globals"
+import { Context } from "./types"
+import { ALGOLIA_OPTIONS, COLUMN_NAMES } from "./globals"
+
+type ContextFunction =
+	(input: { request: FastifyRequest }) => Promise<Context>
+
+const verifyAccessToken =
+	createVerifier({ key: process.env.JWT_TOKEN_SECRET })
 
 const determineAuthorization =
-	(request: FastifyRequest) => {
-		const { authorization } = request.headers
-		if (isUndefined(authorization)) {
-			return undefined
-		} else {
-			try {
-				const accessToken = authorization.substring(7)
-				const payload = jwt.verify(accessToken, process.env.JWT_TOKEN_SECRET)
-				if (isString(payload)) {
-					return undefined
-				} else if ("userID" in payload) {
-					return payload as JWTPayload
+	async (pg: Pool, authorization: IncomingHttpHeaders["authorization"]) => {
+		try {
+			if (isUndefined(authorization)) {
+				return undefined
+			} else {
+				if (authorization.startsWith("Bearer ")) {
+					const accessToken =
+						authorization.substring(7)
+					const token =
+						await verifyAccessToken(accessToken) as JWTPayload
+					const userExists =
+						await exists(pg)({
+							table: "users",
+							value: token.userID,
+							column: COLUMN_NAMES.USER[0],
+						})
+					if (userExists) {
+						return token
+					} else {
+						return null
+					}
 				} else {
-					return undefined
-				}
-			} catch (error) {
-				if (error instanceof TokenExpiredError) {
 					return null
-				} else {
-					return undefined
 				}
+			}
+		} catch (error) {
+			if (error instanceof TokenError) {
+				return null
+			} else {
+				return undefined
 			}
 		}
 	}
 
-type ContextFunction =
-	(input: { request: FastifyRequest }) => Context
-
 const createContext =
 	(): ContextFunction => {
 		const s3 = new S3({})
-		const pg = new Pool(PG_POOL_OPTIONS)
-		const ag = algolia(...ALGOLIA_OPTIONS).initIndex("search")
-		return ({ request }) => ({
+		const ag = algolia(...ALGOLIA_OPTIONS)
+		const agIndex = ag.initIndex("search")
+		return async ({ request }) => ({
 			s3,
-			pg,
-			ag,
-			authorization: determineAuthorization(request),
+			pg: request.server.pg.pool,
+			ag: {
+				client: ag,
+				index: agIndex,
+			},
+			authorization: await determineAuthorization(
+				request.server.pg.pool,
+				request.headers.authorization,
+			),
 		})
 	}
 

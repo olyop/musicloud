@@ -1,4 +1,4 @@
-import { sum, isEmpty } from "lodash"
+import { sum, isEmpty } from "lodash-es"
 
 import { Song } from "../../types"
 

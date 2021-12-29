@@ -56,8 +56,8 @@ const Sidebar: VFC = () => {
 						<NavLink
 							title="Top 100"
 							onClick={handleClose}
-							to="/top-one-hundred-songs"
 							className={bem("route")}
+							to="/top-one-hundred-songs"
 						>
 							<Button
 								transparent
@@ -142,6 +142,19 @@ const Sidebar: VFC = () => {
 								icon="settings"
 								text="Settings"
 								className={bem("route-button", "PaddingLeftDouble")}
+							/>
+						</NavLink>
+						<NavLink
+							to="/followers"
+							title="Followers"
+							onClick={handleClose}
+							className={bem("route", "BorderTop MarginTopHalf PaddingTopHalf")}
+						>
+							<Button
+								transparent
+								icon="person"
+								text="Followers"
+								className={bem("route-button", "PaddingLeft")}
 							/>
 						</NavLink>
 					</div>

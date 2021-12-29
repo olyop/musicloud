@@ -5,7 +5,7 @@ import {
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import pipe from "@oly_op/pipe"
+import { pipe } from "rxjs"
 import { UserInputError } from "apollo-server-fastify"
 import { AlbumID } from "@oly_op/music-app-common/types"
 
@@ -51,9 +51,9 @@ export const shuffleAlbum =
 						},
 					})
 
-				await updateQueueNowPlaying(client, context.ag)({
+				await updateQueueNowPlaying(client, context.ag.index)({
 					userID,
-					value: nowPlaying.songID,
+					value: nowPlaying!.songID,
 				})
 
 				await Promise.all(

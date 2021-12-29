@@ -1,4 +1,5 @@
 SELECT
+	name,
 	password
 FROM
 	users

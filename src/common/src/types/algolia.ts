@@ -7,6 +7,7 @@ import {
 	TypeNames,
 	ArtistBase,
 	PlaylistBase,
+	UserIDNameBase,
 	GenreIDNameBase,
 	AlbumIDTitleBase,
 	ArtistIDNameBase,
@@ -34,7 +35,9 @@ export interface AlgoliaRecordUser
 	extends
 	AlgoliaRecordImage,
 	Pick<UserBase, "name">,
-	AlgoliaRecordBase<"User"> {}
+	AlgoliaRecordBase<"User"> {
+	followers: number,
+}
 
 export interface AlgoliaRecordSong
 	extends
@@ -75,7 +78,9 @@ export interface AlgoliaRecordPlaylist
 	extends
 	AlgoliaRecordPlays,
 	AlgoliaRecordBase<"Playlist">,
-	Omit<PlaylistBase, "playlistID"> {}
+	Omit<PlaylistBase, "playlistID"> {
+	user: UserIDNameBase,
+}
 
 export type AlgoliaRecord =
 	AlgoliaRecordUser |

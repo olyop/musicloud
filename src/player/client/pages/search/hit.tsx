@@ -1,5 +1,5 @@
 import { createElement, VFC, Fragment } from "react"
-import { AlgoliaRecord, ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import {
 	isUser,
@@ -10,6 +10,7 @@ import {
 	isPlaylist,
 } from "./is-object"
 
+import { Hit } from "./types"
 import Item from "../../components/item"
 import SongTitle from "../../components/song-title"
 import ObjectLink from "../../components/object-link"
@@ -18,9 +19,9 @@ import FeaturingArtists from "../../components/featuring-artists"
 import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
 
 const className =
-	"PaddingQuart ItemBorder"
+	"PaddingHalf ItemBorder"
 
-const Hit: VFC<PropTypes> = ({ hit }) => {
+const SearchHit: VFC<PropTypes> = ({ hit }) => {
 	if (isUser(hit)) {
 		return (
 			<Item
@@ -38,6 +39,10 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 				}}
 				imageOptions={{
 					title: hit.name,
+					path: determineObjectPath(
+						"user",
+						hit.objectID,
+					),
 					url: determineCatalogImageURL(
 						hit.objectID,
 						"profile",
@@ -69,6 +74,10 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 				}}
 				imageOptions={{
 					title: hit.title,
+					path: determineObjectPath(
+						"album",
+						hit.album.albumID,
+					),
 					url: determineCatalogImageURL(
 						hit.album.albumID,
 						"cover",
@@ -120,6 +129,10 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 				}}
 				imageOptions={{
 					title: hit.title,
+					path: determineObjectPath(
+						"album",
+						hit.objectID,
+					),
 					url: determineCatalogImageURL(
 						hit.objectID,
 						"cover",
@@ -146,6 +159,10 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 				}}
 				imageOptions={{
 					title: hit.name,
+					path: determineObjectPath(
+						"artist",
+						hit.objectID,
+					),
 					url: determineCatalogImageURL(
 						hit.objectID,
 						"profile",
@@ -161,7 +178,22 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 				className={className}
 				leftIcon="queue_music"
 				infoOptions={{
-					upperLeft: hit.title,
+					upperLeft: (
+						<ObjectLink
+							link={{
+								text: hit.title,
+								path: determineObjectPath("playlist", hit.objectID),
+							}}
+						/>
+					),
+					lowerLeft: (
+						<ObjectLink
+							link={{
+								text: hit.user.name,
+								path: determineObjectPath("user", hit.user.userID),
+							}}
+						/>
+					),
 				}}
 			/>
 		)
@@ -175,7 +207,7 @@ const Hit: VFC<PropTypes> = ({ hit }) => {
 }
 
 interface PropTypes {
-	hit: AlgoliaRecord,
+	hit: Hit,
 }
 
-export default Hit
+export default SearchHit

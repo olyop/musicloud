@@ -4,13 +4,13 @@ import {
 	convertFirstRowToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { isNull } from "lodash"
+import { isNull } from "lodash-es"
 
 import {
 	INSERT_QUEUE_SONG,
 	DELETE_QUEUE_SONG,
 	SELECT_QUEUE_SONG,
-	UPDATE_QUEUE_SONG,
+	UPDATE_QUEUE_SONG_CREMENT_INDEX,
 } from "../../sql"
 
 import resolver from "./resolver"
@@ -59,10 +59,10 @@ export const previousQueueSong =
 
 					if (!isNull(next) || !isNull(later)) {
 						for (const queue of queueToBeEdited) {
-							await query(UPDATE_QUEUE_SONG)({
+							await query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
 								variables: {
 									userID,
-									addSubtract: "+",
+									crement: "+",
 									index: queue.index,
 									tableName: `queue_${queueToBedEditedName}s`,
 								},
@@ -79,7 +79,7 @@ export const previousQueueSong =
 						},
 					})
 
-					await updateQueueNowPlaying(client, context.ag)({
+					await updateQueueNowPlaying(client, context.ag.index)({
 						userID,
 						value: newNowPlaying.songID,
 					})

@@ -4,9 +4,7 @@ import {
 	DateResolver as Date,
 	VoidResolver as Void,
 	TimestampResolver as Timestamp,
-	PhoneNumberResolver as PhoneNumber,
 	PositiveIntResolver as PositiveInt,
-	EmailAddressResolver as EmailAddress,
 	NonNegativeIntResolver as NonNegativeInt,
 	NonEmptyStringResolver as NonEmptyString,
 } from "graphql-scalars"
@@ -18,7 +16,6 @@ import * as Genre from "./genre"
 import * as Album from "./album"
 import * as Queue from "./queue"
 import * as Query from "./query"
-import * as Search from "./search"
 import * as Artist from "./artist"
 import * as Library from "./library"
 import * as Playlist from "./playlist"
@@ -36,15 +33,12 @@ const resolvers = {
 	Query,
 	Genre,
 	Album,
-	Search,
 	Artist,
 	Library,
 	Mutation,
 	Playlist,
 	Timestamp,
-	PhoneNumber,
 	PositiveInt,
-	EmailAddress,
 	NonNegativeInt,
 	NonEmptyString,
 }

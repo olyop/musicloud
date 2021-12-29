@@ -30,7 +30,6 @@ export const CORS_OPTIONS: FastifyCorsOptions = {
 
 export const PG_POOL_OPTIONS: PoolConfig = {
 	parseInputDatesAsUTC: true,
-	idleTimeoutMillis: 1000 * 2,
 	user: process.env.AWS_RDS_USERNAME,
 	host: process.env.AWS_RDS_ENDPOINT,
 	database: process.env.AWS_RDS_DATABASE,

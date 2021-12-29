@@ -13,7 +13,7 @@ export interface Data {
 	getQueue: Queue,
 }
 
-export interface RemoveVars {
+export interface IndexVars {
 	index: number,
 }
 
@@ -40,6 +40,5 @@ export interface RemoveLaterData {
 export interface QueuePropTypes extends ClassNameBEMPropTypes {
 	name: string,
 	query: DocumentNode,
-	removeQuery?: DocumentNode,
 	queueKey: SettingsQueuesDisclosureKeys,
 }

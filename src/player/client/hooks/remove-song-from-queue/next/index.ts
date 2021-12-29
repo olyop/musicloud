@@ -1,7 +1,7 @@
 import { MutationResult } from "@apollo/client"
 
 import { useMutation } from "../../mutation"
-import { Handler, QueueNext } from "../../../types"
+import { HandlerPromise, QueueNext } from "../../../types"
 import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
 
 export const useRemoveSomeFromQueueNext =
@@ -17,11 +17,11 @@ export const useRemoveSomeFromQueueNext =
 		return [ handler, result ]
 	}
 
-type Return = [
-	removeSomeFromQueueLater: Handler,
-	result: MutationResult<Data>,
-]
-
 interface Data {
 	removeSongFromQueueNext: QueueNext,
 }
+
+type Return = [
+	removeSomeFromQueueLater: HandlerPromise,
+	result: MutationResult<Data>,
+]

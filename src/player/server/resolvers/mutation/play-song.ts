@@ -4,7 +4,7 @@ import { SongID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
-import { clearQueue, updateQueueNowPlaying } from "../helpers"
+import { updateQueueNowPlaying } from "../helpers/update-queue-now-playing"
 
 export const playSong =
 	resolver<Record<string, never>, SongID>(
@@ -23,9 +23,7 @@ export const playSong =
 				throw new UserInputError("Song does not exist")
 			}
 
-			await clearQueue(context.pg)({ userID })
-
-			await updateQueueNowPlaying(context.pg, context.ag)({
+			await updateQueueNowPlaying(context.pg, context.ag.index)({
 				userID,
 				value: songID,
 			})

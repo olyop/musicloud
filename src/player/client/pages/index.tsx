@@ -1,4 +1,4 @@
-import uniqueId from "lodash/uniqueId"
+import uniqueID from "lodash/uniqueId"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
 import { Route, Routes } from "react-router-dom"
@@ -16,6 +16,7 @@ import BrowsePage from "./browse"
 import LibraryPage from "./library"
 import SettingsPage from "./settings"
 import PlaylistPage from "./playlist"
+import FollowersPage from "./followers"
 import CustomShufflePage from "./custom-shuffle"
 import AddSongToPlaylistPage from "./add-song-to-playlist"
 import AddAlbumToPlaylistPage from "./add-album-to-playlist"
@@ -25,68 +26,75 @@ import "./index.scss"
 
 const routes: RouteType[] = [{
 	path: "",
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <BrowsePage/>,
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <UserPage/>,
 	path: "user/:userID",
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <SongsPage/>,
 	path: "song/:songID",
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	path: "search/*",
 	element: <SearchPage/>,
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	path: "queues",
 	element: <QueuesPage/>,
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	path: "library/*",
 	element: <LibraryPage/>,
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <AlbumPage/>,
 	path: "album/:albumID",
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <GenrePage/>,
 	path: "genre/:genreID",
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	path: "settings",
 	element: <SettingsPage/>,
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <ArtistPage/>,
 	path: "artist/:artistID/*",
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
+	path: "Followers",
+	element: <FollowersPage/>,
+},{
+	routeID: uniqueID(),
 	path: "custom-shuffle",
 	element: <CustomShufflePage/>,
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <PlaylistPage/>,
 	path: "playlist/:playlistID",
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	path: "top-one-hundred-songs",
 	element: <TopOneHundredSongsPage/>,
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <AddSongToPlaylistPage/>,
 	path: "add-song-to-playlist/:songID",
 },{
-	routeID: uniqueId(),
+	routeID: uniqueID(),
 	element: <AddAlbumToPlaylistPage/>,
 	path: "add-album-to-playlist/:albumID",
 }]
 
+const bem =
+	createBEM("Pages")
+
 const Pages: VFC = () => (
-	<main className={createBEM("Pages")("")}>
+	<main className={bem("")}>
 		<Routes>
 			{routes.map(
 				({ routeID, path, element }) => (

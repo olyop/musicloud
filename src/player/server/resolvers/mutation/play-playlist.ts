@@ -5,7 +5,7 @@ import {
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { isEmpty } from "lodash"
+import { isEmpty } from "lodash-es"
 import { UserInputError } from "apollo-server-fastify"
 import { PlaylistID } from "@oly_op/music-app-common/types"
 
@@ -17,7 +17,7 @@ import { INSERT_QUEUE_SONG, SELECT_PLAYLIST_SONGS } from "../../sql"
 
 export const playPlaylist =
 	resolver<Record<string, never>, PlaylistID>(
-		async ({ parent, args, context }) => {
+		async ({ args, context }) => {
 			const { playlistID } = args
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
@@ -53,9 +53,9 @@ export const playPlaylist =
 					const [ nowPlaying, ...songs ] =
 						playlistSongs
 
-					await updateQueueNowPlaying(client, context.ag)({
+					await updateQueueNowPlaying(client, context.ag.index)({
 						userID,
-						value: nowPlaying.songID,
+						value: nowPlaying!.songID,
 					})
 
 					await Promise.all(

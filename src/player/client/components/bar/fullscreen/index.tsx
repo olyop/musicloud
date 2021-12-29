@@ -33,6 +33,7 @@ const BarFullscreen: VFC<PropTypes> = ({ song, onExit }) => (
 			<SongTitle
 				song={song}
 				showRemixers
+				onClick={onExit}
 			/>
 		</h1>
 		<h3 className={bem("artists", "text", "MarginBottomHalf")}>

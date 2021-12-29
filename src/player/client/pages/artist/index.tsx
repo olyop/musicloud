@@ -106,7 +106,7 @@ const ArtistPage: VFC = () => {
 					)}
 					content={(
 						<Fragment>
-							<p className="BodyTwoInverted MarginTopQuart">
+							<p className="BodyTwoInverted">
 								<Fragment>Formed in </Fragment>
 								{data.getArtistByID.since.slice(0, -6)}
 							</p>

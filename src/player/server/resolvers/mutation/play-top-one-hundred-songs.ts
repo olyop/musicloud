@@ -3,14 +3,11 @@ import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
 import {
 	clearQueue,
 	getTopSongs,
-	createResolver,
 	updateQueueNowPlaying,
 } from "../helpers"
 
+import resolver from "./resolver"
 import { INSERT_QUEUE_SONG } from "../../sql"
-
-const resolver =
-	createResolver()
 
 export const playTopOneHundredSongs =
 	resolver<Record<string, never>>(
@@ -27,9 +24,9 @@ export const playTopOneHundredSongs =
 				const [ nowPlaying, ...songs ] =
 					await getTopSongs(context.pg)(100)
 
-				await updateQueueNowPlaying(client, context.ag)({
+				await updateQueueNowPlaying(client, context.ag.index)({
 					userID,
-					value: nowPlaying.songID,
+					value: nowPlaying!.songID,
 				})
 
 				await Promise.all(

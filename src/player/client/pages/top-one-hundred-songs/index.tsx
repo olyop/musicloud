@@ -5,13 +5,11 @@ import { Metadata } from "@oly_op/react-metadata"
 
 import { Song, Queue } from "../../types"
 import Songs from "../../components/songs"
-import { useDispatch } from "../../redux"
 import { useQuery, useMutation, useResetPlayer } from "../../hooks"
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
 import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
 
 const TopOneHundredSongsPage: VFC = () => {
-	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
 
 	const { data } =

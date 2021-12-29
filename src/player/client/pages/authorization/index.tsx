@@ -32,18 +32,18 @@ interface Form extends UserID {
 const bem =
 	createBEM("Authorization")
 
+const initialState: Form =
+	{ userID: "", password: "" }
+
 const uploadClientURL =
-	`http://${process.env.HOST}:${process.env.UPLOAD_CLIENT_PORT}`
+	`http://localhost:${process.env.UPLOAD_CLIENT_PORT}`
 
 const Authorization: FC = ({ children }) => {
 	const dispatch = useDispatch()
 	const accessToken = useStateAccessToken()
 
 	const [ { userID, password }, setForm ] =
-		useState<Form>({
-			userID: "",
-			password: "",
-		})
+		useState<Form>(initialState)
 
 	const [ logIn, { error } ] =
 		useMutation<Data, InterfaceWithInput<Form>>(LOG_IN)
@@ -51,23 +51,22 @@ const Authorization: FC = ({ children }) => {
 	const handleSubmit: FormEventHandler =
 		async event => {
 			event.preventDefault()
-			if (userID && userID) {
-				try {
-					const { data } =
-						await logIn({
-							variables: {
-								input: {
-									password,
-									userID: addDashesToUUID(userID),
-								},
+			try {
+				const { data } =
+					await logIn({
+						variables: {
+							input: {
+								password,
+								userID: addDashesToUUID(userID),
 							},
-						})
-					if (data) {
-						dispatch(updateAccessToken(data.logIn))
-					}
-				} catch (err) {
-					noop(err)
+						},
+					})
+				if (data) {
+					dispatch(updateAccessToken(data.logIn))
+					setForm(initialState)
 				}
+			} catch (err) {
+				noop(err)
 			}
 		}
 

@@ -62,7 +62,7 @@ const config = merge(baseConfig, {
 			}),
 		] : []),
 		new HTMLWebpackPlugin({
-			...baseHTMLPluginOptions(TITLE),
+			...baseHTMLPluginOptions(TITLE, true),
 			template: ENTRY_PATH,
 		}),
 	],

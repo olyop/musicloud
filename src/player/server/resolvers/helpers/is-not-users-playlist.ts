@@ -1,4 +1,4 @@
-import pipe from "@oly_op/pipe"
+import { pipe } from "rxjs"
 import { PlaylistID, UserID } from "@oly_op/music-app-common/types"
 import { query, PoolOrClient, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
@@ -10,9 +10,9 @@ export interface IsNotUsersPlaylistOptions
 	extends UserID, PlaylistID {}
 
 export const isNotUsersPlaylist =
-	(client: PoolOrClient) =>
+	(pg: PoolOrClient) =>
 		({ userID, playlistID }: IsNotUsersPlaylistOptions) =>
-			query(client)(SELECT_PLAYLIST_BY_ID)({
+			query(pg)(SELECT_PLAYLIST_BY_ID)({
 				parse: pipe(
 					convertFirstRowToCamelCase<Playlist>(),
 					playlist => playlist.userID !== userID,

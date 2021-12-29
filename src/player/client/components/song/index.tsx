@@ -1,4 +1,5 @@
 import isNull from "lodash/isNull"
+import isString from "lodash/isString"
 import { BEMInput } from "@oly_op/bem"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
@@ -55,12 +56,12 @@ interface ModalPlayButtonPropTypes {
 const Song: VFC<PropTypes> = ({
 	song,
 	index,
+	onJump,
 	onRemove,
 	className,
 	iconClassName,
 	leftIcon = false,
 	hidePlay = false,
-	hideMore = false,
 	hideCover = false,
 	hidePlays = false,
 	hideDuration = false,
@@ -132,8 +133,15 @@ const Song: VFC<PropTypes> = ({
 			onRemove={onRemove}
 			className={className}
 			iconClassName={iconClassName}
-			leftIcon={leftIcon ? "audiotrack" : undefined}
 			left={index || (hideTrackNumber ? null : trackNumber)}
+			leftIcon={
+				isString(leftIcon) ?
+					leftIcon : (
+						leftIcon ?
+							"audiotrack" :
+							undefined
+					)
+			}
 			imageOptions={
 				hideCover ? undefined : {
 					title: album.title,
@@ -147,10 +155,15 @@ const Song: VFC<PropTypes> = ({
 				}
 			}
 			playOptions={
-				hidePlay ? undefined : {
-					isPlaying,
-					onClick: playSong,
-				}
+				onJump ? {
+					onClick: onJump,
+					isPlaying: true,
+				} : (
+					hidePlay ? undefined : {
+						isPlaying,
+						onClick: playSong,
+					}
+				)
 			}
 			inLibraryOptions={
 				hideInLibrary ? undefined : {
@@ -290,17 +303,17 @@ interface QueueData {
 interface PropTypes {
 	song: SongType,
 	index?: number,
+	onJump?: Handler,
 	onRemove?: Handler,
-	leftIcon?: boolean,
 	hidePlay?: boolean,
 	className?: string,
-	hideMore?: boolean,
 	hideCover?: boolean,
 	hidePlays?: boolean,
 	hideDuration?: boolean,
 	hideInLibrary?: boolean,
 	iconClassName?: BEMInput,
 	hideTrackNumber?: boolean,
+	leftIcon?: boolean | string,
 }
 
 export default Song

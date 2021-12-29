@@ -1,5 +1,5 @@
-import pipe from "@oly_op/pipe"
-import { isEmpty } from "lodash"
+import { pipe } from "rxjs"
+import { isEmpty } from "lodash-es"
 import { convertTableToCamelCase, join, query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
@@ -36,9 +36,9 @@ export const shuffleLibrary =
 					const [ nowPlaying, ...shuffled ] =
 						librarySongs
 
-					await updateQueueNowPlaying(client, context.ag)({
+					await updateQueueNowPlaying(client, context.ag.index)({
 						userID,
-						value: nowPlaying.songID,
+						value: nowPlaying!.songID,
 					})
 
 					await Promise.all(shuffled.map(

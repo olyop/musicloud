@@ -1,4 +1,4 @@
-import { Parse } from "@oly_op/pg-helpers"
+import { QueryOptionsParse } from "@oly_op/pg-helpers"
 
 export interface IndexOptions {
 	index: number,
@@ -12,7 +12,7 @@ export interface ColumnNameOptions {
 	columnName: string,
 }
 
-export interface GetObjectsOptions<T> {
-	parse: Parse<T>,
+export interface GetObjectsOptions<T>
+	extends QueryOptionsParse<T> {
 	columnNames: string,
 }

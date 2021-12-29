@@ -7,8 +7,13 @@ import { useStatePlay } from "../../redux"
 
 const AlbumPlayButton: VFC<AlbumID> = ({ albumID }) => {
 	const play = useStatePlay()
-	const [ playAlbum, isPlaying ] = usePlayAlbum({ albumID })
-	const playing = isPlaying && play
+
+	const [ playAlbum, isPlaying ] =
+		usePlayAlbum({ albumID })
+
+	const playing =
+		isPlaying && play
+
 	return (
 		<Button
 			transparent

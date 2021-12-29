@@ -10,7 +10,6 @@ const DELETE_SCHEMA =
 const pool =
 	new Pool({
 		parseInputDatesAsUTC: true,
-		idleTimeoutMillis: 1000 * 2,
 		user: process.env.AWS_RDS_USERNAME,
 		host: process.env.AWS_RDS_ENDPOINT,
 		password: process.env.AWS_RDS_PASSWORD,

@@ -75,6 +75,7 @@ const Artist: VFC<PropTypes> = ({
 		content: onClose => (
 			<ModalButtons>
 				<ModalButton
+					onClose={onClose}
 					onClick={handleToggleInLibrary}
 					icon={inLibrary ? "done" : "add"}
 					text={inLibrary ? "Remove" : "Add"}
@@ -82,6 +83,7 @@ const Artist: VFC<PropTypes> = ({
 				<ModalButton
 					icon="shuffle"
 					text="Shuffle"
+					onClose={onClose}
 					onClick={handleShuffleClick}
 				/>
 			</ModalButtons>

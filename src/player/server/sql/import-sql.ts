@@ -1,6 +1,6 @@
 import fs from "fs"
 import path from "path"
-import { isUndefined } from "lodash"
+import { isUndefined } from "lodash-es"
 
 import { SQL_PATH } from "../globals"
 

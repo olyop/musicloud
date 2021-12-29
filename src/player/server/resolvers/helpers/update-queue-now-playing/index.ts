@@ -4,7 +4,7 @@ import {
 	query as pgHelpersQuery,
 } from "@oly_op/pg-helpers"
 
-import { isNull } from "lodash"
+import { isNull } from "lodash-es"
 import { SearchIndex } from "algoliasearch"
 import { UserID } from "@oly_op/music-app-common/types"
 
@@ -54,6 +54,7 @@ export const updateQueueNowPlaying =
 
 				await incrementPlays(pg, ag)({
 					songID,
+					userID,
 				})
 			} else {
 				await query(DELETE_QUEUE_NOW_PLAYING)({

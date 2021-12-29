@@ -13,7 +13,7 @@ import {
 	SELECT_QUEUE,
 	EXISTS_QUEUE_SONG,
 	DELETE_QUEUE_SONG,
-	UPDATE_QUEUE_SONG,
+	UPDATE_QUEUE_SONG_CREMENT_INDEX,
 } from "../../sql"
 
 import { COLUMN_NAMES } from "../../globals"
@@ -69,11 +69,11 @@ export const removeSongFromQueue =
 				})
 
 				for (const queueSong of queueSongsAfter) {
-					await query(UPDATE_QUEUE_SONG)({
+					await query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
 						variables: {
 							userID,
 							tableName,
-							addSubtract: "-",
+							crement: "-",
 							index: queueSong.index,
 						},
 					})
@@ -87,5 +87,5 @@ export const removeSongFromQueue =
 				client.release()
 			}
 
-			return {} as Record<string, never>
+			return {}
 		}

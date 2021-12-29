@@ -3,7 +3,7 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useLocation, NavLink } from "react-router-dom"
 import { SongID } from "@oly_op/music-app-common/types"
-import { useEffect, useState, createElement, VFC } from "react"
+import { useEffect, useState, createElement, VFC, Fragment } from "react"
 
 import Song from "../song"
 import Modal from "../modal"
@@ -77,66 +77,71 @@ const Bar: VFC = () => {
 		)
 	} else {
 		return (
-			<footer className={bem("", "Elevated")}>
-				{data?.getQueue.nowPlaying && (
-					<BarHowler
-						songID={data.getQueue.nowPlaying.songID}
+			<Fragment>
+				<footer className={bem("", "Elevated")}>
+					<BarControls
+						className={bem("controls")}
+						buttonClassName={bem("controls-button")}
+						buttonIconClassName={bem("controls-button-icon")}
 					/>
-				)}
-				<BarControls
-					className={bem("controls")}
-					buttonClassName={bem("controls-button")}
-					buttonIconClassName={bem("controls-button-icon")}
-				/>
-				<div className={bem("main", "PaddingHalf")}>
-					<div className={bem("main-content-wrapper")}>
-						<div className={bem("main-content")}>
-							{data?.getQueue.nowPlaying ? (
-								<Song
-									hidePlay
-									hidePlays
-									hideDuration
-									song={data.getQueue.nowPlaying}
-								/>
-							) : (
-								<div/>
-							)}
-							<div className="FlexRowRight">
-								<BarVolume/>
-								<BarQueueButton/>
-								<Button
-									transparent
-									title="Player"
-									icon="unfold_more"
-									onClick={handleExpandOpen}
-								/>
+					<div className={bem("main", "PaddingHalf")}>
+						<div className={bem("main-content-wrapper")}>
+							<div className={bem("main-content")}>
+								{data?.getQueue.nowPlaying ? (
+									<Song
+										hidePlay
+										hidePlays
+										hideDuration
+										song={data.getQueue.nowPlaying}
+									/>
+								) : (
+									<div/>
+								)}
+								<div className="FlexRowRight">
+									<BarQueueButton/>
+									<BarVolume/>
+								</div>
 							</div>
 						</div>
+						<Progress
+							duration={data?.getQueue.nowPlaying?.duration || 0}
+						/>
 					</div>
-					<Progress
-						duration={data?.getQueue.nowPlaying?.duration || 0}
-					/>
-				</div>
-				<Modal
-					open={expand}
-					onClose={handleExpandClose}
-					contentClassName={bem("expand")}
-				>
 					<Button
 						transparent
-						icon="close"
-						title="Close Player"
-						onClick={handleExpandClose}
-						className={bem("expand-close")}
+						title="Player"
+						icon="unfold_more"
+						onClick={handleExpandOpen}
+						className={bem("expand-button")}
 					/>
-					{data?.getQueue.nowPlaying && (
-						<BarFullscreen
-							onExit={handleExpandClose}
-							song={data?.getQueue.nowPlaying}
+				</footer>
+				{data?.getQueue.nowPlaying && (
+					<Fragment>
+						<Modal
+							open={expand}
+							onClose={handleExpandClose}
+							contentClassName={bem("expand")}
+						>
+							<Button
+								transparent
+								icon="close"
+								title="Close Player"
+								onClick={handleExpandClose}
+								className={bem("expand-close")}
+							/>
+							{data?.getQueue.nowPlaying && (
+								<BarFullscreen
+									onExit={handleExpandClose}
+									song={data?.getQueue.nowPlaying}
+								/>
+							)}
+						</Modal>
+						<BarHowler
+							songID={data.getQueue.nowPlaying.songID}
 						/>
-					)}
-				</Modal>
-			</footer>
+					</Fragment>
+				)}
+			</Fragment>
 		)
 	}
 }

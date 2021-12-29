@@ -1,10 +1,10 @@
 import { AlbumID } from "@oly_op/music-app-common/types"
 
 import {
-	GetAlbumInLibraryData,
-	AddAlbumToLibraryData,
-	UseToggleAlbumInLibrary,
-	RemoveAlbumFromLibraryData,
+	Result,
+	AddData,
+	QueryData,
+	RemoveData,
 } from "./types"
 
 import { useQuery } from "../query"
@@ -15,24 +15,24 @@ import { addUpdateFunction, removeUpdateFunction } from "./update"
 import REMOVE_ALBUM_FROM_LIBRARY from "./remove-album-from-library.gql"
 
 export const useToggleAlbumInLibrary =
-	({ albumID }: AlbumID): UseToggleAlbumInLibrary => {
+	({ albumID }: AlbumID): Result => {
 		const variables: AlbumID = { albumID }
 
 		const { data } =
-			useQuery<GetAlbumInLibraryData, AlbumID>(GET_ALBUM_IN_LIBRARY, {
+			useQuery<QueryData, AlbumID>(GET_ALBUM_IN_LIBRARY, {
 				variables,
 				hideLoading: true,
 				fetchPolicy: "cache-first",
 			})
 
 		const [ addToLibrary, addResult ] =
-			useMutation<AddAlbumToLibraryData, AlbumID>(
+			useMutation<AddData, AlbumID>(
 				ADD_ALBUM_TO_LIBRARY,
 				{ variables, update: addUpdateFunction },
 			)
 
 		const [ removeFromLibrary, removeResult ] =
-			useMutation<RemoveAlbumFromLibraryData, AlbumID>(
+			useMutation<RemoveData, AlbumID>(
 				REMOVE_ALBUM_FROM_LIBRARY,
 				{ variables, update: removeUpdateFunction },
 			)

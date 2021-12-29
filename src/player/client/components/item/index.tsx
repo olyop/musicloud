@@ -62,7 +62,7 @@ const Item: VFC<PropTypes> = ({
 						transparent
 						icon={leftIcon}
 						title="Placeholder"
-						className={bem("icon")}
+						className={bem("left-icon", "icon")}
 					/>
 				)}
 				{left && (
@@ -75,7 +75,7 @@ const Item: VFC<PropTypes> = ({
 					<PlayButton
 						onClick={playOptions.onClick}
 						isPlaying={playOptions.isPlaying}
-						className={bem(iconClassName, "play")}
+						className={bem(iconClassName, "left-icon")}
 					/>
 				)}
 				{imageOptions && (

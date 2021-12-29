@@ -6,7 +6,7 @@ import { AlbumID } from "@oly_op/music-app-common/types"
 import { ApolloCache, Modifier, Reference } from "@apollo/client/cache"
 
 import { Album } from "../../types"
-import { AddAlbumToLibraryData, RemoveAlbumFromLibraryData } from "./types"
+import { AddData, RemoveData } from "./types"
 
 type ModiferFunction =
 	Modifier<Reference[] | null>
@@ -22,7 +22,7 @@ type UpdateFunction<Data> =
 const addModiferFunction =
 	(cache: ApolloCache<unknown>) =>
 		({ albumID }: AlbumID): ModiferFunction =>
-			(existing, { readField, toReference }) => {
+			(existing, { toReference }) => {
 				if (existing) {
 					const { songs } =
 						cache.readFragment<Album>({
@@ -67,7 +67,7 @@ const removeModiferFunction =
 			}
 		}
 
-export const addUpdateFunction: UpdateFunction<AddAlbumToLibraryData> =
+export const addUpdateFunction: UpdateFunction<AddData> =
 	(cache, { data }) => {
 		cache.modify({
 			id: cache.identify({ __typename: "Library" }),
@@ -77,7 +77,7 @@ export const addUpdateFunction: UpdateFunction<AddAlbumToLibraryData> =
 		})
 	}
 
-export const removeUpdateFunction: UpdateFunction<RemoveAlbumFromLibraryData> =
+export const removeUpdateFunction: UpdateFunction<RemoveData> =
 	(cache, { data }) => {
 		cache.modify({
 			id: cache.identify({ __typename: "Library" }),

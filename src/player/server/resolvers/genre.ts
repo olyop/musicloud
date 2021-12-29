@@ -25,10 +25,11 @@ import {
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
-import { createResolver, determineSongsSQLOrderByField } from "./helpers"
+import { determineSongsSQLOrderByField } from "./helpers"
+import createParentResolver from "./create-parent-resolver"
 
 const resolver =
-	createResolver<Genre>()
+	createParentResolver<Genre>()
 
 export const songs =
 	resolver<Song[], OrderByArgs>(

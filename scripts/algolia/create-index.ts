@@ -21,6 +21,7 @@ const main =
 					highlightPostTag: "</mark>",
 					searchableAttributes: [
 						"name, title",
+						"user.name",
 						"album.title",
 						"artists.name, remixers.name, featuring.name",
 						"genres.name",
@@ -38,13 +39,14 @@ const main =
 						"city",
 						"country",
 					],
-					customRanking: [
+					ranking: [
+						"asc(typeName)",
 						"desc(plays)",
 					],
 					attributesForFaceting: [
-						"filterOnly(userID)",
 						"filterOnly(privacy)",
 						"searchable(typeName)",
+						"filterOnly(user.userID)",
 					],
 				}),
 			)

@@ -1,0 +1,6 @@
+mutation followUser($userID: UUID!) {
+	followUser(userID: $userID) {
+		userID
+		following
+	}
+}

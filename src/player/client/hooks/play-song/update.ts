@@ -13,7 +13,7 @@ const update =
 					id: cache.identify({ __typename: "Queue" }),
 					fields: {
 						nowPlaying:
-							(existing, { toReference }) =>
+							(_, { toReference }) =>
 								toReference({
 									songID,
 									__typename: "Song",

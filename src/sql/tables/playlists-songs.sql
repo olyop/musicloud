@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS playlists_songs (
 	song_id uuid,
-	index smallint,
 	playlist_id uuid,
-	date_added bigint NOT NULL DEFAULT cast(extract(epoch from now()) as bigint),
+	index smallint NOT NULL,
+	date_added bigint NOT NULL DEFAULT get_now(),
 	CONSTRAINT playlists_songs_pk
 		PRIMARY KEY (playlist_id, song_id),
   CONSTRAINT playlists_songs_check_index

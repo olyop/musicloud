@@ -2,6 +2,8 @@ type Mutation {
   # user
   deleteUser: Void
 	logIn(input: LogInInput!): JWT!
+  followUser(userID: UUID!): User!
+  unFollowUser(userID: UUID!): User!
 
   # queue
   clearQueues: Queue!
@@ -43,6 +45,6 @@ type Mutation {
   addSongToPlaylist(songID: UUID!, playlistID: UUID!): Playlist!
   addAlbumToPlaylist(albumID: UUID!, playlistID: UUID!): Playlist!
   updatePlaylistTitle(input: UpdatePlaylistTitleInput!): Playlist!
-  removeSongFromPlaylist(songID: UUID!, playlistID: UUID!): Playlist!
   updatePlaylistPrivacy(input: UpdatePlaylistPrivacyInput!): Playlist!
+  removeSongFromPlaylist(playlistID: UUID!, index: NonNegativeInt!): Playlist!
 }

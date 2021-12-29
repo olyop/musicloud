@@ -3,6 +3,7 @@ import {
 	useRef,
 	useState,
 	useEffect,
+	useContext,
 	createElement,
 	ChangeEventHandler,
 } from "react"
@@ -12,32 +13,42 @@ import uniqueID from "lodash/uniqueId"
 import { createBEM } from "@oly_op/bem"
 import Image from "@oly_op/react-image"
 import Button from "@oly_op/react-button"
+import { SearchIndex } from "algoliasearch"
 import { Metadata } from "@oly_op/react-metadata"
 import { useLocation, useNavigate } from "react-router-dom"
 import { AlgoliaRecord } from "@oly_op/music-app-common/types"
 
-import Hit from "./hit"
-import { searchIndex } from "../../algolia"
+import { Hit } from "./types"
+import SearchHit from "./hit"
 import { useHasMounted } from "../../hooks"
+import { AlgoliaSearchClient } from "../../contexts"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
 
 import "./index.scss"
+
+const loadingID =
+	uniqueID()
 
 const bem =
 	createBEM("SearchPage")
 
 const getAlgoliaHits =
-	async (value: string) => {
-		const { hits } = await searchIndex.search<AlgoliaRecord>(value)
-		return hits
-	}
+	(index: SearchIndex) =>
+		async (value: string) => {
+			const { hits } =
+				await index.search<AlgoliaRecord>(value)
+			return hits
+		}
 
 const SearchPage: VFC = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
 	const dispatch = useDispatch()
-	const loadingID = useRef(uniqueID())
 	const hasMounted = useHasMounted()
+	const ag = useContext(AlgoliaSearchClient)
+
+	const indexRef =
+		useRef(ag.initIndex(process.env.ALGOLIA_INDEX_NAME))
 
 	const params = new URLSearchParams(location.search)
 	const initQuery = params.get("query") ?? ""
@@ -46,14 +57,14 @@ const SearchPage: VFC = () => {
 		useState(initQuery)
 
 	const [ hits, setHits ] =
-		useState<AlgoliaRecord[]>([])
+		useState<Hit[]>([])
 
 	const handleChange =
 		async (value: string) => {
 			setInput(value)
-			dispatch(addLoading(loadingID.current))
-			setHits(await getAlgoliaHits(input))
-			dispatch(removeLoading(loadingID.current))
+			dispatch(addLoading(loadingID))
+			setHits(await getAlgoliaHits(indexRef.current)(input))
+			dispatch(removeLoading(loadingID))
 		}
 
 	const handleClear =
@@ -63,12 +74,12 @@ const SearchPage: VFC = () => {
 		}
 
 	const handleInput: ChangeEventHandler<HTMLInputElement> =
-		({ target: { value } }) =>
-			handleChange(value)
+		event =>
+			handleChange(event.target.value)
 
 	useEffect(() => {
 		if (!isEmpty(initQuery)) {
-			void getAlgoliaHits(initQuery).then(setHits)
+			void getAlgoliaHits(indexRef.current)(initQuery).then(setHits)
 		}
 	}, [initQuery])
 
@@ -104,7 +115,7 @@ const SearchPage: VFC = () => {
 					<div className="Content Elevated">
 						{hits.map(
 							hit => (
-								<Hit
+								<SearchHit
 									hit={hit}
 									key={hit.objectID}
 								/>

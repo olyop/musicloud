@@ -1,6 +1,6 @@
-import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { ForbiddenError, UserInputError } from "apollo-server-fastify"
 import { convertFirstRowToCamelCase, exists, join, query } from "@oly_op/pg-helpers"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { Playlist } from "../../types"
@@ -9,7 +9,7 @@ import { isNotUsersPlaylist } from "../helpers"
 import { UPDATE_PLAYLIST_PRIVACY } from "../../sql"
 
 export const updatePlaylistPrivacy =
-	resolver<Playlist, Args>(
+	resolver<Playlist, InterfaceWithInput<Input>>(
 		async ({ args, context }) => {
 			const { userID } = context.authorization!
 			const { playlistID, privacy } = args.input
@@ -29,6 +29,13 @@ export const updatePlaylistPrivacy =
 				throw new ForbiddenError("Unauthorized to update playlist")
 			}
 
+			const algoliaRecordUpdate: Partial<AlgoliaRecordPlaylist> = {
+				privacy,
+				objectID: playlistID,
+			}
+
+			await context.ag.index.partialUpdateObject(algoliaRecordUpdate)
+
 			return query(context.pg)(UPDATE_PLAYLIST_PRIVACY)({
 				parse: convertFirstRowToCamelCase<Playlist>(),
 				variables: {
@@ -42,6 +49,3 @@ export const updatePlaylistPrivacy =
 
 type Input =
 	Pick<Playlist, "playlistID" | "privacy">
-
-type Args =
-	InterfaceWithInput<Input>

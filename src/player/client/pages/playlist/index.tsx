@@ -5,11 +5,11 @@ import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useParams, useNavigate } from "react-router-dom"
-import { PlaylistID, SongID } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import {
 	useQuery,
-	useUserID,
+	useJWTPayload,
 	useMutation,
 	usePlayPlaylist,
 	useDeletePlaylist,
@@ -22,14 +22,14 @@ import RenameButton from "./rename-button"
 import PrivacyButton from "./privacy-button"
 import ObjectLink from "../../components/object-link"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
-import Songs, { OnRemoveOptions } from "../../components/songs"
+import Songs, { SongsChangeOptions } from "../../components/songs"
 import { determinePlural, determineObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
 const PlaylistPage: VFC = () => {
-	const userID = useUserID()
 	const play = useStatePlay()
 	const navigate = useNavigate()
+	const { userID } = useJWTPayload()
 	const params = useParams<keyof PlaylistID>()
 	const playlistID = addDashesToUUID(params.playlistID!)
 
@@ -71,13 +71,10 @@ const PlaylistPage: VFC = () => {
 		}
 
 	const handleRemoveSongFromPlaylist =
-		({ song: { songID } }: OnRemoveOptions) =>
+		({ index }: SongsChangeOptions) =>
 			async () => {
 				await removeSongFromPlaylist({
-					variables: {
-						songID,
-						playlistID,
-					},
+					variables: { index, playlistID },
 				})
 			}
 
@@ -117,7 +114,7 @@ const PlaylistPage: VFC = () => {
 							orderBy={false}
 							className="MarginBottom"
 							songs={data.getPlaylistByID.songs}
-							onRemove={handleRemoveSongFromPlaylist}
+							onRemove={isUsers ? handleRemoveSongFromPlaylist : undefined}
 						/>
 					) : (
 						<p className="BodyTwo MarginBottom">
@@ -169,6 +166,8 @@ interface RemoveSongFromPlaylistData {
 }
 
 interface RemoveSongFromPlaylistVars
-	extends SongID, PlaylistID {}
+	extends PlaylistID {
+	index: number,
+}
 
 export default PlaylistPage

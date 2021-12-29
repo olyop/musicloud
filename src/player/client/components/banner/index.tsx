@@ -25,7 +25,7 @@ const Banner: VFC<PropTypes> = ({
 				url={profileURL}
 				className={bem("content-profile", "Elevated")}
 			/>
-			<div className="OverflowHidden">
+			<div>
 				<h1 className={bem("content-title", "HeadingTwoInverted")}>
 					{title}
 				</h1>
@@ -34,7 +34,9 @@ const Banner: VFC<PropTypes> = ({
 						{subTitle}
 					</p>
 				)}
-				{content}
+				<div className="MarginTopHalf">
+					{content}
+				</div>
 				{buttons && (
 					<div className={bem("content-buttons", "MarginTop FlexRowGapHalf")}>
 						{buttons}

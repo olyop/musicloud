@@ -57,6 +57,7 @@ const SongTitle: VFC<PropTypes> = ({
 						<Fragment> </Fragment>
 						<ObjectLinks
 							ampersand
+							onClick={onClick}
 							links={remixers.map(({ artistID, name }) => ({
 								text: name,
 								path: determineObjectPath("artist", artistID),

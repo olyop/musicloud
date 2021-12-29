@@ -8,7 +8,7 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import pipe from "@oly_op/pipe"
+import { pipe } from "rxjs"
 import { ArtistID, UserID } from "@oly_op/music-app-common/types"
 
 import {
@@ -22,7 +22,6 @@ import {
 
 import {
 	head,
-	createResolver,
 	getObjectInLibrary,
 	getObjectDateAddedToLibrary,
 	determineSongsSQLOrderByField,
@@ -39,9 +38,10 @@ import {
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
+import createParentResolver from "./create-parent-resolver"
 
 const resolver =
-	createResolver<Artist>()
+	createParentResolver<Artist>()
 
 export const playsTotal =
 	resolver(

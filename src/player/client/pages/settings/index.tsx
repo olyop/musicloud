@@ -136,22 +136,6 @@ const SettingsPage: VFC = () => {
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
 							<div>
 								<p className="BodyTwoBold MarginBottomQuart">
-									Song Duration:
-								</p>
-								<div className="FlexRowGapFifth">
-									<input
-										type="checkbox"
-										checked={showDuration}
-										onChange={handleToggleShowDuration}
-										className={bem("checkbox", "BodyTwo")}
-									/>
-									<p className="BodyTwo LightWeight">
-										{showDuration ? "Show" : "Hide"}
-									</p>
-								</div>
-							</div>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
 									Song Genres:
 								</p>
 								<div className="FlexRowGapFifth">
@@ -163,6 +147,22 @@ const SettingsPage: VFC = () => {
 									/>
 									<p className="BodyTwo LightWeight">
 										{showGenres ? "Show" : "Hide"}
+									</p>
+								</div>
+							</div>
+							<div>
+								<p className="BodyTwoBold MarginBottomQuart">
+									Song Duration:
+								</p>
+								<div className="FlexRowGapFifth">
+									<input
+										type="checkbox"
+										checked={showDuration}
+										onChange={handleToggleShowDuration}
+										className={bem("checkbox", "BodyTwo")}
+									/>
+									<p className="BodyTwo LightWeight">
+										{showDuration ? "Show" : "Hide"}
 									</p>
 								</div>
 							</div>

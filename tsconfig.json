@@ -4,12 +4,19 @@
 		"jsx": "react",
 		"jsxFactory": "createElement"
 	},
-	"exclude": [
-		"build"
-	],
 	"ts-node": {
 		"compilerOptions": {
-			"module": "CommonJS",
+			"target": "ES6",
+			"module": "CommonJS"
+		},
+		"moduleTypes": {
+			"scripts/**/*": "cjs",
+			"webpack.base.ts": "cjs",
+			"webpack.player.ts": "cjs",
+			"webpack.upload.ts": "cjs"
 		}
-	}
+	},
+	"exclude": [
+		"build"
+	]
 }

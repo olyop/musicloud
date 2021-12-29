@@ -1,3 +1,5 @@
+/* eslint-disable react/function-component-definition */
+/* eslint-disable @typescript-eslint/default-param-last */
 import isNull from "lodash/isNull"
 import { InMemoryCache, FieldMergeFunction } from "@apollo/client"
 
@@ -5,7 +7,6 @@ import { StoreObject } from "../types"
 
 const mergeArrays =
 	(): FieldMergeFunction<StoreObject[] | null> =>
-		// eslint-disable-next-line react/function-component-definition
 		(existing = [], incoming) => {
 			if (isNull(incoming)) {
 				return null

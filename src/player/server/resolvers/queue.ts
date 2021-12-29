@@ -1,17 +1,20 @@
+import { QUEUE_PAGE_SIZE } from "@oly_op/music-app-common/globals"
 import { join, query, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers"
 
 import { Song } from "../types"
 import { COLUMN_NAMES } from "../globals"
+import { getQueueSongs } from "./helpers"
 import { SELECT_QUEUE_NOW_PLAYING_SONG } from "../sql"
-import { createResolver, getQueueSongs } from "./helpers"
+import createParentResolver from "./create-parent-resolver"
 
 const resolver =
-	createResolver()
+	createParentResolver()
 
 export const previous =
 	resolver(
 		({ context }) => (
 			getQueueSongs(context.pg)({
+				limit: QUEUE_PAGE_SIZE,
 				tableName: "queue_previous",
 				userID: context.authorization!.userID,
 			})
@@ -35,6 +38,7 @@ export const next =
 	resolver(
 		({ context }) => (
 			getQueueSongs(context.pg)({
+				limit: QUEUE_PAGE_SIZE,
 				tableName: "queue_nexts",
 				userID: context.authorization!.userID,
 			})
@@ -43,8 +47,9 @@ export const next =
 
 export const later =
 	resolver(
-		({ parent, context }) => (
+		({ context }) => (
 			getQueueSongs(context.pg)({
+				limit: QUEUE_PAGE_SIZE,
 				tableName: "queue_laters",
 				userID: context.authorization!.userID,
 			})

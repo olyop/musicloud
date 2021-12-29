@@ -36,6 +36,6 @@ export const deletePlaylistByID =
 				variables: { playlistID },
 			})
 
-			await context.ag.deleteObject(playlistID)
+			await context.ag.index.deleteObject(playlistID)
 		},
 	)

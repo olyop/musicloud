@@ -7,7 +7,7 @@ export const createDiscs =
 		if (isEmpty(songs)) {
 			return []
 		} else {
-			const numberOfDiscs = songs[songs.length - 1].discNumber || 1
+			const numberOfDiscs = songs[songs.length - 1]!.discNumber || 1
 			const discsEmpty = Array(numberOfDiscs).fill({})
 			const discs = discsEmpty.map(
 				(_, index) => ({

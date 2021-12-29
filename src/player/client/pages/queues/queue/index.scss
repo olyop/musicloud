@@ -1,0 +1,9 @@
+.Queue {
+	&__expand {
+		border-radius: 0;
+		justify-content: flex-start;
+		background-color: transparent !important;
+		gap: calc(var(--space-three-quart) - 4rem);
+		padding-left: calc(var(--space-three-quart) + 1rem); }
+	&__section {
+		margin-top: calc((var(--space-quart) + 3rem) * -1); } }

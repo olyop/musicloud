@@ -3,9 +3,11 @@ import { Metadata } from "@oly_op/react-metadata"
 
 const LibraryHome: VFC = () => (
 	<Metadata title="Library">
-		<h2 className="BodyTwo Content Padding Elevated FlexColumnGapHalf">
-			W.I.P.
-		</h2>
+		<div className="Content">
+			<h2 className="BodyTwo">
+				W.I.P.
+			</h2>
+		</div>
 	</Metadata>
 )
 

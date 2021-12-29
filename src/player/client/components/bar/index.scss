@@ -32,9 +32,9 @@
 		&-content {
 			display: grid;
 			max-width: 100%;
-			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 3);
+			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 2);
 			&-wrapper {
-				margin-right: calc(var(--space-half) *  -1); } } }
+				margin-right: calc(var(--space-quart) *  -1 - 1rem); } } }
 	&__expand {
 		top: 0;
 		left: 0;
@@ -43,6 +43,13 @@
 		transform: unset;
 		box-shadow: none;
 		border-radius: 0;
+		&-button {
+			height: 100%;
+			border-radius: unset;
+			padding: var(--space-half);
+			border-left-width: var(--border-width);
+			border-left-style: var(--border-style);
+			border-left-color: var(--border-color); }
 		&-close {
 			position: absolute;
 			right: var(--space-half);

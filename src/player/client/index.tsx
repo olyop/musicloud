@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom"
-import { createElement, FC, VFC } from "react"
+import algoliasearch from "algoliasearch"
 import { ApolloProvider } from "@apollo/client"
+import { createElement, FC, useRef, VFC } from "react"
 import { Provider as ReduxProvider } from "react-redux"
 import { TITLE } from "@oly_op/music-app-common/metadata"
 import { MetadataProvider } from "@oly_op/react-metadata"
@@ -10,9 +11,11 @@ import Pages from "./pages"
 import client from "./apollo"
 import { store } from "./redux"
 import Bar from "./components/bar"
+import { useJWTPayload } from "./hooks"
 import Header from "./components/header"
 import Loading from "./components/loading"
 import Sidebar from "./components/sidebar"
+import { AlgoliaSearchClient } from "./contexts"
 import Fullscreen from "./components/fullscreen"
 import Authorization from "./pages/authorization"
 import ApplySettings from "./components/apply-settings"
@@ -35,6 +38,20 @@ const Metadata: FC = ({ children }) => (
 	</MetadataProvider>
 )
 
+const AlgoliaClient: FC = ({ children }) => {
+	const { algoliaKey } =
+		useJWTPayload()
+
+	const agRef =
+		useRef(algoliasearch(process.env.ALGOLIA_APPLICATION_ID, algoliaKey))
+
+	return (
+		<AlgoliaSearchClient.Provider value={agRef.current}>
+			{children}
+		</AlgoliaSearchClient.Provider>
+	)
+}
+
 const Root: VFC = () => (
 	<Metadata>
 		<ReactRedux>
@@ -44,10 +61,12 @@ const Root: VFC = () => (
 						<Fullscreen>
 							<Loading/>
 							<Authorization>
-								<Sidebar/>
-								<Header/>
-								<Pages/>
-								<Bar/>
+								<AlgoliaClient>
+									<Sidebar/>
+									<Header/>
+									<Pages/>
+									<Bar/>
+								</AlgoliaClient>
 							</Authorization>
 						</Fullscreen>
 					</ApplySettings>

@@ -48,9 +48,9 @@ export const playAlbum =
 						},
 					})
 
-				await updateQueueNowPlaying(client, context.ag)({
+				await updateQueueNowPlaying(client, context.ag.index)({
 					userID,
-					value: nowPlaying.songID,
+					value: nowPlaying!.songID,
 				})
 
 				await Promise.all(

@@ -1,5 +1,5 @@
 import {
-	convertTableToCamelCase,
+	getResultRowCount,
 	query as pgHelpersQuery,
 	exists as pgHelpersExists,
 } from "@oly_op/pg-helpers"
@@ -8,7 +8,6 @@ import { UserInputError } from "apollo-server-fastify"
 import { SongID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
-import { QueueSong } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
 import { SELECT_QUEUE, INSERT_QUEUE_SONG } from "../../sql"
 
@@ -38,7 +37,7 @@ export const queueSongAfter =
 
 				const nexts =
 					await query(SELECT_QUEUE)({
-						parse: convertTableToCamelCase<QueueSong>(),
+						parse: getResultRowCount,
 						variables: {
 							userID,
 							columnNames: "*",
@@ -49,7 +48,7 @@ export const queueSongAfter =
 				await query(INSERT_QUEUE_SONG)({
 					variables: {
 						userID,
-						index: nexts.length,
+						index: nexts,
 						songID: args.songID,
 						tableName: "queue_nexts",
 					},

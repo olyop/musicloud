@@ -4,6 +4,8 @@ import { BEMInput as BaseBEMInput } from "@oly_op/bem"
 
 import { Song } from "./objects"
 
+export type PromiseOrValue<T> = T | Promise<T>
+
 export interface Disc {
 	songs: Song[],
 	number: number,
@@ -18,8 +20,9 @@ export interface Route extends PathRouteProps {
 	underline?: boolean,
 }
 
-export type HandlerReturn = void | Promise<void>
+export type HandlerReturn = PromiseOrValue<void>
 export type Handler = () => HandlerReturn
+export type HandlerPromise = () => Promise<void>
 
 export interface OnClickPropTypes {
 	onClick?: Handler,

@@ -4,13 +4,13 @@ import {
 	convertFirstRowToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { isNull } from "lodash"
+import { isNull } from "lodash-es"
 
 import {
 	INSERT_QUEUE_SONG,
 	SELECT_QUEUE_SONG,
 	DELETE_QUEUE_SONG,
-	UPDATE_QUEUE_SONG,
+	UPDATE_QUEUE_SONG_CREMENT_INDEX,
 } from "../../sql"
 
 import resolver from "./resolver"
@@ -49,40 +49,44 @@ export const nextQueueSong =
 							},
 						})
 
-					await query(DELETE_QUEUE_SONG)({
-						variables: {
+					await Promise.all([
+						query(DELETE_QUEUE_SONG)({
+							variables: {
+								userID,
+								index: 0,
+								tableName: `queue_${queueToBeEditedName}s`,
+							},
+						}),
+						...queueToBeEdited
+							.filter(
+								({ index }) =>
+									index !== 0,
+							)
+							.map(
+								queueSong => (
+									query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
+										variables: {
+											userID,
+											crement: "-",
+											index: queueSong.index,
+											tableName: `queue_${queueToBeEditedName}s`,
+										},
+									})
+								),
+							),
+						query(INSERT_QUEUE_SONG)({
+							variables: {
+								userID,
+								songID: nowPlaying.songID,
+								tableName: "queue_previous",
+								index: isNull(previous) ? 0 : previous.length,
+							},
+						}),
+						updateQueueNowPlaying(client, context.ag.index)({
 							userID,
-							index: 0,
-							tableName: `queue_${queueToBeEditedName}s`,
-						},
-					})
-
-					for (const queue of queueToBeEdited) {
-						if (queue.index !== 0) {
-							await query(UPDATE_QUEUE_SONG)({
-								variables: {
-									userID,
-									addSubtract: "-",
-									index: queue.index,
-									tableName: `queue_${queueToBeEditedName}s`,
-								},
-							})
-						}
-					}
-
-					await query(INSERT_QUEUE_SONG)({
-						variables: {
-							userID,
-							songID: nowPlaying.songID,
-							tableName: "queue_previous",
-							index: isNull(previous) ? 0 : previous.length,
-						},
-					})
-
-					await updateQueueNowPlaying(client, context.ag)({
-						userID,
-						value: newNowPlaying.songID,
-					})
+							value: newNowPlaying.songID,
+						}),
+					])
 				}
 
 				await query("COMMIT")()

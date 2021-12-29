@@ -1,23 +1,23 @@
 import { AlbumID } from "@oly_op/music-app-common/types"
 
-import { Album, Handler, InLibraryBase } from "../../types"
+import { Album, HandlerPromise, InLibraryBase } from "../../types"
 
-export type UseToggleAlbumInLibrary = [
-	toggleAlbumInLibrary: Handler,
+export type Result = [
+	toggleAlbumInLibrary: HandlerPromise,
 	inLibrary: boolean,
 ]
 
-interface GetAlbumInLibraryDataPick
+interface QueryDataPick
 	extends AlbumID, InLibraryBase {}
 
-export interface GetAlbumInLibraryData {
-	getAlbumByID: GetAlbumInLibraryDataPick,
+export interface QueryData {
+	getAlbumByID: QueryDataPick,
 }
 
-export interface AddAlbumToLibraryData {
+export interface AddData {
 	addAlbumToLibrary: Album,
 }
 
-export interface RemoveAlbumFromLibraryData {
+export interface RemoveData {
 	removeAlbumFromLibrary: Album,
 }

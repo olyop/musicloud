@@ -1,18 +1,18 @@
 import { useEffect } from "react"
 
+import { Data, Result } from "./types"
 import { useMutation } from "../../mutation"
 import { useKeyPress } from "../../key-press"
 import { useResetPlayer } from "../../reset-player"
 import PREVIOUS_QUEUE_SONG from "./previous-queue-song.gql"
-import { PreviousQueueSongData, UsePreviousQueueSongResult } from "./types"
 
 export const usePreviousQueueSong =
-	(): UsePreviousQueueSongResult => {
+	(): Result => {
 		const resetPlayer = useResetPlayer()
 		const previousPress = useKeyPress("MediaTrackPrevious")
 
 		const [ previousQueueSong, result ] =
-			useMutation<PreviousQueueSongData>(PREVIOUS_QUEUE_SONG)
+			useMutation<Data>(PREVIOUS_QUEUE_SONG)
 
 		const handlePreviousClick =
 			async () => {

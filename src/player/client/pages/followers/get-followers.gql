@@ -1,0 +1,11 @@
+query getFollowers {
+	getUser {
+		userID
+		followers {
+			name
+			userID
+			follower
+			following
+		}
+	}
+}

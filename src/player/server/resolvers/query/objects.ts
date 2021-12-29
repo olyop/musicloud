@@ -34,19 +34,17 @@ import {
 import resolver from "./resolver"
 
 export const getQueue =
-	resolver<Record<string, never>>(
-		() => ({}),
-	)
+	resolver(() => ({}))
 
 export const getLibrary =
-	resolver<Record<string, never>>(
-		() => ({}),
-	)
+	resolver(() => ({}))
 
 export const getUser =
 	resolver<User>(
-		({ args, context }) => (
-			getUserHelper(context.pg)({ userID: context.authorization!.userID })
+		({ context }) => (
+			getUserHelper(context.pg)({
+				userID: context.authorization!.userID,
+			})
 		),
 	)
 
@@ -97,17 +95,14 @@ export const getPlaylistByID =
 		async ({ args, context }) => {
 			const playlist =
 				await getPlaylist(context.pg)(args)
-			if (
-				playlist.privacy === PlaylistPrivacy.PUBLIC ||
-				playlist.privacy === PlaylistPrivacy.FRIENDS
-			) {
-				return playlist
-			} else {
+			if (playlist.privacy === PlaylistPrivacy.PRIVATE) {
 				if (playlist.userID === context.authorization!.userID) {
 					return playlist
 				} else {
 					throw new ForbiddenError("Unauthorized access to this playlist")
 				}
+			} else {
+				return playlist
 			}
 		},
 	)

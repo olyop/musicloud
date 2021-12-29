@@ -8,9 +8,8 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { sum } from "lodash"
-import pipe from "@oly_op/pipe"
-import { map } from "lodash/fp"
+import { pipe } from "rxjs"
+import { sum } from "lodash-es"
 import { UserID, AlbumID } from "@oly_op/music-app-common/types"
 
 import {
@@ -31,10 +30,11 @@ import {
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
-import { createResolver, getObjectInLibrary } from "./helpers"
+import { map, getObjectInLibrary } from "./helpers"
+import createParentResolver from "./create-parent-resolver"
 
 const resolver =
-	createResolver<Album>()
+	createParentResolver<Album>()
 
 interface GetAlbumSongsOptions<T>
 	extends AlbumID, GetObjectsOptions<T> {}

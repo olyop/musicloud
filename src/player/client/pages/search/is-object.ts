@@ -1,33 +1,33 @@
 import {
-	AlgoliaRecord,
-	AlgoliaRecordUser,
-	AlgoliaRecordSong,
-	AlgoliaRecordGenre,
-	AlgoliaRecordAlbum,
-	AlgoliaRecordArtist,
-	AlgoliaRecordPlaylist,
-} from "@oly_op/music-app-common/types"
+	Hit,
+	HitUser,
+	HitSong,
+	HitAlbum,
+	HitGenre,
+	HitArtist,
+	HitPlaylist,
+} from "./types"
 
 export const isUser =
-	(hit: AlgoliaRecord): hit is AlgoliaRecordUser =>
+	(hit: Hit): hit is HitUser =>
 		hit.typeName === "User"
 
 export const isSong =
-	(hit: AlgoliaRecord): hit is AlgoliaRecordSong =>
+	(hit: Hit): hit is HitSong =>
 		hit.typeName === "Song"
 
 export const isGenre =
-	(hit: AlgoliaRecord): hit is AlgoliaRecordGenre =>
+	(hit: Hit): hit is HitGenre =>
 		hit.typeName === "Genre"
 
 export const isAlbum =
-	(hit: AlgoliaRecord): hit is AlgoliaRecordAlbum =>
+	(hit: Hit): hit is HitAlbum =>
 		hit.typeName === "Album"
 
 export const isArtist =
-	(hit: AlgoliaRecord): hit is AlgoliaRecordArtist =>
+	(hit: Hit): hit is HitArtist =>
 		hit.typeName === "Artist"
 
 export const isPlaylist =
-	(hit: AlgoliaRecord): hit is AlgoliaRecordPlaylist =>
+	(hit: Hit): hit is HitPlaylist =>
 		hit.typeName === "Playlist"

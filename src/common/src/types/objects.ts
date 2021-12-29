@@ -45,6 +45,7 @@ export interface UserIDNameBase extends UserID {
 }
 
 export interface UserBase extends UserIDNameBase {
+	lastName: string,
 	dateJoined: number,
 }
 

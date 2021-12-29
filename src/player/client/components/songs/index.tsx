@@ -10,12 +10,12 @@ const bem =
 	createBEM("Songs")
 
 const Songs: VFC<SongsPropTypes> = ({
+	onJump,
 	onRemove,
 	className,
 	songs = [],
 	orderBy = false,
 	hidePlay = false,
-	hideMore = false,
 	hidePlays = false,
 	hideIndex = false,
 	hideCover = false,
@@ -41,7 +41,6 @@ const Songs: VFC<SongsPropTypes> = ({
 				<Song
 					song={song}
 					hidePlay={hidePlay}
-					hideMore={hideMore}
 					hidePlays={hidePlays}
 					hideCover={hideCover}
 					hideDuration={hideDuration}
@@ -50,6 +49,7 @@ const Songs: VFC<SongsPropTypes> = ({
 					className="ItemBorder PaddingHalf"
 					key={song.songID + index.toString()}
 					index={hideIndex ? undefined : index + 1}
+					onJump={onJump && onJump({ index, song })}
 					onRemove={onRemove && onRemove({ index, song })}
 				/>
 			),
@@ -57,7 +57,7 @@ const Songs: VFC<SongsPropTypes> = ({
 	</div>
 )
 
-export interface OnRemoveOptions {
+export interface SongsChangeOptions {
 	index: number,
 	song: SongType,
 }
@@ -65,7 +65,6 @@ export interface OnRemoveOptions {
 export interface SongsPropTypes extends ClassNameBEMPropTypes {
 	songs?: SongType[],
 	hidePlay?: boolean,
-	hideMore?: boolean,
 	hideCover?: boolean,
 	hidePlays?: boolean,
 	hideIndex?: boolean,
@@ -73,7 +72,8 @@ export interface SongsPropTypes extends ClassNameBEMPropTypes {
 	hideElevated?: boolean,
 	hideInLibrary?: boolean,
 	hideTrackNumber?: boolean,
-	onRemove?: (options: OnRemoveOptions) => Handler,
+	onJump?: (options: SongsChangeOptions) => Handler,
+	onRemove?: (options: SongsChangeOptions) => Handler,
 	orderBy?: OrderByOptions<SettingsOrderBySongs> | false,
 }
 

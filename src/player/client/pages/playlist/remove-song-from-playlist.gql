@@ -1,9 +1,9 @@
 mutation removeSongFromPlaylist(
-	$songID: UUID!
 	$playlistID: UUID!
+	$index: NonNegativeInt!
 ) {
 	removeSongFromPlaylist(
-		songID: $songID
+		index: $index
 		playlistID: $playlistID
 	) {
 		playlistID

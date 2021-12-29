@@ -22,17 +22,6 @@ export const addSongToPlaylist =
 			const { songID, playlistID } = args
 			const { userID } = context.authorization!
 
-			const songExists =
-				await exists(context.pg)({
-					value: songID,
-					table: "songs",
-					column: COLUMN_NAMES.SONG[0],
-				})
-
-			if (!songExists) {
-				throw new UserInputError("Song does not exist")
-			}
-
 			const playlistExists =
 				await exists(context.pg)({
 					value: playlistID,
@@ -46,6 +35,17 @@ export const addSongToPlaylist =
 
 			if (await isNotUsersPlaylist(context.pg)({ userID, playlistID })) {
 				throw new ForbiddenError("Unauthorized to add to playlist")
+			}
+
+			const songExists =
+				await exists(context.pg)({
+					value: songID,
+					table: "songs",
+					column: COLUMN_NAMES.SONG[0],
+				})
+
+			if (!songExists) {
+				throw new UserInputError("Song does not exist")
 			}
 
 			await addSongToPlaylistHelper(context.pg)({ songID, playlistID })

@@ -1,12 +1,12 @@
 import { MutationResult } from "@apollo/client"
 
-import { Handler, QueueNowPlaying } from "../../../types"
+import { HandlerPromise, QueueNowPlaying } from "../../../types"
 
-export interface NextQueueSongData {
+export interface Data {
 	nextQueueSong: QueueNowPlaying,
 }
 
-export type UseNextQueueSongResult = [
-	nextQueueSong: Handler,
-	result: MutationResult<NextQueueSongData>,
+export type Result = [
+	nextQueueSong: HandlerPromise,
+	result: MutationResult<Data>,
 ]

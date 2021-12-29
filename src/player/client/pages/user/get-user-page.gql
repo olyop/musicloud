@@ -2,6 +2,8 @@ query getUserPage($userID: UUID!) {
 	getUserByID(userID: $userID) {
 		name
 		userID
+		follower
+		following
 		dateJoined
 	}
 }

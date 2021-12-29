@@ -7,23 +7,23 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import pipe from "@oly_op/pipe"
+import { pipe } from "rxjs"
 import { PlaylistID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	getUser,
-	createResolver,
 	getObjectInLibrary,
 	getSongsDurationOrNull,
 	getObjectDateAddedToLibrary,
 } from "./helpers"
 
 import { COLUMN_NAMES } from "../globals"
+import createParentResolver from "./create-parent-resolver"
 import { Song, Play, Playlist, GetObjectsOptions } from "../types"
 import { SELECT_PLAYLIST_SONGS, SELECT_OBJECT_SONG_PLAYS } from "../sql"
 
 const resolver =
-	createResolver<Playlist>()
+	createParentResolver<Playlist>()
 
 export const privacy =
 	resolver(

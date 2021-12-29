@@ -2,11 +2,12 @@ import { useRef } from "react"
 import isUndefined from "lodash/isUndefined"
 import { MutationResult } from "@apollo/client"
 
+import modifer from "./modifer"
 import { useQuery } from "../query"
 import determineID from "./determine-id"
 import { useMutation } from "../mutation"
-import { InLibraryObjects } from "../../types"
 import determineReturn from "./determine-return"
+import { HandlerPromise, InLibraryObjects } from "../../types"
 
 import GET_SONG from "./get-song-in-library.gql"
 import GET_ARTIST from "./get-artist-in-library.gql"
@@ -18,7 +19,6 @@ import ADD_PLAYLIST from "./add-playlist-to-library.gql"
 import REMOVE_SONG from "./remove-song-from-library.gql"
 import REMOVE_ARTIST from "./remove-artist-from-library.gql"
 import REMOVE_PLAYLIST from "./remove-playlist-from-library.gql"
-import modifer from "./modifer"
 
 export const useToggleObjectInLibrary =
 	(object: InLibraryObjects) => {
@@ -111,11 +111,11 @@ export const useToggleObjectInLibrary =
 				}
 			}
 
-		return [ handleClick, inLibrary, result ] as Return<MutationData>
+		return [ handleClick, inLibrary, result ] as Result<MutationData>
 	}
 
-type Return<Data> = [
-	toggleInLibrary: () => Promise<void>,
+type Result<Data> = [
+	toggleInLibrary: HandlerPromise,
 	inLibrary: boolean,
 	result: MutationResult<Data>,
 ]

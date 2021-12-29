@@ -17,7 +17,8 @@ const Select = <T,>({
 	className,
 }: PropTypes<T>): ReactElement => {
 	const handleChange: ChangeEventHandler<HTMLSelectElement> =
-		async event => onChange(event.target.value as unknown as T)
+		async event =>
+			onChange(event.target.value as unknown as T)
 	return (
 		<select
 			value={value}

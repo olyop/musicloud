@@ -1,10 +1,10 @@
 import { PlaylistID } from "@oly_op/music-app-common/types"
 import { ApolloCache, MutationResult, MutationUpdaterFunction } from "@apollo/client"
 
-import { Handler } from "../../types"
+import { HandlerPromise } from "../../types"
 
 export type UseDeletePlaylistResult = [
-	deletePlaylist: Handler,
+	deletePlaylist: HandlerPromise,
 	result: MutationResult<DeletePlaylistData>,
 ]
 

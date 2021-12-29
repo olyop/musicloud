@@ -1,21 +1,10 @@
 import { useFormik } from "formik"
-import { UserBase } from "@oly_op/music-app-common/types"
 import { ChangeEventHandler, createElement, VFC, useState } from "react"
 
 import Form from "../form"
 import TextField from "../text-field"
-
-interface UserImages {
-	cover?: File,
-	profile?: File,
-}
-
-interface UserPassword {
-	password: string,
-}
-
-interface User
-	extends Pick<UserBase, "name">, UserPassword, UserImages {}
+import createFormData from "./create-form-data"
+import { User, UserImages } from "./types"
 
 const UserForm: VFC = () => {
 	const [ loading, setLoading ] =
@@ -24,22 +13,20 @@ const UserForm: VFC = () => {
 	const formik =
 		useFormik<User>({
 			initialValues: {
-				name: "Oliver",
 				cover: undefined,
 				profile: undefined,
 				password: "password",
+				name: "Oliver Plummer",
 			},
 			onSubmit: async (user, { resetForm, setErrors }) => {
-				setLoading(true)
-				const body = new FormData()
-				body.append("name", user.name)
-				body.append("cover", user.cover!)
-				body.append("profile", user.profile!)
-				body.append("password", user.password)
 				try {
-					await fetch("/upload/user", { method: "POST", body })
-					resetForm()
+					setLoading(true)
+					await fetch("/upload/user", {
+						method: "POST",
+						body: createFormData(user),
+					})
 				} finally {
+					resetForm()
 					setLoading(false)
 				}
 			},

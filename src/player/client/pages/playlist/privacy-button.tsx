@@ -33,20 +33,9 @@ const PlaylistPagePrivacyButton: VFC<PropTypes> = ({ playlist }) => {
 	const handleModalOpen =
 		() => setModal(true)
 
-	const handlePublicClick =
-		async () => {
-			await updatePlaylistPrivacy(PlaylistPrivacy.PUBLIC)
-		}
-
-	const handlePrivateClick =
-		async () => {
-			await updatePlaylistPrivacy(PlaylistPrivacy.PRIVATE)
-		}
-
-	const handleFriendsClick =
-		async () => {
-			await updatePlaylistPrivacy(PlaylistPrivacy.FRIENDS)
-		}
+	const handleChange =
+		(privacy: PlaylistPrivacy) =>
+			() => updatePlaylistPrivacy(privacy)
 
 	return (
 		<Fragment>
@@ -62,24 +51,30 @@ const PlaylistPagePrivacyButton: VFC<PropTypes> = ({ playlist }) => {
 							text="Change playlist privacy"
 						/>
 						<ModalButtons>
-							<ModalButton
-								icon="public"
-								text="Public"
-								onClose={handleModalClose}
-								onClick={handlePublicClick}
-							/>
-							<ModalButton
-								icon="people"
-								text="Friends"
-								onClose={handleModalClose}
-								onClick={handleFriendsClick}
-							/>
-							<ModalButton
-								icon="lock"
-								text="Private"
-								onClose={handleModalClose}
-								onClick={handlePrivateClick}
-							/>
+							{playlist.privacy === PlaylistPrivacy.PUBLIC || (
+								<ModalButton
+									icon="public"
+									text="Public"
+									onClose={onClose}
+									onClick={handleChange(PlaylistPrivacy.PUBLIC)}
+								/>
+							)}
+							{playlist.privacy === PlaylistPrivacy.FRIENDS || (
+								<ModalButton
+									icon="people"
+									text="Friends"
+									onClose={onClose}
+									onClick={handleChange(PlaylistPrivacy.FRIENDS)}
+								/>
+							)}
+							{playlist.privacy === PlaylistPrivacy.PRIVATE || (
+								<ModalButton
+									icon="lock"
+									text="Private"
+									onClose={onClose}
+									onClick={handleChange(PlaylistPrivacy.PRIVATE)}
+								/>
+							)}
 							<ModalButton
 								icon="close"
 								text="Cancel"

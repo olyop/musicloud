@@ -1,10 +1,10 @@
 import isNull from "lodash/isNull"
 import { configureStore } from "@reduxjs/toolkit"
-import { useDispatch as internalUseDispatch } from "react-redux"
+import { useDispatch as baseUseDispatch, useSelector as baseUseSelector } from "react-redux"
 
 import reducer from "./reducer"
-import { Settings } from "../types"
 import { getJWT } from "../helpers"
+import { Settings, State } from "../types"
 
 const loadSettings =
 	() => {
@@ -40,4 +40,11 @@ export type Dispatch =
 	typeof store.dispatch
 
 export const useDispatch =
-	() => internalUseDispatch<Dispatch>()
+	() => baseUseDispatch<Dispatch>()
+
+type Selector<T> =
+	(state: State) => T
+
+export const useSelector =
+	<T>(selector: Selector<T>) =>
+		baseUseSelector<State, T>(selector)

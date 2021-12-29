@@ -1,9 +1,9 @@
 import { MutationResult } from "@apollo/client"
 
-import { Handler, QueueNowPlaying } from "../../types"
+import { HandlerPromise, QueueNowPlaying } from "../../types"
 
 export type UsePlayAlbumResult = [
-	playAlbum: Handler,
+	playAlbum: HandlerPromise,
 	isPlaying: boolean,
 	result: MutationResult<PlayAlbumData>,
 ]

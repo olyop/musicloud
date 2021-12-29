@@ -45,7 +45,6 @@ const BrowsePage: VFC = () => {
 									Top Ten Songs
 								</h2>
 								<Songs
-									hideMore
 									hideCover
 									hideIndex
 									hideDuration

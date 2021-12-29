@@ -1,4 +1,4 @@
-import { InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { ForbiddenError, UserInputError } from "apollo-server-fastify"
 import { join, query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
@@ -32,11 +32,12 @@ export const updatePlaylistTitle =
 				throw new ForbiddenError("Unauthorized to delete playlist")
 			}
 
-			await context.ag.partialUpdateObject({
-				text: title,
-				typeName: "Playlist",
+			const algoliaRecordUpdate: Partial<AlgoliaRecordPlaylist> = {
+				title,
 				objectID: playlistID,
-			})
+			}
+
+			await context.ag.index.partialUpdateObject(algoliaRecordUpdate)
 
 			return query(context.pg)(UPDATE_PLAYLIST_TITLE)({
 				parse: convertFirstRowToCamelCase(),

@@ -1,4 +1,4 @@
-import pipe from "@oly_op/pipe"
+import { pipe } from "rxjs"
 import { ArtistID } from "@oly_op/music-app-common/types"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
@@ -34,9 +34,9 @@ export const shuffleArtist =
 						},
 					})
 
-				await updateQueueNowPlaying(client, context.ag)({
+				await updateQueueNowPlaying(client, context.ag.index)({
 					userID,
-					value: nowPlaying.songID,
+					value: nowPlaying!.songID,
 				})
 
 				await Promise.all(shuffled.map(

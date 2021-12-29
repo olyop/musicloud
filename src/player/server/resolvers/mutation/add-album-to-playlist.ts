@@ -19,7 +19,7 @@ interface Args
 
 export const addAlbumToPlaylist =
 	resolver<Playlist, Args>(
-		async ({ parent, context, args }) => {
+		async ({ context, args }) => {
 			const query = pgHelpersQuery(context.pg)
 			const exists = pgExists(context.pg)
 			const { albumID, playlistID } = args

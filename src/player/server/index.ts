@@ -1,12 +1,14 @@
 import fastify from "fastify"
 import cors from "fastify-cors"
 import helmet from "fastify-helmet"
+import postgres from "fastify-postgres"
 import compress from "fastify-compress"
 import serveStatic from "fastify-static"
 
 import {
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
+	PG_POOL_OPTIONS,
 	SERVE_STATIC_OPTIONS,
 	FASTIFY_LISTEN_OPTIONS,
 	APOLLO_REGISTRATION_OPTIONS,
@@ -30,6 +32,7 @@ const start =
 	async () => {
 		await apollo.start()
 		return fastify()
+			.register(postgres, PG_POOL_OPTIONS)
 			.register(helmet, HELMET_OPTIONS)
 			.register(cors, CORS_OPTIONS)
 			.register(compress)

@@ -1,5 +1,5 @@
-import pipe from "@oly_op/pipe"
-import isEmpty from "lodash/isEmpty"
+import { pipe } from "rxjs"
+import { isEmpty } from "lodash-es"
 import { PlaylistID } from "@oly_op/music-app-common/types"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
@@ -36,9 +36,14 @@ export const shufflePlaylist =
 
 					const [ nowPlaying, ...shuffled ] = songs
 
-					await updateQueueNowPlaying(client, context.ag)({
+					console.log({
+						nowPlaying,
+						shuffled,
+					})
+
+					await updateQueueNowPlaying(client, context.ag.index)({
 						userID,
-						value: nowPlaying.songID,
+						value: nowPlaying!.songID,
 					})
 
 					await Promise.all(

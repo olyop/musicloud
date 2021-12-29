@@ -10,4 +10,4 @@ WHERE
 ORDER BY
 	{{ tableName }}.index ASC
 LIMIT
-	50;
+	{{ limit }};

@@ -4,7 +4,7 @@ import { AlbumID } from "@oly_op/music-app-common/types"
 import { useMutation } from "../mutation"
 import SHUFFLE_ALBUM from "./shuffle-album.gql"
 import { useResetPlayer } from "../reset-player"
-import { Handler, QueueNowPlaying } from "../../types"
+import { HandlerPromise, QueueNowPlaying } from "../../types"
 
 export const useShuffleAlbum =
 	({ albumID }: AlbumID) => {
@@ -12,7 +12,7 @@ export const useShuffleAlbum =
 		const variables: AlbumID = { albumID }
 
 		const [ shuffleAlbum, result ] =
-			useMutation<ShuffleAlbumData, AlbumID>(SHUFFLE_ALBUM, { variables })
+			useMutation<Data, AlbumID>(SHUFFLE_ALBUM, { variables })
 
 		const handleShuffleAlbum =
 			async () => {
@@ -22,14 +22,14 @@ export const useShuffleAlbum =
 				}
 			}
 
-		return [ handleShuffleAlbum, result ] as UseShuffleAlbumResult
+		return [ handleShuffleAlbum, result ] as Result
 	}
 
-type UseShuffleAlbumResult = [
-	shuffleAlbum: Handler,
-	result: MutationResult<ShuffleAlbumData>,
-]
-
-interface ShuffleAlbumData {
+interface Data {
 	shuffleAlbum: QueueNowPlaying,
 }
+
+type Result = [
+	shuffleAlbum: HandlerPromise,
+	result: MutationResult<Data>,
+]

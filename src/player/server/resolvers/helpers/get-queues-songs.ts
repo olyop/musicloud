@@ -5,7 +5,7 @@ import {
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import pipe from "@oly_op/pipe"
+import { pipe } from "rxjs"
 import { UserID } from "@oly_op/music-app-common/types"
 
 import { COLUMN_NAMES } from "../../globals"
@@ -22,11 +22,13 @@ export const addQueueIndexToSongs =
 		)
 
 export interface GetQueueSongsOptions
-	extends UserID, TableNameOptions {}
+	extends UserID, TableNameOptions {
+	limit?: number,
+}
 
 export const getQueueSongs =
 	(client: PoolOrClient) =>
-		({ userID, tableName }: GetQueueSongsOptions) =>
+		({ limit, userID, tableName }: GetQueueSongsOptions) =>
 			query(client)(SELECT_QUEUE_SONGS)({
 				parse: pipe(
 					convertTableToCamelCase<Song>(),
@@ -35,6 +37,7 @@ export const getQueueSongs =
 				variables: {
 					userID,
 					tableName,
+					limit: limit || "ALL",
 					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 				},
 			})

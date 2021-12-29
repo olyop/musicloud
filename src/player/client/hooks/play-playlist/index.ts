@@ -7,8 +7,8 @@ import { useQuery } from "../query"
 import { useMutation } from "../mutation"
 import PLAY_PLAYLIST from "./play-playlist.gql"
 import { useResetPlayer } from "../reset-player"
-import { useDispatch, togglePlay } from "../../redux"
-import { Handler, QueueNowPlaying } from "../../types"
+import { useDispatch, togglePlay, updatePlay } from "../../redux"
+import { HandlerPromise, QueueNowPlaying } from "../../types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 export const usePlayPlaylist =
@@ -17,12 +17,12 @@ export const usePlayPlaylist =
 		const resetPlayer = useResetPlayer()
 
 		const [ playPlaylist, result ] =
-			useMutation<PlayPlaylistData, PlaylistID>(PLAY_PLAYLIST, {
+			useMutation<Data, PlaylistID>(PLAY_PLAYLIST, {
 				variables: { playlistID },
 			})
 
 		const { data } =
-			useQuery<GetQueueNowPlayingData, PlaylistID>(GET_QUEUE_NOW_PLAYING, {
+			useQuery<QueryData, PlaylistID>(GET_QUEUE_NOW_PLAYING, {
 				variables: { playlistID },
 				fetchPolicy: "cache-first",
 			})
@@ -41,23 +41,24 @@ export const usePlayPlaylist =
 					} else {
 						resetPlayer()
 						await playPlaylist()
+						dispatch(updatePlay(true))
 					}
 				}
 			}
 
-		return [ handlePlayPlaylist, isNowPlaying, result ] as UsePlayPlaylistResult
+		return [ handlePlayPlaylist, isNowPlaying, result ] as Result
 	}
 
-type UsePlayPlaylistResult = [
-	playPlaylist: Handler,
+type Result = [
+	playPlaylist: HandlerPromise,
 	isPlaying: boolean,
-	result: MutationResult<PlayPlaylistData>,
+	result: MutationResult<Data>,
 ]
 
-interface PlayPlaylistData {
+interface Data {
 	playPlaylist: QueueNowPlaying,
 }
 
-interface GetQueueNowPlayingData {
+interface QueryData {
 	getQueue: QueueNowPlaying,
 }

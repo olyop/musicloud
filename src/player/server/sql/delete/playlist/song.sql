@@ -1,5 +1,5 @@
 DELETE FROM
 	playlists_songs
 WHERE
-	song_id = '{{ songID }}' AND
+	index = '{{ index }}' AND
 	playlist_id = '{{ playlistID }}';

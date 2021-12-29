@@ -4,7 +4,7 @@ import { trim } from "lodash"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
 import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
-import { ImageDimensions, ImageSizes, UserBase, UserID } from "@oly_op/music-app-common/types"
+import { AlgoliaRecordUser, ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	determineS3ImageURL,
@@ -12,18 +12,10 @@ import {
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
-import { BodyEntry, ImageInput } from "../types"
+import { Route } from "./types"
+import { ImageInput } from "../types"
+import { getCover, getProfile } from "./get-images"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
-
-interface User extends Pick<UserBase, "name"> {
-	password: string,
-	cover: BodyEntry[],
-	profile: BodyEntry[],
-}
-
-interface Route {
-	Body: User,
-}
 
 const coverImages: ImageInput[] = [{
 	name: "cover",
@@ -53,17 +45,24 @@ const INSERT_USER =
 	readFileSync(join(UPLOAD_PLUGINS_PATH, "user", "insert.sql")).toString()
 
 export const uploadUser: FastifyPluginCallback =
-	(fastify, options, done) => {
-		fastify.post<Route>(
+	(server, _, done) => {
+		server.post<Route>(
 			"/upload/user",
 			async (request, reply) => {
-				const name = trim(request.body.name)
-				const cover = request.body.cover[0].data
-				const profile = request.body.profile[0].data
-				const password = await bcrypt.hash(request.body.password, 12)
+				const name =
+					trim(request.body.name)
+
+				const password =
+					await bcrypt.hash(request.body.password, 12)
+
+				const cover =
+					await getCover({ name, cover: request.body.cover })
+
+				const profile =
+					await getProfile({ name, profile: request.body.profile })
 
 				const { userID } =
-					await query(fastify.pg.pool)(INSERT_USER)({
+					await query(server.pg.pool)(INSERT_USER)({
 						parse: convertFirstRowToCamelCase<UserID>(),
 						variables: [{
 							key: "name",
@@ -88,11 +87,12 @@ export const uploadUser: FastifyPluginCallback =
 					images: profileImages,
 				})
 
-				await addRecordToSearchIndex({
+				await addRecordToSearchIndex<AlgoliaRecordUser>({
 					name,
+					followers: 0,
 					typeName: "User",
 					objectID: userID,
-					image: determineS3ImageURL(userID, profileImages[2]),
+					image: determineS3ImageURL(userID, profileImages[2]!),
 				})
 
 				return reply.send()

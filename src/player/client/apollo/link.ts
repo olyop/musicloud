@@ -30,7 +30,7 @@ const checkForAuthErrorLink =
 	onError(
 		({ forward, operation, graphQLErrors }) => {
 			const error = head(graphQLErrors)
-			const code = error?.extensions?.code as string
+			const code = error!.extensions["code"] as string
 			if (code === "UNAUTHENTICATED") {
 				store.dispatch(updateAccessToken(null))
 				forward(operation)

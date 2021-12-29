@@ -3,7 +3,7 @@ import Button from "@oly_op/react-button"
 import { useState, createElement, Fragment, VFC } from "react"
 
 import {
-	useUserID,
+	useJWTPayload,
 	usePlayPlaylist,
 	useDeletePlaylist,
 	useShufflePlaylist,
@@ -29,8 +29,8 @@ const Playlist: VFC<PropTypes> = ({
 	hideModal = false,
 	hideInLibrary = false,
 }) => {
-	const userID = useUserID()
 	const { playlistID } = playlist
+	const { userID } = useJWTPayload()
 
 	const [ renameModal, setRenameModal ] =
 		useState(false)

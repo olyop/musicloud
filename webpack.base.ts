@@ -17,15 +17,15 @@ export const BASE_SRC_PATH = path.join(ROOT_PATH, "src")
 export const BASE_BUILD_PATH = path.join(ROOT_PATH, "build")
 
 export const baseHTMLPluginOptions =
-	(title: string): HTMLWebpackPluginOptions => ({
+	(title: string, pwa: boolean): HTMLWebpackPluginOptions => ({
 		title,
 		minify: true,
 		filename: "index.html",
 		meta: {
-			"og:type": "PWA",
 			"og:title": title,
 			"twitter:dnt": "on",
 			"keywords": KEYWORDS,
+			"og:type": pwa && "PWA",
 			"google": "notranslate",
 			"robots": "index,follow",
 			"theme-color": "#ffffff",
@@ -52,6 +52,7 @@ export const baseProxy = [
 ]
 
 export const baseConfig: Configuration = {
+	stats: false,
 	mode: process.env.NODE_ENV,
 	devtool: IS_DEV ? "inline-source-map" : false,
 	output: {
@@ -62,9 +63,9 @@ export const baseConfig: Configuration = {
 		/Failed to parse source map/,
 	],
 	devServer: {
-		hot: true,
 		host: process.env.HOST,
 		historyApiFallback: true,
+		client: { logging: "error" },
 	},
 	resolve: {
 		symlinks: false,

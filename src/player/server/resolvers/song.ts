@@ -9,8 +9,8 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import pipe from "@oly_op/pipe"
-import { random } from "lodash"
+import { pipe } from "rxjs"
+import { random } from "lodash-es"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 import { NAME } from "@oly_op/music-app-common/metadata"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
@@ -28,7 +28,6 @@ import {
 import {
 	getKey,
 	getAlbum,
-	createResolver,
 	getObjectInLibrary,
 	getObjectDateAddedToLibrary,
 } from "./helpers"
@@ -44,9 +43,10 @@ import {
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
+import createParentResolver from "./create-parent-resolver"
 
 const resolver =
-	createResolver<Song>()
+	createParentResolver<Song>()
 
 export const size =
 	resolver(

@@ -41,7 +41,7 @@ const config = merge(baseConfig, {
 	},
 	plugins: [
 		new HTMLWebpackPlugin({
-			...baseHTMLPluginOptions(`${TITLE} Upload Client`),
+			...baseHTMLPluginOptions(`${TITLE} Upload Client`, false),
 			template: ENTRY_PATH,
 		}),
 	],
