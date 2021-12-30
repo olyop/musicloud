@@ -89,7 +89,7 @@ export interface ArtistBase extends ArtistIDNameBase {
 export enum PlaylistPrivacy {
 	PUBLIC = "PUBLIC",
 	PRIVATE = "PRIVATE",
-	FRIENDS = "FRIENDS",
+	FOLLOWERS = "FOLLOWERS",
 }
 
 export interface PlaylistIDTitleBase extends PlaylistID {

@@ -56,14 +56,14 @@ export const useStateShowGenres =
 		({ settings: { showGenres } }) => showGenres,
 	)
 
+export const useStateTransitions =
+	() => useSelector(
+		({ settings: { transitions } }) => transitions,
+	)
+
 export const useStateShowReleased =
 	() => useSelector(
 		({ settings: { showReleased } }) => showReleased,
-	)
-
-export const useStateDoTransitions =
-	() => useSelector(
-		({ settings: { doTransitions } }) => doTransitions,
 	)
 
 export const useStateShowDuration =

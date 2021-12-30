@@ -1,7 +1,16 @@
+export enum SettingsTransitions {
+	ON = "ON",
+	OFF = "OFF",
+	SYSTEM = "SYSTEM",
+	DEFAULT = "DEFAULT",
+	REDUCED = "REDUCED",
+}
+
 export enum SettingsTheme {
 	DARK = "DARK",
 	LIGHT = "LIGHT",
 	SYSTEM = "SYSTEM",
+	DEFAULT = "DEFAULT",
 }
 
 export enum OrderByDirection {

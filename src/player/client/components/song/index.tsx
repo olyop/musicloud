@@ -145,7 +145,10 @@ const Song: VFC<PropTypes> = ({
 			imageOptions={
 				hideCover ? undefined : {
 					title: album.title,
-					path: determineObjectPath("album", album.albumID),
+					path: determineObjectPath(
+						"album",
+						album.albumID,
+					),
 					url: determineCatalogImageURL(
 						album.albumID,
 						"cover",
@@ -235,10 +238,6 @@ const Song: VFC<PropTypes> = ({
 							isPlaying={isPlaying}
 						/>
 						<ModalButton
-							icon="radio"
-							text="Radio"
-						/>
-						<ModalButton
 							text="Next"
 							onClose={onClose}
 							icon="playlist_add"
@@ -255,6 +254,18 @@ const Song: VFC<PropTypes> = ({
 							icon="queue"
 							onClose={onClose}
 							onClick={loading ? undefined : handleLaterClick}
+						/>
+						<ModalButton
+							icon="album"
+							text="Album"
+							onClose={onClose}
+							link={determineObjectPath("album", album.albumID)}
+						/>
+						<ModalButton
+							icon="person"
+							text="Artist"
+							onClose={onClose}
+							link={determineObjectPath("artist", song.artists[0]!.artistID)}
 						/>
 						<ModalButton
 							text="Library"

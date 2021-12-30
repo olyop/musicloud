@@ -8,9 +8,13 @@ import { Settings, State } from "../types"
 
 const loadSettings =
 	() => {
-		const serializedState = localStorage.getItem("settings")
-		return serializedState === null ?
-			undefined : JSON.parse(serializedState) as Settings
+		const settingsString =
+			localStorage.getItem("settings")
+		if (isNull(settingsString)) {
+			return undefined
+		} else {
+			return JSON.parse(settingsString) as Settings
+		}
 	}
 
 export const store =
@@ -28,7 +32,9 @@ export const store =
 store.subscribe(() => {
 	const { settings, accessToken } = store.getState()
 	const serializedSettings = JSON.stringify(settings)
+
 	localStorage.setItem("settings", serializedSettings)
+
 	if (isNull(accessToken)) {
 		localStorage.removeItem("authorization")
 	} else {

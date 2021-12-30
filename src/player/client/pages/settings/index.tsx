@@ -9,14 +9,14 @@ import {
 	useStateTheme,
 	updateListStyle,
 	toggleShowGenres,
+	updateTransitions,
 	useStateListStyle,
 	useStateShowGenres,
 	toggleShowReleased,
 	toggleShowDuration,
-	toggleDoTransitions,
+	useStateTransitions,
 	useStateShowDuration,
 	useStateShowReleased,
-	useStateDoTransitions,
 } from "../../redux"
 
 import Modal, {
@@ -28,7 +28,7 @@ import Modal, {
 import DELETE_USER from "./delete-user.gql"
 import Select from "../../components/select"
 import { useSignOut, useMutation } from "../../hooks"
-import { SettingsListStyle, SettingsTheme } from "../../types"
+import { SettingsListStyle, SettingsTheme, SettingsTransitions } from "../../types"
 
 import "./index.scss"
 
@@ -41,9 +41,9 @@ const SettingsPage: VFC = () => {
 	const dispatch = useDispatch()
 	const listStyle = useStateListStyle()
 	const showGenres = useStateShowGenres()
+	const transitions = useStateTransitions()
 	const showDuration = useStateShowDuration()
 	const showReleased = useStateShowReleased()
-	const doTransitions = useStateDoTransitions()
 
 	const [ deleteUserModal, setDeleteUserModal ] =
 		useState(false)
@@ -66,11 +66,6 @@ const SettingsPage: VFC = () => {
 			dispatch(toggleShowReleased())
 		}
 
-	const handleToggleDoTransitions =
-		() => {
-			dispatch(toggleDoTransitions())
-		}
-
 	const handleThemeChange =
 		(value: SettingsTheme) => {
 			dispatch(updateTheme(value))
@@ -79,6 +74,11 @@ const SettingsPage: VFC = () => {
 	const handleListStyleChange =
 		(value: SettingsListStyle) => {
 			dispatch(updateListStyle(value))
+		}
+
+	const handleToggleDoTransitions =
+		(value: SettingsTransitions) => {
+			dispatch(updateTransitions(value))
 		}
 
 	const handleDeleteUser =
@@ -125,6 +125,17 @@ const SettingsPage: VFC = () => {
 									onChange={handleListStyleChange}
 									className="BodyTwo MarginRightQuart"
 									options={Object.keys(SettingsListStyle)}
+								/>
+							</div>
+							<div>
+								<p className="BodyTwoBold MarginBottomQuart">
+									Transitions:
+								</p>
+								<Select
+									value={transitions}
+									onChange={handleToggleDoTransitions}
+									className="BodyTwo MarginRightQuart"
+									options={Object.keys(SettingsTransitions)}
 								/>
 							</div>
 						</div>
@@ -179,22 +190,6 @@ const SettingsPage: VFC = () => {
 									/>
 									<p className="BodyTwo LightWeight">
 										{showReleased ? "Show" : "Hide"}
-									</p>
-								</div>
-							</div>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
-									Tranitions:
-								</p>
-								<div className="FlexRowGapFifth">
-									<input
-										type="checkbox"
-										className="Text"
-										checked={doTransitions}
-										onChange={handleToggleDoTransitions}
-									/>
-									<p className="BodyTwo LightWeight">
-										{doTransitions ? "Yes" : "No"}
 									</p>
 								</div>
 							</div>

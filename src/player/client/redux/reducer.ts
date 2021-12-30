@@ -16,11 +16,11 @@ import {
 	updateIsOnline,
 	updateListStyle,
 	toggleShowGenres,
+	updateTransitions,
 	updateAccessToken,
 	toggleIsFullscreen,
 	toggleShowReleased,
 	toggleShowDuration,
-	toggleDoTransitions,
 	toggleQueueDisclosure,
 	expandQueuesDisclosure,
 	collapseQueuesDisclosure,
@@ -87,17 +87,17 @@ const settings =
 				...state,
 				showDuration: !state.showDuration,
 			}))
-			.addCase(toggleDoTransitions, state => ({
+			.addCase(updateTheme, (state, { payload }) => ({
 				...state,
-				doTransitions: !state.doTransitions,
+				theme: payload,
 			}))
 			.addCase(updateListStyle, (state, { payload }) => ({
 				...state,
 				listStyle: payload,
 			}))
-			.addCase(updateTheme, (state, { payload }) => ({
+			.addCase(updateTransitions, (state, { payload }) => ({
 				...state,
-				theme: payload,
+				doTransitions: payload,
 			}))
 			.addCase(updateOrderBy, (state, { payload }) => ({
 				...state,

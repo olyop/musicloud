@@ -8,20 +8,21 @@ import {
 	AlbumsOrderByField,
 	GenresOrderByField,
 	ArtistsOrderByField,
+	SettingsTransitions,
 	PlaylistsOrderByField,
 	LibrarySongsOrderByField,
 	LibraryArtistsOrderByField,
 	LibraryPlaylistsOrderByField,
 } from "../types"
 
-const settings: Settings = {
+export const initialSettings: Settings = {
 	volume: 0,
 	showGenres: false,
 	showDuration: false,
 	showReleased: false,
-	doTransitions: true,
 	theme: SettingsTheme.SYSTEM,
 	listStyle: SettingsListStyle.GRID,
+	transitions: SettingsTransitions.SYSTEM,
 	queuesDisclosure: {
 		next: true,
 		later: false,
@@ -64,7 +65,6 @@ const settings: Settings = {
 }
 
 export const initialState: State = {
-	settings,
 	current: 0,
 	play: false,
 	loading: [],
@@ -72,4 +72,5 @@ export const initialState: State = {
 	isOnline: true,
 	accessToken: null,
 	isFullscreen: false,
+	settings: initialSettings,
 }

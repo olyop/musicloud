@@ -1,10 +1,13 @@
-import { createAction } from "@reduxjs/toolkit"
+import {
+	createAction,
+} from "@reduxjs/toolkit"
 
 import {
 	OrderBy,
 	SettingsTheme,
 	SettingsOrderBy,
 	SettingsListStyle,
+	SettingsTransitions,
 	SettingsQueuesDisclosure,
 } from "../types"
 
@@ -32,9 +35,6 @@ export const toggleIsFullscreen =
 export const toggleShowDuration =
 	createAction("TOGGLE_SHOW_DURATION")
 
-export const toggleDoTransitions =
-	createAction("TOGGLE_DO_TRANSITIONS")
-
 export const expandQueuesDisclosure =
 	createAction("EXPAND_QUEUES_DISCLOSURE")
 
@@ -45,18 +45,6 @@ const withPayloadType =
 	<T>() =>
 		(payload: T) =>
 			({ payload })
-
-export const addLoading =
-	createAction(
-		"ADD_LOADING",
-		withPayloadType<string>(),
-	)
-
-export const updatePlay =
-	createAction(
-		"UPDATE_PLAY",
-		withPayloadType<boolean>(),
-	)
 
 export const updateVolume =
 	createAction(
@@ -74,6 +62,18 @@ export const removeLoading =
 	createAction(
 		"REMOVE_LOADING",
 		withPayloadType<string>(),
+	)
+
+export const addLoading =
+	createAction(
+		"ADD_LOADING",
+		withPayloadType<string>(),
+	)
+
+export const updatePlay =
+	createAction(
+		"UPDATE_PLAY",
+		withPayloadType<boolean>(),
 	)
 
 export const updateIsOnline =
@@ -104,6 +104,12 @@ export const updateListStyle =
 	createAction(
 		"UPDATE_LIST_STYLE",
 		withPayloadType<SettingsListStyle>(),
+	)
+
+export const updateTransitions =
+	createAction(
+		"UPDATE_TRANSITIONS",
+		withPayloadType<SettingsTransitions>(),
 	)
 
 export const toggleQueueDisclosure =

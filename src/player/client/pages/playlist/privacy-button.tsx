@@ -59,12 +59,12 @@ const PlaylistPagePrivacyButton: VFC<PropTypes> = ({ playlist }) => {
 									onClick={handleChange(PlaylistPrivacy.PUBLIC)}
 								/>
 							)}
-							{playlist.privacy === PlaylistPrivacy.FRIENDS || (
+							{playlist.privacy === PlaylistPrivacy.FOLLOWERS || (
 								<ModalButton
 									icon="people"
-									text="Friends"
+									text="Followers"
 									onClose={onClose}
-									onClick={handleChange(PlaylistPrivacy.FRIENDS)}
+									onClick={handleChange(PlaylistPrivacy.FOLLOWERS)}
 								/>
 							)}
 							{playlist.privacy === PlaylistPrivacy.PRIVATE || (

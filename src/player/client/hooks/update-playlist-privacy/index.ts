@@ -11,9 +11,15 @@ export const useUpdatePlaylistPrivacy =
 			useMutation<unknown, Vars>(UPDATE_PLAYLIST_PRIVACY)
 
 		const handler =
-			async (input: PlaylistPrivacy) => {
-				const privacy = input.toUpperCase()
-				await mutate({ variables: { input: { playlistID, privacy } } })
+			async (privacy: PlaylistPrivacy) => {
+				await mutate({
+					variables: {
+						input: {
+							playlistID,
+							privacy: privacy.toUpperCase(),
+						},
+					},
+				})
 			}
 
 		return [ handler, result ]

@@ -1,7 +1,7 @@
 enum PlaylistPrivacy {
 	PUBLIC
 	PRIVATE
-	FRIENDS
+	FOLLOWERS
 }
 
 enum OrderByDirection {

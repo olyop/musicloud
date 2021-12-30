@@ -7,6 +7,7 @@ import {
 	GenresOrderByField,
 	AlbumsOrderByField,
 	ArtistsOrderByField,
+	SettingsTransitions,
 	PlaylistsOrderByField,
 	LibrarySongsOrderByField,
 	LibraryArtistsOrderByField,
@@ -69,9 +70,9 @@ export interface Settings {
 	theme: SettingsTheme,
 	showReleased: boolean,
 	showDuration: boolean,
-	doTransitions: boolean,
 	orderBy: SettingsOrderBy,
 	listStyle: SettingsListStyle,
+	transitions: SettingsTransitions,
 	queuesDisclosure: SettingsQueuesDisclosure,
 }
 

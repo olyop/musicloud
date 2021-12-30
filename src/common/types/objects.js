@@ -5,5 +5,5 @@ var PlaylistPrivacy;
 (function (PlaylistPrivacy) {
     PlaylistPrivacy["PUBLIC"] = "PUBLIC";
     PlaylistPrivacy["PRIVATE"] = "PRIVATE";
-    PlaylistPrivacy["FRIENDS"] = "FRIENDS";
+    PlaylistPrivacy["FOLLOWERS"] = "FOLLOWERS";
 })(PlaylistPrivacy = exports.PlaylistPrivacy || (exports.PlaylistPrivacy = {}));

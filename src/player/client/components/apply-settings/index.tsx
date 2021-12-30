@@ -1,16 +1,42 @@
 import { createElement, useEffect, FC, Fragment } from "react"
 
-import { useStateDoTransitions } from "../../redux"
+import { useStateTransitions } from "../../redux"
+import { SettingsTransitions } from "../../types"
+
+const determineTransitionValue =
+	(transitions: SettingsTransitions): Parameters<CSSStyleDeclaration["setProperty"]>[1] => {
+		switch (transitions) {
+			case SettingsTransitions.ON:
+				return null
+			case SettingsTransitions.OFF:
+				return "0"
+			case SettingsTransitions.DEFAULT:
+				return null
+			case SettingsTransitions.REDUCED:
+				return "0.1"
+			case SettingsTransitions.SYSTEM: {
+				const mediaQuery =
+					window.matchMedia("(prefers-reduced-motion: reduce)")
+				if (mediaQuery.matches) {
+					return "0.1"
+				} else {
+					return null
+				}
+			}
+			default:
+				return null
+		}
+	}
 
 const ApplySettings: FC = ({ children }) => {
-	const doTransitions = useStateDoTransitions()
+	const transitions = useStateTransitions()
 
 	useEffect(() => {
 		document.documentElement.style.setProperty(
 			"--transition-duration",
-			doTransitions ? null : "0",
+			determineTransitionValue(transitions),
 		)
-	}, [doTransitions])
+	}, [transitions])
 
 	return (
 		<Fragment>

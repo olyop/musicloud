@@ -70,7 +70,7 @@
 		"@aws-sdk/client-s3": "3.45.0",
 		"@oly_op/bem": "5.0.7",
 		"@oly_op/graphql-create-resolver": "1.2.1",
-		"@oly_op/music-app-common": "6.8.19",
+		"@oly_op/music-app-common": "6.8.20",
 		"@oly_op/pg-helpers": "6.0.4",
 		"@oly_op/react-button": "4.5.5",
 		"@oly_op/react-image": "1.0.1",
@@ -188,7 +188,7 @@
 		"webpack": "5.65.0",
 		"webpack-bundle-analyzer": "4.5.0",
 		"webpack-cli": "4.9.1",
-		"webpack-dev-server": "4.7.1",
+		"webpack-dev-server": "4.7.2",
 		"webpack-merge": "5.8.0"
 	}
 }
