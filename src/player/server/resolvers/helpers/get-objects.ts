@@ -7,14 +7,18 @@ import {
 	AlbumID,
 	ArtistID,
 	PlaylistID,
+	PlaylistPrivacy,
 } from "@oly_op/music-app-common/types"
 
 import {
 	join,
 	query,
 	PoolOrClient,
-	convertFirstRowToCamelCase,
+	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
+
+import { isNull } from "lodash-es"
+import { UserInputError } from "apollo-server-fastify"
 
 import {
 	Key,
@@ -42,88 +46,147 @@ import { COLUMN_NAMES } from "../../globals"
 
 export const getKey =
 	(client: PoolOrClient) =>
-		({ keyID }: KeyID) =>
-			query(client)(SELECT_KEY_BY_ID)({
-				parse: convertFirstRowToCamelCase<Key>(),
-				variables: {
-					keyID,
-					columnNames: join(COLUMN_NAMES.KEY),
-				},
-			})
+		async ({ keyID }: KeyID) => {
+			const key =
+				await query(client)(SELECT_KEY_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<Key>(),
+					variables: {
+						keyID,
+						columnNames: join(COLUMN_NAMES.KEY),
+					},
+				})
+			if (isNull(key)) {
+				throw new UserInputError("Key does not exist")
+			} else {
+				return key
+			}
+		}
 
 export const getUser =
 	(client: PoolOrClient) =>
-		({ userID }: UserID) =>
-			query(client)(SELECT_USER_BY_ID)({
-				parse: convertFirstRowToCamelCase<User>(),
-				variables: {
-					userID,
-					columnNames: join(COLUMN_NAMES.USER),
-				},
-			})
+		async ({ userID }: UserID) => {
+			const user =
+				await query(client)(SELECT_USER_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<User>(),
+					variables: {
+						userID,
+						columnNames: join(COLUMN_NAMES.USER),
+					},
+				})
+			if (isNull(user)) {
+				throw new UserInputError("User does not exist")
+			} else {
+				return user
+			}
+		}
 
 export const getSong =
 	(client: PoolOrClient) =>
-		({ songID }: SongID) =>
-			query(client)(SELECT_SONG_BY_ID)({
-				parse: convertFirstRowToCamelCase<Song>(),
-				variables: {
-					songID,
-					columnNames: join(COLUMN_NAMES.SONG),
-				},
-			})
+		async ({ songID }: SongID) => {
+			const song =
+				await query(client)(SELECT_SONG_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<Song>(),
+					variables: {
+						songID,
+						columnNames: join(COLUMN_NAMES.SONG),
+					},
+				})
+			if (isNull(song)) {
+				throw new UserInputError("Song does not exist")
+			} else {
+				return song
+			}
+		}
 
 export const getPlay =
 	(client: PoolOrClient) =>
-		({ playID }: PlayID) =>
-			query(client)(SELECT_PLAY_BY_ID)({
-				parse: convertFirstRowToCamelCase<Play>(),
-				variables: {
-					playID,
-					columnNames: join(COLUMN_NAMES.PLAY),
-				},
-			})
+		async ({ playID }: PlayID) => {
+			const play =
+				await query(client)(SELECT_PLAY_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<Play>(),
+					variables: {
+						playID,
+						columnNames: join(COLUMN_NAMES.PLAY),
+					},
+				})
+			if (isNull(play)) {
+				throw new UserInputError("Play does not exist")
+			} else {
+				return play
+			}
+		}
 
 export const getGenre =
 	(client: PoolOrClient) =>
-		({ genreID }: GenreID) =>
-			query(client)(SELECT_GENRE_BY_ID)({
-				parse: convertFirstRowToCamelCase<Genre>(),
-				variables: {
-					genreID,
-					columnNames: join(COLUMN_NAMES.GENRE),
-				},
-			})
+		async ({ genreID }: GenreID) => {
+			const genre =
+				await query(client)(SELECT_GENRE_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<Genre>(),
+					variables: {
+						genreID,
+						columnNames: join(COLUMN_NAMES.GENRE),
+					},
+				})
+			if (isNull(genre)) {
+				throw new UserInputError("Genre does not exist")
+			} else {
+				return genre
+			}
+		}
 
 export const getAlbum =
 	(client: PoolOrClient) =>
-		({ albumID }: AlbumID) =>
-			query(client)(SELECT_ALBUM_BY_ID)({
-				parse: convertFirstRowToCamelCase<Album>(),
-				variables: {
-					albumID,
-					columnNames: join(COLUMN_NAMES.ALBUM),
-				},
-			})
+		async ({ albumID }: AlbumID) => {
+			const album =
+				await query(client)(SELECT_ALBUM_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<Album>(),
+					variables: {
+						albumID,
+						columnNames: join(COLUMN_NAMES.ALBUM),
+					},
+				})
+			if (isNull(album)) {
+				throw new UserInputError("Album does not exist")
+			} else {
+				return album
+			}
+		}
 
 export const getArtist =
 	(client: PoolOrClient) =>
-		({ artistID }: ArtistID) =>
-			query(client)(SELECT_ARTIST_BY_ID)({
-				parse: convertFirstRowToCamelCase<Artist>(),
-				variables: {
-					artistID,
-					columnNames: join(COLUMN_NAMES.ARTIST),
-				},
-			})
+		async ({ artistID }: ArtistID) => {
+			const artist =
+				await query(client)(SELECT_ARTIST_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<Artist>(),
+					variables: {
+						artistID,
+						columnNames: join(COLUMN_NAMES.ARTIST),
+					},
+				})
+			if (isNull(artist)) {
+				throw new UserInputError("Artist does not exist")
+			} else {
+				return artist
+			}
+		}
 
 export const getPlaylist =
 	(client: PoolOrClient) =>
-		({ playlistID }: PlaylistID) =>
-			query(client)(SELECT_PLAYLIST_BY_ID)({
-				parse: convertFirstRowToCamelCase<Playlist>(),
-				variables: {
-					playlistID,
-					columnNames: join(COLUMN_NAMES.PLAYLIST),
-				},
-			})
+		async ({ playlistID }: PlaylistID): Promise<Playlist> => {
+			const playlist =
+				await query(client)(SELECT_PLAYLIST_BY_ID)({
+					parse: convertFirstRowToCamelCaseOrNull<Playlist>(),
+					variables: {
+						playlistID,
+						columnNames: join(COLUMN_NAMES.PLAYLIST),
+					},
+				})
+			if (isNull(playlist)) {
+				throw new UserInputError("Playlist does not exist")
+			} else {
+				return {
+					...playlist,
+					privacy: playlist.privacy.toUpperCase() as PlaylistPrivacy,
+				}
+			}
+		}

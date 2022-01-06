@@ -1,4 +1,4 @@
-import isNull from "lodash/isNull"
+import { isNull } from "lodash-es"
 
 import { Update, PlaylistDataPick, Modifer } from "./types"
 

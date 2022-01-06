@@ -1,4 +1,4 @@
-import isEmpty from "lodash/isEmpty"
+import { isEmpty } from "lodash-es"
 import Button from "@oly_op/react-button"
 import { useState, createElement, VFC, Fragment } from "react"
 import { PlaylistPrivacy } from "@oly_op/music-app-common/types"

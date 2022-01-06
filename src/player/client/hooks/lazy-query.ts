@@ -3,9 +3,9 @@ import {
 	useLazyQuery as useBaseLazyQuery,
 } from "@apollo/client"
 
-import uniqueID from "lodash/uniqueId"
 import { useRef, useEffect } from "react"
 import type { DocumentNode } from "graphql"
+import { uniqueId as uniqueID } from "lodash-es"
 
 import { addLoading, useDispatch, removeLoading } from "../redux"
 

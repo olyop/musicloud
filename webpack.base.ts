@@ -23,25 +23,12 @@ export const baseHTMLPluginOptions =
 		filename: "index.html",
 		meta: {
 			"og:title": title,
-			"twitter:dnt": "on",
 			"keywords": KEYWORDS,
 			"og:type": pwa && "PWA",
-			"google": "notranslate",
-			"robots": "index,follow",
-			"theme-color": "#ffffff",
 			"application-name": title,
-			"author": "Oliver Plummer",
 			"description": DESCRIPTION,
 			"og:image": "/icons/192.png",
 			"og:description": DESCRIPTION,
-			"mobile-web-app-capable": "yes",
-			"viewport": `
-				minimum-scale=1,
-				initial-scale=1,
-				shrink-to-fit=no,
-				width=device-width,
-				viewport-fit=cover
-			`,
 		},
 	})
 

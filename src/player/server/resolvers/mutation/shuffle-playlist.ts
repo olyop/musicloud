@@ -36,11 +36,6 @@ export const shufflePlaylist =
 
 					const [ nowPlaying, ...shuffled ] = songs
 
-					console.log({
-						nowPlaying,
-						shuffled,
-					})
-
 					await updateQueueNowPlaying(client, context.ag.index)({
 						userID,
 						value: nowPlaying!.songID,

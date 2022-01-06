@@ -1,9 +1,12 @@
 import algoliasearch from "algoliasearch"
 
+const ADMIN_API_KEY =
+	process.argv[2]!
+
 const client =
 	algoliasearch(
 		process.env.ALGOLIA_APPLICATION_ID,
-		process.env.ALGOLIA_ADMIN_API_KEY,
+		ADMIN_API_KEY,
 	)
 
 const main =
@@ -11,7 +14,7 @@ const main =
 		try {
 			console.log(
 				client.generateSecuredApiKey(
-					process.env.ALGOLIA_SEARCH_API_KEY,
+					ADMIN_API_KEY,
 					{ filters: "NOT privacy:PRIVATE" },
 				),
 			)

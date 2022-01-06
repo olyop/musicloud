@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS playlists_songs (
 	index smallint NOT NULL,
 	date_added bigint NOT NULL DEFAULT get_now(),
 	CONSTRAINT playlists_songs_pk
-		PRIMARY KEY (playlist_id, song_id),
+		PRIMARY KEY (playlist_id, index),
   CONSTRAINT playlists_songs_check_index
     CHECK (index >= 0),
 	CONSTRAINT playlists_songs_fk_playlist_id

@@ -1,7 +1,7 @@
-import uniqueID from "lodash/uniqueId"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useApolloClient } from "@apollo/client"
+import { uniqueId as uniqueID } from "lodash-es"
 import { useNavigate, NavLink } from "react-router-dom"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { createElement, VFC, useEffect, useState } from "react"

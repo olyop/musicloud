@@ -1,4 +1,4 @@
-import isFunction from "lodash/isFunction"
+import { isFunction } from "lodash-es"
 import { createBEM, BEMInput } from "@oly_op/bem"
 import { createElement, VFC, ReactNode } from "react"
 

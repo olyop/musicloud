@@ -8,7 +8,8 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { PlaylistID, UserID } from "@oly_op/music-app-common/types"
+import { ForbiddenError } from "apollo-server-fastify"
+import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	getUser,
@@ -23,7 +24,15 @@ import { Song, Play, Playlist, GetObjectsOptions } from "../types"
 import { SELECT_PLAYLIST_SONGS, SELECT_OBJECT_SONG_PLAYS } from "../sql"
 
 const resolver =
-	createParentResolver<Playlist>()
+	createParentResolver<Playlist>(
+		({ parent, context }) => {
+			if (parent.privacy === PlaylistPrivacy.PRIVATE) {
+				if (parent.userID !== context.authorization!.userID) {
+					throw new ForbiddenError("Unauthorized access to this playlist")
+				}
+			}
+		},
+	)
 
 export const privacy =
 	resolver(

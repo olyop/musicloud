@@ -1,8 +1,7 @@
-import isNull from "lodash/isNull"
-import uniqueID from "lodash/uniqueId"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
 import { useApolloClient } from "@apollo/client"
+import { isNull, uniqueId as uniqueID } from "lodash-es"
 import { createElement, VFC, Fragment, useState } from "react"
 
 import {

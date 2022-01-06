@@ -11,7 +11,7 @@ import { SELECT_SONGS_TOP_PLAYED } from "../../sql"
 
 export const getTopSongs =
 	(client: PoolOrClient) =>
-		(limit: number | string) =>
+		(limit: number) =>
 			query(client)(SELECT_SONGS_TOP_PLAYED)({
 				parse: convertTableToCamelCase<Song>(),
 				variables: {

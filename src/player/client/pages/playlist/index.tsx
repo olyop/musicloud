@@ -1,9 +1,8 @@
-import toLower from "lodash/toLower"
-import startCase from "lodash/startCase"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { isNull, toLower, startCase } from "lodash-es"
 import { useParams, useNavigate } from "react-router-dom"
 import { PlaylistID } from "@oly_op/music-app-common/types"
 
@@ -22,7 +21,7 @@ import RenameButton from "./rename-button"
 import PrivacyButton from "./privacy-button"
 import ObjectLink from "../../components/object-link"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
-import Songs, { SongsChangeOptions } from "../../components/songs"
+import Songs, { SongChangeOptions } from "../../components/songs"
 import { determinePlural, determineObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
@@ -45,7 +44,7 @@ const PlaylistPage: VFC = () => {
 	const [ shufflePlaylist ] =
 		useShufflePlaylist({ playlistID })
 
-	const { data } =
+	const { data, error } =
 		useQuery<GetPlaylistPageData, PlaylistID>(
 			GET_PLAYLIST_PAGE,
 			{ variables },
@@ -71,12 +70,25 @@ const PlaylistPage: VFC = () => {
 		}
 
 	const handleRemoveSongFromPlaylist =
-		({ index }: SongsChangeOptions) =>
+		({ song }: SongChangeOptions) =>
 			async () => {
-				await removeSongFromPlaylist({
-					variables: { index, playlistID },
-				})
+				if (!isNull(song.playlistIndex)) {
+					await removeSongFromPlaylist({
+						variables: {
+							playlistID,
+							index: song.playlistIndex,
+						},
+					})
+				}
 			}
+
+	if (error?.message === "Playlist does not exist") {
+		return (
+			<p className="BodyOneBold Padding">
+				{error.message}
+			</p>
+		)
+	}
 
 	return (
 		<div className="Content PaddingTopBottom">

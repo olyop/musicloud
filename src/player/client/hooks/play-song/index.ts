@@ -1,6 +1,5 @@
 import { useRef } from "react"
-import isNull from "lodash/isNull"
-import isUndefined from "lodash/isUndefined"
+import { isNull, isUndefined } from "lodash-es"
 import { SongID } from "@oly_op/music-app-common/types"
 
 import update from "./update"

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+
 import {
 	AlgoliaRecord,
 	AlgoliaRecordUser,
@@ -8,7 +10,10 @@ import {
 	AlgoliaRecordPlaylist,
 } from "@oly_op/music-app-common/types"
 
-import { Hit as AlgoliaHit } from "algoliasearch"
+import { SearchIndex } from "algoliasearch"
+
+type AlgoliaHit<T> =
+	T & Parameters<Extract<Parameters<ReturnType<SearchIndex["search"]>["then"]>[0], Function>>[0]["hits"][0]
 
 export type Hit =
 	AlgoliaHit<AlgoliaRecord>

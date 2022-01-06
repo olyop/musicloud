@@ -1,5 +1,5 @@
+import { startCase } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
-import startCase from "lodash/startCase"
 import { createElement, ReactElement, ChangeEventHandler } from "react"
 
 import { ClassNameBEMPropTypes, HandlerReturn } from "../../types"

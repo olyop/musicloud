@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import { join } from "path"
-import { trim } from "lodash"
+import { trim } from "lodash-es"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
 import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"

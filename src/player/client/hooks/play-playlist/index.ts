@@ -1,6 +1,5 @@
-import isNull from "lodash/isNull"
-import isUndefined from "lodash/isUndefined"
 import { MutationResult } from "@apollo/client"
+import { isNull, isUndefined } from "lodash-es"
 import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../query"

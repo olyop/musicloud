@@ -1,4 +1,4 @@
-import isNull from "lodash/isNull"
+import { isNull } from "lodash-es"
 import { createElement, VFC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 

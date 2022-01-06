@@ -25,6 +25,7 @@ const AlbumForm: VFC = () => {
 				cover: undefined,
 			},
 			onSubmit: async (album, { resetForm }) => {
+				let reset = true
 				try {
 					setLoading(true)
 					await fetch("/upload/album", {
@@ -33,9 +34,12 @@ const AlbumForm: VFC = () => {
 					})
 				} catch (error) {
 					console.error(error)
+					reset = false
 				} finally {
-					setSongs([])
-					resetForm()
+					if (reset) {
+						setSongs([])
+						resetForm()
+					}
 					setLoading(false)
 				}
 			},
@@ -52,7 +56,7 @@ const AlbumForm: VFC = () => {
 				trackNumber: songs.length + 1,
 				title: audio.name.slice(0, -4),
 				artists: formik.values.artists,
-				genres: isEmpty(prevState) ? [] : prevState[0].genres,
+				genres: isEmpty(prevState) ? [] : prevState[0]!.genres,
 			}])
 
 	const handleSongRemove =

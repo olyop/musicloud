@@ -18,15 +18,16 @@ type Mutation {
   playSong(songID: UUID!): Queue!
   playAlbum(albumID: UUID!): Queue!
   playPlaylist(playlistID: UUID!): Queue!
+  jumpToSongInQueueNext(index: NonNegativeInt!): Queue!
+  jumpToSongInQueueLater(index: NonNegativeInt!): Queue!
+  removeSongFromQueueNext(index: NonNegativeInt!): Queue!
+  removeSongFromQueueLater(index: NonNegativeInt!): Queue!
   shuffleNext: Queue!
   shuffleLibrary: Queue!
   shuffleAlbum(albumID: UUID!): Queue!
   shuffleArtist(artistID: UUID!): Queue!
   shufflePlaylist(playlistID: UUID!): Queue!
-  jumpToSongInQueueNext(index: NonNegativeInt!): Queue!
-  jumpToSongInQueueLater(index: NonNegativeInt!): Queue!
-  removeSongFromQueueNext(index: NonNegativeInt!): Queue!
-  removeSongFromQueueLater(index: NonNegativeInt!): Queue!
+  shuffleLibraryCustom(input: ShuffleLibraryCustomInput!): Queue!
 
   # library
   deleteLibrary: Void

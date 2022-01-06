@@ -6,3 +6,4 @@ const importFile =
 export const SELECT_PLAYLIST_SONG = importFile("song")
 export const SELECT_PLAYLIST_BY_ID = importFile("by-id")
 export const SELECT_PLAYLIST_SONGS = importFile("songs")
+export const SELECT_PLAYLIST_SONGS_RELATIONS = importFile("songs-relations")

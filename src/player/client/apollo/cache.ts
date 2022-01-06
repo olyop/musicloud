@@ -1,6 +1,6 @@
 /* eslint-disable react/function-component-definition */
 /* eslint-disable @typescript-eslint/default-param-last */
-import isNull from "lodash/isNull"
+import { isNull } from "lodash-es"
 import { InMemoryCache, FieldMergeFunction } from "@apollo/client"
 
 import { StoreObject } from "../types"

@@ -1,6 +1,5 @@
-import isEmpty from "lodash/isEmpty"
 import { createElement, VFC } from "react"
-import isFunction from "lodash/isFunction"
+import { isEmpty, isFunction } from "lodash-es"
 import { createBEM, BEMInput } from "@oly_op/bem"
 
 import Playlist from "../playlist"

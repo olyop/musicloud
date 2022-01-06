@@ -5,7 +5,7 @@ import {
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
 
-import isEmpty from "lodash/isEmpty"
+import { isEmpty } from "lodash-es"
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
@@ -58,8 +58,11 @@ const AddSongToPlaylistPage: VFC = () => {
 	const handleAdd =
 		async () => {
 			if (playlistID) {
-				await add({ variables: { songID, playlistID } })
-				handleClose()
+				try {
+					await add({ variables: { songID, playlistID } })
+				} finally {
+					handleClose()
+				}
 			}
 		}
 

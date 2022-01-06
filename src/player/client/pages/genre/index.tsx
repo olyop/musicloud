@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
+import { isUndefined } from "lodash-es"
 import { createElement, FC } from "react"
-import isUndefined from "lodash/isUndefined"
 import { useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"

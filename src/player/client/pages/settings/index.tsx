@@ -76,7 +76,7 @@ const SettingsPage: VFC = () => {
 			dispatch(updateListStyle(value))
 		}
 
-	const handleToggleDoTransitions =
+	const handleTransitionsChange =
 		(value: SettingsTransitions) => {
 			dispatch(updateTransitions(value))
 		}
@@ -104,7 +104,7 @@ const SettingsPage: VFC = () => {
 						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
 							Appearance
 						</summary>
-						<div className={bem("details-content", "FlexColumnGapHalf ")}>
+						<div className={bem("details-content", "FlexColumnGapHalf")}>
 							<div>
 								<p className="BodyTwoBold MarginBottomQuart">
 									Theme:
@@ -133,7 +133,7 @@ const SettingsPage: VFC = () => {
 								</p>
 								<Select
 									value={transitions}
-									onChange={handleToggleDoTransitions}
+									onChange={handleTransitionsChange}
 									className="BodyTwo MarginRightQuart"
 									options={Object.keys(SettingsTransitions)}
 								/>

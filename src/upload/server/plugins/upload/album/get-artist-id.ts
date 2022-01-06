@@ -1,5 +1,5 @@
-import { trim } from "lodash"
-import pipe from "@oly_op/pipe"
+import { pipe } from "rxjs"
+import { trim } from "lodash-es"
 import { ArtistID } from "@oly_op/music-app-common/types"
 import { query, PoolOrClient, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 

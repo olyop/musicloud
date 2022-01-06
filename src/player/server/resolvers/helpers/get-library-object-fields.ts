@@ -2,9 +2,11 @@ import {
 	query,
 	PoolOrClient,
 	getResultExists,
-	convertFirstRowToCamelCase,
+	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
+import { pipe } from "rxjs"
+import { isNull } from "lodash-es"
 import { ObjectID, UserID } from "@oly_op/music-app-common/types"
 
 import {
@@ -21,10 +23,9 @@ export const getObjectDateAddedToLibrary =
 	(client: PoolOrClient) =>
 		({ userID, objectID, tableName, columnName }: GetLibraryObjectOptions) =>
 			query(client)(SELECT_OBJECT_LIBRARY_DATE_ADDED)({
-				parse: result => (
-					result.rowCount === 0 ?
-						null :
-						convertFirstRowToCamelCase<LibraryObject>()(result).dateAdded * 1000
+				parse: pipe(
+					convertFirstRowToCamelCaseOrNull<LibraryObject>(),
+					result => isNull(result) || result.dateAdded * 1000,
 				),
 				variables: {
 					userID,

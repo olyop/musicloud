@@ -1,5 +1,4 @@
-import head from "lodash/head"
-import isNull from "lodash/isNull"
+import { head, isNull } from "lodash-es"
 import { from, HttpLink } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
 import { setContext } from "@apollo/client/link/context"

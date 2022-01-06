@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import isUndefined from "lodash/isUndefined"
+import { isUndefined } from "lodash-es"
 import { MutationResult } from "@apollo/client"
 
 import modifer from "./modifer"

@@ -1,3 +1,3 @@
 export const dataURLToBuffer =
 	(dataURL: string) =>
-		Buffer.from(dataURL.split(",")[1], "base64")
+		Buffer.from(dataURL.split(",")[1]!, "base64")

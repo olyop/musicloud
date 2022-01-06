@@ -14,7 +14,7 @@ interface GetCoverOptions
 export const getCover =
 	async ({ cover }: GetCoverOptions) => {
 		if (cover) {
-			return cover[0].data
+			return cover[0]!.data
 		} else {
 			return fs.readFile(DEFAULT_COVER_PATH)
 		}
@@ -36,7 +36,7 @@ interface GetProfileOptions
 export const getProfile =
 	async ({ name, profile }: GetProfileOptions) => {
 		if (profile) {
-			return profile[0].data
+			return profile[0]!.data
 		} else {
 			const url = createUIAvatarsURL({ name }).toString()
 			const response = await fetch(url)

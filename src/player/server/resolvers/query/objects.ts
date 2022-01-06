@@ -40,7 +40,7 @@ export const getLibrary =
 	resolver(() => ({}))
 
 export const getUser =
-	resolver<User>(
+	resolver(
 		({ context }) => (
 			getUserHelper(context.pg)({
 				userID: context.authorization!.userID,
@@ -95,7 +95,7 @@ export const getPlaylistByID =
 		async ({ args, context }) => {
 			const playlist =
 				await getPlaylist(context.pg)(args)
-			if (playlist.privacy === PlaylistPrivacy.PRIVATE) {
+			if (playlist.privacy.toUpperCase() === PlaylistPrivacy.PRIVATE) {
 				if (playlist.userID === context.authorization!.userID) {
 					return playlist
 				} else {

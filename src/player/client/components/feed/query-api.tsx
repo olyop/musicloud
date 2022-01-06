@@ -1,5 +1,5 @@
-import uniqueID from "lodash/uniqueId"
 import type { DocumentNode } from "graphql"
+import { uniqueId as uniqueID } from "lodash-es"
 import { useQuery, QueryResult } from "@apollo/client"
 import { useRef, useEffect, ReactNode, Fragment, createElement } from "react"
 

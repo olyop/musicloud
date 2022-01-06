@@ -13,12 +13,12 @@ const UserForm: VFC = () => {
 	const formik =
 		useFormik<User>({
 			initialValues: {
+				name: "",
+				password: "",
 				cover: undefined,
 				profile: undefined,
-				password: "password",
-				name: "Oliver Plummer",
 			},
-			onSubmit: async (user, { resetForm, setErrors }) => {
+			onSubmit: async (user, { resetForm }) => {
 				try {
 					setLoading(true)
 					await fetch("/upload/user", {

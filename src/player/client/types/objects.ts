@@ -105,6 +105,7 @@ export interface Song
 		featuring: Artist[],
 		isInPlaylist: boolean,
 		queueIndex: number | null,
+		playlistIndex: number | null,
 		dateAddedToPlaylist: number | null,
 	}
 

@@ -1,4 +1,4 @@
-import isEmpty from "lodash/isEmpty"
+import { isEmpty } from "lodash-es"
 import { createElement, Fragment, VFC } from "react"
 import { ArtistIDNameBase } from "@oly_op/music-app-common/types"
 

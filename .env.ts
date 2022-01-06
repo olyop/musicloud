@@ -2,6 +2,8 @@ interface ProcessEnv {
 	HOST: string,
 	PORT: string,
 	AWS_REGION: string,
+	AUTH0_DOMAIN: string,
+	AUTH0_CLIENT_ID: string,
 	AWS_RDS_USERNAME: string,
 	AWS_RDS_DATABASE: string,
 	AWS_RDS_PASSWORD: string,

@@ -110,17 +110,13 @@ const Library: VFC = () => {
 				<ModalButtons>
 					<ModalButton
 						icon="list"
-						text="Library Shuffle"
+						text="Shuffle"
 						onClick={handleLibraryShuffle}
-					/>
-					<ModalButton
-						icon="psychology"
-						text="Smart Shuffle"
 					/>
 					<ModalButton
 						icon="handyman"
 						text="Custom Shuffle"
-						link="/custom-shuffle"
+						link="/custom-library-shuffle"
 					/>
 				</ModalButtons>
 			</Modal>

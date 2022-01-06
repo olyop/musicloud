@@ -1,6 +1,5 @@
-import isNull from "lodash/isNull"
-import isString from "lodash/isString"
 import { BEMInput } from "@oly_op/bem"
+import { isNull, isString } from "lodash-es"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"

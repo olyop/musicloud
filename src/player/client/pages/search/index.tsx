@@ -3,25 +3,22 @@ import {
 	useRef,
 	useState,
 	useEffect,
-	useContext,
 	createElement,
 	ChangeEventHandler,
 } from "react"
 
-import isEmpty from "lodash/isEmpty"
-import uniqueID from "lodash/uniqueId"
 import { createBEM } from "@oly_op/bem"
 import Image from "@oly_op/react-image"
 import Button from "@oly_op/react-button"
-import { SearchIndex } from "algoliasearch"
 import { Metadata } from "@oly_op/react-metadata"
+import { isEmpty, uniqueId as uniqueID } from "lodash-es"
+import algoliasearch, { SearchIndex } from "algoliasearch"
 import { useLocation, useNavigate } from "react-router-dom"
 import { AlgoliaRecord } from "@oly_op/music-app-common/types"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
-import { useHasMounted } from "../../hooks"
-import { AlgoliaSearchClient } from "../../contexts"
+import { useHasMounted, useJWTPayload } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
 
 import "./index.scss"
@@ -45,10 +42,22 @@ const SearchPage: VFC = () => {
 	const location = useLocation()
 	const dispatch = useDispatch()
 	const hasMounted = useHasMounted()
-	const ag = useContext(AlgoliaSearchClient)
+	const { algoliaKey } = useJWTPayload()
 
-	const indexRef =
-		useRef(ag.initIndex(process.env.ALGOLIA_INDEX_NAME))
+	const agClientRef =
+		useRef(
+			algoliasearch(
+				process.env.ALGOLIA_APPLICATION_ID,
+				algoliaKey,
+			),
+		)
+
+	const agIndexRef =
+		useRef(
+			agClientRef.current.initIndex(
+				process.env.ALGOLIA_INDEX_NAME,
+			),
+		)
 
 	const params = new URLSearchParams(location.search)
 	const initQuery = params.get("query") ?? ""
@@ -63,7 +72,7 @@ const SearchPage: VFC = () => {
 		async (value: string) => {
 			setInput(value)
 			dispatch(addLoading(loadingID))
-			setHits(await getAlgoliaHits(indexRef.current)(input))
+			setHits(await getAlgoliaHits(agIndexRef.current)(input))
 			dispatch(removeLoading(loadingID))
 		}
 
@@ -79,7 +88,7 @@ const SearchPage: VFC = () => {
 
 	useEffect(() => {
 		if (!isEmpty(initQuery)) {
-			void getAlgoliaHits(indexRef.current)(initQuery).then(setHits)
+			void getAlgoliaHits(agIndexRef.current)(initQuery).then(setHits)
 		}
 	}, [initQuery])
 

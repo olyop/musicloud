@@ -1,5 +1,5 @@
 import { Pool } from "pg"
-import { trim } from "lodash"
+import { trim } from "lodash-es"
 import createError from "fastify-error"
 import { exists } from "@oly_op/pg-helpers"
 

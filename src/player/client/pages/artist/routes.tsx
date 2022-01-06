@@ -1,5 +1,5 @@
 import { createElement } from "react"
-import uniqueID from "lodash/uniqueId"
+import { uniqueId as uniqueID } from "lodash-es"
 
 import { Route } from "../../types"
 import ArtistPageHome from "./home"

@@ -1,6 +1,6 @@
+import { isUndefined } from "lodash-es"
 import Button from "@oly_op/react-button"
 import { createElement, VFC } from "react"
-import isUndefined from "lodash/isUndefined"
 import { Metadata } from "@oly_op/react-metadata"
 
 import { Song, Queue } from "../../types"

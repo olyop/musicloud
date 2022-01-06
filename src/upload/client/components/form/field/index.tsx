@@ -29,7 +29,7 @@ export interface Field {
 const bem =
 	createBEM("FormField")
 
-const FormField: VFC<PropTypes> = ({ field, value, onChange, setFieldValue }) => {
+const FormField: VFC<PropTypes> = ({ field, value, onChange }) => {
 	if (field.type === FieldTypeEnum.IMAGE) {
 		return (
 			<div key={field.fieldID} className="FlexColumnGapQuart">

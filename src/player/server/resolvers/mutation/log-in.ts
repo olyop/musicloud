@@ -24,9 +24,10 @@ const createJWT =
 const createAlgoliaAPIKey =
 	(ag: SearchClient) =>
 		({ userID }: UserID) =>
-			ag.generateSecuredApiKey(process.env.ALGOLIA_SEARCH_API_KEY, {
-				filters: `NOT privacy:PRIVATE OR user.userID:"${userID}"`,
-			})
+			ag.generateSecuredApiKey(
+				process.env.ALGOLIA_SEARCH_API_KEY,
+				{ filters: `NOT privacy:PRIVATE OR user.userID:"${userID}"` },
+			)
 
 type SelectUserNamePasswordRow =
 	Pick<User, "name" | "password">
@@ -54,7 +55,8 @@ export const logIn =
 				const isPasswordCorrect =
 					await bcrypt.compare(args.input.password, password)
 				if (isPasswordCorrect) {
-					const algoliaKey = createAlgoliaAPIKey(context.ag.client)({ userID })
+					const algoliaKey =
+						createAlgoliaAPIKey(context.ag.client)({ userID })
 					return createJWT({ userID, name, algoliaKey })
 				} else {
 					throw new AuthenticationError("Password is incorrect")

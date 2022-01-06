@@ -1,5 +1,5 @@
 import { join } from "path"
-import { trim } from "lodash"
+import { trim } from "lodash-es"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
 import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
@@ -55,15 +55,15 @@ const INSERT_ARTIST =
 	readFileSync(join(UPLOAD_PLUGINS_PATH, "artist", "insert.sql")).toString()
 
 export const uploadArtist: FastifyPluginCallback =
-	(fastify, options, done) => {
+	(fastify, _, done) => {
 		fastify.post<Route>(
 			"/upload/artist",
 			async (request, reply) => {
 				const name = trim(request.body.name)
 				const city = trim(request.body.city)
 				const country = trim(request.body.country)
-				const cover = request.body.cover[0].data
-				const profile = request.body.profile[0].data
+				const cover = request.body.cover[0]!.data
+				const profile = request.body.profile[0]!.data
 
 				const doesArtistAlreadyExist =
 					await exists(fastify.pg.pool)({
@@ -113,7 +113,7 @@ export const uploadArtist: FastifyPluginCallback =
 					plays: 0,
 					typeName: "Artist",
 					objectID: artistID,
-					image: determineS3ImageURL(artistID, profileImages[2]),
+					image: determineS3ImageURL(artistID, profileImages[2]!),
 				})
 
 				return reply.send()

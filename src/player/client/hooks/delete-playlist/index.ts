@@ -1,4 +1,4 @@
-import isNull from "lodash/isNull"
+import { isNull } from "lodash-es"
 import { Reference } from "@apollo/client"
 import { PlaylistID } from "@oly_op/music-app-common/types"
 

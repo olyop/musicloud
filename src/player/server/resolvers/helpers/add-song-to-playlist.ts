@@ -1,24 +1,29 @@
+import { UserInputError } from "apollo-server-fastify"
 import { PlaylistID, SongID } from "@oly_op/music-app-common/types"
 import { query, getResultExists, PoolOrClient } from "@oly_op/pg-helpers"
 
+import { IndexOptions } from "../../types"
 import { EXISTS_PLAYLIST_SONG, INSERT_PLAYLIST_SONG } from "../../sql"
 
 interface AddSongToPlaylistOptions
-	extends SongID, PlaylistID {}
+	extends SongID, PlaylistID, IndexOptions {}
 
 export const addSongToPlaylist =
 	(pg: PoolOrClient) =>
 		async (options: AddSongToPlaylistOptions) => {
-			const { songID, playlistID } =
-				options
+			const { index, songID, playlistID } = options
+
 			const inPlaylist =
 				await query(pg)(EXISTS_PLAYLIST_SONG)({
 					parse: getResultExists,
 					variables: { songID, playlistID },
 				})
-			if (!inPlaylist) {
-				await query(pg)(INSERT_PLAYLIST_SONG)({
-					variables: { songID, playlistID },
-				})
+
+			if (inPlaylist) {
+				throw new UserInputError("Song already in playlist")
 			}
+
+			await query(pg)(INSERT_PLAYLIST_SONG)({
+				variables: { index, songID, playlistID },
+			})
 		}

@@ -97,7 +97,7 @@ const settings =
 			}))
 			.addCase(updateTransitions, (state, { payload }) => ({
 				...state,
-				doTransitions: payload,
+				transitions: payload,
 			}))
 			.addCase(updateOrderBy, (state, { payload }) => ({
 				...state,

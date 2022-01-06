@@ -13,6 +13,11 @@ input UpdatePlaylistTitleInput {
 	title: NonEmptyString!
 }
 
+input ShuffleLibraryCustomInput {
+	genres: [UUID!]
+	artists: [UUID!]
+}
+
 input UpdatePlaylistPrivacyInput {
 	playlistID: UUID!
 	privacy: PlaylistPrivacy!

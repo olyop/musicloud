@@ -1,17 +1,18 @@
 import {
 	join,
-	exists as pgExists,
-	query as pgHelpersQuery,
 	convertTableToCamelCase,
+	query as pgHelpersQuery,
+	exists as pgHelpersExists,
 } from "@oly_op/pg-helpers"
 
-import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { last } from "lodash-es"
 import { AlbumID, PlaylistID } from "@oly_op/music-app-common/types"
+import { ForbiddenError, UserInputError } from "apollo-server-fastify"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
-import { Song, Playlist } from "../../types"
-import { SELECT_ALBUM_SONGS } from "../../sql"
+import { Song, Playlist, PlaylistSong } from "../../types"
+import { SELECT_ALBUM_SONGS, SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql"
 import { addSongToPlaylist, getPlaylist, isNotUsersPlaylist } from "../helpers"
 
 interface Args
@@ -21,7 +22,7 @@ export const addAlbumToPlaylist =
 	resolver<Playlist, Args>(
 		async ({ context, args }) => {
 			const query = pgHelpersQuery(context.pg)
-			const exists = pgExists(context.pg)
+			const exists = pgHelpersExists(context.pg)
 			const { albumID, playlistID } = args
 			const { userID } = context.authorization!
 
@@ -33,7 +34,7 @@ export const addAlbumToPlaylist =
 				})
 
 			if (!albumExists) {
-				throw new UserInputError("Album does not exist.")
+				throw new UserInputError("Album does not exist")
 			}
 
 			const playlistExists =
@@ -56,16 +57,34 @@ export const addAlbumToPlaylist =
 					parse: convertTableToCamelCase<Song>(),
 					variables: {
 						albumID,
-						columnNames: join(COLUMN_NAMES.SONG),
+						columnNames: COLUMN_NAMES.SONG[0],
 					},
 				})
 
+			const playlistSongs =
+				await query(SELECT_PLAYLIST_SONGS_RELATIONS)({
+					parse: convertTableToCamelCase<PlaylistSong>(),
+					variables: {
+						playlistID,
+						columnNames: join(COLUMN_NAMES.PLAYLIST_SONG),
+					},
+				})
+
+			const lastPlaylistSong =
+				last(playlistSongs)
+
+			const baseIndex =
+				lastPlaylistSong ?
+					lastPlaylistSong.index + 1 :
+					0
+
 			await Promise.all(
 				songs.map(
-					({ songID }) => (
+					({ songID }, index) => (
 						addSongToPlaylist(context.pg)({
 							songID,
 							playlistID,
+							index: baseIndex + index,
 						})
 					),
 				),

@@ -1,8 +1,7 @@
-import isEmpty from "lodash/isEmpty"
-import orderBy from "lodash/orderBy"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, VFC } from "react"
+import { isEmpty, orderBy } from "lodash-es"
 
 import {
 	Data,
@@ -20,7 +19,7 @@ import {
 
 import { Song as SongType } from "../../../types"
 import { useQuery, useMutation, useJWTPayload } from "../../../hooks"
-import Songs, { SongsChangeOptions } from "../../../components/songs"
+import Songs, { SongChangeOptions } from "../../../components/songs"
 import JUMP_TO_SONG_IN_QUEUE_NEXT from "./jump-to-song-in-queue-next.gql"
 import JUMP_TO_SONG_IN_QUEUE_LATER from "./jump-to-song-in-queue-later.gql"
 import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
@@ -65,7 +64,7 @@ const Queue: VFC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 		}
 
 	const handleRemove =
-		({ index }: SongsChangeOptions) =>
+		({ index }: SongChangeOptions) =>
 			async () => {
 				if (queueKey === "next") {
 					await removeNext({
@@ -99,7 +98,7 @@ const Queue: VFC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 			}
 
 	const handleJump =
-		({ index }: SongsChangeOptions) =>
+		({ index }: SongChangeOptions) =>
 			async () => {
 				if (queueKey === "next") {
 					await jumpNext({

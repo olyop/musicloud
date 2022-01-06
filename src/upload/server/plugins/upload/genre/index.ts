@@ -1,5 +1,5 @@
 import { join } from "path"
-import { trim } from "lodash"
+import { trim } from "lodash-es"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
 import { GenreBase, GenreID } from "@oly_op/music-app-common/types"
@@ -16,7 +16,7 @@ const INSERT_GENRE =
 	readFileSync(join(UPLOAD_PLUGINS_PATH, "genre", "insert.sql")).toString()
 
 export const uploadGenre: FastifyPluginCallback =
-	(fastify, options, done) => {
+	(fastify, _, done) => {
 		fastify.post<Route>(
 			"/upload/genre",
 			async (request, reply) => {

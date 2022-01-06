@@ -1,8 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/function-component-definition */
-import isEmpty from "lodash/isEmpty"
-import { gql, MutationUpdaterFunction } from "@apollo/client"
+import { isEmpty } from "lodash-es"
 import { AlbumID } from "@oly_op/music-app-common/types"
+import { gql, MutationUpdaterFunction } from "@apollo/client"
 import { ApolloCache, Modifier, Reference } from "@apollo/client/cache"
 
 import { Album } from "../../types"

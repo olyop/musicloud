@@ -6,8 +6,7 @@ import {
 	FormEventHandler,
 } from "react"
 
-import noop from "lodash/noop"
-import isNull from "lodash/isNull"
+import { isNull } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
@@ -51,22 +50,18 @@ const Authorization: FC = ({ children }) => {
 	const handleSubmit: FormEventHandler =
 		async event => {
 			event.preventDefault()
-			try {
-				const { data } =
-					await logIn({
-						variables: {
-							input: {
-								password,
-								userID: addDashesToUUID(userID),
-							},
+			const { data } =
+				await logIn({
+					variables: {
+						input: {
+							password,
+							userID: addDashesToUUID(userID),
 						},
-					})
-				if (data) {
-					dispatch(updateAccessToken(data.logIn))
-					setForm(initialState)
-				}
-			} catch (err) {
-				noop(err)
+					},
+				})
+			if (data) {
+				dispatch(updateAccessToken(data.logIn))
+				setForm(initialState)
 			}
 		}
 

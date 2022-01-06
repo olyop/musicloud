@@ -1,7 +1,7 @@
-import { exists } from "@oly_op/pg-helpers"
-
-import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { last } from "lodash-es"
 import { PlaylistID, SongID } from "@oly_op/music-app-common/types"
+import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { convertTableToCamelCase, exists, join, query } from "@oly_op/pg-helpers"
 
 import {
 	getPlaylist,
@@ -10,8 +10,9 @@ import {
 } from "../helpers"
 
 import resolver from "./resolver"
-import { Playlist } from "../../types"
+import { Playlist, PlaylistSong } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
+import { SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql"
 
 interface Args
 	extends SongID, PlaylistID {}
@@ -48,7 +49,28 @@ export const addSongToPlaylist =
 				throw new UserInputError("Song does not exist")
 			}
 
-			await addSongToPlaylistHelper(context.pg)({ songID, playlistID })
+			const playlistSongs =
+				await query(context.pg)(SELECT_PLAYLIST_SONGS_RELATIONS)({
+					parse: convertTableToCamelCase<PlaylistSong>(),
+					variables: {
+						playlistID,
+						columnNames: join(COLUMN_NAMES.PLAYLIST_SONG),
+					},
+				})
+
+			const lastPlaylistSong =
+				last(playlistSongs)
+
+			const index =
+				lastPlaylistSong ?
+					lastPlaylistSong.index + 1 :
+					0
+
+			await addSongToPlaylistHelper(context.pg)({
+				index,
+				songID,
+				playlistID,
+			})
 
 			return getPlaylist(context.pg)({ playlistID })
 		},

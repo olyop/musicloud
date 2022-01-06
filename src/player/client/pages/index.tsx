@@ -1,7 +1,7 @@
-import uniqueID from "lodash/uniqueId"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
 import { Route, Routes } from "react-router-dom"
+import { uniqueId as uniqueID } from "lodash-es"
 
 import { Route as RouteType } from "../types"
 
@@ -17,10 +17,10 @@ import LibraryPage from "./library"
 import SettingsPage from "./settings"
 import PlaylistPage from "./playlist"
 import FollowersPage from "./followers"
-import CustomShufflePage from "./custom-shuffle"
 import AddSongToPlaylistPage from "./add-song-to-playlist"
 import AddAlbumToPlaylistPage from "./add-album-to-playlist"
 import TopOneHundredSongsPage from "./top-one-hundred-songs"
+import CustomLibraryShufflePage from "./custom-library-shuffle"
 
 import "./index.scss"
 
@@ -70,16 +70,16 @@ const routes: RouteType[] = [{
 	element: <FollowersPage/>,
 },{
 	routeID: uniqueID(),
-	path: "custom-shuffle",
-	element: <CustomShufflePage/>,
-},{
-	routeID: uniqueID(),
 	element: <PlaylistPage/>,
 	path: "playlist/:playlistID",
 },{
 	routeID: uniqueID(),
 	path: "top-one-hundred-songs",
 	element: <TopOneHundredSongsPage/>,
+},{
+	routeID: uniqueID(),
+	path: "custom-library-shuffle",
+	element: <CustomLibraryShufflePage/>,
 },{
 	routeID: uniqueID(),
 	element: <AddSongToPlaylistPage/>,

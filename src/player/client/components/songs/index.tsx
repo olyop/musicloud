@@ -1,4 +1,4 @@
-import isEmpty from "lodash/isEmpty"
+import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
 
@@ -57,7 +57,7 @@ const Songs: VFC<SongsPropTypes> = ({
 	</div>
 )
 
-export interface SongsChangeOptions {
+export interface SongChangeOptions {
 	index: number,
 	song: SongType,
 }
@@ -72,8 +72,8 @@ export interface SongsPropTypes extends ClassNameBEMPropTypes {
 	hideElevated?: boolean,
 	hideInLibrary?: boolean,
 	hideTrackNumber?: boolean,
-	onJump?: (options: SongsChangeOptions) => Handler,
-	onRemove?: (options: SongsChangeOptions) => Handler,
+	onJump?: (options: SongChangeOptions) => Handler,
+	onRemove?: (options: SongChangeOptions) => Handler,
 	orderBy?: OrderByOptions<SettingsOrderBySongs> | false,
 }
 

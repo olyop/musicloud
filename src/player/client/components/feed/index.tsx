@@ -6,10 +6,10 @@ import {
 	createElement,
 } from "react"
 
-import uniqueID from "lodash/uniqueId"
 import { Waypoint } from "react-waypoint"
 import type { DocumentNode } from "graphql"
 import { QueryResult } from "@apollo/client"
+import { uniqueId as uniqueID } from "lodash-es"
 import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { PAGINATION_PAGE_SIZE } from "@oly_op/music-app-common/globals"
 

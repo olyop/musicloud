@@ -1,8 +1,8 @@
-import uniqueID from "lodash/uniqueId"
 import { Link } from "react-router-dom"
 import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import { uniqueId as uniqueID } from "lodash-es"
 import { useState, createElement, VFC, Fragment } from "react"
 
 import {

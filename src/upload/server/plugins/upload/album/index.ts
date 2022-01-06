@@ -10,7 +10,7 @@ import {
 	AlgoliaRecordSong,
 } from "@oly_op/music-app-common/types"
 
-import { random, trim } from "lodash"
+import { random, trim } from "lodash-es"
 import { FastifyPluginCallback } from "fastify"
 import { parseBuffer } from "music-metadata/lib/core"
 import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
@@ -56,7 +56,7 @@ const INSERT_SONG_REMIXER = importSQL("insert-song-remixer")
 const INSERT_SONG_FEATURE = importSQL("insert-song-feature")
 
 export const uploadAlbum: FastifyPluginCallback =
-	(fastify, options, done) => {
+	(fastify, _, done) => {
 		fastify.post<Route>(
 			"/upload/album",
 			async (request, reply) => {
@@ -86,14 +86,14 @@ export const uploadAlbum: FastifyPluginCallback =
 				await normalizeImageAndUploadToS3({
 					images,
 					objectID: albumID,
-					buffer: cover[0].data,
+					buffer: cover[0]!.data,
 				})
 
 				const album: AlbumIDTitleBase =
 					{ albumID, title: albumTitle }
 
 				const albumCoverURL =
-					determineS3ImageURL(albumID, images[2])
+					determineS3ImageURL(albumID, images[2]!)
 
 				const albumArtists: ArtistIDNameBase[] = []
 
@@ -129,7 +129,7 @@ export const uploadAlbum: FastifyPluginCallback =
 					const songTitle = trim(song.title)
 
 					const audio =
-						(request.body[`${song.trackNumber}-audio`] as BodyEntry[])[0].data
+						(request.body[`${song.trackNumber}-audio`] as BodyEntry[])[0]!.data
 
 					const duration =
 						(await parseBuffer(audio)).format.duration!

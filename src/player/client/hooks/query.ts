@@ -1,6 +1,6 @@
-import uniqueID from "lodash/uniqueId"
 import { useRef, useEffect } from "react"
 import type { DocumentNode } from "graphql"
+import { uniqueId as uniqueID } from "lodash-es"
 import { QueryResult, QueryHookOptions, useQuery as useBaseQuery } from "@apollo/client"
 
 import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../redux"
