@@ -2,6 +2,7 @@
 import path from "path"
 import { KEYWORDS, DESCRIPTION } from "@oly_op/music-app-common/metadata"
 
+import "webpack-dev-server"
 import { Configuration } from "webpack"
 import DotenvPlugin from "dotenv-webpack"
 import CompressionPlugin from "compression-webpack-plugin"
@@ -39,21 +40,21 @@ export const baseProxy = [
 ]
 
 export const baseConfig: Configuration = {
-	stats: false,
+	stats: "errors-only",
 	mode: process.env.NODE_ENV,
 	devtool: IS_DEV ? "inline-source-map" : false,
 	output: {
 		publicPath: "/",
 		filename: "[fullhash].js",
 	},
-	ignoreWarnings: [
-		/Failed to parse source map/,
-	],
 	devServer: {
 		host: process.env.HOST,
 		historyApiFallback: true,
 		client: { logging: "error" },
 	},
+	ignoreWarnings: [
+		/Failed to parse source map/,
+	],
 	resolve: {
 		symlinks: false,
 		extensions: [".js", ".ts", ".tsx"],

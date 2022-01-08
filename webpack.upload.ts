@@ -35,6 +35,7 @@ const config = merge(baseConfig, {
 		port: parseInt(process.env.UPLOAD_CLIENT_PORT),
 		proxy: [{
 			logLevel: "silent",
+			// @ts-ignore
 			context: [ ...baseProxy, ...proxy ],
 			target: `http://${process.env.HOST}:${process.env.UPLOAD_SERVER_PORT}`,
 		}],
