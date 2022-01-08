@@ -94,7 +94,9 @@ export const baseConfig: Configuration = {
 		...(IS_DEV ? [] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),
-			new MiniCSSExtractPlugin({ filename: "[hash].css" }),
+			new MiniCSSExtractPlugin({
+				filename: "[fullhash].css",
+			}),
 		]),
 	],
 }
