@@ -138,7 +138,7 @@ const SearchPage: VFC = () => {
 					href="https://www.algolia.com"
 				>
 					<Image
-						url="/search-by-algolia.png"
+						url="/miscellaneous/search-by-algolia.png"
 						className={bem("logo", "MarginTopBottom")}
 					/>
 				</a>

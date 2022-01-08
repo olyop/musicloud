@@ -10,10 +10,10 @@ import Button from "@oly_op/react-button"
 import { BEMInput, createBEM } from "@oly_op/bem"
 
 import Modal from "../../modal"
+import { ClassNameBEMPropTypes } from "../../../types"
 import { useDispatch, updateVolume, useStateVolume } from "../../../redux"
 
 import "./index.scss"
-import { ClassNameBEMPropTypes } from "../../../types"
 
 const bem =
 	createBEM("BarVolume")

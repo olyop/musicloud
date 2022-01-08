@@ -35,7 +35,7 @@
 			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 2);
 			&-wrapper {
 				margin-right: calc(var(--space-quart) *  -1 - 1rem); } } }
-	& &__expand {
+	&__expand {
 		top: 0;
 		left: 0;
 		width: 100%;
