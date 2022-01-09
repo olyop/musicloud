@@ -24,6 +24,14 @@
 			margin-bottom: var(--space-half); } }
 	&__released {
 		margin-bottom: calc(var(--space-quart) + 2rem); }
+	&__buttons {
+		@media (max-width: 600px) {
+			align-items: stretch;
+			flex-direction: column; }
+		&-link {
+			display: block;
+			&-button {
+				width: 100%; } } }
 	&__sum {
 		outline: none;
 		cursor: pointer;

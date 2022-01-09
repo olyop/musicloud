@@ -33,17 +33,14 @@ const AlbumPage: VFC = () => {
 	const params = useParams<keyof AlbumID>()
 	const albumID = addDashesToUUID(params.albumID!)
 
-	const variables: AlbumID =
-		{ albumID }
-
 	const { data, error } =
 		useQuery<GetAlbumData, AlbumID>(
 			GET_ALBUM_PAGE,
-			{ variables },
+			{ variables: { albumID } },
 		)
 
 	const [ shuffleAlbum ] =
-		useShuffleAlbum(variables)
+		useShuffleAlbum({ albumID })
 
 	const [ toggleAlbumInLibrary, inLibrary ] =
 		useToggleAlbumInLibrary({ albumID })
@@ -110,7 +107,7 @@ const AlbumPage: VFC = () => {
 								}))}
 							/>
 						</h3>
-						<div className={bem("discs", "MarginTopHalf")}>
+						<div className="MarginTopHalf">
 							{discs.map(
 								disc => (
 									<Disc
@@ -134,7 +131,7 @@ const AlbumPage: VFC = () => {
 								</p>
 							)}
 						</div>
-						<div className="FlexRowGapHalf MarginBottom">
+						<div className={bem("buttons", "FlexRowGapHalf MarginBottom")}>
 							<Button
 								icon="shuffle"
 								text="Shuffle"
@@ -145,10 +142,14 @@ const AlbumPage: VFC = () => {
 								icon={inLibrary ? "done" : "add"}
 								text={inLibrary ? "Remove" : "Add"}
 							/>
-							<NavLink to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}>
+							<NavLink
+								className={bem("buttons-link")}
+								to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}
+							>
 								<Button
 									text="Playlist"
 									icon="playlist_add"
+									className={bem("buttons-link-button")}
 								/>
 							</NavLink>
 						</div>

@@ -27,6 +27,8 @@ import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql"
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
+import "./index.scss"
+
 const NowPlaying: VFC = () => {
 	const { data } =
 		useQuery<Data>(GET_QUEUE_NOW_PLAYING)
@@ -124,7 +126,7 @@ const Queues: VFC = () => {
 						query={GET_QUEUE_LATER}
 					/>
 				</div>
-				<div className="MarginTop FlexRowGapQuart">
+				<div className="Queues MarginTop FlexRowGapQuart">
 					<Button
 						text={areQueuesCollapsed ? "Collapse" : "Expand"}
 						icon={areQueuesCollapsed ? "unfold_more" : "unfold_less"}

@@ -25,6 +25,8 @@ import Songs, { SongChangeOptions } from "../../components/songs"
 import { determinePlural, determineObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
+import "./index.scss"
+
 const PlaylistPage: VFC = () => {
 	const play = useStatePlay()
 	const navigate = useNavigate()
@@ -133,7 +135,7 @@ const PlaylistPage: VFC = () => {
 							No songs.
 						</p>
 					)}
-					<div className="FlexRowGapHalf">
+					<div className="PlaylistPage FlexRowGapHalf">
 						<Button
 							icon="shuffle"
 							text="Shuffle"
