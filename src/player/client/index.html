@@ -30,6 +30,15 @@
 				--header-height: calc(var(--button-dimesnion) + var(--space));
 				--bar-height: calc(var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height)); }
 
+			@media (max-width: 1000px) {
+				:root {
+					--space: 18rem; } }
+
+			@media (max-width: 700px) {
+				:root {
+					--space: 16rem;
+					--bar-height: calc(2 * var(--button-dimesnion) + var(--space) + var(--space-one-quart) + var(--progress-height) + var(--border-width)); } }
+
 			#Root {
 				background-color: var(--background-color); }
 		</style>
