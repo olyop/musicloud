@@ -30,6 +30,14 @@ export const baseHTMLPluginOptions =
 			"description": DESCRIPTION,
 			"og:image": "/icons/192.png",
 			"og:description": DESCRIPTION,
+			"mobile-web-app-capable": "yes",
+			"viewport": `
+				minimum-scale=1,
+				initial-scale=1,
+				shrink-to-fit=no,
+				width=device-width,
+				viewport-fit=cover
+			`,
 		},
 	})
 
