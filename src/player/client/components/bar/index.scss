@@ -34,7 +34,10 @@
 			max-width: 100%;
 			grid-template-columns: minmax(0, 1fr) calc(var(--button-dimesnion) * 2);
 			&-wrapper {
-				margin-right: calc(var(--space-quart) *  -1 - 1rem); } } }
+				margin-right: calc(var(--space-quart) *  -1 - 1rem); }
+			&-expand {
+				@media (min-width: 700px) {
+					display: none; } } } }
 	&__expand {
 		top: 0;
 		left: 0;
@@ -49,7 +52,9 @@
 			padding: var(--space-half);
 			border-left-width: var(--border-width);
 			border-left-style: var(--border-style);
-			border-left-color: var(--border-color); }
+			border-left-color: var(--border-color);
+			@media (max-width: 700px) {
+				display: none; } }
 		&-close {
 			position: absolute;
 			right: var(--space-half);

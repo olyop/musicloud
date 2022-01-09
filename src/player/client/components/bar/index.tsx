@@ -12,11 +12,11 @@ import Progress from "../progress"
 import BarControls from "./controls"
 import setMetadata from "./set-metadata"
 import BarFullscreen from "./fullscreen"
-import { QueueNowPlaying } from "../../types"
 import { determineCatalogMP3URL } from "../../helpers"
 import { useQuery, useResetPlayer } from "../../hooks"
 import { useStatePlay, useStateVolume } from "../../redux"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
+import { QueueNowPlaying, ClassNameBEMPropTypes, OnClickPropTypes } from "../../types"
 
 import "./index.scss"
 
@@ -36,6 +36,19 @@ const BarQueueButton: VFC =
 			</NavLink>
 		)
 	}
+
+const BarExpandButton: VFC<BarExpandPropTypes> = ({ onClick, className }) => (
+	<Button
+		transparent
+		title="Player"
+		onClick={onClick}
+		icon="unfold_more"
+		className={className}
+	/>
+)
+
+interface BarExpandPropTypes
+	extends OnClickPropTypes, ClassNameBEMPropTypes {}
 
 const BarHowler: VFC<SongID> =
 	({ songID }) => {
@@ -100,6 +113,10 @@ const Bar: VFC = () => {
 								<div className="FlexRowRight">
 									<BarQueueButton/>
 									<BarVolume/>
+									<BarExpandButton
+										onClick={handleExpandOpen}
+										className={bem("main-content-expand")}
+									/>
 								</div>
 							</div>
 						</div>
@@ -107,10 +124,7 @@ const Bar: VFC = () => {
 							duration={data?.getQueue.nowPlaying?.duration || 0}
 						/>
 					</div>
-					<Button
-						transparent
-						title="Player"
-						icon="unfold_more"
+					<BarExpandButton
 						onClick={handleExpandOpen}
 						className={bem("expand-button")}
 					/>
