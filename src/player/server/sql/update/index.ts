@@ -2,6 +2,7 @@ import importSql from "../import-sql"
 
 const importFile = importSql("update")()
 
+export const UPDATE_USER_PASSWORD = importFile("user-password")
 export const UPDATE_PLAYLIST_TITLE = importFile("playlist-title")
 export const UPDATE_QUEUE_SONG_INDEX = importFile("queue-song-index")
 export const UPDATE_PLAYLIST_PRIVACY = importFile("playlist-privacy")

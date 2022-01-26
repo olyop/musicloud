@@ -2,30 +2,30 @@
 import path from "path"
 import { KEYWORDS, DESCRIPTION } from "@oly_op/music-app-common/metadata"
 
-import "webpack-dev-server"
 import { Configuration } from "webpack"
 import DotenvPlugin from "dotenv-webpack"
 import CompressionPlugin from "compression-webpack-plugin"
 import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin"
+import { Configuration as DevServerConfiguration } from "webpack-dev-server"
 
 const IS_DEV =
 	process.env.NODE_ENV === "development"
 
-const ROOT_PATH = __dirname
+const ROOT_PATH = process.cwd()
 export const BASE_SRC_PATH = path.join(ROOT_PATH, "src")
 export const BASE_BUILD_PATH = path.join(ROOT_PATH, "build")
 
 export const baseHTMLPluginOptions =
-	(title: string, pwa: boolean): HTMLWebpackPluginOptions => ({
+	(title: string, isPWA: boolean): HTMLWebpackPluginOptions => ({
 		title,
 		minify: true,
 		filename: "index.html",
 		meta: {
 			"og:title": title,
 			"keywords": KEYWORDS,
-			"og:type": pwa && "PWA",
+			"og:type": isPWA && "PWA",
 			"application-name": title,
 			"description": DESCRIPTION,
 			"og:image": "/icons/192.png",
@@ -47,7 +47,14 @@ export const baseProxy = [
 	"/security.txt",
 ]
 
+const devServer: DevServerConfiguration = {
+	host: process.env.HOST,
+	historyApiFallback: true,
+	client: { logging: "error" },
+}
+
 export const baseConfig: Configuration = {
+	devServer,
 	stats: "errors-only",
 	mode: process.env.NODE_ENV,
 	devtool: IS_DEV ? "inline-source-map" : false,
@@ -55,14 +62,6 @@ export const baseConfig: Configuration = {
 		publicPath: "/",
 		filename: "[fullhash].js",
 	},
-	devServer: {
-		host: process.env.HOST,
-		historyApiFallback: true,
-		client: { logging: "error" },
-	},
-	ignoreWarnings: [
-		/Failed to parse source map/,
-	],
 	resolve: {
 		symlinks: false,
 		extensions: [".js", ".ts", ".tsx"],

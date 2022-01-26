@@ -30,7 +30,7 @@ const ApolloClient: FC = ({ children }) => (
 )
 
 const Metadata: FC = ({ children }) => (
-	<MetadataProvider value={{ appTitle: TITLE }}>
+	<MetadataProvider appTitle={TITLE}>
 		{children}
 	</MetadataProvider>
 )

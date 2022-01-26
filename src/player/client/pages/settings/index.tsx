@@ -1,7 +1,6 @@
 import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
+import { createElement, VFC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
-import { useState, createElement, VFC, Fragment } from "react"
 
 import {
 	useDispatch,
@@ -19,15 +18,7 @@ import {
 	useStateShowReleased,
 } from "../../redux"
 
-import Modal, {
-	ModalButton,
-	ModalHeader,
-	ModalButtons,
-} from "../../components/modal"
-
-import DELETE_USER from "./delete-user.gql"
 import Select from "../../components/select"
-import { useSignOut, useMutation } from "../../hooks"
 import { SettingsListStyle, SettingsTheme, SettingsTransitions } from "../../types"
 
 import "./index.scss"
@@ -36,7 +27,6 @@ const bem =
 	createBEM("SettingsPage")
 
 const SettingsPage: VFC = () => {
-	const signOut = useSignOut()
 	const theme = useStateTheme()
 	const dispatch = useDispatch()
 	const listStyle = useStateListStyle()
@@ -45,20 +35,9 @@ const SettingsPage: VFC = () => {
 	const showDuration = useStateShowDuration()
 	const showReleased = useStateShowReleased()
 
-	const [ deleteUserModal, setDeleteUserModal ] =
-		useState(false)
-
-	const [ deleteUser ] =
-		useMutation(DELETE_USER)
-
 	const handleToggleShowGenres =
 		() => {
 			dispatch(toggleShowGenres())
-		}
-
-	const handleToggleShowDuration =
-		() => {
-			dispatch(toggleShowDuration())
 		}
 
 	const handleToggleShowReleased =
@@ -66,32 +45,25 @@ const SettingsPage: VFC = () => {
 			dispatch(toggleShowReleased())
 		}
 
+	const handleToggleShowDuration =
+		() => {
+			dispatch(toggleShowDuration())
+		}
+
 	const handleThemeChange =
-		(value: SettingsTheme) => {
-			dispatch(updateTheme(value))
+		(value: string) => {
+			dispatch(updateTheme(value as SettingsTheme))
 		}
 
 	const handleListStyleChange =
-		(value: SettingsListStyle) => {
-			dispatch(updateListStyle(value))
+		(value: string) => {
+			dispatch(updateListStyle(value as SettingsListStyle))
 		}
 
 	const handleTransitionsChange =
-		(value: SettingsTransitions) => {
-			dispatch(updateTransitions(value))
+		(value: string) => {
+			dispatch(updateTransitions(value as SettingsTransitions))
 		}
-
-	const handleDeleteUser =
-		async () => {
-			await deleteUser()
-			signOut()
-		}
-
-	const handleDeleteUserModalOpen =
-		() => setDeleteUserModal(true)
-
-	const handleDeleteUserModalClose =
-		() => setDeleteUserModal(false)
 
 	return (
 		<Metadata title="Settings">
@@ -195,48 +167,8 @@ const SettingsPage: VFC = () => {
 							</div>
 						</div>
 					</details>
-					<details open className={bem("details")}>
-						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
-							Actions
-						</summary>
-						<div className={bem("controls", "details-content", "FlexColumnGapHalf")}>
-							<Button
-								text="Delete Account"
-								icon="manage_accounts"
-								onClick={handleDeleteUserModalOpen}
-							/>
-							<Button
-								text="Logout"
-								onClick={signOut}
-								icon="exit_to_app"
-							/>
-						</div>
-					</details>
 				</div>
 			</div>
-			<Modal open={deleteUserModal} onClose={handleDeleteUserModalClose}>
-				<ModalButtons>
-					<ModalHeader
-						text={(
-							<Fragment>
-								<Fragment>Are you sure you want</Fragment>
-								<br/>
-								<Fragment>to delete your account?</Fragment>
-							</Fragment>
-						)}
-					/>
-					<ModalButton
-						text="Delete"
-						icon="delete"
-						onClick={handleDeleteUser}
-					/>
-					<ModalButton
-						text="Cancel"
-						icon="arrow_back"
-						onClick={handleDeleteUserModalClose}
-					/>
-				</ModalButtons>
-			</Modal>
 		</Metadata>
 	)
 }

@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { createElement, VFC } from "react"
-import { useParams } from "react-router-dom"
+import { NavLink, useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
@@ -56,14 +56,27 @@ const UserPage: VFC = () => {
 			</h2>
 		)
 	} else if (data) {
-		const { name, follower, following } = data.getUserByID
+		const { name, dateJoined, follower, following } = data.getUserByID
+		const dateJoinedString = new Date(dateJoined).toISOString().slice(0, 10)
 		return (
 			<Metadata title={name}>
 				<Banner
 					title={name}
-					subTitle={follower ? "Follows you" : undefined}
+					subTitle={(
+						!isOwnPage && follower ?
+							`${dateJoinedString} - Follows you` :
+							`${dateJoinedString}`
+					)}
 					buttons={(
-						isOwnPage ? undefined : (
+						isOwnPage ? (
+							<NavLink to="/manage-account">
+								<Button
+									text="Manage"
+									title="Manage Account"
+									icon="manage_accounts"
+								/>
+							</NavLink>
+						) : (
 							<Button
 								onClick={handleFollowUser}
 								icon={following ? "done" : "person_add"}

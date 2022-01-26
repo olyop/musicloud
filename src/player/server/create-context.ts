@@ -7,9 +7,10 @@ import { IncomingHttpHeaders } from "http"
 import { exists } from "@oly_op/pg-helpers"
 import { createVerifier, TokenError } from "fast-jwt"
 import { JWTPayload } from "@oly_op/music-app-common/types"
+import { ALGOLIA_OPTIONS } from "@oly_op/music-app-common/options"
 
 import { Context } from "./types"
-import { ALGOLIA_OPTIONS, COLUMN_NAMES } from "./globals"
+import { COLUMN_NAMES } from "./globals"
 
 type ContextFunction =
 	(input: { request: FastifyRequest }) => Promise<Context>
@@ -56,7 +57,7 @@ const createContext =
 	(): ContextFunction => {
 		const s3 = new S3({})
 		const ag = algolia(...ALGOLIA_OPTIONS)
-		const agIndex = ag.initIndex("search")
+		const agIndex = ag.initIndex(process.env.ALGOLIA_INDEX_NAME)
 		return async ({ request }) => ({
 			s3,
 			pg: request.server.pg.pool,

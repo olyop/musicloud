@@ -1,3 +1,9 @@
+import {
+	CORS_OPTIONS,
+	HELMET_OPTIONS,
+	PG_POOL_OPTIONS,
+} from "@oly_op/music-app-common/options"
+
 import fastify from "fastify"
 import cors from "fastify-cors"
 import helmet from "fastify-helmet"
@@ -5,6 +11,7 @@ import postgres from "fastify-postgres"
 import compress from "fastify-compress"
 import serveStatic from "fastify-static"
 import multiPart from "fastify-multipart"
+import listenCallback from "@oly_op/music-app-common/fastify-listen-callback"
 
 import {
 	uploadUser,
@@ -15,21 +22,10 @@ import {
 } from "./plugins"
 
 import {
-	CORS_OPTIONS,
-	HELMET_OPTIONS,
-	PG_POOL_OPTIONS,
 	MULTIPART_OPTIONS,
 	SERVE_STATIC_OPTIONS,
 	FASTIFY_SERVER_OPTIONS,
-	FASTIFY_LISTEN_OPTIONS,
 } from "./globals"
-
-const listenCallback =
-	(error: Error | null) => {
-		if (error) {
-			console.error(error)
-		}
-	}
 
 const start =
 	() => (
@@ -45,7 +41,11 @@ const start =
 			.register(uploadGenre)
 			.register(uploadArtist)
 			.register(serveClient)
-			.listen(FASTIFY_LISTEN_OPTIONS, listenCallback)
+			.listen(
+				parseInt(process.env.UPLOAD_SERVER_PORT),
+				process.env.HOST,
+				listenCallback,
+			)
 	)
 
 start()

@@ -4,6 +4,7 @@ type Mutation {
 	logIn(input: LogInInput!): JWT!
   followUser(userID: UUID!): User!
   unFollowUser(userID: UUID!): User!
+  changePassword(password: NonEmptyString!): Void
 
   # queue
   clearQueues: Queue!

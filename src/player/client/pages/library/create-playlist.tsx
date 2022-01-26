@@ -16,8 +16,11 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 		useCreatePlaylist()
 
 	const handleTitleChange: TextFieldOnChange =
+		value => setTitle(value)
+
+	const handleSetPrivacyChange =
 		(value: string) =>
-			setTitle(value)
+			setPrivacy(value as PlaylistPrivacy)
 
 	const handleSubmit =
 		async () => {
@@ -47,7 +50,7 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 				</p>
 				<Select
 					value={privacy}
-					onChange={setPrivacy}
+					onChange={handleSetPrivacyChange}
 					className="BodyTwo MarginRightQuart"
 					options={Object.keys(PlaylistPrivacy)}
 				/>

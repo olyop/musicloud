@@ -1,15 +1,11 @@
 import algoliasearch from "algoliasearch"
+import { ALGOLIA_OPTIONS } from "@oly_op/music-app-common/options"
 
 const client =
-	algoliasearch(
-		process.env.ALGOLIA_APPLICATION_ID,
-		process.env.ALGOLIA_ADMIN_API_KEY,
-	)
+	algoliasearch(...ALGOLIA_OPTIONS)
 
 const index =
-	client.initIndex(
-		process.env.ALGOLIA_INDEX_NAME,
-	)
+	client.initIndex(process.env.ALGOLIA_INDEX_NAME)
 
 const main =
 	async () => {

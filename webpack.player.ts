@@ -19,9 +19,6 @@ const CLIENT_PATH = path.join(SRC_PATH, "client")
 const ROOT_PATH = path.join(CLIENT_PATH, "index.tsx")
 const ENTRY_PATH = path.join(CLIENT_PATH, "index.html")
 const SERVICE_WORKER_PATH = path.join(CLIENT_PATH, "service-worker.ts")
-
-const ANALYZE_BUNDLE = process.env.ANALYZE_BUNDLE === "true"
-const SERVICE_WORKER = process.env.SERVICE_WORKER === "true"
 const BUILD_PATH = path.join(BASE_BUILD_PATH, "player", "public")
 
 const proxy = [
@@ -49,14 +46,14 @@ const config = merge(baseConfig, {
 		}],
 	},
 	plugins: [
-		...(ANALYZE_BUNDLE ? [
+		...(process.env.ANALYZE_BUNDLE === "true" ? [
 			new BundleAnalyzerPlugin({
 				openAnalyzer: true,
 				defaultSizes: "gzip",
 				analyzerMode: "static",
 			}),
 		] : []),
-		...(SERVICE_WORKER ? [
+		...(process.env.SERVICE_WORKER === "true" ? [
 			new InjectManifest({
 				swSrc: SERVICE_WORKER_PATH,
 				maximumFileSizeToCacheInBytes: 1000 * 1024 * 1024,

@@ -1,7 +1,6 @@
 import algolia from "algoliasearch"
 import { S3Client } from "@aws-sdk/client-s3"
-
-import { ALGOLIA_OPTIONS } from "./globals"
+import { ALGOLIA_OPTIONS } from "@oly_op/music-app-common/options"
 
 export const s3 =
 	new S3Client({})

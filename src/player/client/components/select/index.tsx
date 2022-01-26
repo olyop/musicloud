@@ -1,6 +1,6 @@
 import { startCase } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
-import { createElement, ReactElement, ChangeEventHandler } from "react"
+import { createElement, VFC, ChangeEventHandler } from "react"
 
 import { ClassNameBEMPropTypes, HandlerReturn } from "../../types"
 
@@ -9,16 +9,10 @@ import "./index.scss"
 const bem =
 	createBEM("Select")
 
-// eslint-disable-next-line @typescript-eslint/comma-dangle
-const Select = <T,>({
-	value,
-	options,
-	onChange,
-	className,
-}: PropTypes<T>): ReactElement => {
+const Select: VFC<PropTypes> = ({ value, options, onChange, className }) => {
 	const handleChange: ChangeEventHandler<HTMLSelectElement> =
 		async event =>
-			onChange(event.target.value as unknown as T)
+			onChange(event.target.value)
 	return (
 		<select
 			value={value}
@@ -38,10 +32,13 @@ const Select = <T,>({
 	)
 }
 
-interface PropTypes<T> extends ClassNameBEMPropTypes {
+export type SelectOnChange =
+	(value: string) => HandlerReturn
+
+interface PropTypes extends ClassNameBEMPropTypes {
 	value: string,
 	options: string[],
-	onChange: (value: T) => HandlerReturn,
+	onChange: SelectOnChange,
 }
 
 export default Select

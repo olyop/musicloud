@@ -7,7 +7,7 @@ import {
 	ChangeEventHandler,
 } from "react"
 
-import isEmpty from "lodash/isEmpty"
+import isEmpty from "lodash-es/isEmpty"
 import Image from "@oly_op/react-image"
 import Button from "@oly_op/react-button"
 import { createBEM, BEMInput } from "@oly_op/bem"
@@ -15,6 +15,10 @@ import { createBEM, BEMInput } from "@oly_op/bem"
 import { Item } from "../../types"
 
 import "./index.scss"
+
+import "@oly_op/css-utilities/index.css"
+import "@oly_op/react-button/build/index.css"
+import "@oly_op/react-image/build/index.css"
 
 const bem =
 	createBEM("TextField")
@@ -161,7 +165,10 @@ const TextField: VFC<TextFieldPropTypes> = ({
 }
 
 type InputPropTypes =
-	Omit<InputHTMLAttributes<HTMLInputElement>, "type" | "value" | "list" | "className">
+	Omit<
+		InputHTMLAttributes<HTMLInputElement>,
+		"type" | "value" | "list" | "className"
+	>
 
 export interface TextFieldPropTypes extends InputPropTypes {
 	type: string,

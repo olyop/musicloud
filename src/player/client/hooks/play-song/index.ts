@@ -8,7 +8,7 @@ import { useQuery } from "../query"
 import PLAY_SONG from "./play-song.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
-import { togglePlay, useDispatch } from "../../redux"
+import { togglePlay, updatePlay, useDispatch } from "../../redux"
 import { Input, QueryData, Data, Result } from "./types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
@@ -55,6 +55,7 @@ export const usePlaySong =
 					} else {
 						resetPlayer()
 						await playSong()
+						dispatch(updatePlay(true))
 					}
 				}
 			}

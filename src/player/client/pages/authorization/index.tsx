@@ -77,12 +77,9 @@ const Authorization: FC = ({ children }) => {
 		return (
 			<Metadata title="Log In">
 				<div className={bem("", "FullWidthAndHeight")}>
-					<div className={bem("main")}>
+					<div className={bem("main", "FlexRowCenter")}>
 						<div className={bem("main-content", "Elevated Padding")}>
-							<h1 className="HeadingFour MarginBottomQuart">
-								Musicloud
-							</h1>
-							<h1 className="HeadingSix MarginBottomOneHalf">
+							<h1 className="HeadingFour MarginBottom">
 								Log In
 							</h1>
 							<form onSubmit={handleSubmit} className="FlexColumnGap">
@@ -113,7 +110,7 @@ const Authorization: FC = ({ children }) => {
 								<Button
 									icon="login"
 									type="submit"
-									text="Log In"
+									text="Submit"
 								/>
 							</form>
 						</div>

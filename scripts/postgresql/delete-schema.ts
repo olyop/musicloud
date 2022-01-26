@@ -1,6 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { Pool } from "pg"
+import { PG_POOL_OPTIONS } from "@oly_op/music-app-common/options"
 
 const DELETE_SCHEMA =
 	fs.readFileSync(
@@ -8,13 +9,7 @@ const DELETE_SCHEMA =
 	).toString()
 
 const pool =
-	new Pool({
-		parseInputDatesAsUTC: true,
-		user: process.env.AWS_RDS_USERNAME,
-		host: process.env.AWS_RDS_ENDPOINT,
-		password: process.env.AWS_RDS_PASSWORD,
-		database: process.env.AWS_RDS_DATABASE,
-	})
+	new Pool(PG_POOL_OPTIONS)
 
 const main =
 	async () => {

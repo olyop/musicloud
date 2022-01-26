@@ -50,7 +50,7 @@ const Sidebar: VFC = () => {
 								transparent
 								icon="home"
 								text="Browse"
-								className={bem("route-button", "PaddingLeft")}
+								className={bem("route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -63,7 +63,7 @@ const Sidebar: VFC = () => {
 								transparent
 								icon="list"
 								text="Top 100"
-								className={bem("route-button", "PaddingLeftDouble")}
+								className={bem("route-button-sub", "route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -76,7 +76,7 @@ const Sidebar: VFC = () => {
 								transparent
 								text="Library"
 								icon="library_music"
-								className={bem("route-button", "PaddingLeft")}
+								className={bem("route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -89,7 +89,7 @@ const Sidebar: VFC = () => {
 								transparent
 								text="Songs"
 								icon="audiotrack"
-								className={bem("route-button", "PaddingLeftDouble")}
+								className={bem("route-button-sub", "route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -102,7 +102,7 @@ const Sidebar: VFC = () => {
 								transparent
 								icon="album"
 								text="Albums"
-								className={bem("route-button", "PaddingLeftDouble")}
+								className={bem("route-button-sub", "route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -115,7 +115,7 @@ const Sidebar: VFC = () => {
 								transparent
 								icon="person"
 								text="Artists"
-								className={bem("route-button", "PaddingLeftDouble")}
+								className={bem("route-button-sub", "route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -128,7 +128,7 @@ const Sidebar: VFC = () => {
 								transparent
 								text="Playlists"
 								icon="queue_music"
-								className={bem("route-button", "PaddingLeftDouble")}
+								className={bem("route-button-sub", "route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -141,7 +141,7 @@ const Sidebar: VFC = () => {
 								transparent
 								icon="settings"
 								text="Settings"
-								className={bem("route-button", "PaddingLeftDouble")}
+								className={bem("route-button-sub", "route-button")}
 							/>
 						</NavLink>
 						<NavLink
@@ -154,7 +154,7 @@ const Sidebar: VFC = () => {
 								transparent
 								icon="person"
 								text="Followers"
-								className={bem("route-button", "PaddingLeft")}
+								className={bem("route-button")}
 							/>
 						</NavLink>
 					</div>

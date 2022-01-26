@@ -7,11 +7,13 @@
 	},
 	"files": [
 		"src/common/src/globals.ts",
+		"src/common/src/options.ts",
 		"src/common/src/metadata.ts",
 		"src/common/src/types/index.ts",
 		"src/common/src/types/other.ts",
 		"src/common/src/types/enums.ts",
 		"src/common/src/types/objects.ts",
-		"src/common/src/deserialize-duration.ts"
+		"src/common/src/deserialize-duration.ts",
+		"src/common/src/fastify-listen-callback.ts"
 	]
 }

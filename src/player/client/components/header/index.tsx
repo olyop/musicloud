@@ -70,8 +70,8 @@ const Header: VFC = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const client = useApolloClient()
+	const { userID } = useJWTPayload()
 	const isOnline = useStateIsOnline()
-	const { userID, name } = useJWTPayload()
 	const isFullscreen = useStateIsFullscreen()
 
 	const checkStatus =
@@ -177,7 +177,6 @@ const Header: VFC = () => {
 				)}
 				<Button
 					transparent
-					title={name}
 					text="Account"
 					className="Border"
 					rightIcon="expand_more"
@@ -204,6 +203,7 @@ const Header: VFC = () => {
 								title="Account"
 								rightIcon="arrow_forward"
 								className={bem("account-modal-content-button")}
+								imageClassName={bem("account-modal-content-button-image")}
 								image={determineCatalogImageURL(
 									userID,
 									"profile",

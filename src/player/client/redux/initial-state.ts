@@ -16,7 +16,7 @@ import {
 } from "../types"
 
 export const initialSettings: Settings = {
-	volume: 0,
+	volume: 75,
 	showGenres: false,
 	showDuration: false,
 	showReleased: false,
