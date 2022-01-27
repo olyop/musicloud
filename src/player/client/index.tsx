@@ -17,12 +17,6 @@ import Fullscreen from "./components/fullscreen"
 import Authorization from "./pages/authorization"
 import ApplySettings from "./components/apply-settings"
 
-import "@oly_op/css-utilities/index.css"
-import "@oly_op/react-button/build/index.css"
-import "@oly_op/react-image/build/index.css"
-import "./fonts.scss"
-import "./index.scss"
-
 const ReactRedux: FC = ({ children }) => (
 	<ReduxProvider store={store}>
 		{children}
