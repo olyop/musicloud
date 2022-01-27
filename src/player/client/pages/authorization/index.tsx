@@ -4,12 +4,14 @@ import {
 	Fragment,
 	createElement,
 	FormEventHandler,
+	useRef,
 } from "react"
 
 import { isNull } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
+import { useSearchParams } from "react-router-dom"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { UserID, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
@@ -31,8 +33,11 @@ interface Form extends UserID {
 const bem =
 	createBEM("Authorization")
 
-const initialState: Form =
-	{ userID: "", password: "" }
+const createInitialState =
+	({ userID, password }: Partial<Form>): Form => ({
+		userID: userID || "",
+		password: password || "",
+	})
 
 const uploadClientURL =
 	`http://localhost:${process.env.UPLOAD_CLIENT_PORT}`
@@ -40,9 +45,16 @@ const uploadClientURL =
 const Authorization: FC = ({ children }) => {
 	const dispatch = useDispatch()
 	const accessToken = useStateAccessToken()
+	const [ searchParams, setSearchParams ] = useSearchParams()
+
+	const initialState =
+		useRef(createInitialState({
+			userID: searchParams.get("userID") || undefined,
+			password: searchParams.get("password") || undefined,
+		}))
 
 	const [ { userID, password }, setForm ] =
-		useState<Form>(initialState)
+		useState<Form>(initialState.current)
 
 	const [ logIn, { error } ] =
 		useMutation<Data, InterfaceWithInput<Form>>(LOG_IN)
@@ -61,7 +73,8 @@ const Authorization: FC = ({ children }) => {
 				})
 			if (data) {
 				dispatch(updateAccessToken(data.logIn))
-				setForm(initialState)
+				setForm(initialState.current)
+				setSearchParams("")
 			}
 		}
 
