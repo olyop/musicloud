@@ -5,7 +5,6 @@ import { createElement, VFC, ReactNode } from "react"
 import "@oly_op/css-utilities/index.css"
 import "@oly_op/react-button/build/index.css"
 import "@oly_op/react-image/build/index.css"
-import "../../fonts.scss"
 import "../../index.scss"
 
 import "./index.scss"
