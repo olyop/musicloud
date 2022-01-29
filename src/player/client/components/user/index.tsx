@@ -5,7 +5,7 @@ import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 import Item from "../item"
 import ObjectLink from "../object-link"
 import { User as UserType } from "../../types"
-import { determineObjectPath, determineCatalogImageURL } from "../../helpers"
+import { createObjectPath, createCatalogImageURL } from "../../helpers"
 
 const bem =
 	createBEM("User")
@@ -22,15 +22,18 @@ const User: VFC<PropTypes> = ({
 				<ObjectLink
 					link={{
 						text: user.name,
-						path: determineObjectPath("user", user.userID),
+						path: createObjectPath("user", user.userID),
 					}}
 				/>
 			),
 		}}
 		imageOptions={{
 			title: user.name,
-			path: determineObjectPath("user", user.userID),
-			url: determineCatalogImageURL(
+			path: createObjectPath(
+				"user",
+				user.userID,
+			),
+			url: createCatalogImageURL(
 				user.userID,
 				"profile",
 				ImageSizes.MINI,

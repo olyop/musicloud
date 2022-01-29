@@ -10,9 +10,9 @@ import Item, {
 } from "../item"
 
 import {
-	determineObjectPath,
-	determineArtistLower,
-	determineCatalogImageURL,
+	createObjectPath,
+	createArtistLower,
+	createCatalogImageURL,
 } from "../../helpers"
 
 import Cover from "../cover"
@@ -58,13 +58,13 @@ const Artist: VFC<PropTypes> = ({
 				<ObjectLink
 					link={{
 						text: artist.name,
-						path: determineObjectPath("artist", artist.artistID),
+						path: createObjectPath("artist", artist.artistID),
 					}}
 				/>
 			),
 			imgPropTypes: {
 				title: artist.name,
-				url: determineCatalogImageURL(
+				url: createCatalogImageURL(
 					artist.artistID,
 					"profile",
 					ImageSizes.MINI,
@@ -91,12 +91,12 @@ const Artist: VFC<PropTypes> = ({
 	}
 
 	const info: InfoOptions = {
-		lowerLeft: determineArtistLower(artist),
+		lowerLeft: createArtistLower(artist),
 		upperLeft: (
 			<ObjectLink
 				link={{
 					text: artist.name,
-					path: determineObjectPath("artist", artist.artistID),
+					path: createObjectPath("artist", artist.artistID),
 				}}
 			/>
 		),
@@ -104,8 +104,11 @@ const Artist: VFC<PropTypes> = ({
 
 	const imageOptions: ImageOptions = {
 		title: artist.name,
-		path: determineObjectPath("artist", artist.artistID),
-		url: determineCatalogImageURL(
+		path: createObjectPath(
+			"artist",
+			artist.artistID,
+		),
+		url: createCatalogImageURL(
 			artist.artistID,
 			"profile",
 			ImageSizes.MINI,
@@ -128,8 +131,11 @@ const Artist: VFC<PropTypes> = ({
 			<Cover
 				landscape
 				title={artist.name}
-				link={determineObjectPath("artist", artist.artistID)}
-				url={determineCatalogImageURL(
+				link={createObjectPath(
+					"artist",
+					artist.artistID,
+				)}
+				url={createCatalogImageURL(
 					artist.artistID,
 					"cover",
 					ImageSizes.HALF,

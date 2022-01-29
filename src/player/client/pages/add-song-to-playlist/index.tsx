@@ -19,7 +19,7 @@ import { User, Song, Playlist } from "../../types"
 import { useQuery, useMutation } from "../../hooks"
 import ObjectLink from "../../components/object-link"
 import ADD_SONG_TO_PLAYLIST from "./add-song-to-playlist.gql"
-import { determineObjectPath, determineCatalogImageURL } from "../../helpers"
+import { createObjectPath, createCatalogImageURL } from "../../helpers"
 import GET_USER_PLAYLISTS_FILTERED_BY_SONG from "./get-user-playlists-filtered-by-song.gql"
 
 import "./index.scss"
@@ -77,7 +77,7 @@ const AddSongToPlaylistPage: VFC = () => {
 					<Image
 						title={songData.getSongByID.album.title}
 						className={bem("cover", "Card Elevated")}
-						url={determineCatalogImageURL(
+						url={createCatalogImageURL(
 							songData.getSongByID.album.albumID,
 							"cover",
 							ImageSizes.HALF,
@@ -88,7 +88,7 @@ const AddSongToPlaylistPage: VFC = () => {
 						<ObjectLink
 							link={{
 								text: songData.getSongByID.title,
-								path: determineObjectPath(
+								path: createObjectPath(
 									"song",
 									songData.getSongByID.songID,
 								),

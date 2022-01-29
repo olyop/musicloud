@@ -24,8 +24,7 @@ const BUILD_PATH = path.join(BASE_BUILD_PATH, "player", "public")
 const proxy = [
 	"/graphql",
 	"/ping.txt",
-	"/icons/192.png",
-	"/icons/512.png",
+	"/icon.png",
 	"/service-worker.js",
 	"/manifest.webmanifest",
 	"/search-by-algolia.png",

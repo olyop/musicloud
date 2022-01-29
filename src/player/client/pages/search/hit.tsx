@@ -16,7 +16,7 @@ import SongTitle from "../../components/song-title"
 import ObjectLink from "../../components/object-link"
 import ObjectLinks from "../../components/object-links"
 import FeaturingArtists from "../../components/featuring-artists"
-import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
+import { createCatalogImageURL, createObjectPath } from "../../helpers"
 
 const className =
 	"PaddingHalf ItemBorder"
@@ -32,18 +32,18 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 						<ObjectLink
 							link={{
 								text: hit.name,
-								path: determineObjectPath("user", hit.objectID),
+								path: createObjectPath("user", hit.objectID),
 							}}
 						/>
 					),
 				}}
 				imageOptions={{
 					title: hit.name,
-					path: determineObjectPath(
+					path: createObjectPath(
 						"user",
 						hit.objectID,
 					),
-					url: determineCatalogImageURL(
+					url: createCatalogImageURL(
 						hit.objectID,
 						"profile",
 						ImageSizes.MINI,
@@ -74,11 +74,11 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 				}}
 				imageOptions={{
 					title: hit.title,
-					path: determineObjectPath(
+					path: createObjectPath(
 						"album",
 						hit.album.albumID,
 					),
-					url: determineCatalogImageURL(
+					url: createCatalogImageURL(
 						hit.album.albumID,
 						"cover",
 						ImageSizes.MINI,
@@ -97,7 +97,7 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 						<ObjectLink
 							link={{
 								text: hit.name,
-								path: determineObjectPath("genre", hit.objectID),
+								path: createObjectPath("genre", hit.objectID),
 							}}
 						/>
 					),
@@ -114,7 +114,7 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 						<ObjectLink
 							link={{
 								text: hit.title,
-								path: determineObjectPath("album", hit.objectID),
+								path: createObjectPath("album", hit.objectID),
 							}}
 						/>
 					),
@@ -122,18 +122,18 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 						<ObjectLinks
 							links={hit.artists.map(({ artistID, name }) => ({
 								text: name,
-								path: determineObjectPath("artist", artistID),
+								path: createObjectPath("artist", artistID),
 							}))}
 						/>
 					),
 				}}
 				imageOptions={{
 					title: hit.title,
-					path: determineObjectPath(
+					path: createObjectPath(
 						"album",
 						hit.objectID,
 					),
-					url: determineCatalogImageURL(
+					url: createCatalogImageURL(
 						hit.objectID,
 						"cover",
 						ImageSizes.MINI,
@@ -152,18 +152,18 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 						<ObjectLink
 							link={{
 								text: hit.name,
-								path: determineObjectPath("artist", hit.objectID),
+								path: createObjectPath("artist", hit.objectID),
 							}}
 						/>
 					),
 				}}
 				imageOptions={{
 					title: hit.name,
-					path: determineObjectPath(
+					path: createObjectPath(
 						"artist",
 						hit.objectID,
 					),
-					url: determineCatalogImageURL(
+					url: createCatalogImageURL(
 						hit.objectID,
 						"profile",
 						ImageSizes.MINI,
@@ -182,7 +182,7 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 						<ObjectLink
 							link={{
 								text: hit.title,
-								path: determineObjectPath("playlist", hit.objectID),
+								path: createObjectPath("playlist", hit.objectID),
 							}}
 						/>
 					),
@@ -190,7 +190,7 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 						<ObjectLink
 							link={{
 								text: hit.user.name,
-								path: determineObjectPath("user", hit.user.userID),
+								path: createObjectPath("user", hit.user.userID),
 							}}
 						/>
 					),

@@ -1,7 +1,7 @@
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
-import { determineCatalogImageURL } from "../../helpers"
 import { Song } from "../../types"
+import { createCatalogImageURL } from "../../helpers"
 
 const formatItems =
 	(items: string[]) => (
@@ -20,7 +20,7 @@ const setMetadata =
 				artwork: [{
 					type: "image/png",
 					sizes: "306x306",
-					src: determineCatalogImageURL(
+					src: createCatalogImageURL(
 						song.album.albumID,
 						"cover",
 						ImageSizes.HALF,

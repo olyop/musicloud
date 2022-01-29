@@ -6,7 +6,7 @@ import { createElement, Fragment, VFC, MouseEventHandler } from "react"
 import ObjectLinks from "../object-links"
 import { usePlaySong } from "../../hooks"
 import { Song, Handler } from "../../types"
-import { determineObjectPath } from "../../helpers"
+import { createObjectPath } from "../../helpers"
 import { updatePlay, useDispatch } from "../../redux"
 
 import "./index.scss"
@@ -60,7 +60,7 @@ const SongTitle: VFC<PropTypes> = ({
 							onClick={onClick}
 							links={remixers.map(({ artistID, name }) => ({
 								text: name,
-								path: determineObjectPath("artist", artistID),
+								path: createObjectPath("artist", artistID),
 							}))}
 						/>
 						<Fragment> </Fragment>

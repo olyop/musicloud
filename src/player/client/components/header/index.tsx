@@ -21,8 +21,8 @@ import {
 import Modal from "../modal"
 import Window from "../window"
 import HeaderSearchButton from "./search-button"
+import { createCatalogImageURL } from "../../helpers"
 import { useSignOut, useJWTPayload } from "../../hooks"
-import { determineCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
 
@@ -181,7 +181,7 @@ const Header: VFC = () => {
 					className="Border"
 					rightIcon="expand_more"
 					onClick={handleAccountModalOpen}
-					image={determineCatalogImageURL(
+					image={createCatalogImageURL(
 						userID,
 						"profile",
 						ImageSizes.MINI,
@@ -204,7 +204,7 @@ const Header: VFC = () => {
 								rightIcon="arrow_forward"
 								className={bem("account-modal-content-button")}
 								imageClassName={bem("account-modal-content-button-image")}
-								image={determineCatalogImageURL(
+								image={createCatalogImageURL(
 									userID,
 									"profile",
 									ImageSizes.MINI,

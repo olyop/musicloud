@@ -10,7 +10,7 @@ import FOLLOW_USER from "./follow-user.gql"
 import Banner from "../../components/banner"
 import GET_USER_PAGE from "./get-user-page.gql"
 import UN_FOLLOW_USER from "./un-follow-user.gql"
-import { determineCatalogImageURL } from "../../helpers"
+import { createCatalogImageURL } from "../../helpers"
 import { useMutation, useQuery, useJWTPayload } from "../../hooks"
 
 const UserPage: VFC = () => {
@@ -84,13 +84,13 @@ const UserPage: VFC = () => {
 							/>
 						)
 					)}
-					coverURL={determineCatalogImageURL(
+					coverURL={createCatalogImageURL(
 						userID,
 						"cover",
 						ImageSizes.FULL,
 						ImageDimensions.LANDSCAPE,
 					)}
-					profileURL={determineCatalogImageURL(
+					profileURL={createCatalogImageURL(
 						userID,
 						"profile",
 						ImageSizes.HALF,

@@ -1,67 +1,14 @@
 {
-	"name":"Musicloud",
-	"start_url":"/library",
-	"display":"fullscreen",
-	"theme_color":"#000000",
-	"short_name":"Musicloud",
+	"name": "Musicloud",
+	"start_url": "/library",
+	"display": "fullscreen",
+	"theme_color": "#000000",
+	"short_name": "Musicloud",
 	"orientation": "portrait",
-	"background_color":"#ffffff",
-	"icons":[
-		{
-			"src":"/icons/192.png",
-			"type":"image/png",
-			"sizes":"192x192"
-		},
-		{
-			"src":"/icons/512.png",
-			"type":"image/png",
-			"sizes":"512x512"
-		}
-	],
-	"shortcuts": [
-		{
-			"url": "/library",
-			"name": "Library",
-			"short_name": "Library",
-			"description": "Library",
-			"icons": [{
-				"src": "/icons/192.png",
-				"type":"image/png",
-				"sizes": "192x192"
-			}]
-		},
-		{
-			"url": "/search",
-			"name": "Search",
-			"short_name": "Search",
-			"description": "Search",
-			"icons": [{
-				"src": "/icons/192.png",
-				"type":"image/png",
-				"sizes": "192x192"
-			}]
-		},
-		{
-			"url": "/user",
-			"name": "Account",
-			"short_name": "Account",
-			"description": "Account",
-			"icons": [{
-				"src": "/icons/192.png",
-				"type":"image/png",
-				"sizes": "192x192"
-			}]
-		},
-		{
-			"url": "/settings",
-			"name": "Settings",
-			"short_name": "Settings",
-			"description": "Settings",
-			"icons": [{
-				"src": "/icons/192.png",
-				"type":"image/png",
-				"sizes": "192x192"
-			}]
-		}
-	]
+	"background_color": "#ffffff",
+	"icons": [{
+		"sizes": "512x512",
+		"src": "/icon.png",
+		"type": "image/png"
+	}]
 }

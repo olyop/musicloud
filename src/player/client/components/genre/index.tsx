@@ -2,8 +2,8 @@ import { createElement, VFC } from "react"
 
 import Item from "../item"
 import ObjectLink from "../object-link"
+import { createObjectPath } from "../../helpers"
 import { Genre as GenreType } from "../../types"
-import { determineObjectPath } from "../../helpers"
 
 const Genre: VFC<PropTypes> = ({
 	genre,
@@ -18,7 +18,7 @@ const Genre: VFC<PropTypes> = ({
 				<ObjectLink
 					link={{
 						text: genre.name,
-						path: determineObjectPath("genre", genre.genreID),
+						path: createObjectPath("genre", genre.genreID),
 					}}
 				/>
 			),

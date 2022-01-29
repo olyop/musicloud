@@ -10,8 +10,8 @@ import { ImageDimensions, ImageSizes, SongID } from "@oly_op/music-app-common/ty
 
 import {
 	numberWithCommas,
-	determineObjectPath,
-	determineCatalogImageURL,
+	createObjectPath,
+	createCatalogImageURL,
 } from "../../helpers"
 
 import { Song } from "../../types"
@@ -48,7 +48,7 @@ const SongPage: VFC<PropTypes> = ({ song }) => (
 			<Image
 				title={song.album.title}
 				className={bem("img", "Elevated")}
-				url={determineCatalogImageURL(
+				url={createCatalogImageURL(
 					song.album.albumID,
 					"cover",
 					ImageSizes.FULL,
@@ -73,7 +73,7 @@ const SongPage: VFC<PropTypes> = ({ song }) => (
 					<ObjectLink
 						link={{
 							text: song.album.title,
-							path: determineObjectPath("album", song.album.albumID),
+							path: createObjectPath("album", song.album.albumID),
 						}}
 					/>
 				</h3>
@@ -81,7 +81,7 @@ const SongPage: VFC<PropTypes> = ({ song }) => (
 					<ObjectLinks
 						links={song.genres.map(({ genreID, name }) => ({
 							text: name,
-							path: determineObjectPath("genre", genreID),
+							path: createObjectPath("genre", genreID),
 						}))}
 					/>
 				</h3>

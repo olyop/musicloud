@@ -20,8 +20,8 @@ import Modal, {
 import { Library } from "../../../types"
 import { useMutation } from "../../../hooks"
 import DELETE_LIBRARY from "./delete-library.gql"
+import { createCatalogMP3URL } from "../../../helpers"
 import GET_LIBRARY_SONGS from "./get-library-songs.gql"
-import { determineCatalogMP3URL } from "../../../helpers"
 import GET_LIBRARY_ALBUMS from "./get-library-albums.gql"
 import GET_LIBRARY_GENRES from "./get-library-genres.gql"
 import GET_LIBRARY_ARTISTS from "./get-library-artists.gql"
@@ -103,7 +103,7 @@ const LibrarySettings: VFC = () => {
 
 					if (!isNull(songs)) {
 						for (const { songID } of songs) {
-							await fetch(determineCatalogMP3URL(songID))
+							await fetch(createCatalogMP3URL(songID))
 						}
 					}
 				} finally {

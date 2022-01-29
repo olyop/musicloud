@@ -4,8 +4,8 @@ import { createElement, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import {
-	determineObjectPath,
-	determineCatalogImageURL,
+	createObjectPath,
+	createCatalogImageURL,
 } from "../../../helpers"
 
 import { Artist } from "../../../types"
@@ -21,7 +21,7 @@ const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
 		<Image
 			title={artist.name}
 			className={bem("", "Elevated")}
-			url={determineCatalogImageURL(
+			url={createCatalogImageURL(
 				artist.artistID,
 				"profile",
 				ImageSizes.MINI,
@@ -32,7 +32,10 @@ const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
 			className={bem("link")}
 			link={{
 				text: artist.name,
-				path: determineObjectPath("artist", artist.artistID),
+				path: createObjectPath(
+					"artist",
+					artist.artistID,
+				),
 			}}
 		/>
 	</h2>

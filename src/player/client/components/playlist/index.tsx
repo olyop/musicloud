@@ -14,8 +14,8 @@ import {
 import Item from "../item"
 import TextField from "../text-field"
 import ObjectLink from "../object-link"
+import { createObjectPath } from "../../helpers"
 import Modal, { ModalButton, ModalButtons } from "../modal"
-import { determineObjectPath } from "../../helpers"
 import { ClassNameBEMPropTypes, Handler, OnClickPropTypes, Playlist as PlaylistType } from "../../types"
 
 const bem =
@@ -83,7 +83,7 @@ const Playlist: VFC<PropTypes> = ({
 						<ObjectLink
 							link={{
 								text: playlist.title,
-								path: determineObjectPath("playlist", playlist.playlistID),
+								path: createObjectPath("playlist", playlist.playlistID),
 							}}
 						/>
 					),
@@ -91,7 +91,7 @@ const Playlist: VFC<PropTypes> = ({
 						<ObjectLink
 							link={{
 								text: playlist.user.name,
-								path: determineObjectPath("user", playlist.user.userID),
+								path: createObjectPath("user", playlist.user.userID),
 							}}
 						/>
 					),
@@ -110,7 +110,7 @@ const Playlist: VFC<PropTypes> = ({
 							<ObjectLink
 								link={{
 									text: playlist.title,
-									path: determineObjectPath("playlist", playlist.playlistID),
+									path: createObjectPath("playlist", playlist.playlistID),
 								}}
 							/>
 						),

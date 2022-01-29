@@ -11,7 +11,7 @@ import ObjectLinks from "../../object-links"
 import { useKeyPress } from "../../../hooks"
 import { Song, Handler } from "../../../types"
 import FeaturingArtists from "../../featuring-artists"
-import { determineObjectPath, determineCatalogImageURL } from "../../../helpers"
+import { createObjectPath, createCatalogImageURL } from "../../../helpers"
 
 import "./index.scss"
 
@@ -30,7 +30,7 @@ const BarFullscreen: VFC<PropTypes> = ({ song, onExit }) => {
 			<Image
 				title={song.album.title}
 				className={bem("cover", "Card")}
-				url={determineCatalogImageURL(
+				url={createCatalogImageURL(
 					song.album.albumID,
 					"cover",
 					ImageSizes.FULL,
@@ -55,7 +55,7 @@ const BarFullscreen: VFC<PropTypes> = ({ song, onExit }) => {
 					onClick={onExit}
 					link={{
 						text: song.album.title,
-						path: determineObjectPath("album", song.album.albumID),
+						path: createObjectPath("album", song.album.albumID),
 					}}
 				/>
 				<Fragment> - </Fragment>
@@ -63,7 +63,7 @@ const BarFullscreen: VFC<PropTypes> = ({ song, onExit }) => {
 					onClick={onExit}
 					links={song.genres.map(({ genreID, name }) => ({
 						text: name,
-						path: determineObjectPath("genre", genreID),
+						path: createObjectPath("genre", genreID),
 					}))}
 				/>
 			</h2>

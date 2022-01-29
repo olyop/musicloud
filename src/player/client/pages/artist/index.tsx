@@ -20,8 +20,8 @@ import {
 
 import {
 	determinePlural,
-	determineArtistLower,
-	determineCatalogImageURL,
+	createArtistLower,
+	createCatalogImageURL,
 } from "../../helpers"
 
 import routes from "./routes"
@@ -79,14 +79,16 @@ const ArtistPage: VFC = () => {
 			<Metadata title={name}>
 				<Banner
 					title={name}
-					subTitle={determineArtistLower(data.getArtistByID)}
-					profileURL={determineCatalogImageURL(
+					subTitle={createArtistLower(
+						data.getArtistByID,
+					)}
+					profileURL={createCatalogImageURL(
 						artistID,
 						"profile",
 						ImageSizes.HALF,
 						ImageDimensions.SQUARE,
 					)}
-					coverURL={determineCatalogImageURL(
+					coverURL={createCatalogImageURL(
 						artistID,
 						"cover",
 						ImageSizes.FULL,

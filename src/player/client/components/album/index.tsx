@@ -8,10 +8,10 @@ import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
 import Item, { ModalOptions } from "../item"
 import { ModalButton, ModalButtons } from "../modal"
-import { useShuffleAlbum, usePlayAlbum, useToggleAlbumInLibrary } from "../../hooks"
+import { createCatalogImageURL, createObjectPath } from "../../helpers"
 import { Album as AlbumType, Handler, SettingsListStyle } from "../../types"
-import { determineCatalogImageURL, determineObjectPath } from "../../helpers"
 import { useStateListStyle, useStatePlay, useStateShowReleased } from "../../redux"
+import { useShuffleAlbum, usePlayAlbum, useToggleAlbumInLibrary } from "../../hooks"
 
 const ModalPlayButton: VFC<ModalPlayButtonPropTypes> = ({
 	onClose,
@@ -67,13 +67,13 @@ const Album: VFC<PropTypes> = ({
 				<ObjectLink
 					link={{
 						text: album.title,
-						path: determineObjectPath("album", album.albumID),
+						path: createObjectPath("album", album.albumID),
 					}}
 				/>
 			),
 			imgPropTypes: {
 				title: album.title,
-				url: determineCatalogImageURL(
+				url: createCatalogImageURL(
 					album.albumID,
 					"cover",
 					ImageSizes.MINI,
@@ -109,7 +109,7 @@ const Album: VFC<PropTypes> = ({
 	}
 
 	const path =
-		determineObjectPath("album", album.albumID)
+		createObjectPath("album", album.albumID)
 
 	return (
 		alwaysList || listStyle === SettingsListStyle.LIST ? (
@@ -128,7 +128,7 @@ const Album: VFC<PropTypes> = ({
 				imageOptions={{
 					path,
 					title: album.title,
-					url: determineCatalogImageURL(
+					url: createCatalogImageURL(
 						album.albumID,
 						"cover",
 						ImageSizes.HALF,
@@ -148,7 +148,7 @@ const Album: VFC<PropTypes> = ({
 						<ObjectLinks
 							links={album.artists.map(({ artistID, name }) => ({
 								text: name,
-								path: `${determineObjectPath("artist", artistID)}`,
+								path: createObjectPath("artist", artistID),
 							}))}
 						/>
 					),
@@ -160,7 +160,7 @@ const Album: VFC<PropTypes> = ({
 				<Cover
 					link={path}
 					title={album.title}
-					url={determineCatalogImageURL(
+					url={createCatalogImageURL(
 						album.albumID,
 						"cover",
 						ImageSizes.HALF,
@@ -199,7 +199,7 @@ const Album: VFC<PropTypes> = ({
 							<ObjectLinks
 								links={album.artists.map(({ artistID, name }) => ({
 									text: name,
-									path: `${determineObjectPath("artist", artistID)}`,
+									path: createObjectPath("artist", artistID),
 								}))}
 							/>
 						),

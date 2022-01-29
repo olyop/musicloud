@@ -2,12 +2,12 @@
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 
 import { Album } from "../../types"
-import { determineCatalogMP3URL } from "../../helpers"
+import { createCatalogMP3URL } from "../../helpers"
 
 const downloadSongs =
 	async ({ songs }: Album) => {
 		for (const { songID } of songs) {
-			const url = determineCatalogMP3URL(songID)
+			const url = createCatalogMP3URL(songID)
 			const response = await fetch(url)
 			const reader = response.body!.getReader()
 			const chunks: Uint8Array[] = []

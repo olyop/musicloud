@@ -1,76 +1,31 @@
-import Howler from "react-howler"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { useLocation, NavLink } from "react-router-dom"
-import { SongID } from "@oly_op/music-app-common/types"
 import { useEffect, useState, createElement, VFC, Fragment } from "react"
 
 import Song from "../song"
 import Modal from "../modal"
 import BarVolume from "./volume"
+import BarHowler from "./howler"
 import Progress from "../progress"
 import BarControls from "./controls"
+import { useQuery } from "../../hooks"
 import setMetadata from "./set-metadata"
 import BarFullscreen from "./fullscreen"
-import { determineCatalogMP3URL } from "../../helpers"
-import { useQuery, useResetPlayer } from "../../hooks"
-import { useStatePlay, useStateVolume } from "../../redux"
+import { QueueNowPlaying } from "../../types"
+import { BarExpandButton, BarQueueButton } from "./buttons"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
-import { QueueNowPlaying, ClassNameBEMPropTypes, OnClickPropTypes } from "../../types"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Bar")
 
-const BarQueueButton: VFC =
-	() => {
-		const { pathname } = useLocation()
-		return (
-			<NavLink to="/queues">
-				<Button
-					title="Queue"
-					icon="queue_music"
-					transparent={pathname !== "/queues"}
-				/>
-			</NavLink>
-		)
-	}
-
-const BarExpandButton: VFC<BarExpandPropTypes> = ({ onClick, className }) => (
-	<Button
-		transparent
-		title="Player"
-		onClick={onClick}
-		icon="unfold_more"
-		className={className}
-	/>
-)
-
-interface BarExpandPropTypes
-	extends OnClickPropTypes, ClassNameBEMPropTypes {}
-
-const BarHowler: VFC<SongID> =
-	({ songID }) => {
-		const play = useStatePlay()
-		const volume = useStateVolume()
-		const resetPlayer = useResetPlayer()
-		return (
-			<Howler
-				playing={play}
-				onEnd={resetPlayer}
-				volume={volume / 100}
-				src={determineCatalogMP3URL(songID)}
-			/>
-		)
-	}
-
 const Bar: VFC = () => {
 	const [ expand, setExpand ] =
 		useState(false)
 
 	const { data, loading } =
-		useQuery<GetQueueNowPlayingData>(GET_QUEUE_NOW_PLAYING)
+		useQuery<Data>(GET_QUEUE_NOW_PLAYING)
 
 	const handleExpandOpen =
 		() => setExpand(true)
@@ -160,7 +115,7 @@ const Bar: VFC = () => {
 	}
 }
 
-interface GetQueueNowPlayingData {
+interface Data {
 	getQueue: QueueNowPlaying,
 }
 

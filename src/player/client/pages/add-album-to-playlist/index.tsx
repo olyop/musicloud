@@ -20,7 +20,7 @@ import { useQuery, useMutation } from "../../hooks"
 import ObjectLink from "../../components/object-link"
 import GET_USER_PLAYLISTS from "./get-user-playlists.gql"
 import ADD_ALBUM_TO_PLAYLIST from "./add-album-to-playlist.gql"
-import { determineObjectPath, determineCatalogImageURL } from "../../helpers"
+import { createObjectPath, createCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
 
@@ -70,7 +70,7 @@ const AddAlbumToPlaylistPage: VFC = () => {
 			<Image
 				title={albumData.getAlbumByID.title}
 				className={bem("cover", "Card Elevated")}
-				url={determineCatalogImageURL(
+				url={createCatalogImageURL(
 					albumData.getAlbumByID.albumID,
 					"cover",
 					ImageSizes.HALF,
@@ -81,7 +81,7 @@ const AddAlbumToPlaylistPage: VFC = () => {
 				<ObjectLink
 					link={{
 						text: albumData.getAlbumByID.title,
-						path: determineObjectPath(
+						path: createObjectPath(
 							"album",
 							albumData.getAlbumByID.albumID,
 						),

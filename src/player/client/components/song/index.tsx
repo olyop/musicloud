@@ -6,10 +6,10 @@ import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 import { ImageDimensions, ImageSizes, SongID } from "@oly_op/music-app-common/types"
 
 import {
+	createObjectPath,
 	numberWithCommas,
-	determineObjectPath,
-	determineCatalogMP3URL,
-	determineCatalogImageURL,
+	createCatalogMP3URL,
+	createCatalogImageURL,
 } from "../../helpers"
 
 import {
@@ -144,11 +144,11 @@ const Song: VFC<PropTypes> = ({
 			imageOptions={
 				hideCover ? undefined : {
 					title: album.title,
-					path: determineObjectPath(
+					path: createObjectPath(
 						"album",
 						album.albumID,
 					),
-					url: determineCatalogImageURL(
+					url: createCatalogImageURL(
 						album.albumID,
 						"cover",
 						ImageSizes.HALF,
@@ -193,7 +193,7 @@ const Song: VFC<PropTypes> = ({
 									links={genres.map(
 										({ genreID, name }) => ({
 											text: name,
-											path: determineObjectPath("genre", genreID),
+											path: createObjectPath("genre", genreID),
 										}),
 									)}
 								/>
@@ -221,7 +221,7 @@ const Song: VFC<PropTypes> = ({
 					),
 					imgPropTypes: {
 						title: album.title,
-						url: determineCatalogImageURL(
+						url: createCatalogImageURL(
 							album.albumID,
 							"cover",
 							ImageSizes.HALF,
@@ -258,13 +258,13 @@ const Song: VFC<PropTypes> = ({
 							icon="album"
 							text="Album"
 							onClose={onClose}
-							link={determineObjectPath("album", album.albumID)}
+							link={createObjectPath("album", album.albumID)}
 						/>
 						<ModalButton
 							icon="person"
 							text="Artist"
 							onClose={onClose}
-							link={determineObjectPath("artist", song.artists[0]!.artistID)}
+							link={createObjectPath("artist", song.artists[0]!.artistID)}
 						/>
 						<ModalButton
 							text="Library"
@@ -276,7 +276,7 @@ const Song: VFC<PropTypes> = ({
 							externalLink
 							icon="get_app"
 							text="Download"
-							link={determineCatalogMP3URL(songID)}
+							link={createCatalogMP3URL(songID)}
 							externalLinkProps={{ type: "audio/mpeg", download: true }}
 						/>
 						<ModalButton
@@ -297,7 +297,7 @@ const Song: VFC<PropTypes> = ({
 							icon="info"
 							text="Info"
 							onClose={onClose}
-							link={determineObjectPath("song", songID)}
+							link={createObjectPath("song", songID)}
 						/>
 					</ModalButtons>
 				),

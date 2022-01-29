@@ -1,12 +1,12 @@
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageSizes, ImageDimensions } from "@oly_op/music-app-common/types"
 
-import { determineCatalogImageURL } from "../../helpers"
+import { createCatalogImageURL } from "../../helpers"
 
 const downloadCover =
 	async (albumID: string) => {
 		const url =
-			determineCatalogImageURL(
+			createCatalogImageURL(
 				albumID,
 				"cover",
 				ImageSizes.FULL,

@@ -22,7 +22,7 @@ import downloadSongs from "./download-songs"
 import GET_ALBUM_PAGE from "./get-album-page.gql"
 import ObjectLinks from "../../components/object-links"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
-import { createDiscs, determineObjectPath, determineCatalogImageURL } from "../../helpers"
+import { createDiscs, createObjectPath, createCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
 
@@ -70,7 +70,7 @@ const AlbumPage: VFC = () => {
 					<Image
 						title={data.getAlbumByID.title}
 						className={bem("img", "Elevated")}
-						url={determineCatalogImageURL(
+						url={createCatalogImageURL(
 							data.getAlbumByID.albumID,
 							"cover",
 							ImageSizes.FULL,
@@ -103,7 +103,7 @@ const AlbumPage: VFC = () => {
 							<ObjectLinks
 								links={data.getAlbumByID.genres.map(({ genreID, name }) => ({
 									text: name,
-									path: determineObjectPath("genre", genreID),
+									path: createObjectPath("genre", genreID),
 								}))}
 							/>
 						</h3>

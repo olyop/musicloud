@@ -25,10 +25,10 @@ export const baseHTMLPluginOptions =
 		meta: {
 			"og:title": title,
 			"keywords": KEYWORDS,
+			"og:image": "/icon.png",
 			"og:type": isPWA && "PWA",
 			"application-name": title,
 			"description": DESCRIPTION,
-			"og:image": "/icons/192.png",
 			"og:description": DESCRIPTION,
 			"mobile-web-app-capable": "yes",
 			"viewport": `
@@ -67,35 +67,41 @@ export const baseConfig: Configuration = {
 		extensions: [".js", ".ts", ".tsx"],
 	},
 	module: {
-		rules: [{
-			test: /\.js$/,
-			enforce: "pre",
-			loader: "source-map-loader",
-		},{
-			test: /\.gql$/,
-			exclude: /node_modules/,
-			loader: "graphql-tag/loader",
-		},{
-			test: /\.tsx?$/,
-			loader: "ts-loader",
-			exclude: /node_modules/,
-			options: {
-				onlyCompileBundledFiles: true,
+		rules: [
+			{
+				test: /\.js$/,
+				enforce: "pre",
+				loader: "source-map-loader",
 			},
-		},{
-			test: /\.css$/,
-			use: [
-				IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
-				"css-loader",
-			],
-		},{
-			test: /\.scss$/,
-			use: [
-				IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
-				"css-loader",
-				"sass-loader",
-			],
-		}],
+			{
+				test: /\.gql$/,
+				exclude: /node_modules/,
+				loader: "graphql-tag/loader",
+			},
+			{
+				test: /\.tsx?$/,
+				loader: "ts-loader",
+				exclude: /node_modules/,
+				options: {
+					onlyCompileBundledFiles: true,
+				},
+			},
+			{
+				test: /\.css$/,
+				use: [
+					IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
+					"css-loader",
+				],
+			},
+			{
+				test: /\.scss$/,
+				use: [
+					IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
+					"css-loader",
+					"sass-loader",
+				],
+			},
+		],
 	},
 	plugins: [
 		new DotenvPlugin(),

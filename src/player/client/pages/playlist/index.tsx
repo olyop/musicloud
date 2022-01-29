@@ -22,7 +22,7 @@ import PrivacyButton from "./privacy-button"
 import ObjectLink from "../../components/object-link"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
 import Songs, { SongChangeOptions } from "../../components/songs"
-import { determinePlural, determineObjectPath } from "../../helpers"
+import { determinePlural, createObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
 import "./index.scss"
@@ -113,7 +113,7 @@ const PlaylistPage: VFC = () => {
 							<ObjectLink
 								link={{
 									text: data.getPlaylistByID.user.name,
-									path: determineObjectPath("user", data.getPlaylistByID.user.userID),
+									path: createObjectPath("user", data.getPlaylistByID.user.userID),
 								}}
 							/>
 							<Fragment> - </Fragment>
