@@ -17,46 +17,40 @@ precacheAndRoute(self.__WB_MANIFEST)
 // @ts-ignore
 self.__WB_DISABLE_DEV_LOGS = true
 
-offlineFallback({ pageFallback: "index.html" })
+offlineFallback({
+	pageFallback: "index.html",
+})
 
-registerRoute(
-	({ url }) =>
-		url.origin === "https://fonts.googleapis.com",
-	new StaleWhileRevalidate({
-		cacheName: "google-fonts-stylesheets",
-	}),
-)
+// registerRoute(
+// 	({ url }) =>
+// 		url.origin === "https://fonts.googleapis.com" ||
+// 		url.origin === "https://fonts.gstatic.com",
+// 	new StaleWhileRevalidate(),
+// )
 
 registerRoute(
 	({ url }) =>
 		url.origin === "https://fonts.gstatic.com",
-	new CacheFirst({
-		cacheName: "google-fonts-webfonts",
-	}),
+	new CacheFirst(),
 )
 
 registerRoute(
 	({ request }) =>
 		request.destination === "style" ||
 		request.destination === "script",
-	new StaleWhileRevalidate({
-		cacheName: "bundles",
-	}),
+	new StaleWhileRevalidate(),
 )
 
 registerRoute(
 	({ request }) =>
 		request.destination === "image",
-	new CacheFirst({
-		cacheName: "images",
-	}),
+	new CacheFirst(),
 )
 
 registerRoute(
 	({ url }) =>
 		url.pathname.endsWith(".mp3"),
 	new CacheFirst({
-		cacheName: "audio",
 		plugins: [
 			new RangeRequestsPlugin(),
 		],
