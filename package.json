@@ -50,7 +50,7 @@
 		"docker:push": "docker push olyop/music-app:server-latest",
 		"docker:host": "docker run -p 80:80 olyop/music-app:server-latest",
 		"init": "clear && npm-run-all delete-build fix",
-		"delete-build": "del-cli build",
+		"delete-build": "del build",
 		"fix": "cpy src/gql node_modules/@types/gql",
 		"kill-ports:player": "kill-port 3000 3001",
 		"kill-ports:upload": "kill-port 3002 3003",
@@ -68,7 +68,7 @@
 	},
 	"dependencies": {
 		"@apollo/client": "3.5.8",
-		"@aws-sdk/client-s3": "3.48.0",
+		"@aws-sdk/client-s3": "3.49.0",
 		"@oly_op/bem": "5.0.8",
 		"@oly_op/css-utilities": "2.0.66",
 		"@oly_op/graphql-create-resolver": "1.2.1",
