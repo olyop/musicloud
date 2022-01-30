@@ -1,4 +1,3 @@
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import { createElement, Fragment, useEffect, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
@@ -27,10 +26,11 @@ const BarFullscreen: VFC<PropTypes> = ({ song, onExit }) => {
 	}, [escapePress])
 	return (
 		<div className={bem("")}>
-			<Image
-				title={song.album.title}
+			<img
+				alt={song.album.title}
+				crossOrigin="anonymous"
 				className={bem("cover", "Card")}
-				url={createCatalogImageURL(
+				src={createCatalogImageURL(
 					song.album.albumID,
 					"cover",
 					ImageSizes.FULL,

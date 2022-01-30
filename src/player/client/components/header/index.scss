@@ -14,6 +14,8 @@
 		&-span {
 			color: var(--color) !important; } }
 	&__account {
+		&-button {
+			border-radius: 100%; }
 		&-modal {
 			&-content {
 				--width: 131rem;

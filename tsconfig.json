@@ -4,6 +4,9 @@
 		"jsx": "react",
 		"jsxFactory": "createElement"
 	},
+	"exclude": [
+		"build"
+	],
 	"ts-node": {
 		"compilerOptions": {
 			"target": "ES6",
@@ -15,8 +18,5 @@
 			"webpack.player.ts": "cjs",
 			"webpack.upload.ts": "cjs"
 		}
-	},
-	"exclude": [
-		"build"
-	]
+	}
 }

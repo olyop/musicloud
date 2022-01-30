@@ -71,9 +71,9 @@ const Album: VFC<PropTypes> = ({
 					}}
 				/>
 			),
-			imgPropTypes: {
-				title: album.title,
-				url: createCatalogImageURL(
+			image: {
+				description: album.title,
+				src: createCatalogImageURL(
 					album.albumID,
 					"cover",
 					ImageSizes.MINI,

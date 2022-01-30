@@ -1,4 +1,7 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 import { offlineFallback } from "workbox-recipes"
 import { precacheAndRoute } from "workbox-precaching"
 import { RangeRequestsPlugin } from "workbox-range-requests"
@@ -6,11 +9,9 @@ import { registerRoute, setDefaultHandler } from "workbox-routing"
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategies"
 
 // @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 self.skipWaiting()
 
 // @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 precacheAndRoute(self.__WB_MANIFEST)
 
 // @ts-ignore

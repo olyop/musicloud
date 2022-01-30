@@ -219,9 +219,9 @@ const Song: VFC<PropTypes> = ({
 							song={song}
 						/>
 					),
-					imgPropTypes: {
-						title: album.title,
-						url: createCatalogImageURL(
+					image: {
+						description: album.title,
+						src: createCatalogImageURL(
 							album.albumID,
 							"cover",
 							ImageSizes.HALF,

@@ -1,4 +1,3 @@
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useParams } from "react-router-dom"
@@ -45,10 +44,11 @@ const SongPagePlayButton: VFC<PropTypes> = ({ song }) => {
 const SongPage: VFC<PropTypes> = ({ song }) => (
 	<Metadata title={song.title}>
 		<div className={bem("", "Content PaddingTopBottom")}>
-			<Image
-				title={song.album.title}
+			<img
+				alt={song.album.title}
+				crossOrigin="anonymous"
 				className={bem("img", "Elevated")}
-				url={createCatalogImageURL(
+				src={createCatalogImageURL(
 					song.album.albumID,
 					"cover",
 					ImageSizes.FULL,

@@ -62,9 +62,9 @@ const Artist: VFC<PropTypes> = ({
 					}}
 				/>
 			),
-			imgPropTypes: {
-				title: artist.name,
-				url: createCatalogImageURL(
+			image: {
+				description: artist.name,
+				src: createCatalogImageURL(
 					artist.artistID,
 					"profile",
 					ImageSizes.MINI,

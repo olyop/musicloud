@@ -1,11 +1,11 @@
-import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { join, query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
+import { getUser } from "../helpers"
 import { Playlist } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
 import { INSERT_PLAYLIST, INSERT_LIBRARY_OBJECT } from "../../sql"
-import { getUser } from "../helpers"
 
 type Args =
 	InterfaceWithInput<Pick<Playlist, "title" | "privacy">>

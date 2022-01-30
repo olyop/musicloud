@@ -3,7 +3,6 @@ import Button from "@oly_op/react-button"
 import { useApolloClient } from "@apollo/client"
 import { uniqueId as uniqueID } from "lodash-es"
 import { useNavigate, NavLink } from "react-router-dom"
-import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { createElement, VFC, useEffect, useState } from "react"
 import { ImageSizes, ImageDimensions } from "@oly_op/music-app-common/types"
 
@@ -21,7 +20,7 @@ import {
 import Modal from "../modal"
 import Window from "../window"
 import HeaderSearchButton from "./search-button"
-import { createCatalogImageURL } from "../../helpers"
+import { createCatalogImageURL, createObjectPath } from "../../helpers"
 import { useSignOut, useJWTPayload } from "../../hooks"
 
 import "./index.scss"
@@ -70,8 +69,8 @@ const Header: VFC = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const client = useApolloClient()
-	const { userID } = useJWTPayload()
 	const isOnline = useStateIsOnline()
+	const { userID, name } = useJWTPayload()
 	const isFullscreen = useStateIsFullscreen()
 
 	const checkStatus =
@@ -181,12 +180,16 @@ const Header: VFC = () => {
 					className="Border"
 					rightIcon="expand_more"
 					onClick={handleAccountModalOpen}
-					image={createCatalogImageURL(
-						userID,
-						"profile",
-						ImageSizes.MINI,
-						ImageDimensions.SQUARE,
-					)}
+					imageClassName={bem("account-button")}
+					image={{
+						description: name,
+						src: createCatalogImageURL(
+							userID,
+							"profile",
+							ImageSizes.MINI,
+							ImageDimensions.SQUARE,
+						),
+					}}
 				/>
 				<Modal
 					open={accountModal}
@@ -195,7 +198,7 @@ const Header: VFC = () => {
 				>
 					<NavLink
 						onClick={handleAccountModalClose}
-						to={`/user/${removeDashesFromUUID(userID)}`}
+						to={createObjectPath("user", userID)}
 						children={(
 							<Button
 								transparent
@@ -204,12 +207,15 @@ const Header: VFC = () => {
 								rightIcon="arrow_forward"
 								className={bem("account-modal-content-button")}
 								imageClassName={bem("account-modal-content-button-image")}
-								image={createCatalogImageURL(
-									userID,
-									"profile",
-									ImageSizes.MINI,
-									ImageDimensions.SQUARE,
-								)}
+								image={{
+									description: name,
+									src: createCatalogImageURL(
+										userID,
+										"profile",
+										ImageSizes.MINI,
+										ImageDimensions.SQUARE,
+									),
+								}}
 							/>
 						)}
 					/>

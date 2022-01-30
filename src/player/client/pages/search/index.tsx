@@ -8,7 +8,6 @@ import {
 } from "react"
 
 import { createBEM } from "@oly_op/bem"
-import Image from "@oly_op/react-image"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
 import { isEmpty, uniqueId as uniqueID } from "lodash-es"
@@ -137,8 +136,10 @@ const SearchPage: VFC = () => {
 					rel="noreferrer"
 					href="https://www.algolia.com"
 				>
-					<Image
-						url="/search-by-algolia.png"
+					<img
+						alt="algolia"
+						crossOrigin="anonymous"
+						src="/search-by-algolia.png"
 						className={bem("logo", "MarginTopBottom")}
 					/>
 				</a>

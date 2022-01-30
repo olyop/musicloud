@@ -4,7 +4,6 @@ import {
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
 
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
@@ -67,10 +66,11 @@ const AlbumPage: VFC = () => {
 		return (
 			<Metadata title={data.getAlbumByID.title}>
 				<div className={bem("", "Content PaddingTopBottom")}>
-					<Image
-						title={data.getAlbumByID.title}
+					<img
+						crossOrigin="anonymous"
+						alt={data.getAlbumByID.title}
 						className={bem("img", "Elevated")}
-						url={createCatalogImageURL(
+						src={createCatalogImageURL(
 							data.getAlbumByID.albumID,
 							"cover",
 							ImageSizes.FULL,

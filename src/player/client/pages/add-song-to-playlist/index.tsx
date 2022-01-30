@@ -6,7 +6,6 @@ import {
 } from "@oly_op/music-app-common/types"
 
 import { isEmpty } from "lodash-es"
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useState, createElement, VFC, Fragment } from "react"
@@ -74,10 +73,11 @@ const AddSongToPlaylistPage: VFC = () => {
 		<div className={bem("", "Content PaddingTopBottom")}>
 			{songData && playlistsData && (
 				<Fragment>
-					<Image
-						title={songData.getSongByID.album.title}
+					<img
+						crossOrigin="anonymous"
+						alt={songData.getSongByID.album.title}
 						className={bem("cover", "Card Elevated")}
-						url={createCatalogImageURL(
+						src={createCatalogImageURL(
 							songData.getSongByID.album.albumID,
 							"cover",
 							ImageSizes.HALF,

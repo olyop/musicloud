@@ -1,4 +1,3 @@
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
@@ -18,10 +17,11 @@ const bem =
 
 const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
 	<h2 className="HeadingFive FlexRowGapQuart">
-		<Image
-			title={artist.name}
+		<img
+			alt={artist.name}
+			crossOrigin="anonymous"
 			className={bem("", "Elevated")}
-			url={createCatalogImageURL(
+			src={createCatalogImageURL(
 				artist.artistID,
 				"profile",
 				ImageSizes.MINI,

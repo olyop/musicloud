@@ -4,6 +4,7 @@ import { KEYWORDS, DESCRIPTION } from "@oly_op/music-app-common/metadata"
 
 import { Configuration } from "webpack"
 import DotenvPlugin from "dotenv-webpack"
+import ESLintPlugin from "eslint-webpack-plugin"
 import CompressionPlugin from "compression-webpack-plugin"
 import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
@@ -64,48 +65,44 @@ export const baseConfig: Configuration = {
 	},
 	resolve: {
 		symlinks: false,
-		extensions: [".js", ".ts", ".tsx"],
+		extensions: [ ".js", ".ts", ".tsx" ],
 	},
 	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				enforce: "pre",
-				loader: "source-map-loader",
+		rules: [{
+			test: /\.js$/,
+			enforce: "pre",
+			loader: "source-map-loader",
+		},{
+			test: /\.gql$/,
+			exclude: /node_modules/,
+			loader: "graphql-tag/loader",
+		},{
+			test: /\.tsx?$/,
+			loader: "ts-loader",
+			exclude: /node_modules/,
+			options: {
+				onlyCompileBundledFiles: true,
 			},
-			{
-				test: /\.gql$/,
-				exclude: /node_modules/,
-				loader: "graphql-tag/loader",
-			},
-			{
-				test: /\.tsx?$/,
-				loader: "ts-loader",
-				exclude: /node_modules/,
-				options: {
-					onlyCompileBundledFiles: true,
-				},
-			},
-			{
-				test: /\.css$/,
-				use: [
-					IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
-					"css-loader",
-				],
-			},
-			{
-				test: /\.scss$/,
-				use: [
-					IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
-					"css-loader",
-					"sass-loader",
-				],
-			},
-		],
+		},{
+			test: /\.css$/,
+			use: [
+				IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
+				"css-loader",
+			],
+		},{
+			test: /\.scss$/,
+			use: [
+				IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader,
+				"css-loader",
+				"sass-loader",
+			],
+		}],
 	},
 	plugins: [
 		new DotenvPlugin(),
-		...(IS_DEV ? [] : [
+		...(IS_DEV ? [
+			new ESLintPlugin()
+		] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),
 			new MiniCSSExtractPlugin({

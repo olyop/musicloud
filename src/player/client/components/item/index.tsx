@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { uniqueId as uniqueID } from "lodash-es"
@@ -86,15 +85,19 @@ const Item: VFC<PropTypes> = ({
 								title={imageOptions.title}
 								className={bem("img-link")}
 								children={(
-									<Image
-										url={imageOptions.url}
+									<img
+										alt="temp"
+										src={imageOptions.url}
+										crossOrigin="anonymous"
 										className={bem("img", "Card")}
 									/>
 								)}
 							/>
 						) : (
-							<Image
-								url={imageOptions.url}
+							<img
+								alt="temp"
+								src={imageOptions.url}
+								crossOrigin="anonymous"
 								className={bem("img-link", "img", "Card")}
 							/>
 						)}
