@@ -19,7 +19,7 @@ const CLIENT_PATH = path.join(SRC_PATH, "client")
 const ROOT_PATH = path.join(CLIENT_PATH, "index.tsx")
 const ENTRY_PATH = path.join(CLIENT_PATH, "index.html")
 const BUILD_PATH = path.join(BASE_BUILD_PATH, "player", "public")
-const SERVICE_WORKER_PATH = path.join(CLIENT_PATH, "service-worker.ts")
+const SERVICE_WORKER_PATH = path.join(SRC_PATH, "service-worker.ts")
 
 const proxy = [
 	"/graphql",
