@@ -2,11 +2,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
+import { registerRoute } from "workbox-routing"
 import { offlineFallback } from "workbox-recipes"
 import { precacheAndRoute } from "workbox-precaching"
 import { RangeRequestsPlugin } from "workbox-range-requests"
-import { registerRoute, setDefaultHandler } from "workbox-routing"
-import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategies"
+import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies"
 
 // @ts-ignore
 self.skipWaiting()
@@ -16,10 +16,6 @@ precacheAndRoute(self.__WB_MANIFEST)
 
 // @ts-ignore
 self.__WB_DISABLE_DEV_LOGS = true
-
-setDefaultHandler(
-	new NetworkOnly(),
-)
 
 offlineFallback({ pageFallback: "index.html" })
 
