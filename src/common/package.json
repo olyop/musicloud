@@ -1,6 +1,6 @@
 {
 	"license": "MIT",
-	"version": "6.9.8",
+	"version": "6.9.9",
 	"description": "music-app-common",
 	"name": "@oly_op/music-app-common",
 	"bugs": "https://github.com/olyop/music-app/issues",
@@ -15,10 +15,11 @@
 		"url": "https://github.com/olyop/music-app.git"
 	},
 	"dependencies": {
-		"pg": "8.7.1",
-		"fastify-cors": "6.0.2",
-		"fastify-static": "4.5.0",
-		"fastify-helmet": "6.0.0"
+		"pg": "*",
+		"fastify": "*",
+		"fastify-cors": "*",
+		"fastify-static": "*",
+		"fastify-helmet": "*"
 	},
 	"devDependencies": {
 		"@types/pg": "8.6.4"
