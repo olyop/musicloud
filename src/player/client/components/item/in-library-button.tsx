@@ -1,21 +1,45 @@
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, HTMLAttributes, VFC } from "react"
 
 import { OnClickPropTypes } from "../../types"
 
-const InLibraryButton: VFC<PropTypes> = ({ inLibrary, onClick, className }) => (
+const determineIcon =
+	({ isError, inLibrary }: PropTypesBase) => {
+		if (isError) {
+			return "warning"
+		} else {
+			if (inLibrary) {
+				return "done"
+			} else {
+				return "add"
+			}
+		}
+	}
+
+const InLibraryButton: VFC<PropTypes> = ({
+	isError,
+	onClick,
+	className,
+	inLibrary,
+}) => (
 	<Button
 		transparent
 		onClick={onClick}
 		className={className}
-		icon={inLibrary ? "done" : "add"}
+		icon={determineIcon({ isError, inLibrary })}
 		title={`${inLibrary ? "Remove from" : "Add to"} Library`}
 	/>
 )
 
-interface PropTypes extends OnClickPropTypes {
+interface PropTypesBase {
+	isError: boolean,
 	inLibrary: boolean,
-	className?: string,
 }
+
+interface PropTypes
+	extends
+	PropTypesBase,
+	OnClickPropTypes,
+	Pick<HTMLAttributes<HTMLButtonElement>, "className"> {}
 
 export default InLibraryButton

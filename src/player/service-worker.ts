@@ -4,7 +4,6 @@
 
 import { registerRoute } from "workbox-routing"
 import { offlineFallback } from "workbox-recipes"
-import { precacheAndRoute } from "workbox-precaching"
 import { ExpirationPlugin } from "workbox-expiration"
 import { RangeRequestsPlugin } from "workbox-range-requests"
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies"
@@ -13,7 +12,7 @@ import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies"
 self.skipWaiting()
 
 // @ts-ignore
-precacheAndRoute(self.__WB_MANIFEST)
+// precacheAndRoute(self.__WB_MANIFEST)
 
 // @ts-ignore
 self.__WB_DISABLE_DEV_LOGS = true

@@ -88,7 +88,7 @@ const Song: VFC<PropTypes> = ({
 	const [ playSong, isPlaying ] =
 		usePlaySong(song)
 
-	const [ toggleInLibrary, inLibrary ] =
+	const [ toggleInLibrary, inLibrary, isError ] =
 		useToggleObjectInLibrary(song)
 
 	const [ next, { loading: nextLoading } ] =
@@ -169,6 +169,7 @@ const Song: VFC<PropTypes> = ({
 			}
 			inLibraryOptions={
 				hideInLibrary ? undefined : {
+					isError,
 					inLibrary,
 					onClick: toggleInLibrary,
 				}

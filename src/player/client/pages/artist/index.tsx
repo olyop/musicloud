@@ -34,12 +34,14 @@ const googleMapsBaseURL =
 	"https://www.google.com.au/maps/search"
 
 const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
-	const [ toggleInLibrary, inLibrary ] = useToggleObjectInLibrary(artist)
+	const [ toggleInLibrary, inLibrary, isError ] = useToggleObjectInLibrary(artist)
 	return (
 		<Button
 			onClick={toggleInLibrary}
 			text={inLibrary ? "Following" : "Follow"}
-			icon={inLibrary ? "library_add_check" : "library_add"}
+			icon={isError ? "warning" : (
+				inLibrary ? "library_add_check" : "library_add"
+			)}
 		/>
 	)
 }

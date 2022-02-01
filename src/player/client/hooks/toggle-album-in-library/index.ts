@@ -1,3 +1,4 @@
+import { isUndefined } from "lodash-es"
 import { AlbumID } from "@oly_op/music-app-common/types"
 
 import {
@@ -18,7 +19,7 @@ export const useToggleAlbumInLibrary =
 	({ albumID }: AlbumID): Result => {
 		const variables: AlbumID = { albumID }
 
-		const { data } =
+		const { data, error: queryError } =
 			useQuery<QueryData, AlbumID>(GET_ALBUM_IN_LIBRARY, {
 				variables,
 				hideLoading: true,
@@ -54,5 +55,14 @@ export const useToggleAlbumInLibrary =
 				}
 			}
 
-		return [ handleClick, inLibrary ]
+		const isError =
+			!isUndefined(queryError) ||
+			!isUndefined(addResult.error) ||
+			!isUndefined(removeResult.error)
+
+		return [
+			handleClick,
+			inLibrary,
+			isError,
+		]
 	}

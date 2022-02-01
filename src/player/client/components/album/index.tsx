@@ -58,7 +58,7 @@ const Album: VFC<PropTypes> = ({
 	const [ playAlbum, isPlaying ] =
 		usePlayAlbum({ albumID })
 
-	const [ toggleAlbumInLibrary, inLibrary ] =
+	const [ toggleAlbumInLibrary, inLibrary, isError ] =
 		useToggleAlbumInLibrary({ albumID })
 
 	const modalOptions: ModalOptions = {
@@ -122,6 +122,7 @@ const Album: VFC<PropTypes> = ({
 					onClick: playAlbum,
 				}}
 				inLibraryOptions={{
+					isError,
 					inLibrary,
 					onClick: toggleAlbumInLibrary,
 				}}

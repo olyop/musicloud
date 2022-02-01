@@ -38,11 +38,11 @@ const Playlist: VFC<PropTypes> = ({
 	const [ renameTitle, setRenameTitle ] =
 		useState("")
 
-	const [ toggleInLibrary, inLibrary ] =
-		useToggleObjectInLibrary(playlist)
-
 	const [ playPlaylist, isPlaying ] =
 		usePlayPlaylist({ playlistID })
+
+	const [ deletePlaylist ] =
+		useDeletePlaylist({ playlistID })
 
 	const [ shufflePlaylist ] =
 		useShufflePlaylist({ playlistID })
@@ -50,8 +50,8 @@ const Playlist: VFC<PropTypes> = ({
 	const [ renamePlaylist ] =
 		useUpdatePlaylistTitle({ playlistID })
 
-	const [ deletePlaylist ] =
-		useDeletePlaylist({ playlistID })
+	const [ toggleInLibrary, inLibrary, isError ] =
+		useToggleObjectInLibrary(playlist)
 
 	const handleRenameModalClose =
 		() => setRenameModal(false)
@@ -101,6 +101,7 @@ const Playlist: VFC<PropTypes> = ({
 					onClick: playPlaylist,
 				}}
 				inLibraryOptions={hideInLibrary ? undefined : {
+					isError,
 					inLibrary,
 					onClick: toggleInLibrary,
 				}}

@@ -38,7 +38,7 @@ const Artist: VFC<PropTypes> = ({
 	const [ shuffle ] =
 		useShuffleArtist({ artistID })
 
-	const [ toggleInLibrary, inLibrary ] =
+	const [ toggleInLibrary, inLibrary, isError ] =
 		useToggleObjectInLibrary(artist)
 
 	const handleShuffleClick =
@@ -48,6 +48,7 @@ const Artist: VFC<PropTypes> = ({
 		async () => { await toggleInLibrary() }
 
 	const inLibraryConfig: InLibraryOptions = {
+		isError,
 		inLibrary,
 		onClick: handleToggleInLibrary,
 	}

@@ -5,6 +5,7 @@ import { Album, HandlerPromise, InLibraryBase } from "../../types"
 export type Result = [
 	toggleAlbumInLibrary: HandlerPromise,
 	inLibrary: boolean,
+	isError: boolean,
 ]
 
 interface QueryDataPick

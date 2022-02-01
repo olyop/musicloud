@@ -134,6 +134,7 @@ const Item: VFC<PropTypes> = ({
 						width >= 700 && inLibraryOptions && (
 							<InLibraryButton
 								className={bem(iconClassName)}
+								isError={inLibraryOptions.isError}
 								onClick={inLibraryOptions.onClick}
 								inLibrary={inLibraryOptions.inLibrary}
 							/>

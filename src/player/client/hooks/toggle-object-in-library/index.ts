@@ -1,6 +1,5 @@
 import { useRef } from "react"
 import { isUndefined } from "lodash-es"
-import { MutationResult } from "@apollo/client"
 
 import modifer from "./modifer"
 import { useQuery } from "../query"
@@ -21,7 +20,7 @@ import REMOVE_ARTIST from "./remove-artist-from-library.gql"
 import REMOVE_PLAYLIST from "./remove-playlist-from-library.gql"
 
 export const useToggleObjectInLibrary =
-	(object: InLibraryObjects) => {
+	(object: InLibraryObjects): Result => {
 		const isOptimistic = useRef(true)
 		const dr = determineReturn(object)
 		const objectID = determineID(object)
@@ -46,7 +45,7 @@ export const useToggleObjectInLibrary =
 		const variables: Vars =
 			{ [objectIDKey]: objectID }
 
-		const { data: inLibraryData } =
+		const { data: inLibraryData, error: queryError } =
 			useQuery<QueryData, typeof variables>(QUERY, {
 				variables,
 				hideLoading: true,
@@ -75,7 +74,7 @@ export const useToggleObjectInLibrary =
 			dr(REMOVE_SONG, REMOVE_ARTIST, REMOVE_PLAYLIST) :
 			dr(ADD_SONG, ADD_ARTIST, ADD_PLAYLIST)
 
-		const [ mutate, result ] =
+		const [ mutate, { loading, error: mutationError } ] =
 			useMutation<MutationData, Vars>(MUTATION, {
 				variables,
 				optimisticResponse: {
@@ -106,16 +105,23 @@ export const useToggleObjectInLibrary =
 
 		const handleClick =
 			async () => {
-				if (!result.loading) {
+				if (!loading) {
 					await mutate()
 				}
 			}
 
-		return [ handleClick, inLibrary, result ] as Result<MutationData>
+		const isError =
+			!isUndefined(queryError) || !isUndefined(mutationError)
+
+		return [
+			handleClick,
+			inLibrary,
+			isError,
+		]
 	}
 
-type Result<Data> = [
+type Result = [
 	toggleInLibrary: HandlerPromise,
 	inLibrary: boolean,
-	result: MutationResult<Data>,
+	isError: boolean,
 ]
