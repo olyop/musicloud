@@ -10,7 +10,6 @@ import {
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	PG_POOL_OPTIONS,
-	FASTIFY_SERVER_OPTIONS,
 } from "@oly_op/music-app-common/options"
 
 import {
@@ -25,7 +24,7 @@ const start =
 	async () => {
 		await apollo.start()
 		return (
-			fastify(FASTIFY_SERVER_OPTIONS)
+			fastify()
 				.register(postgres, PG_POOL_OPTIONS)
 				.register(helmet, HELMET_OPTIONS)
 				.register(cors, CORS_OPTIONS)
