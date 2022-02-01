@@ -1,11 +1,6 @@
 import { PoolConfig } from "pg"
 import { fastifyHelmet } from "fastify-helmet"
-import { FastifyServerOptions } from "fastify"
 import { FastifyCorsOptions } from "fastify-cors"
-
-export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
-	logger: process.env.NODE_ENV === "production",
-}
 
 export const PG_POOL_OPTIONS: PoolConfig = {
 	parseInputDatesAsUTC: true,
