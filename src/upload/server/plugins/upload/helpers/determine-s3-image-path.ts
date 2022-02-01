@@ -4,4 +4,4 @@ import { ImageInput } from "../types"
 
 export const determineS3ImagePath =
 	(objectID: string, { name, size, dimension }: ImageInput) =>
-		`catalog/${removeDashesFromUUID(objectID)}/${name}/${size}-${dimension}.jpg`
+		`${removeDashesFromUUID(objectID)}/${name}/${size}-${dimension}.jpg`

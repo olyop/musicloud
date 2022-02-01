@@ -3,7 +3,10 @@ import { fastifyHelmet } from "fastify-helmet"
 import { FastifyCorsOptions } from "fastify-cors"
 
 export const PG_POOL_OPTIONS: PoolConfig = {
+	max: 30,
 	parseInputDatesAsUTC: true,
+	idleTimeoutMillis: 30 * 1000,
+	connectionTimeoutMillis: 5 * 1000,
 	user: process.env.AWS_RDS_USERNAME,
 	host: process.env.AWS_RDS_ENDPOINT,
 	password: process.env.AWS_RDS_PASSWORD,

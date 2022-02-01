@@ -10,12 +10,15 @@ export const useQuery = <Data, Vars = Record<string, unknown>>(
 	{ queryID, hideLoading = false, ...options }: Options<Data, Vars> = {},
 ): QueryResult<Data> => {
 	const dispatch = useDispatch()
-	const id = useRef(queryID || uniqueID())
+
+	const id =
+		useRef(queryID || uniqueID())
 
 	const result =
 		useBaseQuery<Data, Vars>(query, options)
 
-	const { loading, error } = result
+	const { loading, error } =
+		result
 
 	useEffect(() => {
 		if (!hideLoading) {

@@ -24,7 +24,7 @@ const start =
 	async () => {
 		await apollo.start()
 		return (
-			fastify()
+			fastify({ connectionTimeout: 5 * 1000 })
 				.register(postgres, PG_POOL_OPTIONS)
 				.register(helmet, HELMET_OPTIONS)
 				.register(cors, CORS_OPTIONS)
