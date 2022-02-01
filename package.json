@@ -38,7 +38,7 @@
 		"build-upload": "npm-run-all init build:upload:*",
 		"build-docker-host": "npm-run-all build-docker docker:host",
 		"build-docker-push": "npm-run-all build-docker docker:push",
-		"host:player": "node --experimental-specifier-resolution=node -r dotenv/config build/player",
+		"host:player": "node --max-http-header-size=64000 --experimental-specifier-resolution=node -r dotenv/config build/player",
 		"host:upload": "node --experimental-specifier-resolution=node -r dotenv/config build/upload",
 		"build-host-player": "npm-run-all build-player host:player",
 		"build-host-upload": "npm-run-all build-upload host:upload",
