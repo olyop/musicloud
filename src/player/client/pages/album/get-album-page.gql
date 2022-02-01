@@ -4,6 +4,7 @@ query getAlbumPage($albumID: UUID!) {
 		title
 		released
 		duration
+		inLibrary
 		genres {
 			name
 			genreID
