@@ -38,7 +38,7 @@ const Albums: VFC<AlbumsPropTypes> = ({
 					className={bem(
 						"FlexRowRight",
 						isList && !empty && "ItemBorder",
-						isList ? "PaddingHalf" : "MarginBottomHalf",
+						isList ? "PaddingHalf" : "MarginBottom",
 					)}
 				/>
 			)}

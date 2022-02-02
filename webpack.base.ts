@@ -100,9 +100,10 @@ export const baseConfig: Configuration = {
 	},
 	plugins: [
 		new DotenvPlugin(),
-		...(IS_DEV ? [
-			new ESLintPlugin()
-		] : [
+		new ESLintPlugin({
+			extensions: ["ts", "tsx"],
+		}),
+		...(IS_DEV ? [] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),
 			new MiniCSSExtractPlugin({

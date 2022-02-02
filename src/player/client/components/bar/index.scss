@@ -15,14 +15,16 @@
 		@media (max-width: 700px) {
 			gap: 0;
 			padding: 0;
-			justify-content: space-between;
+			display: grid;
+			min-height: var(--header-height);
+			grid-template-columns: repeat(3, 1fr);
 			border-top-width: var(--border-width);
 			border-top-style: var(--border-style);
 			border-top-color: var(--border-color);
 			&-button {
-				width: calc(100% / 3);
-				border-radius: 0 !important;
-				height: calc(var(--button-dimesnion) + var(--space)) !important; } } }
+				width: unset;
+				height: 100%;
+				border-radius: 0 !important; } } }
 	&__main {
 		width: 100%;
 		height: 100%;

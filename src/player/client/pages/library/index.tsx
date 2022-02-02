@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
+import { Route, Routes, NavLink } from "react-router-dom"
 import { useState, createElement, VFC, Fragment } from "react"
-import { useLocation, Route, Routes, NavLink } from "react-router-dom"
 
 import routes from "./routes"
 import Window from "../../components/window"
@@ -9,19 +9,6 @@ import Navigation from "../../components/navigation"
 import LibraryCreatePlaylist from "./create-playlist"
 import { useMutation, useResetPlayer } from "../../hooks"
 import Modal, { ModalButton, ModalButtons } from "../../components/modal"
-
-const LibrarySettings: VFC = () => {
-	const location = useLocation()
-	return (
-		<NavLink to="settings">
-			<Button
-				icon="settings"
-				title="Library Settings"
-				transparent={location.pathname !== "/library/settings"}
-			/>
-		</NavLink>
-	)
-}
 
 const Library: VFC = () => {
 	const resetPlayer = useResetPlayer()
@@ -73,7 +60,15 @@ const Library: VFC = () => {
 				className="MarginBottom"
 				right={(
 					<Fragment>
-						<LibrarySettings/>
+						<NavLink to="settings">
+							{({ isActive }) => (
+								<Button
+									icon="settings"
+									transparent={!isActive}
+									title="Library Settings"
+								/>
+							)}
+						</NavLink>
 						<Window>
 							{({ width }) => (
 								<Fragment>

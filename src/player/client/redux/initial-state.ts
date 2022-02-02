@@ -71,6 +71,5 @@ export const initialState: State = {
 	sidebar: false,
 	isOnline: true,
 	accessToken: null,
-	isFullscreen: false,
 	settings: initialSettings,
 }

@@ -29,9 +29,6 @@ export const toggleShowGenres =
 export const toggleShowReleased =
 	createAction("TOGGLE_SHOW_RELEASED")
 
-export const toggleIsFullscreen =
-	createAction("TOGGLE_IS_FULLSCREEN")
-
 export const toggleShowDuration =
 	createAction("TOGGLE_SHOW_DURATION")
 

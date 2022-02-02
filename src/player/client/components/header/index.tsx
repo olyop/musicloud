@@ -1,8 +1,8 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import { NavLink } from "react-router-dom"
 import { useApolloClient } from "@apollo/client"
 import { uniqueId as uniqueID } from "lodash-es"
-import { useNavigate, NavLink } from "react-router-dom"
 import { createElement, VFC, useEffect, useState } from "react"
 import { ImageSizes, ImageDimensions } from "@oly_op/music-app-common/types"
 
@@ -13,15 +13,11 @@ import {
 	toggleSidebar,
 	updateIsOnline,
 	useStateIsOnline,
-	toggleIsFullscreen,
-	useStateIsFullscreen,
 } from "../../redux"
 
 import Modal from "../modal"
-import Window from "../window"
-import HeaderSearchButton from "./search-button"
-import { createCatalogImageURL, createObjectPath } from "../../helpers"
 import { useSignOut, useJWTPayload } from "../../hooks"
+import { createCatalogImageURL, createObjectPath } from "../../helpers"
 
 import "./index.scss"
 
@@ -66,12 +62,10 @@ const bem =
 
 const Header: VFC = () => {
 	const signOut = useSignOut()
-	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const client = useApolloClient()
 	const isOnline = useStateIsOnline()
 	const { userID, name } = useJWTPayload()
-	const isFullscreen = useStateIsFullscreen()
 
 	const checkStatus =
 		async () =>
@@ -79,12 +73,6 @@ const Header: VFC = () => {
 
 	const [ accountModal, setAccountModal ] =
 		useState(false)
-
-	const handleBack =
-		() => navigate(-1)
-
-	const handleFoward =
-		() => navigate(1)
 
 	const handleMenuClick =
 		() => {
@@ -96,12 +84,6 @@ const Header: VFC = () => {
 
 	const handleAccountModalClose =
 		() => setAccountModal(false)
-
-	const handleFullscreenClick =
-		() => {
-			dispatch(toggleIsFullscreen())
-			handleAccountModalClose()
-		}
 
 	const handleRefresh =
 		async () => {
@@ -131,39 +113,23 @@ const Header: VFC = () => {
 
 	return (
 		<header className={bem("", "Elevated PaddingLeftRightHalf FlexRowSpaceBetween")}>
-			<Window>
-				{({ width }) => (
-					<div className={bem(width >= 700 || "left", "FlexRow")}>
-						<Button
-							icon="menu"
-							transparent
-							title="Menu"
-							className={bem("icon")}
-							onClick={handleMenuClick}
-						/>
-						{width <= 700 && (
-							<div className="MarginRightQuart FlexRow">
-								<Button
-									transparent
-									title="Back"
-									icon="arrow_back"
-									onClick={handleBack}
-									className={bem("icon")}
-								/>
-								<Button
-									transparent
-									title="Foward"
-									icon="arrow_forward"
-									onClick={handleFoward}
-									className={bem("icon")}
-								/>
-							</div>
-						)}
-					</div>
-				)}
-			</Window>
+			<Button
+				icon="menu"
+				transparent
+				title="Menu"
+				onClick={handleMenuClick}
+				className={bem("left", "icon")}
+			/>
 			<div className="FlexRowGapQuart">
-				<HeaderSearchButton/>
+				<NavLink to="/search">
+					{({ isActive }) => (
+						<Button
+							icon="search"
+							title="Search"
+							transparent={!isActive}
+						/>
+					)}
+				</NavLink>
 				{isOnline || (
 					<Button
 						transparent
@@ -224,14 +190,6 @@ const Header: VFC = () => {
 						icon="refresh"
 						text="Refresh"
 						onClick={handleRefresh}
-						className={bem("account-modal-content-button")}
-					/>
-					<Button
-						text={isFullscreen ? "Exit PWA" : "PWA"}
-						transparent
-						icon="fullscreen"
-						title="Go Fullscreen"
-						onClick={handleFullscreenClick}
 						className={bem("account-modal-content-button")}
 					/>
 					<NavLink

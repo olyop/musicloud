@@ -25,6 +25,7 @@
 	&__released {
 		margin-bottom: calc(var(--space-quart) + 2rem); }
 	&__buttons {
+		flex-wrap: wrap;
 		@media (max-width: 600px) {
 			align-items: stretch;
 			flex-direction: column; }

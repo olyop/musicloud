@@ -1,4 +1,5 @@
 .PlaylistPage {
+	flex-wrap: wrap;
 	@media (max-width: 600px) {
 		align-items: stretch;
 		flex-direction: column; } }

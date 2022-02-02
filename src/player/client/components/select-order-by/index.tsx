@@ -1,5 +1,12 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, CSSProperties, VFC } from "react"
+
+import {
+	useDispatch,
+	updateOrderBy,
+	useStateOrderBy,
+	useStateListStyle,
+} from "../../redux"
 
 import {
 	OrderBy,
@@ -7,10 +14,10 @@ import {
 	SettingsOrderBy,
 	OrderByDirection,
 	ClassNameBEMPropTypes,
+	SettingsListStyle,
 } from "../../types"
 
 import Select from "../select"
-import { useDispatch, updateOrderBy, useStateOrderBy } from "../../redux"
 
 import "./index.scss"
 
@@ -19,6 +26,7 @@ const bem =
 
 const SelectOrderBy: VFC<PropTypes> = ({ orderBy, className }) => {
 	const dispatch = useDispatch()
+	const listStyle = useStateListStyle()
 	const state = useStateOrderBy(orderBy.key)
 
 	const handleChange =
@@ -33,8 +41,12 @@ const SelectOrderBy: VFC<PropTypes> = ({ orderBy, className }) => {
 				)
 			}
 
+	const style: CSSProperties = {
+		gap: listStyle === SettingsListStyle.LIST ? "var(--space-quart)" : undefined,
+	}
+
 	return (
-		<div className={bem(className, "")}>
+		<div className={bem(className, "")} style={style}>
 			<Select
 				value={state.field}
 				options={orderBy.fields}

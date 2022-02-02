@@ -6,16 +6,24 @@
 			width: 100%;
 			outline: none;
 			font-size: 20rem;
-			padding: var(--space-half);
 			background-color: transparent;
-			border-bottom: 2px solid var(--text-color-light);
-			&-close {
-				right: 0;
+			padding-left: calc(var(--space-quart) + var(--button-dimesnion));
+			border-bottom: calc(var(--border-width) * 2) solid var(--border-color);
+			&-icon {
+				top: 50%;
 				position: absolute;
-				top: calc(var(--space) + 8rem); } } }
-	&__logo {
-		width: 168rem;
-		height: 24rem;
-		display: block;
-		margin-left: auto;
-		margin-right: auto; } }
+				transform: translateY(-50%); }
+			&-search {
+				left: 0;
+				cursor: unset;
+				&:hover,
+				&:focus {
+					background-color: transparent; } }
+			&-close {
+				right: 0; } } }
+	&__algolia {
+		align-self: center;
+		&-image {
+			transition: var(--transition-duration) background-color;
+			&:hover {
+				background-color: var(--hover-color); } } } }

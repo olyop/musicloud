@@ -156,6 +156,10 @@ const PlaylistPage: VFC = () => {
 								/>
 							</Fragment>
 						)}
+						<Button
+							icon="share"
+							text="Share"
+						/>
 					</div>
 					{data.getPlaylistByID.songsTotal && (
 						<p className="MarginTop BodyTwoBold">

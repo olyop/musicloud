@@ -26,11 +26,6 @@ export const useStateLoading =
 		({ loading }) => loading,
 	)
 
-export const useStateIsFullscreen =
-	() => useSelector(
-		({ isFullscreen }) => isFullscreen,
-	)
-
 export const useStateVolume =
 	() => useSelector(
 		({ settings: { volume } }) => volume,

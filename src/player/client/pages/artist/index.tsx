@@ -29,6 +29,7 @@ import { Artist } from "../../types"
 import Banner from "../../components/banner"
 import GET_ARTIST_PAGE from "./get-artist-page.gql"
 import Navigation from "../../components/navigation"
+import Window from "../../components/window"
 
 const googleMapsBaseURL =
 	"https://www.google.com.au/maps/search"
@@ -101,11 +102,21 @@ const ArtistPage: VFC = () => {
 							<ArtistFollowButton
 								artist={data.getArtistByID}
 							/>
-							<Button
-								icon="shuffle"
-								text="Shuffle"
-								onClick={handleShuffle}
-							/>
+							<Window>
+								{({ width }) => (
+									<Fragment>
+										<Button
+											icon="shuffle"
+											onClick={handleShuffle}
+											text={width > 700 ? "Shuffle" : undefined}
+										/>
+										<Button
+											icon="share"
+											text={width > 700 ? "Share" : undefined}
+										/>
+									</Fragment>
+								)}
+							</Window>
 						</Fragment>
 					)}
 					content={(

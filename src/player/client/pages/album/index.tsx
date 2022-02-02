@@ -152,6 +152,10 @@ const AlbumPage: VFC = () => {
 									className={bem("buttons-link-button")}
 								/>
 							</NavLink>
+							<Button
+								icon="share"
+								text="Share"
+							/>
 						</div>
 						<details open={false}>
 							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>

@@ -12,11 +12,12 @@ import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
 import { isEmpty, uniqueId as uniqueID } from "lodash-es"
 import algoliasearch, { SearchIndex } from "algoliasearch"
-import { useLocation, useNavigate } from "react-router-dom"
 import { AlgoliaRecord } from "@oly_op/music-app-common/types"
+import { useSearchParams, useNavigate } from "react-router-dom"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
+import algoliaImageURL from "./algolia-image-url"
 import { useHasMounted, useJWTPayload } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
 
@@ -38,10 +39,10 @@ const getAlgoliaHits =
 
 const SearchPage: VFC = () => {
 	const navigate = useNavigate()
-	const location = useLocation()
 	const dispatch = useDispatch()
 	const hasMounted = useHasMounted()
 	const { algoliaKey } = useJWTPayload()
+	const [ searchParams ] = useSearchParams()
 
 	const agClientRef =
 		useRef(
@@ -58,8 +59,8 @@ const SearchPage: VFC = () => {
 			),
 		)
 
-	const params = new URLSearchParams(location.search)
-	const initQuery = params.get("query") ?? ""
+	const initQuery =
+		searchParams.get("query") ?? ""
 
 	const [ input, setInput ] =
 		useState(initQuery)
@@ -93,31 +94,37 @@ const SearchPage: VFC = () => {
 
 	useEffect(() => {
 		if (hasMounted) {
-			const newParams = new URLSearchParams({ query: input })
-			navigate({ search: newParams.toString() })
+			if (isEmpty(input)) {
+				navigate("/search")
+			} else {
+				const newParams = new URLSearchParams({ query: input })
+				navigate({ search: newParams.toString() })
+			}
 		}
-	}, [input, history])
+	}, [input])
 
 	return (
 		<Metadata title="Search">
-			<section className={bem("")}>
-				<div className={bem("bar", "Content PaddingTop")}>
+			<section className="FlexColumnGap PaddingTopBottom">
+				<div className={bem("bar", "Content")}>
+					<Button
+						transparent
+						icon="search"
+						className={bem("bar-input-search", "bar-input-icon")}
+					/>
 					<input
 						autoFocus
 						value={input}
 						onChange={handleInput}
 						placeholder="Search..."
-						className={bem("bar-input")}
-						style={{ textAlign: isEmpty(input) ? "center" : "left" }}
+						className={bem("bar-input", "PaddingHalf")}
 					/>
-					{isEmpty(input) || (
-						<Button
-							transparent
-							icon="close"
-							onClick={handleClear}
-							className={bem("bar-input-close")}
-						/>
-					)}
+					<Button
+						transparent
+						icon="close"
+						onClick={handleClear}
+						className={bem("bar-input-close", "bar-input-icon")}
+					/>
 				</div>
 				{!isEmpty(input) && !isEmpty(hits) && (
 					<div className="Content Elevated">
@@ -134,13 +141,14 @@ const SearchPage: VFC = () => {
 				<a
 					target="_blank"
 					rel="noreferrer"
+					className={bem("algolia")}
 					href="https://www.algolia.com"
 				>
 					<img
 						alt="algolia"
+						src={algoliaImageURL}
 						crossOrigin="anonymous"
-						src="/search-by-algolia.png"
-						className={bem("logo", "MarginTopBottom")}
+						className={bem("algolia-image", "PaddingHalf Rounded")}
 					/>
 				</a>
 			</section>

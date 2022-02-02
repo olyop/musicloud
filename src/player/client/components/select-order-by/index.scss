@@ -1,9 +1,10 @@
 .SelectOrderBy {
-	gap: var(--space-quart);
-	@media (min-width: 476px) {
+	@media (min-width: 574px) {
 		display: flex;
 		align-items: center;
+		gap: var(--space-quart);
 		justify-content: flex-end; }
-	@media (max-width: 476px) {
+	@media (max-width: 574px) {
 		display: grid;
+		gap: var(--space);
 		grid-template-columns: 1fr 1fr; } }

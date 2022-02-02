@@ -13,7 +13,6 @@ import Bar from "./components/bar"
 import Header from "./components/header"
 import Loading from "./components/loading"
 import Sidebar from "./components/sidebar"
-import Fullscreen from "./components/fullscreen"
 import Authorization from "./pages/authorization"
 import ApplySettings from "./components/apply-settings"
 
@@ -41,15 +40,13 @@ const Root: VFC = () => (
 			<ReactRouter>
 				<ApolloClient>
 					<ApplySettings>
-						<Fullscreen>
-							<Loading/>
-							<Authorization>
-								<Sidebar/>
-								<Header/>
-								<Pages/>
-								<Bar/>
-							</Authorization>
-						</Fullscreen>
+						<Loading/>
+						<Authorization>
+							<Sidebar/>
+							<Header/>
+							<Pages/>
+							<Bar/>
+						</Authorization>
 					</ApplySettings>
 				</ApolloClient>
 			</ReactRouter>

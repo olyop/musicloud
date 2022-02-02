@@ -1,15 +1,15 @@
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
-import { createElement, VFC, Fragment } from "react"
+import { createElement, VFC, Fragment, ReactNode } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("LibraryEmpty")
 
-const LibraryEmpty: VFC<PropTypes> = ({ name }) => (
-	<div className={bem("", "Content PaddingBottom")}>
-		<h2 className={bem("heading", "MarginBottomHalf")}>
+const LibraryEmpty: VFC<PropTypes> = ({ name, content }) => (
+	<div className="Content PaddingBottom FlexColumnGapHalf">
+		<h2 className={bem("heading")}>
 			<Fragment>No </Fragment>
 			{name}
 			<Fragment>.</Fragment>
@@ -28,11 +28,13 @@ const LibraryEmpty: VFC<PropTypes> = ({ name }) => (
 			/>
 			<Fragment> to add music.</Fragment>
 		</h3>
+		{content}
 	</div>
 )
 
 interface PropTypes {
 	name: string,
+	content?: ReactNode,
 }
 
 export default LibraryEmpty

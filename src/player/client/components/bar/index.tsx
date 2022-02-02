@@ -1,5 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import { NavLink } from "react-router-dom"
 import { useEffect, useState, createElement, VFC, Fragment } from "react"
 
 import Song from "../song"
@@ -12,7 +13,6 @@ import { useQuery } from "../../hooks"
 import setMetadata from "./set-metadata"
 import BarFullscreen from "./fullscreen"
 import { QueueNowPlaying } from "../../types"
-import { BarExpandButton, BarQueueButton } from "./buttons"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 import "./index.scss"
@@ -66,9 +66,20 @@ const Bar: VFC = () => {
 									<div/>
 								)}
 								<div className="FlexRowRight">
-									<BarQueueButton/>
+									<NavLink to="/queues">
+										{({ isActive }) => (
+											<Button
+												title="Queue"
+												icon="queue_music"
+												transparent={!isActive}
+											/>
+										)}
+									</NavLink>
 									<BarVolume/>
-									<BarExpandButton
+									<Button
+										transparent
+										title="Player"
+										icon="unfold_more"
 										onClick={handleExpandOpen}
 										className={bem("main-content-expand")}
 									/>
@@ -79,7 +90,10 @@ const Bar: VFC = () => {
 							duration={data?.getQueue.nowPlaying?.duration || 0}
 						/>
 					</div>
-					<BarExpandButton
+					<Button
+						transparent
+						title="Player"
+						icon="unfold_more"
 						onClick={handleExpandOpen}
 						className={bem("expand-button")}
 					/>

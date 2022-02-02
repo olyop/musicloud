@@ -33,7 +33,7 @@ const Artists: VFC<ArtistsPropTypes> = ({
 					className={bem(
 						"FlexRowRight",
 						isList && !empty && "ItemBorder",
-						isList ? "PaddingHalf" : "MarginBottomHalf",
+						isList ? "PaddingHalf" : "MarginBottom",
 					)}
 				/>
 			)}
