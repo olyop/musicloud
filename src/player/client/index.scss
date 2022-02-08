@@ -16,10 +16,12 @@
 
 	--header-height: calc(var(--button-dimesnion) + var(--space));
 	--bar-height-base: calc(var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height));
-	--bar-height: var(--bar-height-base); }
-
-@media (max-width: 700px) {
-	:root {
+	--bar-height: var(--bar-height-base);
+	@media (max-width: 900px) {
+		--content-image-width: 275rem; }
+	@media (max-width: 800px) {
+		--content-image-width: 225rem; }
+	@media (max-width: 700px) {
 		--bar-height: calc(var(--bar-height-base) + var(--border-width) + var(--header-height)); } }
 
 #Root {

@@ -21,17 +21,27 @@ export interface OrderBy<F = string> {
 	direction: OrderByDirection,
 }
 
-export type SongsOrderBy = OrderBy<SongsOrderByField>
-export type GenresOrderBy = OrderBy<GenresOrderByField>
-export type AlbumsOrderBy = OrderBy<AlbumsOrderByField>
-export type ArtistsOrderBy = OrderBy<ArtistsOrderByField>
-export type PlaylistsOrderBy = OrderBy<PlaylistsOrderByField>
-export type LibrarySongsOrderBy = OrderBy<LibrarySongsOrderByField>
-export type LibraryArtistsOrderBy = OrderBy<LibraryArtistsOrderByField>
-export type LibraryPlaylistsOrderBy = OrderBy<LibraryPlaylistsOrderByField>
+export type SongsOrderBy =
+	OrderBy<SongsOrderByField>
+export type GenresOrderBy =
+	OrderBy<GenresOrderByField>
+export type AlbumsOrderBy =
+	OrderBy<AlbumsOrderByField>
+export type ArtistsOrderBy =
+	OrderBy<ArtistsOrderByField>
+export type PlaylistsOrderBy =
+	OrderBy<PlaylistsOrderByField>
+export type LibrarySongsOrderBy =
+	OrderBy<LibrarySongsOrderByField>
+export type LibraryArtistsOrderBy =
+	OrderBy<LibraryArtistsOrderByField>
+export type LibraryPlaylistsOrderBy =
+	OrderBy<LibraryPlaylistsOrderByField>
 
-export type SettingsQueuesDisclosureKeys = keyof QueuePreviousNextLater
-export type SettingsQueuesDisclosure = Record<SettingsQueuesDisclosureKeys, boolean>
+export type SettingsQueuesDisclosureKeys =
+	keyof QueuePreviousNextLater
+export type SettingsQueuesDisclosure =
+	Record<SettingsQueuesDisclosureKeys, boolean>
 
 export interface SettingsOrderBySongs {
 	songs: SongsOrderBy,

@@ -25,7 +25,7 @@ const Banner: VFC<PropTypes> = ({
 		imgClassName={bem("img")}
 		className={bem("", "Elevated")}
 	>
-		<div className={bem("content", "Content PaddingTopBottom")}>
+		<div className={bem("content", "Content PaddingBottom")}>
 			<Image
 				url={profileURL}
 				className={bem("content-profile", "Elevated")}

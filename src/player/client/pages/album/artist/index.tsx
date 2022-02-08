@@ -24,7 +24,7 @@ const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
 			src={createCatalogImageURL(
 				artist.artistID,
 				"profile",
-				ImageSizes.MINI,
+				ImageSizes.HALF,
 				ImageDimensions.SQUARE,
 			)}
 		/>

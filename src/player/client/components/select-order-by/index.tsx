@@ -24,7 +24,11 @@ import "./index.scss"
 const bem =
 	createBEM("SelectOrderBy")
 
-const SelectOrderBy: VFC<PropTypes> = ({ orderBy, className }) => {
+const SelectOrderBy: VFC<PropTypes> = ({
+	orderBy,
+	className,
+	alwaysList = false,
+}) => {
 	const dispatch = useDispatch()
 	const listStyle = useStateListStyle()
 	const state = useStateOrderBy(orderBy.key)
@@ -42,7 +46,10 @@ const SelectOrderBy: VFC<PropTypes> = ({ orderBy, className }) => {
 			}
 
 	const style: CSSProperties = {
-		gap: listStyle === SettingsListStyle.LIST ? "var(--space-quart)" : undefined,
+		gap:
+			alwaysList || listStyle === SettingsListStyle.LIST ?
+				"var(--space-quart)" :
+				undefined,
 	}
 
 	return (
@@ -63,6 +70,7 @@ const SelectOrderBy: VFC<PropTypes> = ({ orderBy, className }) => {
 }
 
 interface PropTypes extends ClassNameBEMPropTypes {
+	alwaysList?: boolean,
 	orderBy: OrderByOptions<SettingsOrderBy>,
 }
 

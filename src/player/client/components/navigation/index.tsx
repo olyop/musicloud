@@ -15,7 +15,7 @@ const Navigation: VFC<PropTypes> = ({
 	routes,
 	className,
 }) => (
-	<nav className={bem(className, "Content FlexRowSpaceBetween")}>
+	<nav className={bem(className, "", "Content FlexRowSpaceBetween")}>
 		<div className={bem("links", "FlexRowGapHalf")}>
 			{routes.map(({
 				icon,
@@ -29,15 +29,17 @@ const Navigation: VFC<PropTypes> = ({
 					<NavLink
 						to={path}
 						key={routeID}
-						className={({ isActive }) => (
-							bem(
-								isActive && (
-									underline ?
-										"active" : "active-no-underline"
-								),
-								"link",
-							)!
-						)}
+						className={
+							({ isActive }) => (
+								bem(
+									isActive && (
+										underline ?
+											"active" : "active-no-underline"
+									),
+									"link",
+								)!
+							)
+						}
 						children={(
 							<Button
 								icon={icon}

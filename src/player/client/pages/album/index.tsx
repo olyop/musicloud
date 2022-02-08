@@ -24,6 +24,7 @@ import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
 import { createDiscs, createObjectPath, createCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
+import Buttons from "../../components/buttons"
 
 const bem =
 	createBEM("AlbumPage")
@@ -61,8 +62,7 @@ const AlbumPage: VFC = () => {
 			</h2>
 		)
 	} else if (data) {
-		const discs =
-			createDiscs(data.getAlbumByID.songs)
+		const discs = createDiscs(data.getAlbumByID.songs)
 		return (
 			<Metadata title={data.getAlbumByID.title}>
 				<div className={bem("", "Content PaddingTopBottom")}>
@@ -78,7 +78,7 @@ const AlbumPage: VFC = () => {
 						)}
 					/>
 					<div className={bem("content")}>
-						<div className={bem("title")}>
+						<div className={bem("title", "MarginBottomHalf")}>
 							<h1 className="HeadingFour">
 								{data.getAlbumByID.title}
 							</h1>
@@ -86,7 +86,7 @@ const AlbumPage: VFC = () => {
 								albumID={albumID}
 							/>
 						</div>
-						<div className="FlexRowGapHalf MarginBottomHalf">
+						<div className="FlexRowGapHalf MarginBottom">
 							{data.getAlbumByID.artists.map(
 								artist => (
 									<AlbumArtist
@@ -131,7 +131,7 @@ const AlbumPage: VFC = () => {
 								</p>
 							)}
 						</div>
-						<div className={bem("buttons", "FlexRowGapHalf MarginBottom")}>
+						<Buttons className="MarginBottom">
 							<Button
 								icon="shuffle"
 								text="Shuffle"
@@ -156,7 +156,7 @@ const AlbumPage: VFC = () => {
 								icon="share"
 								text="Share"
 							/>
-						</div>
+						</Buttons>
 						<details open={false}>
 							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>
 								Downloads

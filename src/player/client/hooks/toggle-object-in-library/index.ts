@@ -32,7 +32,7 @@ export const useToggleObjectInLibrary =
 			dr("getSongByID", "getArtistByID", "getPlaylistByID")
 
 		const libraryObjectKeyName =
-			`${dr("songs", "artists", "playlists")}Paginated`
+			`${dr("songs", "artists", "playlists")}Paginated` as const
 
 		type Vars = {
 			[K in typeof objectIDKey]?: string
@@ -42,8 +42,9 @@ export const useToggleObjectInLibrary =
 			[K in typeof typeNameLowerCase]?: InLibraryObjects
 		}
 
-		const variables: Vars =
-			{ [objectIDKey]: objectID }
+		const variables: Vars = {
+			[objectIDKey]: objectID,
+		}
 
 		const { data: inLibraryData, error: queryError } =
 			useQuery<QueryData, typeof variables>(QUERY, {
@@ -54,7 +55,9 @@ export const useToggleObjectInLibrary =
 
 		const inLibrary =
 			isUndefined(object.inLibrary) ?
-				(inLibraryData ? inLibraryData[typeNameLowerCase]!.inLibrary : false) :
+				(inLibraryData ?
+					inLibraryData[typeNameLowerCase]!.inLibrary :
+					false) :
 				object.inLibrary
 
 		const actionVerb =

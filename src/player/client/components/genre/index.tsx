@@ -3,16 +3,16 @@ import { createElement, VFC } from "react"
 import Item from "../item"
 import ObjectLink from "../object-link"
 import { createObjectPath } from "../../helpers"
-import { Genre as GenreType } from "../../types"
+import { Genre as GenreType, ObjectShowIcon } from "../../types"
 
 const Genre: VFC<PropTypes> = ({
 	genre,
 	className,
-	leftIcon = false,
+	showIcon = false,
 }) => (
 	<Item
 		className={className}
-		leftIcon={leftIcon ? "list" : undefined}
+		leftIcon={showIcon ? "list" : undefined}
 		infoOptions={{
 			upperLeft: (
 				<ObjectLink
@@ -26,9 +26,8 @@ const Genre: VFC<PropTypes> = ({
 	/>
 )
 
-interface PropTypes {
+interface PropTypes extends ObjectShowIcon {
 	genre: GenreType,
-	leftIcon?: boolean,
 	className?: string,
 }
 

@@ -74,16 +74,16 @@ const ManageAccount: VFC = () => {
 				</div>
 			</div>
 			<Modal open={deleteUserModal} onClose={handleDeleteUserModalClose}>
+				<ModalHeader
+					text={(
+						<Fragment>
+							<Fragment>Are you sure you want</Fragment>
+							<br/>
+							<Fragment>to delete your account?</Fragment>
+						</Fragment>
+					)}
+				/>
 				<ModalButtons>
-					<ModalHeader
-						text={(
-							<Fragment>
-								<Fragment>Are you sure you want</Fragment>
-								<br/>
-								<Fragment>to delete your account?</Fragment>
-							</Fragment>
-						)}
-					/>
 					<ModalButton
 						text="Delete"
 						icon="delete"

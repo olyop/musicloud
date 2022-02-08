@@ -2,7 +2,7 @@ import { HTMLAttributes } from "react"
 import { PathRouteProps } from "react-router-dom"
 import { BEMInput as BaseBEMInput } from "@oly_op/bem"
 
-import { Song } from "./objects"
+import { Song, Artist, Playlist } from "./objects"
 
 export type PromiseOrValue<T> = T | Promise<T>
 
@@ -22,6 +22,8 @@ export interface Route extends PathRouteProps {
 
 export type HandlerReturn = PromiseOrValue<void>
 export type Handler = () => HandlerReturn
+
+export type Callback = () => void
 export type HandlerPromise = () => Promise<void>
 
 export interface OnClickPropTypes {
@@ -41,4 +43,11 @@ type BEMInput =
 
 export interface ClassNameBEMPropTypes {
 	className?: BEMInput,
+}
+
+export type InLibraryObjects =
+	Song | Artist | Playlist
+
+export interface ObjectShowIcon {
+	showIcon?: boolean,
 }

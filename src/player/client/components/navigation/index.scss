@@ -1,7 +1,6 @@
 .Navigation {
 	@media (max-width: 700px) {
-		gap: var(--space-half);
-		flex-direction: column; }
+		gap: var(--space-half); }
 	&__links {
 		@media (max-width: 800px) {
 			justify-content: center; }

@@ -4,49 +4,93 @@ import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import Item from "../item"
 import ObjectLink from "../object-link"
-import { User as UserType } from "../../types"
+import { useToggleUserFollowing } from "../../hooks"
+import { ModalButton, ModalButtons } from "../modal"
+import { ObjectShowIcon, User as UserType } from "../../types"
 import { createObjectPath, createCatalogImageURL } from "../../helpers"
 
 const bem =
 	createBEM("User")
 
-const User: VFC<PropTypes> = ({
-	user,
-	className,
-	showIcon = false,
-}) => (
-	<Item
-		leftIcon={showIcon ? "person" : undefined}
-		infoOptions={{
-			upperLeft: (
-				<ObjectLink
-					link={{
-						text: user.name,
-						path: createObjectPath("user", user.userID),
-					}}
-				/>
-			),
-		}}
-		imageOptions={{
-			title: user.name,
-			path: createObjectPath(
-				"user",
-				user.userID,
-			),
-			url: createCatalogImageURL(
-				user.userID,
-				"profile",
-				ImageSizes.MINI,
-				ImageDimensions.SQUARE,
-			),
-		}}
-		className={bem(className, "PaddingHalf ItemBorder")}
-	/>
-)
+const User: VFC<PropTypes> = ({ user, className, showIcon = false }) => {
+	const { userID } = user
 
-interface PropTypes {
+	const [ toggleUserFollowing, isFollowing, isUser ] =
+		useToggleUserFollowing({ userID })
+
+	return (
+		<Item
+			leftIcon={showIcon ? "person" : undefined}
+			className={bem(className, "PaddingHalf ItemBorder")}
+			infoOptions={{
+				upperLeft: (
+					<ObjectLink
+						link={{
+							text: user.name,
+							path: createObjectPath("user", userID),
+						}}
+					/>
+				),
+			}}
+			inLibraryOptions={isUser ? undefined : {
+				inLibrary: isFollowing,
+				onClick: toggleUserFollowing,
+			}}
+			modalOptions={{
+				header: {
+					image: {
+						description: user.name,
+						src: createCatalogImageURL(
+							userID,
+							"profile",
+							ImageSizes.MINI,
+							ImageDimensions.SQUARE,
+						),
+					},
+					text: (
+						<ObjectLink
+							link={{
+								text: user.name,
+								path: createObjectPath("user", userID),
+							}}
+						/>
+					),
+				},
+				content: onClose => (
+					<ModalButtons>
+						<ModalButton
+							onClose={onClose}
+							onClick={toggleUserFollowing}
+							icon={isFollowing ? "done" : "add"}
+							text={isFollowing ? "Following" : "Follow"}
+						/>
+						<ModalButton
+							icon="info"
+							text="Info"
+							link={createObjectPath("user", userID)}
+						/>
+					</ModalButtons>
+				),
+			}}
+			imageOptions={{
+				title: user.name,
+				path: createObjectPath(
+					"user",
+					userID,
+				),
+				url: createCatalogImageURL(
+					userID,
+					"profile",
+					ImageSizes.MINI,
+					ImageDimensions.SQUARE,
+				),
+			}}
+		/>
+	)
+}
+
+interface PropTypes extends ObjectShowIcon {
 	user: UserType,
-	showIcon?: boolean,
 	className?: string,
 }
 

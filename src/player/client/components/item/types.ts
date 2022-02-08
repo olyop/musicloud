@@ -24,7 +24,7 @@ export interface InfoOptions {
 
 export interface InLibraryOptions {
 	onClick: Handler,
-	isError: boolean,
+	isError?: boolean,
 	inLibrary: boolean,
 }
 

@@ -32,7 +32,7 @@ const InLibraryButton: VFC<PropTypes> = ({
 )
 
 interface PropTypesBase {
-	isError: boolean,
+	isError?: boolean,
 	inLibrary: boolean,
 }
 

@@ -1,21 +1,25 @@
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
-import { NavLink, useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
+import { createElement, Fragment, VFC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { NavLink, Route, Routes, useParams } from "react-router-dom"
 import { ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
 
 import { User } from "../../types"
-import FOLLOW_USER from "./follow-user.gql"
+import UserFollowers from "./followers"
 import Banner from "../../components/banner"
 import GET_USER_PAGE from "./get-user-page.gql"
-import UN_FOLLOW_USER from "./un-follow-user.gql"
 import { createCatalogImageURL } from "../../helpers"
-import { useMutation, useQuery, useJWTPayload } from "../../hooks"
+import { useQuery, useToggleUserFollowing } from "../../hooks"
+
+const UserPageHome: VFC = () => (
+	<p className="BodyOne">
+		W.I.P.
+	</p>
+)
 
 const UserPage: VFC = () => {
 	const params = useParams<keyof UserID>()
-	const { userID: ownUserID } = useJWTPayload()
 	const userID = addDashesToUUID(params.userID!)
 
 	const { data, error } =
@@ -23,29 +27,8 @@ const UserPage: VFC = () => {
 			variables: { userID },
 		})
 
-	const [ followUser ] =
-		useMutation<unknown, UserID>(FOLLOW_USER, {
-			variables: { userID },
-		})
-
-	const [ unFollowUser ] =
-		useMutation<unknown, UserID>(UN_FOLLOW_USER, {
-			variables: { userID },
-		})
-
-	const isOwnPage =
-		userID === ownUserID
-
-	const handleFollowUser =
-		async () => {
-			if (!isOwnPage && data) {
-				if (data.getUserByID.following) {
-					await unFollowUser()
-				} else {
-					await followUser()
-				}
-			}
-		}
+	const [ toggleUserFollowing, isFollowing, isUser ] =
+		useToggleUserFollowing({ userID })
 
 	if (error) {
 		return (
@@ -56,33 +39,50 @@ const UserPage: VFC = () => {
 			</h2>
 		)
 	} else if (data) {
-		const { name, dateJoined, follower, following } = data.getUserByID
+		const { name, isFollower, dateJoined } = data.getUserByID
 		const dateJoinedString = new Date(dateJoined).toISOString().slice(0, 10)
 		return (
 			<Metadata title={name}>
 				<Banner
-					title={name}
+					title={(
+						<NavLink to="">
+							{name}
+						</NavLink>
+					)}
 					subTitle={(
-						!isOwnPage && follower ?
+						!isUser && isFollower ?
 							`${dateJoinedString} - Follows you` :
 							`${dateJoinedString}`
 					)}
 					buttons={(
-						isOwnPage ? (
-							<NavLink to="/manage-account">
+						<Fragment>
+							{isUser ? (
+								<NavLink to="/manage-account">
+									<Button
+										text="Manage"
+										title="Manage Account"
+										icon="manage_accounts"
+									/>
+								</NavLink>
+							) : (
 								<Button
-									text="Manage"
-									title="Manage Account"
-									icon="manage_accounts"
+									onClick={toggleUserFollowing}
+									icon={isFollowing ? "done" : "person_add"}
+									text={isFollowing ? "Following" : "Follow"}
 								/>
+							)}
+							<NavLink to="followers">
+								{({ isActive }) => (
+									<Button
+										icon="person"
+										text="Followers"
+										style={isActive ? {
+											backgroundColor: "var(--primary-color-dark)",
+										} : undefined}
+									/>
+								)}
 							</NavLink>
-						) : (
-							<Button
-								onClick={handleFollowUser}
-								icon={following ? "done" : "person_add"}
-								text={following ? "Following" : "Follow"}
-							/>
-						)
+						</Fragment>
 					)}
 					coverURL={createCatalogImageURL(
 						userID,
@@ -98,9 +98,18 @@ const UserPage: VFC = () => {
 					)}
 				/>
 				<div className="Content PaddingTopBottom">
-					<p className="BodyOne MarginBottomHalf">
-						W.I.P.
-					</p>
+					<Routes>
+						<Route
+							path=""
+							key="home"
+							element={<UserPageHome/>}
+						/>
+						<Route
+							key="followers"
+							path="followers"
+							element={<UserFollowers/>}
+						/>
+					</Routes>
 				</div>
 			</Metadata>
 		)

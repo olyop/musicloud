@@ -2,8 +2,8 @@ type User {
 	userID: UUID!
 	plays: [Play!]
 	followers: [User!]
-	follower: Boolean!
-	following: Boolean!
+	isFollower: Boolean!
+	isFollowing: Boolean!
 	name: NonEmptyString!
 	playlists: [Playlist!]
 	dateJoined: Timestamp!

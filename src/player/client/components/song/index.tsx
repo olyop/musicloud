@@ -1,5 +1,5 @@
+import { isNull } from "lodash-es"
 import { BEMInput } from "@oly_op/bem"
-import { isNull, isString } from "lodash-es"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
@@ -26,7 +26,7 @@ import QUEUE_SONG_NEXT from "./queue-song-next.gql"
 import { ModalButton, ModalButtons } from "../modal"
 import QUEUE_SONG_AFTER from "./queue-song-after.gql"
 import QUEUE_SONG_LATER from "./queue-song-later.gql"
-import { User, Song as SongType, Handler } from "../../types"
+import { User, Song as SongType, Handler, ObjectShowIcon } from "../../types"
 import { useToggleObjectInLibrary, useMutation, usePlaySong } from "../../hooks"
 
 const ModalPlayButton: VFC<ModalPlayButtonPropTypes> = ({
@@ -59,12 +59,13 @@ const Song: VFC<PropTypes> = ({
 	onRemove,
 	className,
 	iconClassName,
-	leftIcon = false,
+	showIcon = false,
 	hidePlay = false,
 	hideCover = false,
 	hidePlays = false,
 	hideDuration = false,
 	hideInLibrary = false,
+	leftIcon = "audiotrack",
 	hideTrackNumber = false,
 }) => {
 	const {
@@ -132,15 +133,8 @@ const Song: VFC<PropTypes> = ({
 			onRemove={onRemove}
 			className={className}
 			iconClassName={iconClassName}
+			leftIcon={showIcon ? leftIcon : undefined}
 			left={index || (hideTrackNumber ? null : trackNumber)}
-			leftIcon={
-				isString(leftIcon) ?
-					leftIcon : (
-						leftIcon ?
-							"audiotrack" :
-							undefined
-					)
-			}
 			imageOptions={
 				hideCover ? undefined : {
 					title: album.title,
@@ -295,6 +289,11 @@ const Song: VFC<PropTypes> = ({
 							/>
 						)}
 						<ModalButton
+							icon="share"
+							text="Share"
+							onClose={onClose}
+						/>
+						<ModalButton
 							icon="info"
 							text="Info"
 							onClose={onClose}
@@ -311,10 +310,11 @@ interface QueueData {
 	user: User,
 }
 
-interface PropTypes {
+interface PropTypes extends ObjectShowIcon {
 	song: SongType,
 	index?: number,
 	onJump?: Handler,
+	leftIcon?: string,
 	onRemove?: Handler,
 	hidePlay?: boolean,
 	className?: string,
@@ -324,7 +324,6 @@ interface PropTypes {
 	hideInLibrary?: boolean,
 	iconClassName?: BEMInput,
 	hideTrackNumber?: boolean,
-	leftIcon?: boolean | string,
 }
 
 export default Song

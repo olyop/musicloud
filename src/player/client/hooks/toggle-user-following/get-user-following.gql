@@ -1,0 +1,6 @@
+query getUserFollowing($userID: UUID!) {
+	getUserByID(userID: $userID) {
+		userID
+		isFollowing
+	}
+}

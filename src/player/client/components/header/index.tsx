@@ -101,7 +101,7 @@ const Header: VFC = () => {
 		const id =
 			setInterval(() => {
 				void checkStatus()
-			}, 10000)
+			}, 20000)
 
 		return () => {
 			window.removeEventListener("offline", () => {
@@ -133,8 +133,7 @@ const Header: VFC = () => {
 				{isOnline || (
 					<Button
 						transparent
-						text="Offline"
-						title="Account"
+						title="Offline"
 						icon="cloud_off"
 						className={bem("offline")}
 						spanClassName={bem("offline-span")}

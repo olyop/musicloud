@@ -25,8 +25,8 @@ export interface InLibraryBase {
 
 export interface UserClientBase
 	extends StoreObject<"User">, UserID {
-		follower: boolean,
-		following: boolean,
+		isFollower: boolean,
+		isFollowing: boolean,
 		followers: User[] | null,
 	}
 

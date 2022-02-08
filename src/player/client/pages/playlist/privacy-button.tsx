@@ -6,20 +6,6 @@ import { Playlist } from "../../types"
 import { useUpdatePlaylistPrivacy } from "../../hooks"
 import Modal, { ModalButton, ModalButtons, ModalHeader } from "../../components/modal"
 
-// const determinePrivacyIcon =
-// 	(privacy: PlaylistPrivacy) => {
-// 		switch (privacy) {
-// 			case PlaylistPrivacy.PUBLIC:
-// 				return "public"
-// 			case PlaylistPrivacy.PRIVATE:
-// 				return "lock"
-// 			case PlaylistPrivacy.FRIENDS:
-// 				return "people"
-// 			default:
-// 				return undefined
-// 		}
-// 	}
-
 const PlaylistPagePrivacyButton: VFC<PropTypes> = ({ playlist }) => {
 	const [ modal, setModal ] =
 		useState(false)

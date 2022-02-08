@@ -51,7 +51,7 @@ export const plays =
 		),
 	)
 
-export const following =
+export const isFollowing =
 	resolver<boolean>(
 		({ parent, context }) => (
 			query(context.pg)(EXISTS_USER_FOLLOWER)({
@@ -65,7 +65,7 @@ export const following =
 		{ parentContext: false },
 	)
 
-export const follower =
+export const isFollower =
 	resolver<boolean>(
 		({ parent, context }) => (
 			query(context.pg)(EXISTS_USER_FOLLOWER)({
@@ -90,6 +90,7 @@ export const followers =
 				},
 			})
 		),
+		{ parentContext: false },
 	)
 
 const getUserPlaylists =

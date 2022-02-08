@@ -23,6 +23,7 @@ const Playlists: VFC<PlaylistsPropTypes> = ({
 	<div className={bem(className, isEmpty(playlists) || "Elevated")}>
 		{orderBy && (
 			<SelectOrderBy
+				alwaysList
 				orderBy={orderBy}
 				className="PaddingHalf ItemBorder FlexRowRight"
 			/>

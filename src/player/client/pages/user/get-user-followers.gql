@@ -1,0 +1,9 @@
+query getUserFollowers($userID: UUID!) {
+	getUserByID(userID: $userID) {
+		userID
+		followers {
+			name
+			userID
+		}
+	}
+}

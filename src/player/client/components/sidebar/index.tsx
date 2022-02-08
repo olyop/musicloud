@@ -45,118 +45,129 @@ const Sidebar: VFC = () => {
 							title="Browse"
 							onClick={handleClose}
 							className={bem("route", "BorderTop PaddingTopHalf")}
-						>
-							<Button
-								transparent
-								icon="home"
-								text="Browse"
-								className={bem("route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										icon="home"
+										text="Browse"
+										transparent={!isActive}
+										className={bem("route-button")}
+									/>
+								)
+							}
+						/>
 						<NavLink
 							title="Top 100"
 							onClick={handleClose}
 							className={bem("route")}
 							to="/top-one-hundred-songs"
-						>
-							<Button
-								transparent
-								icon="list"
-								text="Top 100"
-								className={bem("route-button-sub", "route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										icon="list"
+										text="Top 100"
+										transparent={!isActive}
+										className={bem("route-button-sub", "route-button")}
+									/>
+								)
+							}
+						/>
 						<NavLink
 							to="/library"
 							title="Library"
 							onClick={handleClose}
 							className={bem("route", "BorderTop MarginTopHalf PaddingTopHalf")}
-						>
-							<Button
-								transparent
-								text="Library"
-								icon="library_music"
-								className={bem("route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										text="Library"
+										icon="library_music"
+										transparent={!isActive}
+										className={bem("route-button")}
+									/>
+								)
+							}
+						/>
 						<NavLink
 							to="/library/songs"
 							title="Library Songs"
 							onClick={handleClose}
 							className={bem("route")}
-						>
-							<Button
-								transparent
-								text="Songs"
-								icon="audiotrack"
-								className={bem("route-button-sub", "route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										text="Songs"
+										icon="audiotrack"
+										transparent={!isActive}
+										className={bem("route-button-sub", "route-button")}
+									/>
+								)
+							}
+						/>
 						<NavLink
 							to="/library/albums"
 							onClick={handleClose}
 							title="Library Albums"
 							className={bem("route")}
-						>
-							<Button
-								transparent
-								icon="album"
-								text="Albums"
-								className={bem("route-button-sub", "route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										icon="album"
+										text="Albums"
+										transparent={!isActive}
+										className={bem("route-button-sub", "route-button")}
+									/>
+								)
+							}
+						/>
 						<NavLink
 							to="/library/artists"
 							onClick={handleClose}
 							title="Library Artists"
 							className={bem("route")}
-						>
-							<Button
-								transparent
-								icon="person"
-								text="Artists"
-								className={bem("route-button-sub", "route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										icon="person"
+										text="Artists"
+										transparent={!isActive}
+										className={bem("route-button-sub", "route-button")}
+									/>
+								)
+							}
+						/>
 						<NavLink
 							onClick={handleClose}
 							to="/library/playlists"
 							title="Library Playlists"
 							className={bem("route")}
-						>
-							<Button
-								transparent
-								text="Playlists"
-								icon="queue_music"
-								className={bem("route-button-sub", "route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										text="Playlists"
+										icon="queue_music"
+										transparent={!isActive}
+										className={bem("route-button-sub", "route-button")}
+									/>
+								)
+							}
+						/>
 						<NavLink
 							onClick={handleClose}
 							to="/library/settings"
 							title="Library Settings"
 							className={bem("route")}
-						>
-							<Button
-								transparent
-								icon="settings"
-								text="Settings"
-								className={bem("route-button-sub", "route-button")}
-							/>
-						</NavLink>
-						<NavLink
-							to="/followers"
-							title="Followers"
-							onClick={handleClose}
-							className={bem("route", "BorderTop MarginTopHalf PaddingTopHalf")}
-						>
-							<Button
-								transparent
-								icon="person"
-								text="Followers"
-								className={bem("route-button")}
-							/>
-						</NavLink>
+							children={
+								({ isActive }) => (
+									<Button
+										icon="settings"
+										text="Settings"
+										transparent={!isActive}
+										className={bem("route-button-sub", "route-button")}
+									/>
+								)
+							}
+						/>
 					</div>
 				</div>
 				<p className="BodyOne PaddingLeftRight">

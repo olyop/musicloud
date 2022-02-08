@@ -10,6 +10,12 @@ import Item, {
 } from "../item"
 
 import {
+	ObjectShowIcon,
+	SettingsListStyle,
+	Artist as ArtistType,
+} from "../../types"
+
+import {
 	createObjectPath,
 	createArtistLower,
 	createCatalogImageURL,
@@ -19,7 +25,6 @@ import Cover from "../cover"
 import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
 import { ModalButton, ModalButtons } from "../modal"
-import { Artist as ArtistType, SettingsListStyle } from "../../types"
 import { useToggleObjectInLibrary, useShuffleArtist } from "../../hooks"
 
 const bem =
@@ -28,7 +33,7 @@ const bem =
 const Artist: VFC<PropTypes> = ({
 	artist,
 	className,
-	leftIcon = false,
+	showIcon = false,
 	hideModal = false,
 	alwaysList = false,
 }) => {
@@ -87,6 +92,11 @@ const Artist: VFC<PropTypes> = ({
 					onClose={onClose}
 					onClick={handleShuffleClick}
 				/>
+				<ModalButton
+					icon="share"
+					text="Share"
+					onClose={onClose}
+				/>
 			</ModalButtons>
 		),
 	}
@@ -122,7 +132,7 @@ const Artist: VFC<PropTypes> = ({
 			infoOptions={info}
 			imageOptions={imageOptions}
 			inLibraryOptions={inLibraryConfig}
-			leftIcon={leftIcon ? "person" : undefined}
+			leftIcon={showIcon ? "person" : undefined}
 			modalOptions={hideModal ? undefined : modalOptions}
 			className={bem(className, "PaddingHalf ItemBorder")}
 			playOptions={{ isPlaying: false, onClick: () => {} }}
@@ -153,9 +163,8 @@ const Artist: VFC<PropTypes> = ({
 	)
 }
 
-interface PropTypes {
+interface PropTypes extends ObjectShowIcon {
 	artist: ArtistType,
-	leftIcon?: boolean,
 	className?: string,
 	hideModal?: boolean,
 	alwaysList?: boolean,

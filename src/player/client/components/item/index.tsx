@@ -106,7 +106,7 @@ const Item: VFC<PropTypes> = ({
 				<div className={bem(infoClassName, "info", "MarginRightHalf")}>
 					<div
 						className={bem("info-left")}
-						style={{ justifyContent: lowerLeft ? "space-between" : "center" }}
+						style={{ justifyContent: lowerLeft ? undefined : "center" }}
 					>
 						<p
 							children={upperLeft}

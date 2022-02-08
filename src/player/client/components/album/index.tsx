@@ -9,7 +9,7 @@ import ObjectLinks from "../object-links"
 import Item, { ModalOptions } from "../item"
 import { ModalButton, ModalButtons } from "../modal"
 import { createCatalogImageURL, createObjectPath } from "../../helpers"
-import { Album as AlbumType, Handler, SettingsListStyle } from "../../types"
+import { Album as AlbumType, Handler, ObjectShowIcon, SettingsListStyle } from "../../types"
 import { useStateListStyle, useStatePlay, useStateShowReleased } from "../../redux"
 import { useShuffleAlbum, usePlayAlbum, useToggleAlbumInLibrary } from "../../hooks"
 
@@ -42,7 +42,7 @@ const bem =
 const Album: VFC<PropTypes> = ({
 	album,
 	className,
-	leftIcon = false,
+	showIcon = false,
 	hidePlay = false,
 	hideModal = false,
 	alwaysList = false,
@@ -104,6 +104,11 @@ const Album: VFC<PropTypes> = ({
 					text="Shuffle"
 					onClick={shuffleAlbum}
 				/>
+				<ModalButton
+					icon="share"
+					text="Share"
+					onClose={onClose}
+				/>
 			</ModalButtons>
 		),
 	}
@@ -114,7 +119,7 @@ const Album: VFC<PropTypes> = ({
 	return (
 		alwaysList || listStyle === SettingsListStyle.LIST ? (
 			<Item
-				leftIcon={leftIcon ? "album" : undefined}
+				leftIcon={showIcon ? "album" : undefined}
 				modalOptions={hideModal ? undefined : modalOptions}
 				className={bem(className, "PaddingHalf ItemBorder")}
 				playOptions={hidePlay ? undefined : {
@@ -211,9 +216,8 @@ const Album: VFC<PropTypes> = ({
 	)
 }
 
-interface PropTypes {
+interface PropTypes extends ObjectShowIcon {
 	album: AlbumType,
-	leftIcon?: boolean,
 	hidePlay?: boolean,
 	className?: string,
 	hideModal?: boolean,

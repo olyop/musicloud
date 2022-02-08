@@ -1,35 +1,34 @@
 import Button from "@oly_op/react-button"
+import { useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { isNull, toLower, startCase } from "lodash-es"
-import { useParams, useNavigate } from "react-router-dom"
 import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import {
 	useQuery,
-	useJWTPayload,
 	useMutation,
+	useJWTPayload,
 	usePlayPlaylist,
-	useDeletePlaylist,
 	useShufflePlaylist,
 } from "../../hooks"
 
 import { Playlist } from "../../types"
-import { useStatePlay } from "../../redux"
+import DeleteButton from "./delete-button"
 import RenameButton from "./rename-button"
+import { useStatePlay } from "../../redux"
 import PrivacyButton from "./privacy-button"
+import Buttons from "../../components/buttons"
+import InLibraryButton from "./in-library-button"
 import ObjectLink from "../../components/object-link"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
 import Songs, { SongChangeOptions } from "../../components/songs"
 import { determinePlural, createObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
-import "./index.scss"
-
 const PlaylistPage: VFC = () => {
 	const play = useStatePlay()
-	const navigate = useNavigate()
 	const { userID } = useJWTPayload()
 	const params = useParams<keyof PlaylistID>()
 	const playlistID = addDashesToUUID(params.playlistID!)
@@ -37,14 +36,11 @@ const PlaylistPage: VFC = () => {
 	const variables: PlaylistID =
 		{ playlistID }
 
-	const [ deletePlaylist ] =
-		useDeletePlaylist({ playlistID })
-
 	const [ playPlaylist, isPlaying ] =
-		usePlayPlaylist({ playlistID })
+		usePlayPlaylist(variables)
 
 	const [ shufflePlaylist ] =
-		useShufflePlaylist({ playlistID })
+		useShufflePlaylist(variables)
 
 	const { data, error } =
 		useQuery<GetPlaylistPageData, PlaylistID>(
@@ -59,12 +55,6 @@ const PlaylistPage: VFC = () => {
 
 	const isUsers =
 		data?.getPlaylistByID.user.userID === userID
-
-	const handleDeletePlaylist =
-		async () => {
-			await deletePlaylist()
-			navigate(-1)
-		}
 
 	const handleShufflePlaylist =
 		async () => {
@@ -93,10 +83,10 @@ const PlaylistPage: VFC = () => {
 	}
 
 	return (
-		<div className="Content PaddingTopBottom">
+		<div className="Content FlexColumnGap PaddingTopBottom">
 			{data && (
 				<Metadata title={data.getPlaylistByID.title}>
-					<div className="MarginBottom FlexColumnGapHalf">
+					<div className="FlexColumnGapHalf">
 						<div className="FlexRowGapHalf">
 							<h1 className="HeadingFour">
 								{data.getPlaylistByID.title}
@@ -126,41 +116,48 @@ const PlaylistPage: VFC = () => {
 					{data.getPlaylistByID.songsTotal ? (
 						<Songs
 							orderBy={false}
-							className="MarginBottom"
 							songs={data.getPlaylistByID.songs}
 							onRemove={isUsers ? handleRemoveSongFromPlaylist : undefined}
 						/>
 					) : (
-						<p className="BodyTwo MarginBottom">
+						<p className="BodyTwo">
 							No songs.
 						</p>
 					)}
-					<div className="PlaylistPage FlexRowGapHalf">
+					<Buttons>
 						<Button
 							icon="shuffle"
 							text="Shuffle"
 							onClick={handleShufflePlaylist}
 						/>
-						{isUsers && (
-							<Fragment>
+						{isUsers || (
+							<InLibraryButton
+								playlist={data.getPlaylistByID}
+							/>
+						)}
+						<Button
+							icon="share"
+							text="Share"
+						/>
+					</Buttons>
+					{isUsers && (
+						<div className="FlexColumnGapHalf">
+							<p className="BodyOneBold">
+								Actions
+							</p>
+							<Buttons>
 								<PrivacyButton
 									playlist={data.getPlaylistByID}
 								/>
 								<RenameButton
 									playlist={data.getPlaylistByID}
 								/>
-								<Button
-									icon="delete"
-									text="Delete"
-									onClick={handleDeletePlaylist}
+								<DeleteButton
+									playlistID={playlistID}
 								/>
-							</Fragment>
-						)}
-						<Button
-							icon="share"
-							text="Share"
-						/>
-					</div>
+							</Buttons>
+						</div>
+					)}
 					{data.getPlaylistByID.songsTotal && (
 						<p className="MarginTop BodyTwoBold">
 							{data.getPlaylistByID.songsTotal}

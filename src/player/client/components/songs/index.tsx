@@ -32,6 +32,7 @@ const Songs: VFC<SongsPropTypes> = ({
 	>
 		{orderBy && (
 			<SelectOrderBy
+				alwaysList
 				orderBy={orderBy}
 				className="PaddingHalf ItemBorder FlexRowRight"
 			/>

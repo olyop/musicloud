@@ -1,0 +1,5 @@
+.Songs {
+	&__song {
+		align-items: center;
+		justify-content: center;
+		height: calc(var(--button-dimesnion) + var(--space)); } }

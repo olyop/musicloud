@@ -17,11 +17,9 @@ const Genres: VFC<PropTypes> = ({
 	<div className={bem(className, isEmpty(genres) || "Elevated")}>
 		{orderBy && (
 			<SelectOrderBy
-				orderBy={{
-					key: "genres",
-					fields: Object.keys(GenresOrderByField),
-				}}
+				alwaysList
 				className="PaddingHalf ItemBorder FlexRowRight"
+				orderBy={{ key: "genres", fields: Object.keys(GenresOrderByField) }}
 			/>
 		)}
 		{genres.map(

@@ -24,6 +24,7 @@ import {
 } from "../../sql"
 
 import {
+	getPlaylist,
 	handleInLibrary,
 	HandleInLibraryOptions,
 	HandleInLibraryOptionsBase,
@@ -129,28 +130,46 @@ export const removeArtistFromLibrary =
 
 export const addPlaylistToLibrary =
 	resolver<Playlist, PlaylistID>(
-		({ args, context }) => (
-			handleInLibrary(context.pg)(
+		async ({ args, context }) => {
+			const { playlistID } = args
+
+			const playlist =
+				await getPlaylist(context.pg)({ playlistID })
+
+			if (context.authorization!.userID === playlist.userID) {
+				throw new UserInputError("Users own playlist is always followed")
+			}
+
+			return handleInLibrary(context.pg)(
 				createPlaylistConfig({
 					inLibrary: true,
 					objectID: args.playlistID,
 					userID: context.authorization!.userID,
 				}),
 			)
-		),
+		},
 	)
 
 export const removePlaylistFromLibrary =
 	resolver<Playlist, PlaylistID>(
-		({ args, context }) => (
-			handleInLibrary(context.pg)(
+		async ({ args, context }) => {
+			const { playlistID } = args
+
+			const playlist =
+				await getPlaylist(context.pg)({ playlistID })
+
+			if (context.authorization!.userID === playlist.userID) {
+				throw new UserInputError("Users own playlist is always followed")
+			}
+
+			return handleInLibrary(context.pg)(
 				createPlaylistConfig({
 					inLibrary: false,
 					objectID: args.playlistID,
 					userID: context.authorization!.userID,
 				}),
 			)
-		),
+		},
 	)
 
 export const addAlbumToLibrary =
