@@ -31,14 +31,6 @@ export const baseHTMLPluginOptions =
 			"application-name": title,
 			"description": DESCRIPTION,
 			"og:description": DESCRIPTION,
-			"mobile-web-app-capable": "yes",
-			"viewport": `
-				minimum-scale=1,
-				initial-scale=1,
-				shrink-to-fit=no,
-				width=device-width,
-				viewport-fit=cover
-			`,
 		},
 	})
 

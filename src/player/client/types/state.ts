@@ -80,6 +80,7 @@ export interface Settings {
 	theme: SettingsTheme,
 	showReleased: boolean,
 	showDuration: boolean,
+	gridChildWidth: number,
 	orderBy: SettingsOrderBy,
 	listStyle: SettingsListStyle,
 	transitions: SettingsTransitions,

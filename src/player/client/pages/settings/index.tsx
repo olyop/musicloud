@@ -1,6 +1,13 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import toNumber from "lodash-es/toNumber"
 import { Metadata } from "@oly_op/react-metadata"
+import { ChangeEventHandler, createElement, VFC } from "react"
+
+import {
+	SettingsTheme,
+	SettingsListStyle,
+	SettingsTransitions,
+} from "../../types"
 
 import {
 	useDispatch,
@@ -16,10 +23,11 @@ import {
 	useStateTransitions,
 	useStateShowDuration,
 	useStateShowReleased,
+	updateGridChildWidth,
+	useStateGridChildWidth,
 } from "../../redux"
 
 import Select from "../../components/select"
-import { SettingsListStyle, SettingsTheme, SettingsTransitions } from "../../types"
 
 import "./index.scss"
 
@@ -34,6 +42,7 @@ const SettingsPage: VFC = () => {
 	const transitions = useStateTransitions()
 	const showDuration = useStateShowDuration()
 	const showReleased = useStateShowReleased()
+	const gridChildWidth = useStateGridChildWidth()
 
 	const handleToggleShowGenres =
 		() => {
@@ -65,6 +74,11 @@ const SettingsPage: VFC = () => {
 			dispatch(updateTransitions(value as SettingsTransitions))
 		}
 
+	const handleGridChildWidthChange: ChangeEventHandler<HTMLInputElement> =
+		event => {
+			dispatch(updateGridChildWidth(toNumber(event.target.value)))
+		}
+
 	return (
 		<Metadata title="Settings">
 			<div className={bem("", "Content PaddingTopBottom")}>
@@ -77,38 +91,56 @@ const SettingsPage: VFC = () => {
 							Appearance
 						</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
+							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
+								<p className="BodyTwoBold">
 									Theme:
 								</p>
 								<Select
 									value={theme}
 									onChange={handleThemeChange}
-									className="BodyTwo MarginRightQuart"
+									className="BodyTwo"
 									options={Object.keys(SettingsTheme)}
 								/>
 							</div>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
+							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
+								<p className="BodyTwoBold">
 									List Style:
 								</p>
 								<Select
 									value={listStyle}
 									onChange={handleListStyleChange}
-									className="BodyTwo MarginRightQuart"
+									className="BodyTwo"
 									options={Object.keys(SettingsListStyle)}
 								/>
 							</div>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
+							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
+								<p className="BodyTwoBold">
 									Transitions:
 								</p>
 								<Select
 									value={transitions}
 									onChange={handleTransitionsChange}
-									className="BodyTwo MarginRightQuart"
+									className="BodyTwo"
 									options={Object.keys(SettingsTransitions)}
 								/>
+							</div>
+							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
+								<p className="BodyTwoBold">
+									Grid Child Width:
+								</p>
+								<div className="FlexRowGapQuart">
+									<p className="BodyTwo">
+										{gridChildWidth}
+									</p>
+									<input
+										min="100"
+										max="300"
+										type="range"
+										className="BodyTwo"
+										value={gridChildWidth}
+										onChange={handleGridChildWidthChange}
+									/>
+								</div>
 							</div>
 						</div>
 					</details>
@@ -117,8 +149,8 @@ const SettingsPage: VFC = () => {
 							View
 						</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
+							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
+								<p className="BodyTwoBold">
 									Song Genres:
 								</p>
 								<div className="FlexRowGapFifth">
@@ -133,8 +165,8 @@ const SettingsPage: VFC = () => {
 									</p>
 								</div>
 							</div>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
+							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
+								<p className="BodyTwoBold">
 									Song Duration:
 								</p>
 								<div className="FlexRowGapFifth">
@@ -149,8 +181,8 @@ const SettingsPage: VFC = () => {
 									</p>
 								</div>
 							</div>
-							<div>
-								<p className="BodyTwoBold MarginBottomQuart">
+							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
+								<p className="BodyTwoBold">
 									Album Released:
 								</p>
 								<div className="FlexRowGapFifth">

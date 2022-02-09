@@ -1,6 +1,6 @@
 import { createElement, useEffect, FC, Fragment } from "react"
 
-import { useStateTransitions } from "../../redux"
+import { useStateGridChildWidth, useStateTransitions } from "../../redux"
 import { SettingsTransitions } from "../../types"
 
 const reducedValue =
@@ -30,6 +30,7 @@ const determineTransitionDuration =
 
 const ApplySettings: FC = ({ children }) => {
 	const transitions = useStateTransitions()
+	const gridChildWidth = useStateGridChildWidth()
 
 	useEffect(() => {
 		document.documentElement.style.setProperty(
@@ -37,6 +38,13 @@ const ApplySettings: FC = ({ children }) => {
 			determineTransitionDuration(transitions),
 		)
 	}, [transitions])
+
+	useEffect(() => {
+		document.documentElement.style.setProperty(
+			"--grid-child-width",
+			`${gridChildWidth.toString()}rem`,
+		)
+	}, [gridChildWidth])
 
 	return (
 		<Fragment>

@@ -20,6 +20,7 @@ import {
 	updateAccessToken,
 	toggleShowReleased,
 	toggleShowDuration,
+	updateGridChildWidth,
 	toggleQueueDisclosure,
 	expandQueuesDisclosure,
 	collapseQueuesDisclosure,
@@ -92,6 +93,10 @@ const settings =
 			.addCase(updateTransitions, (state, { payload }) => ({
 				...state,
 				transitions: payload,
+			}))
+			.addCase(updateGridChildWidth, (state, { payload }) => ({
+				...state,
+				gridChildWidth: payload,
 			}))
 			.addCase(updateOrderBy, (state, { payload }) => ({
 				...state,

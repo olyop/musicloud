@@ -1,5 +1,6 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { NavLink } from "react-router-dom"
+import { createElement, Fragment, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import Item, {
@@ -21,11 +22,12 @@ import {
 	createCatalogImageURL,
 } from "../../helpers"
 
-import Cover from "../cover"
 import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
 import { ModalButton, ModalButtons } from "../modal"
 import { useToggleObjectInLibrary, useShuffleArtist } from "../../hooks"
+
+import "./index.scss"
 
 const bem =
 	createBEM("Artist")
@@ -135,22 +137,28 @@ const Artist: VFC<PropTypes> = ({
 			leftIcon={showIcon ? "person" : undefined}
 			modalOptions={hideModal ? undefined : modalOptions}
 			className={bem(className, "PaddingHalf ItemBorder")}
-			playOptions={{ isPlaying: false, onClick: () => {} }}
 		/>
 	) : (
 		<div className={bem(className, "Card Elevated")}>
-			<Cover
-				landscape
+			<NavLink
 				title={artist.name}
-				link={createObjectPath(
-					"artist",
-					artist.artistID,
-				)}
-				url={createCatalogImageURL(
-					artist.artistID,
-					"cover",
-					ImageSizes.HALF,
-					ImageDimensions.LANDSCAPE,
+				className={bem("cover")}
+				to={createObjectPath("artist", artist.artistID)}
+				children={(
+					<Fragment>
+						<div className={bem("cover-hover", "FullWidthAndHeight")}/>
+						<img
+							alt={artist.name}
+							crossOrigin="anonymous"
+							className={bem("cover-image")}
+							src={createCatalogImageURL(
+								artist.artistID,
+								"cover",
+								ImageSizes.HALF,
+								ImageDimensions.LANDSCAPE,
+							)}
+						/>
+					</Fragment>
 				)}
 			/>
 			<Item

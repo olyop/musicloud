@@ -6,7 +6,9 @@
 		flex-direction: column;
 		align-items: flex-start;
 		&-content {
-			padding-left: 17rem; } }
+			padding-left: 22rem;
+			&-setting {
+				align-items: flex-start; } } }
 	&__summary {
 		outline: none;
 		cursor: pointer;

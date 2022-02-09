@@ -20,6 +20,7 @@ export const initialSettings: Settings = {
 	showGenres: false,
 	showDuration: false,
 	showReleased: false,
+	gridChildWidth: 200,
 	theme: SettingsTheme.SYSTEM,
 	listStyle: SettingsListStyle.GRID,
 	transitions: SettingsTransitions.SYSTEM,

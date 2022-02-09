@@ -66,6 +66,11 @@ export const useStateShowDuration =
 		({ settings: { showDuration } }) => showDuration,
 	)
 
+export const useStateGridChildWidth =
+	() => useSelector(
+		({ settings: { gridChildWidth } }) => gridChildWidth,
+	)
+
 export const useStateQueuesDisclosure =
 	() => useSelector(
 		({ settings: { queuesDisclosure } }) => queuesDisclosure,

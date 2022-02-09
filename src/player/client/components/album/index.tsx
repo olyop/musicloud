@@ -1,17 +1,25 @@
 import { createBEM } from "@oly_op/bem"
+import { NavLink } from "react-router-dom"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
-import Cover from "../cover"
+import {
+	Handler,
+	ObjectShowIcon,
+	SettingsListStyle,
+	Album as AlbumType,
+} from "../../types"
+
 import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
 import Item, { ModalOptions } from "../item"
 import { ModalButton, ModalButtons } from "../modal"
 import { createCatalogImageURL, createObjectPath } from "../../helpers"
-import { Album as AlbumType, Handler, ObjectShowIcon, SettingsListStyle } from "../../types"
 import { useStateListStyle, useStatePlay, useStateShowReleased } from "../../redux"
 import { useShuffleAlbum, usePlayAlbum, useToggleAlbumInLibrary } from "../../hooks"
+
+import "./index.scss"
 
 const ModalPlayButton: VFC<ModalPlayButtonPropTypes> = ({
 	onClose,
@@ -163,14 +171,25 @@ const Album: VFC<PropTypes> = ({
 			/>
 		) : (
 			<div className={bem(className, "Card")}>
-				<Cover
-					link={path}
+				<NavLink
+					to={path}
 					title={album.title}
-					url={createCatalogImageURL(
-						album.albumID,
-						"cover",
-						ImageSizes.HALF,
-						ImageDimensions.SQUARE,
+					className={bem("cover")}
+					children={(
+						<Fragment>
+							<div className={bem("cover-hover", "FullWidthAndHeight")}/>
+							<img
+								alt={album.title}
+								crossOrigin="anonymous"
+								className={bem("cover-image")}
+								src={createCatalogImageURL(
+									album.albumID,
+									"cover",
+									ImageSizes.HALF,
+									ImageDimensions.SQUARE,
+								)}
+							/>
+						</Fragment>
 					)}
 				/>
 				<Item

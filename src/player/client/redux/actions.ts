@@ -79,6 +79,12 @@ export const updateIsOnline =
 		withPayloadType<boolean>(),
 	)
 
+export const updateGridChildWidth =
+	createAction(
+		"UPDATE_GRID_CHILD_WIDTH",
+		withPayloadType<number>(),
+	)
+
 export const updateAccessToken =
 	createAction(
 		"UPDATE_ACCESS_TOKEN",
