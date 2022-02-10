@@ -20,6 +20,7 @@ import Queue from "./queue"
 import Song from "../../components/song"
 import SHUFFLE_NEXT from "./shuffle-next.gql"
 import CLEAR_QUEUES from "./clear-queues.gql"
+import Buttons from "../../components/buttons"
 import GET_QUEUE_NEXT from "./get-queue-next.gql"
 import GET_QUEUE_LATER from "./get-queue-later.gql"
 import { useQuery, useMutation } from "../../hooks"
@@ -27,11 +28,8 @@ import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql"
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
-import "./index.scss"
-
 const NowPlaying: VFC = () => {
-	const { data } =
-		useQuery<Data>(GET_QUEUE_NOW_PLAYING)
+	const { data } = useQuery<Data>(GET_QUEUE_NOW_PLAYING)
 	return data?.getQueue.nowPlaying ? (
 		<Song
 			hidePlay
@@ -126,7 +124,7 @@ const Queues: VFC = () => {
 						query={GET_QUEUE_LATER}
 					/>
 				</div>
-				<div className="Queues MarginTop FlexRowGapQuart">
+				<Buttons className="MarginTop">
 					<Button
 						text={areQueuesCollapsed ? "Collapse" : "Expand"}
 						icon={areQueuesCollapsed ? "unfold_more" : "unfold_less"}
@@ -147,7 +145,7 @@ const Queues: VFC = () => {
 						text="Clear Queue"
 						onClick={handleClearQueues}
 					/>
-				</div>
+				</Buttons>
 			</div>
 		</Metadata>
 	)

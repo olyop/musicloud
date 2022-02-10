@@ -13,8 +13,8 @@ import {
 
 import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
-import Item, { ModalOptions } from "../item"
 import { ModalButton, ModalButtons } from "../modal"
+import Item, { ModalOptionsWithFunction } from "../item"
 import { createCatalogImageURL, createObjectPath } from "../../helpers"
 import { useStateListStyle, useStatePlay, useStateShowReleased } from "../../redux"
 import { useShuffleAlbum, usePlayAlbum, useToggleAlbumInLibrary } from "../../hooks"
@@ -69,7 +69,7 @@ const Album: VFC<PropTypes> = ({
 	const [ toggleAlbumInLibrary, inLibrary, isError ] =
 		useToggleAlbumInLibrary({ albumID })
 
-	const modalOptions: ModalOptions = {
+	const modalOptions: ModalOptionsWithFunction = onClose => ({
 		header: {
 			text: (
 				<ObjectLink
@@ -89,7 +89,7 @@ const Album: VFC<PropTypes> = ({
 				),
 			},
 		},
-		content: onClose => (
+		content: (
 			<ModalButtons>
 				<ModalPlayButton
 					onClose={onClose}
@@ -112,14 +112,9 @@ const Album: VFC<PropTypes> = ({
 					text="Shuffle"
 					onClick={shuffleAlbum}
 				/>
-				<ModalButton
-					icon="share"
-					text="Share"
-					onClose={onClose}
-				/>
 			</ModalButtons>
 		),
-	}
+	})
 
 	const path =
 		createObjectPath("album", album.albumID)

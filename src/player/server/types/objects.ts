@@ -28,8 +28,10 @@ export interface Album extends AlbumBase {
 export type Genre =
 	GenreBase
 
-export type Artist =
-	ArtistBase
+export interface Artist extends ArtistBase {
+	city: string,
+	country: string,
+}
 
 export interface Playlist extends UserID, PlaylistBase {}
 

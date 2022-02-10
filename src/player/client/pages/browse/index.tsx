@@ -65,11 +65,16 @@ const BrowsePage: VFC = () => {
 						</Fragment>
 					)}
 				</div>
-				<div>
-					<h2 className="HeadingFive MarginBottomHalf">
-						Your Recommendations
-					</h2>
-				</div>
+				{data && (
+					<div>
+						<h2 className="HeadingFive MarginBottomHalf">
+							Your Recommendations
+						</h2>
+						<p className="BodyTwo">
+							WIP
+						</p>
+					</div>
+				)}
 			</div>
 		</Metadata>
 	)

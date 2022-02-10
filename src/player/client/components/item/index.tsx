@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { uniqueId as uniqueID } from "lodash-es"
 import { useState, createElement, VFC, Fragment } from "react"
 
 import {
@@ -11,12 +10,13 @@ import {
 	ImageOptions,
 	ModalOptions,
 	InLibraryOptions,
+	ModalOptionsWithFunction,
 } from "./types"
 
 import Window from "../window"
+import ItemModal from "./modal"
 import PlayButton from "./play-button"
 import InLibraryButton from "./in-library-button"
-import Modal, { ModalHeader, ModalButton, ModalButtons } from "../modal"
 
 import "./index.scss"
 
@@ -110,7 +110,7 @@ const Item: VFC<PropTypes> = ({
 					>
 						<p
 							children={upperLeft}
-							className={bem("info-left-text", "BodyOneBold OverflowHidden")}
+							className={bem("info-left-text", "BodyOneBold")}
 						/>
 						{lowerLeft && (
 							<p
@@ -160,29 +160,11 @@ const Item: VFC<PropTypes> = ({
 					/>
 				)}
 				{modalOptions && (
-					<Modal open={showModal} onClose={handleModalClose}>
-						{modalOptions.header && (
-							<ModalHeader
-								{...modalOptions.header}
-							/>
-						)}
-						{modalOptions.content && (
-							modalOptions.content(handleModalClose)
-						)}
-						{modalOptions.buttons && (
-							<ModalButtons>
-								{modalOptions.buttons.map(
-									button => (
-										<ModalButton
-											{...button}
-											key={uniqueID()}
-											onClose={handleModalClose}
-										/>
-									),
-								)}
-							</ModalButtons>
-						)}
-					</Modal>
+					<ItemModal
+						open={showModal}
+						onClose={handleModalClose}
+						modalOptions={modalOptions}
+					/>
 				)}
 			</div>
 		</div>
@@ -195,6 +177,7 @@ export {
 	ImageOptions,
 	ModalOptions,
 	InLibraryOptions,
+	ModalOptionsWithFunction,
 }
 
 export default Item

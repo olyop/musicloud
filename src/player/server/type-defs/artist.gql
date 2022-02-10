@@ -1,9 +1,9 @@
 type Artist {
 	# base
 	artistID: UUID!
-	city: NonEmptyString!
+	city: NonEmptyString
 	name: NonEmptyString!
-	country: NonEmptyString!
+	country: NonEmptyString
 
 	# library
 	inLibrary: Boolean!

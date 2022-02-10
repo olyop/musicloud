@@ -2,8 +2,6 @@
 	&__cover {
 		display: block;
 		position: relative;
-		&:hover &-hover {
-			opacity: 0.3; }
 		&-hover {
 			opacity: 0;
 			position: absolute;
@@ -12,4 +10,6 @@
 		&-image {
 			width: 100%;
 			height: auto;
-			aspect-ratio: 16 / 9; } } }
+			aspect-ratio: 16 / 9; }
+		&:hover &-hover {
+			opacity: 0.3; } } }

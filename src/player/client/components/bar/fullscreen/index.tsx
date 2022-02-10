@@ -1,11 +1,12 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, Fragment, useEffect, VFC } from "react"
+import Button from "@oly_op/react-button"
+import { createElement, useEffect, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
-import Progress from "../../progress"
+import Modal from "../../modal"
+import Progress from "../progress"
 import BarControls from "../controls"
 import SongTitle from "../../song-title"
-import ObjectLink from "../../object-link"
 import ObjectLinks from "../../object-links"
 import { useKeyPress } from "../../../hooks"
 import { Song, Handler } from "../../../types"
@@ -17,71 +18,81 @@ import "./index.scss"
 const bem =
 	createBEM("BarFullscreen")
 
-const BarFullscreen: VFC<PropTypes> = ({ song, onExit }) => {
-	const escapePress = useKeyPress("Escape")
-	useEffect(() => {
-		if (escapePress) {
-			void onExit()
-		}
-	}, [escapePress])
-	return (
-		<div className={bem("")}>
-			<img
-				alt={song.album.title}
-				crossOrigin="anonymous"
-				className={bem("cover", "Card")}
-				src={createCatalogImageURL(
-					song.album.albumID,
-					"cover",
-					ImageSizes.FULL,
-					ImageDimensions.SQUARE,
-				)}
-			/>
-			<h1 className={bem("title", "text", "MarginBottomHalf")}>
-				<SongTitle
-					song={song}
-					showRemixers
-					onClick={onExit}
-				/>
-			</h1>
-			<h3 className={bem("artists", "text", "MarginBottomHalf")}>
-				<FeaturingArtists
-					song={song}
-					onClick={onExit}
-				/>
-			</h3>
-			<h2 className={bem("album", "text", "MarginBottomHalf")}>
-				<ObjectLink
-					onClick={onExit}
-					link={{
-						text: song.album.title,
-						path: createObjectPath("album", song.album.albumID),
-					}}
-				/>
-				<Fragment> - </Fragment>
-				<ObjectLinks
-					onClick={onExit}
-					links={song.genres.map(({ genreID, name }) => ({
-						text: name,
-						path: createObjectPath("genre", genreID),
-					}))}
-				/>
-			</h2>
-			<Progress
-				duration={song.duration}
-			/>
-			<BarControls
-				className={bem("controls")}
-				buttonClassName={bem("button")}
-				buttonIconClassName={bem("button-icon")}
-			/>
-		</div>
-	)
-}
-
 interface PropTypes {
 	song: Song,
-	onExit: Handler,
+	open: boolean,
+	onClose: Handler,
+}
+
+const BarFullscreen: VFC<PropTypes> = ({ open, song, onClose }) => {
+	const escapePress = useKeyPress("Escape")
+
+	useEffect(() => {
+		if (escapePress) {
+			void onClose()
+		}
+	}, [escapePress])
+
+	return (
+		<Modal
+			open={open}
+			onClose={onClose}
+			contentClassName={bem("")}
+		>
+			<Button
+				transparent
+				icon="close"
+				onClick={onClose}
+				title="Close Player"
+				className={bem("close")}
+			/>
+			<div className={bem("content", "FlexColumn")}>
+				<img
+					alt={song.album.title}
+					crossOrigin="anonymous"
+					className={bem("content-cover", "Card")}
+					src={createCatalogImageURL(
+						song.album.albumID,
+						"cover",
+						ImageSizes.FULL,
+						ImageDimensions.SQUARE,
+					)}
+				/>
+				<div className="FlexColumnGapHalf">
+					<h1 className={bem("content-title", "content-text")}>
+						<SongTitle
+							noLink
+							song={song}
+							onClick={onClose}
+						/>
+					</h1>
+					<h3 className={bem("content-artists", "content-text")}>
+						<FeaturingArtists
+							song={song}
+							onClick={onClose}
+						/>
+					</h3>
+					<h2 className={bem("content-genres", "content-text")}>
+						<ObjectLinks
+							onClick={onClose}
+							links={song.genres.map(({ genreID, name }) => ({
+								text: name,
+								path: createObjectPath("genre", genreID),
+							}))}
+						/>
+					</h2>
+				</div>
+				<Progress
+					duration={song.duration}
+					className={bem("content-progress")}
+				/>
+				<BarControls
+					className={bem("content-controls")}
+					playButtonClassName={bem("content-controls-play")}
+				/>
+			</div>
+		</Modal>
+	)
 }
 
 export default BarFullscreen

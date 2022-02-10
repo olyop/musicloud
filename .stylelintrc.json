@@ -1,6 +1,3 @@
 {
-	"extends": "@oly_op/stylelint-config",
-	"rules": {
-		"function-parentheses-space-inside": "never-single-line"
-	}
+	"extends": "@oly_op/stylelint-config"
 }

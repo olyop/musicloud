@@ -24,7 +24,13 @@
 		justify-content: space-between;
 		padding-top: env(safe-area-inset-top);
 		&-header {
-			height: var(--header-height); } }
+			height: var(--header-height);
+			&-close {
+				@media (min-width: 700px) {
+					margin-left: calc(var(--space-half) + 2rem); }
+				@media (max-width: 700px) {
+					--button-dimension: var(--header-height);
+					border-radius: 0; } } } }
 	&__links {
 		display: flex;
 		flex-direction: column;

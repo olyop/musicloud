@@ -86,12 +86,12 @@ export interface ArtistTopTenSongs {
 
 export interface Artist
 	extends ArtistBase, ArtistSongs, ArtistTopTenSongs, InLibraryObject<"Artist"> {
-		city: string,
 		since: string,
 		albums: Album[],
-		country: string,
 		songsTotal: number,
 		albumsTotal: number,
+		city: string | null,
+		country: string | null,
 	}
 
 export interface Song

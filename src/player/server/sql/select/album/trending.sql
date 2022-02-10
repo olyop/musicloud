@@ -3,6 +3,6 @@ SELECT
 FROM
 	albums
 WHERE
-	released > (CURRENT_DATE - INTERVAL '365' day)
+	released > (CURRENT_DATE - INTERVAL '2' year)
 LIMIT
 	10;

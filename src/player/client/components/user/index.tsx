@@ -36,7 +36,7 @@ const User: VFC<PropTypes> = ({ user, className, showIcon = false }) => {
 				inLibrary: isFollowing,
 				onClick: toggleUserFollowing,
 			}}
-			modalOptions={{
+			modalOptions={onClose => ({
 				header: {
 					image: {
 						description: user.name,
@@ -56,7 +56,7 @@ const User: VFC<PropTypes> = ({ user, className, showIcon = false }) => {
 						/>
 					),
 				},
-				content: onClose => (
+				content: (
 					<ModalButtons>
 						<ModalButton
 							onClose={onClose}
@@ -64,14 +64,9 @@ const User: VFC<PropTypes> = ({ user, className, showIcon = false }) => {
 							icon={isFollowing ? "done" : "add"}
 							text={isFollowing ? "Following" : "Follow"}
 						/>
-						<ModalButton
-							icon="info"
-							text="Info"
-							link={createObjectPath("user", userID)}
-						/>
 					</ModalButtons>
 				),
-			}}
+			})}
 			imageOptions={{
 				title: user.name,
 				path: createObjectPath(

@@ -1,8 +1,6 @@
 .TextField {
 	padding: 0;
 	position: relative;
-	&:hover &__label {
-		color: var(--primary-color); }
 	&__outline {
 		opacity: 0;
 		width: 100%;
@@ -29,12 +27,11 @@
 		width: 100%;
 		outline: none;
 		font-size: 16rem;
-		padding-top: 18rem;
-		padding-left: 14rem;
-		padding-right: 14rem;
-		padding-bottom: 18rem;
+		padding: 18rem 14rem;
 		letter-spacing: 0.15rem;
 		border: 1rem solid var(--border-color);
 		background-color: var(--elevated-color);
 		transition: var(--transition-duration) border-color;
-		transition: var(--transition-duration) border-radius; } }
+		transition: var(--transition-duration) border-radius; }
+	&:hover &__label {
+		color: var(--primary-color); } }

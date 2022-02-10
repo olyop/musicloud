@@ -31,12 +31,13 @@ const Sidebar: VFC = () => {
 			/>
 			<nav className={bem("content", "Elevated PaddingBottom")}>
 				<div>
-					<div className={bem("content-header", "FlexRow PaddingLeftRightHalf")}>
+					<div className={bem("content-header", "FlexRow")}>
 						<Button
 							icon="close"
 							transparent
 							title="Close"
 							onClick={handleClose}
+							className={bem("content-header-close")}
 						/>
 					</div>
 					<div className={bem("links", "BorderBottom PaddingBottomHalf")}>

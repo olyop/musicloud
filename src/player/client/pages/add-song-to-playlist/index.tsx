@@ -15,10 +15,10 @@ import { useNavigate, useParams } from "react-router-dom"
 import GET_SONG_DATA from "./get-song-data.gql"
 import Playlists from "../../components/playlists"
 import { User, Song, Playlist } from "../../types"
+import SongTitle from "../../components/song-title"
 import { useQuery, useMutation } from "../../hooks"
-import ObjectLink from "../../components/object-link"
+import { createCatalogImageURL } from "../../helpers"
 import ADD_SONG_TO_PLAYLIST from "./add-song-to-playlist.gql"
-import { createObjectPath, createCatalogImageURL } from "../../helpers"
 import GET_USER_PLAYLISTS_FILTERED_BY_SONG from "./get-user-playlists-filtered-by-song.gql"
 
 import "./index.scss"
@@ -76,6 +76,7 @@ const AddSongToPlaylistPage: VFC = () => {
 					<img
 						crossOrigin="anonymous"
 						alt={songData.getSongByID.album.title}
+						title={songData.getSongByID.album.title}
 						className={bem("cover", "Card Elevated")}
 						src={createCatalogImageURL(
 							songData.getSongByID.album.albumID,
@@ -85,14 +86,8 @@ const AddSongToPlaylistPage: VFC = () => {
 						)}
 					/>
 					<h1 className="BodyOne">
-						<ObjectLink
-							link={{
-								text: songData.getSongByID.title,
-								path: createObjectPath(
-									"song",
-									songData.getSongByID.songID,
-								),
-							}}
+						<SongTitle
+							song={songData.getSongByID}
 						/>
 					</h1>
 					{!isEmpty(playlistsData.getUser.playlistsFilteredBySong) ? (

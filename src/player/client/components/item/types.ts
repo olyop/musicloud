@@ -29,9 +29,9 @@ export interface InLibraryOptions {
 }
 
 export interface ModalOptions {
+	content?: ReactNode,
 	header?: ModalHeaderPropTypes,
 	buttons?: ModalButtonPropTypes[],
-	content?: (onClose: Handler) => ReactNode,
 }
 
 interface ClassNames {
@@ -41,10 +41,16 @@ interface ClassNames {
 	rightClassName?: BEMInput,
 }
 
-interface Options {
+export type ModalOptionsWithFunction =
+	((onClose: Handler) => ModalOptions) | ModalOptions
+
+export interface OptionsModal {
+	modalOptions?: ModalOptionsWithFunction,
+}
+
+interface Options extends OptionsModal {
 	infoOptions: InfoOptions,
 	playOptions?: PlayOptions,
-	modalOptions?: ModalOptions,
 	imageOptions?: ImageOptions,
 	inLibraryOptions?: InLibraryOptions,
 }

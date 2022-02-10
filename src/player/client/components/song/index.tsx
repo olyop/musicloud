@@ -6,13 +6,6 @@ import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 import { ImageDimensions, ImageSizes, SongID } from "@oly_op/music-app-common/types"
 
 import {
-	createObjectPath,
-	numberWithCommas,
-	createCatalogMP3URL,
-	createCatalogImageURL,
-} from "../../helpers"
-
-import {
 	useStatePlay,
 	useStateShowGenres,
 	useStateShowDuration,
@@ -28,6 +21,7 @@ import QUEUE_SONG_AFTER from "./queue-song-after.gql"
 import QUEUE_SONG_LATER from "./queue-song-later.gql"
 import { User, Song as SongType, Handler, ObjectShowIcon } from "../../types"
 import { useToggleObjectInLibrary, useMutation, usePlaySong } from "../../hooks"
+import { createObjectPath, numberWithCommas, createCatalogImageURL } from "../../helpers"
 
 const ModalPlayButton: VFC<ModalPlayButtonPropTypes> = ({
 	onClose,
@@ -207,11 +201,13 @@ const Song: VFC<PropTypes> = ({
 						null : numberWithCommas(playsTotal)
 				),
 			}}
-			modalOptions={{
+			modalOptions={onClose => ({
 				header: {
 					text: (
 						<SongTitle
+							noLink
 							song={song}
+							onClick={onClose}
 						/>
 					),
 					image: {
@@ -224,7 +220,7 @@ const Song: VFC<PropTypes> = ({
 						),
 					},
 				},
-				content: onClose => (
+				content: (
 					<ModalButtons>
 						<ModalPlayButton
 							onClose={onClose}
@@ -268,13 +264,6 @@ const Song: VFC<PropTypes> = ({
 							icon={inLibrary ? "done" : "add"}
 						/>
 						<ModalButton
-							externalLink
-							icon="get_app"
-							text="Download"
-							link={createCatalogMP3URL(songID)}
-							externalLinkProps={{ type: "audio/mpeg", download: true }}
-						/>
-						<ModalButton
 							text="Playlist"
 							onClose={onClose}
 							icon="playlist_add"
@@ -288,20 +277,9 @@ const Song: VFC<PropTypes> = ({
 								onClick={onRemove}
 							/>
 						)}
-						<ModalButton
-							icon="share"
-							text="Share"
-							onClose={onClose}
-						/>
-						<ModalButton
-							icon="info"
-							text="Info"
-							onClose={onClose}
-							link={createObjectPath("song", songID)}
-						/>
 					</ModalButtons>
 				),
-			}}
+			})}
 		/>
 	)
 }

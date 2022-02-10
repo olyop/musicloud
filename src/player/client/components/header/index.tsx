@@ -16,6 +16,7 @@ import {
 } from "../../redux"
 
 import Modal from "../modal"
+import checkOnlineStatus from "./check-online-status"
 import { useSignOut, useJWTPayload } from "../../hooks"
 import { createCatalogImageURL, createObjectPath } from "../../helpers"
 
@@ -23,39 +24,6 @@ import "./index.scss"
 
 const loadingID =
 	uniqueID()
-
-const timeout =
-	(promise: Promise<unknown>) =>
-		new Promise(
-			(resolve, reject) => {
-				setTimeout(() => {
-					reject(new Error("Request timed out."))
-				}, 3000)
-				promise.then(resolve, reject)
-			},
-		)
-
-const checkOnlineStatus =
-	async () => {
-		const controller =
-			new AbortController()
-		if (!navigator.onLine) {
-			return navigator.onLine
-		} else {
-			try {
-				await timeout(
-					fetch("/ping.txt", {
-						method: "GET",
-						signal: controller.signal,
-					}),
-				)
-				return true
-			} catch (error) {
-				controller.abort()
-				return false
-			}
-		}
-	}
 
 const bem =
 	createBEM("Header")
@@ -112,7 +80,7 @@ const Header: VFC = () => {
 	}, [])
 
 	return (
-		<header className={bem("", "Elevated PaddingLeftRightHalf FlexRowSpaceBetween")}>
+		<header className={bem("", "Elevated FlexRowSpaceBetween")}>
 			<Button
 				icon="menu"
 				transparent
@@ -120,7 +88,7 @@ const Header: VFC = () => {
 				onClick={handleMenuClick}
 				className={bem("left", "icon")}
 			/>
-			<div className="FlexRowGapQuart">
+			<div className="FlexRowGapQuart PaddingRightHalf">
 				<NavLink to="/search">
 					{({ isActive }) => (
 						<Button

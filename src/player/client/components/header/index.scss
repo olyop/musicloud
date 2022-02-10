@@ -3,7 +3,11 @@
 	padding-top: env(safe-area-inset-top);
 	height: calc(var(--header-height) + env(safe-area-inset-top));
 	&__left {
-		margin-left: 4rem; }
+		@media (min-width: 700px) {
+			margin-left: calc(var(--space-half) + 2rem); }
+		@media (max-width: 700px) {
+			--button-dimension: var(--header-height);
+			border-radius: 0; } }
 	&__offline {
 		--color: #f44336;
 		border-color: var(--color);

@@ -81,10 +81,7 @@ export interface ArtistIDNameBase extends ArtistID {
 	name: string,
 }
 
-export interface ArtistBase extends ArtistIDNameBase {
-	city: string,
-	country: string,
-}
+export type ArtistBase = ArtistIDNameBase
 
 export enum PlaylistPrivacy {
 	PUBLIC = "PUBLIC",

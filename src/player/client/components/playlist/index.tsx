@@ -72,8 +72,9 @@ const Playlist: VFC<PropTypes> = ({
 				inLibrary,
 				onClick: toggleInLibrary,
 			}}
-			modalOptions={hideModal ? undefined : {
+			modalOptions={hideModal ? undefined : onClose => ({
 				header: {
+					icon: "queue_music",
 					text: (
 						<ObjectLink
 							link={{
@@ -83,7 +84,7 @@ const Playlist: VFC<PropTypes> = ({
 						/>
 					),
 				},
-				content: onClose => (
+				content: (
 					<ModalButtons>
 						{hideInLibrary || isOwnPlaylist || (
 							<ModalButton
@@ -99,14 +100,9 @@ const Playlist: VFC<PropTypes> = ({
 							onClose={onClose}
 							onClick={shufflePlaylist}
 						/>
-						<ModalButton
-							icon="share"
-							text="Share"
-							onClose={onClose}
-						/>
 					</ModalButtons>
 				),
-			}}
+			})}
 		/>
 	)
 }

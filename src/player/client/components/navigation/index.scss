@@ -15,13 +15,17 @@
 	&__link {
 		position: relative;
 		outline: none !important;
-		&:hover {
+		&:hover,
+		&:focus,
+		&:active {
 			background-color: transparent !important; }
 		&-button {
 			outline: none !important;
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
-			&:hover {
+			&:hover,
+			&:focus,
+			&:active {
 				background-color: transparent !important; }
 			@media (min-width: 700px) {
 				padding-left: 0;

@@ -1,7 +1,20 @@
 .ModalHeader {
+	--content-height: 24rem;
+	justify-content: center;
+	height: calc(var(--space) + var(--content-height));
 	&__img {
-		width: 26rem;
-		height: 26rem; }
+		width: var(--content-height);
+		height: var(--content-height); }
 	&__text {
+		overflow: hidden;
 		margin-top: 2rem;
-		text-align: center; } }
+		white-space: nowrap; }
+	&__icon {
+		--button-dimension: calc(var(--content-height) * 3 / 2);
+		&-left {
+			&:hover,
+			&:focus {
+				cursor: unset;
+				background-color: transparent; } }
+		&-share {
+			margin-right: -6rem; } } }

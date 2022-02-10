@@ -1,7 +1,12 @@
 query getSongData($songID: UUID!) {
   getSongByID(songID: $songID) {
+    mix
     title
     songID
+    remixers {
+      artistID
+      name 
+    }
     album {
       albumID
       title

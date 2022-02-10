@@ -1,7 +1,7 @@
 import { createElement, useEffect, FC, Fragment } from "react"
 
-import { useStateGridChildWidth, useStateTransitions } from "../../redux"
 import { SettingsTransitions } from "../../types"
+import { useStateGridChildWidth, useStateTransitions } from "../../redux"
 
 const reducedValue =
 	"0.1s"

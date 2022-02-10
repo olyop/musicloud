@@ -6,8 +6,8 @@ import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 import Item, {
 	InfoOptions,
 	ImageOptions,
-	ModalOptions,
 	InLibraryOptions,
+	ModalOptionsWithFunction,
 } from "../item"
 
 import {
@@ -60,7 +60,7 @@ const Artist: VFC<PropTypes> = ({
 		onClick: handleToggleInLibrary,
 	}
 
-	const modalOptions: ModalOptions = {
+	const modalOptions: ModalOptionsWithFunction = onClose => ({
 		header: {
 			text: (
 				<ObjectLink
@@ -80,7 +80,7 @@ const Artist: VFC<PropTypes> = ({
 				),
 			},
 		},
-		content: onClose => (
+		content: (
 			<ModalButtons>
 				<ModalButton
 					onClose={onClose}
@@ -94,14 +94,9 @@ const Artist: VFC<PropTypes> = ({
 					onClose={onClose}
 					onClick={handleShuffleClick}
 				/>
-				<ModalButton
-					icon="share"
-					text="Share"
-					onClose={onClose}
-				/>
 			</ModalButtons>
 		),
-	}
+	})
 
 	const info: InfoOptions = {
 		lowerLeft: createArtistLower(artist),

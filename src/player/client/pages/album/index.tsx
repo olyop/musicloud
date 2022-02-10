@@ -15,16 +15,17 @@ import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 import Disc from "./disc"
 import AlbumArtist from "./artist"
 import { Album } from "../../types"
+import createDiscs from "./create-discs"
 import AlbumPlayButton from "./play-button"
 import downloadCover from "./download-cover"
 import downloadSongs from "./download-songs"
+import Buttons from "../../components/buttons"
 import GET_ALBUM_PAGE from "./get-album-page.gql"
 import ObjectLinks from "../../components/object-links"
+import { createObjectPath, createCatalogImageURL } from "../../helpers"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
-import { createDiscs, createObjectPath, createCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
-import Buttons from "../../components/buttons"
 
 const bem =
 	createBEM("AlbumPage")

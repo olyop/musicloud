@@ -1,8 +1,8 @@
 import { isEmpty } from "lodash-es"
 
-import { Song, Disc } from "../types"
+import { Song, Disc } from "../../types"
 
-export const createDiscs =
+const createDiscs =
 	(songs: Song[]): Disc[] => {
 		if (isEmpty(songs)) {
 			return []
@@ -23,3 +23,5 @@ export const createDiscs =
 			}
 		}
 	}
+
+export default createDiscs

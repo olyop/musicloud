@@ -27,12 +27,17 @@ import {
 import routes from "./routes"
 import { Artist } from "../../types"
 import Banner from "../../components/banner"
+import Window from "../../components/window"
 import GET_ARTIST_PAGE from "./get-artist-page.gql"
 import Navigation from "../../components/navigation"
-import Window from "../../components/window"
 
-const googleMapsBaseURL =
-	"https://www.google.com.au/maps/search"
+const createArtistGoogleMapsURL =
+	(artist: Pick<Artist, "city" | "country">) => {
+		const base = "https://www.google.com.au/maps/search"
+		const city = artist.city!.toLowerCase().replace(" ", "+")
+		const country = artist.country!.toLowerCase().replace(" ", "+")
+		return `${base}/${city}+${country}`
+	}
 
 const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
 	const [ toggleInLibrary, inLibrary, isError ] = useToggleObjectInLibrary(artist)
@@ -76,8 +81,6 @@ const ArtistPage: VFC = () => {
 		)
 	} else if (data) {
 		const { name, city, country, playsTotal } = data.getArtistByID
-		const cityURL = city.toLowerCase().replace(" ", "+")
-		const countryURL = country.toLowerCase().replace(" ", "+")
 		return (
 			<Metadata title={name}>
 				<Banner
@@ -131,7 +134,7 @@ const ArtistPage: VFC = () => {
 									rel="noreferrer"
 									style={{ display: "inline-block" }}
 									className="BodyTwoInverted MarginTopQuart"
-									href={`${googleMapsBaseURL}/${cityURL}+${countryURL}`}
+									href={createArtistGoogleMapsURL(data.getArtistByID)}
 								>
 									{city}
 									<Fragment>, </Fragment>

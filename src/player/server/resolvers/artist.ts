@@ -9,6 +9,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
+import { isEmpty } from "lodash-es"
 import { ArtistID, UserID } from "@oly_op/music-app-common/types"
 
 import {
@@ -42,6 +43,24 @@ import createParentResolver from "./create-parent-resolver"
 
 const resolver =
 	createParentResolver<Artist>()
+
+export const city =
+	resolver(
+		({ parent }) => (
+			isEmpty(parent.city) ?
+				null :
+				parent.city
+		)
+	)
+
+export const country =
+	resolver(
+		({ parent }) => (
+			isEmpty(parent.country) ?
+				null :
+				parent.country
+		)
+	)
 
 export const playsTotal =
 	resolver(

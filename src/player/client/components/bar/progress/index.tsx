@@ -7,15 +7,18 @@ import {
 	useStatePlay,
 	updateCurrent,
 	useStateCurrent,
-} from "../../redux"
+} from "../../../redux"
 
 import "./index.scss"
-import { ClassNameBEMPropTypes } from "../../types"
+import { ClassNameBEMPropTypes } from "../../../types"
 
 const bem =
 	createBEM("Progress")
 
-const Progress: VFC<ProgressPropTypes> = ({ duration, className }) => {
+const Progress: VFC<ProgressPropTypes> = ({
+	duration,
+	className,
+}) => {
 	const play = useStatePlay()
 	const dispatch = useDispatch()
 	const current = useStateCurrent()
