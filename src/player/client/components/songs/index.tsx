@@ -18,6 +18,7 @@ const Songs: VFC<SongsPropTypes> = ({
 	hidePlay = false,
 	hidePlays = false,
 	hideIndex = false,
+	hideModal = false,
 	hideCover = false,
 	hideDuration = false,
 	hideElevated = false,
@@ -44,6 +45,7 @@ const Songs: VFC<SongsPropTypes> = ({
 					hidePlay={hidePlay}
 					hidePlays={hidePlays}
 					hideCover={hideCover}
+					hideModal={hideModal}
 					hideDuration={hideDuration}
 					hideInLibrary={hideInLibrary}
 					hideTrackNumber={hideTrackNumber}
@@ -69,6 +71,7 @@ export interface SongsPropTypes extends ClassNameBEMPropTypes {
 	hideCover?: boolean,
 	hidePlays?: boolean,
 	hideIndex?: boolean,
+	hideModal?: boolean,
 	hideDuration?: boolean,
 	hideElevated?: boolean,
 	hideInLibrary?: boolean,

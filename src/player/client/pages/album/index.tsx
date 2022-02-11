@@ -26,6 +26,7 @@ import { createObjectPath, createCatalogImageURL } from "../../helpers"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
 
 import "./index.scss"
+import AlbumTitle from "../../components/album-title"
 
 const bem =
 	createBEM("AlbumPage")
@@ -70,7 +71,7 @@ const AlbumPage: VFC = () => {
 					<img
 						crossOrigin="anonymous"
 						alt={data.getAlbumByID.title}
-						className={bem("img", "Elevated")}
+						className={bem("cover", "Elevated")}
 						src={createCatalogImageURL(
 							data.getAlbumByID.albumID,
 							"cover",
@@ -81,7 +82,9 @@ const AlbumPage: VFC = () => {
 					<div className={bem("content")}>
 						<div className={bem("title", "MarginBottomHalf")}>
 							<h1 className="HeadingFour">
-								{data.getAlbumByID.title}
+								<AlbumTitle
+									album={data.getAlbumByID}
+								/>
 							</h1>
 							<AlbumPlayButton
 								albumID={albumID}

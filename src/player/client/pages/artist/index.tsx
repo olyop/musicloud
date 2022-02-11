@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 import { useParams, Route, Routes } from "react-router-dom"
 
 import {

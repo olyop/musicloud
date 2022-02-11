@@ -5,10 +5,11 @@ import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 
 import { useQuery } from "../../hooks"
-import { Song, Album } from "../../types"
 import Songs from "../../components/songs"
 import Albums from "../../components/albums"
+import Playlists from "../../components/playlists"
 import GET_BROWSE_PAGE from "./get-browse-page.gql"
+import { Song, Album, Playlist } from "../../types"
 
 import "./index.scss"
 
@@ -27,18 +28,37 @@ const BrowsePage: VFC = () => {
 								<h2 className="HeadingFive MarginBottomHalf">
 									Trending
 								</h2>
-								<Albums
-									hideModal
-									alwaysList
-									orderBy={false}
-									className="MarginBottomHalf"
-									albums={data.getTrendingAlbums}
-								/>
-								<Button
-									transparent
-									text="View All"
-									icon="arrow_forward"
-								/>
+								<div className="FlexColumnGapHalf">
+									<div className="FlexColumnGapHalf">
+										<Albums
+											hideModal
+											alwaysList
+											hideInLibrary
+											orderBy={false}
+											albums={data.getTrendingAlbums}
+										/>
+										<Button
+											transparent
+											text="View All"
+											icon="arrow_forward"
+											style={{ alignSelf: "flex-start" }}
+										/>
+									</div>
+									<div className="FlexColumnGapHalf">
+										<Playlists
+											hideModal
+											hideInLibrary
+											orderBy={false}
+											playlists={data.getTrendingPlaylists}
+										/>
+										<Button
+											transparent
+											text="View All"
+											icon="arrow_forward"
+											style={{ alignSelf: "flex-start" }}
+										/>
+									</div>
+								</div>
 							</div>
 							<div>
 								<h2 className="HeadingFive MarginBottomHalf">
@@ -47,6 +67,7 @@ const BrowsePage: VFC = () => {
 								<Songs
 									hideCover
 									hideIndex
+									hideModal
 									hideDuration
 									hideInLibrary
 									hideTrackNumber
@@ -83,6 +104,7 @@ const BrowsePage: VFC = () => {
 interface GetBrowsePageData {
 	getTopTenSongs: Song[],
 	getTrendingAlbums: Album[],
+	getTrendingPlaylists: Playlist[],
 }
 
 export default BrowsePage

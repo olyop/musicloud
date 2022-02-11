@@ -75,6 +75,7 @@ const ManageAccount: VFC = () => {
 			</div>
 			<Modal open={deleteUserModal} onClose={handleDeleteUserModalClose}>
 				<ModalHeader
+					hideShareButton
 					text={(
 						<Fragment>
 							<Fragment>Are you sure you want</Fragment>

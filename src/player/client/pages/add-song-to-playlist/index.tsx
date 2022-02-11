@@ -8,9 +8,9 @@ import {
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { useState, createElement, VFC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useNavigate, useParams } from "react-router-dom"
+import { useState, createElement, VFC, Fragment } from "react"
 
 import GET_SONG_DATA from "./get-song-data.gql"
 import Playlists from "../../components/playlists"
@@ -19,7 +19,7 @@ import SongTitle from "../../components/song-title"
 import { useQuery, useMutation } from "../../hooks"
 import { createCatalogImageURL } from "../../helpers"
 import ADD_SONG_TO_PLAYLIST from "./add-song-to-playlist.gql"
-import GET_USER_PLAYLISTS_FILTERED_BY_SONG from "./get-user-playlists-filtered-by-song.gql"
+import GET_USER_PLAYLISTS from "./get-user-playlists-filtered-by-song.gql"
 
 import "./index.scss"
 
@@ -42,7 +42,7 @@ const AddSongToPlaylistPage: VFC = () => {
 
 	const { data: playlistsData } =
 		useQuery<GetUserPlaylistsData, SongID>(
-			GET_USER_PLAYLISTS_FILTERED_BY_SONG,
+			GET_USER_PLAYLISTS,
 			{ fetchPolicy: "no-cache", variables: { songID } },
 		)
 

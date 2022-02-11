@@ -21,6 +21,7 @@ const files = [
 	importSQL("tables", "artists"),
 	importSQL("tables", "albums"),
 	importSQL("tables", "albums-artists"),
+	importSQL("tables", "albums-remixers"),
 	importSQL("tables", "songs"),
 	importSQL("tables", "songs-genres"),
 	importSQL("tables", "songs-artists"),

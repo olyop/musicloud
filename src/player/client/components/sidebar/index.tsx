@@ -35,9 +35,10 @@ const Sidebar: VFC = () => {
 						<Button
 							icon="close"
 							transparent
-							title="Close"
+							text="Close"
 							onClick={handleClose}
 							className={bem("content-header-close")}
+							textClassName={bem("content-header-close-text")}
 						/>
 					</div>
 					<div className={bem("links", "BorderBottom PaddingBottomHalf")}>

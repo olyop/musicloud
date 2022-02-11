@@ -69,6 +69,7 @@ export interface Album
 		released: string,
 		artists: Artist[],
 		songsTotal: number,
+		remixers: Artist[],
 	}
 
 export interface InLibraryObject<T = string>

@@ -39,4 +39,12 @@ query getBrowsePage {
       artistID
     }
 	}
+	getTrendingPlaylists {
+		title
+		playlistID
+		user {
+			name
+			userID
+		}
+	}
 }

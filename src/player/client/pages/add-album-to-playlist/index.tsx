@@ -17,9 +17,9 @@ import GET_ALBUM_DATA from "./get-album-data.gql"
 import Playlists from "../../components/playlists"
 import { useQuery, useMutation } from "../../hooks"
 import ObjectLink from "../../components/object-link"
-import GET_USER_PLAYLISTS from "./get-user-playlists.gql"
 import ADD_ALBUM_TO_PLAYLIST from "./add-album-to-playlist.gql"
 import { createObjectPath, createCatalogImageURL } from "../../helpers"
+import GET_USER_PLAYLISTS from "./get-user-playlists-filtered-by-album.gql"
 
 import "./index.scss"
 
@@ -35,9 +35,9 @@ const AddAlbumToPlaylistPage: VFC = () => {
 		useState<string | null>(null)
 
 	const { data: playlistsData } =
-		useQuery<GetUserPlaylistsData>(
+		useQuery<GetUserPlaylistsData, AlbumID>(
 			GET_USER_PLAYLISTS,
-			{ fetchPolicy: "no-cache" },
+			{ fetchPolicy: "no-cache", variables: { albumID } },
 		)
 
 	const { data: albumData } =
@@ -47,7 +47,9 @@ const AddAlbumToPlaylistPage: VFC = () => {
 		)
 
 	const [ add ] =
-		useMutation<AddAlbumToPlaylistData, AddAlbumToPlaylistVars>(ADD_ALBUM_TO_PLAYLIST)
+		useMutation<AddAlbumToPlaylistData, AddAlbumToPlaylistVars>(
+			ADD_ALBUM_TO_PLAYLIST,
+		)
 
 	const onClose =
 		() => navigate(-1)
@@ -64,7 +66,7 @@ const AddAlbumToPlaylistPage: VFC = () => {
 		(value: string) =>
 			setPlaylistID(value === playlistID ? null : value)
 
-	return albumData && playlistsData ? (
+	return albumData ? (
 		<div className={bem("", "Content PaddingTopBottom")}>
 			<img
 				crossOrigin="anonymous"
@@ -88,7 +90,7 @@ const AddAlbumToPlaylistPage: VFC = () => {
 					}}
 				/>
 			</h1>
-			{!isEmpty(playlistsData.getUser.playlists) ? (
+			{playlistsData && !isEmpty(playlistsData.getUser.playlists) ? (
 				<Playlists
 					hideModal
 					hideInLibrary

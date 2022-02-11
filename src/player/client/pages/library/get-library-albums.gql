@@ -9,6 +9,10 @@ query getLibraryAlbums($input: LibraryAlbumsInput!) {
 				artistID
 				name
 			}
+			remixers {
+				artistID
+				name
+			}
 		}
 	}
 }

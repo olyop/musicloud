@@ -5,10 +5,10 @@ import {
 } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
-import { Album } from "../../types"
 import { getTopSongs } from "../helpers"
 import { COLUMN_NAMES } from "../../globals"
-import { SELECT_ALBUMS_TRENDING } from "../../sql"
+import { Album, Playlist } from "../../types"
+import { SELECT_ALBUMS_TRENDING, SELECT_PLAYLISTS_TRENDING } from "../../sql"
 
 export const getTopTenSongs =
 	resolver(
@@ -34,4 +34,16 @@ export const getTrendingAlbums =
 				},
 			})
 		),
+	)
+
+export const getTrendingPlaylists =
+	resolver<Playlist[]>(
+		({ context }) => (
+			query(context.pg)(SELECT_PLAYLISTS_TRENDING)({
+				parse: convertTableToCamelCase(),
+				variables: {
+					columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
+				},
+			})
+		)
 	)

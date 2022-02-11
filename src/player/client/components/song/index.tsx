@@ -57,6 +57,7 @@ const Song: VFC<PropTypes> = ({
 	hidePlay = false,
 	hideCover = false,
 	hidePlays = false,
+	hideModal = false,
 	hideDuration = false,
 	hideInLibrary = false,
 	leftIcon = "audiotrack",
@@ -201,7 +202,7 @@ const Song: VFC<PropTypes> = ({
 						null : numberWithCommas(playsTotal)
 				),
 			}}
-			modalOptions={onClose => ({
+			modalOptions={hideModal ? undefined : onClose => ({
 				header: {
 					text: (
 						<SongTitle
@@ -298,6 +299,7 @@ interface PropTypes extends ObjectShowIcon {
 	className?: string,
 	hideCover?: boolean,
 	hidePlays?: boolean,
+	hideModal?: boolean,
 	hideDuration?: boolean,
 	hideInLibrary?: boolean,
 	iconClassName?: BEMInput,

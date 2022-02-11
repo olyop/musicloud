@@ -8,7 +8,7 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { ForbiddenError } from "apollo-server-fastify"
+import { ApolloError, ForbiddenError } from "apollo-server-fastify"
 import { SongID, AlbumID, UserID } from "@oly_op/music-app-common/types"
 
 import {
@@ -142,9 +142,12 @@ export const playlistsFilteredBySong =
 
 export const playlistsFilteredByAlbum =
 	resolver<Playlist[], AlbumID>(
-		({ context }) => (
-			query(context.pg)("")({
-				parse: convertTableToCamelCase(),
-			})
-		),
+		() => {
+			throw new ApolloError("Not implemented yet.")
+		}
+		// ({ context }) => (
+		// 	query(context.pg)("SE")({
+		// 		parse: convertTableToCamelCase(),
+		// 	})
+		// ),
 	)

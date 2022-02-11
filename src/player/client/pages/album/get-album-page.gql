@@ -13,6 +13,10 @@ query getAlbumPage($albumID: UUID!) {
 			name
 			artistID
 		}
+		remixers {
+			name
+			artistID
+		}
 		songs {
 			mix
 			title

@@ -9,6 +9,7 @@ type Album {
 	songs: [Song!]!
 	genres: [Genre!]!
 	artists: [Artist!]!
+	remixers: [Artist!]!
 	playsTotal: PositiveInt
 	songsTotal: PositiveInt!
 

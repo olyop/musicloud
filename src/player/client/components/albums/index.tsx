@@ -23,6 +23,7 @@ const Albums: VFC<AlbumsPropTypes> = ({
 	orderBy = false,
 	hideModal = false,
 	alwaysList = false,
+	hideInLibrary = false,
 }) => {
 	const listStyle = useStateListStyle()
 	const isList = alwaysList ? true : (listStyle === SettingsListStyle.LIST)
@@ -50,6 +51,7 @@ const Albums: VFC<AlbumsPropTypes> = ({
 							key={album.albumID}
 							hideModal={hideModal}
 							alwaysList={alwaysList}
+							hideInLibrary={hideInLibrary}
 						/>
 					),
 				)}
@@ -63,6 +65,7 @@ export interface AlbumsPropTypes extends ClassNameBEMPropTypes {
 	hideModal?: boolean,
 	albums?: AlbumType[],
 	alwaysList?: boolean,
+	hideInLibrary?: boolean,
 }
 
 export default Albums

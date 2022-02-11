@@ -7,7 +7,12 @@ import "./index.scss"
 const bem =
 	createBEM("ModalHeader")
 
-const ModalHeader: VFC<ModalHeaderPropTypes> = ({ text, icon, image }) => (
+const ModalHeader: VFC<ModalHeaderPropTypes> = ({
+	text,
+	icon,
+	image,
+	hideShareButton = false,
+}) => (
 	<div className={bem("", "FlexRowGapHalfCenter ItemBorder PaddingLeftRightHalf")}>
 		{icon && (
 			<Button
@@ -27,12 +32,14 @@ const ModalHeader: VFC<ModalHeaderPropTypes> = ({ text, icon, image }) => (
 		<p className={bem("text", "BodyOne")}>
 			{text}
 		</p>
-		<Button
-			transparent
-			icon="share"
-			title="Share"
-			className={bem("icon-share", "icon")}
-		/>
+		{hideShareButton || (
+			<Button
+				transparent
+				icon="share"
+				title="Share"
+				className={bem("icon-share", "icon")}
+			/>
+		)}
 	</div>
 )
 
@@ -45,6 +52,7 @@ export interface ModalHeaderPropTypes {
 	icon?: string,
 	text?: ReactNode,
 	image?: ImageOptions,
+	hideShareButton?: boolean,
 }
 
 export default ModalHeader

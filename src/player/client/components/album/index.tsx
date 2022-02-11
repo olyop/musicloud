@@ -11,7 +11,7 @@ import {
 	Album as AlbumType,
 } from "../../types"
 
-import ObjectLink from "../object-link"
+import AlbumTitle from "../album-title"
 import ObjectLinks from "../object-links"
 import { ModalButton, ModalButtons } from "../modal"
 import Item, { ModalOptionsWithFunction } from "../item"
@@ -55,6 +55,7 @@ const Album: VFC<PropTypes> = ({
 	hideModal = false,
 	alwaysList = false,
 	hideReleased = false,
+	hideInLibrary = false,
 }) => {
 	const { albumID } = album
 	const listStyle = useStateListStyle()
@@ -72,11 +73,8 @@ const Album: VFC<PropTypes> = ({
 	const modalOptions: ModalOptionsWithFunction = onClose => ({
 		header: {
 			text: (
-				<ObjectLink
-					link={{
-						text: album.title,
-						path: createObjectPath("album", album.albumID),
-					}}
+				<AlbumTitle
+					album={album}
 				/>
 			),
 			image: {
@@ -129,7 +127,7 @@ const Album: VFC<PropTypes> = ({
 					isPlaying,
 					onClick: playAlbum,
 				}}
-				inLibraryOptions={{
+				inLibraryOptions={hideInLibrary ? undefined : {
 					isError,
 					inLibrary,
 					onClick: toggleAlbumInLibrary,
@@ -146,11 +144,8 @@ const Album: VFC<PropTypes> = ({
 				}}
 				infoOptions={{
 					upperLeft: (
-						<ObjectLink
-							link={{
-								path,
-								text: album.title,
-							}}
+						<AlbumTitle
+							album={album}
 						/>
 					),
 					lowerLeft: (
@@ -197,11 +192,8 @@ const Album: VFC<PropTypes> = ({
 					infoOptions={{
 						upperLeft: (
 							<Fragment>
-								<ObjectLink
-									link={{
-										path,
-										text: album.title,
-									}}
+								<AlbumTitle
+									album={album}
 								/>
 								{showReleased && (
 									<span
@@ -237,6 +229,7 @@ interface PropTypes extends ObjectShowIcon {
 	hideModal?: boolean,
 	alwaysList?: boolean,
 	hideReleased?: boolean,
+	hideInLibrary?: boolean,
 }
 
 export default Album

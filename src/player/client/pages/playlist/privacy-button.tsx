@@ -34,6 +34,7 @@ const PlaylistPagePrivacyButton: VFC<PropTypes> = ({ playlist }) => {
 				{onClose => (
 					<Fragment>
 						<ModalHeader
+							hideShareButton
 							text="Change playlist privacy"
 						/>
 						<ModalButtons>

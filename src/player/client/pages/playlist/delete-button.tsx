@@ -35,6 +35,7 @@ const PlaylistPageDeleteButton: VFC<PlaylistID> = ({ playlistID }) => {
 			/>
 			<Modal open={modal} onClose={handleModalClose}>
 				<ModalHeader
+					hideShareButton
 					text={(
 						<Fragment>
 							<Fragment>Are you sure you want</Fragment>
