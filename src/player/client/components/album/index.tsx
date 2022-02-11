@@ -1,3 +1,4 @@
+/* eslint-disable prefer-template */
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
 import { createElement, VFC, Fragment } from "react"
@@ -167,11 +168,13 @@ const Album: VFC<PropTypes> = ({
 					className={bem("cover")}
 					children={(
 						<Fragment>
-							<div className={bem("cover-hover", "FullWidthAndHeight")}/>
+							<div
+								className={bem("cover-hover", "FullWidthAndHeight")}
+							/>
 							<img
 								alt={album.title}
 								crossOrigin="anonymous"
-								className={bem("cover-image")}
+								className={bem("cover-image", "FullWidthAndHeight")}
 								src={createCatalogImageURL(
 									album.albumID,
 									"cover",

@@ -27,7 +27,7 @@ const Sidebar: VFC = () => {
 		<div className={bem("")}>
 			<div
 				onClick={handleClose}
-				className={bem("background", "FullWidthAndHeight")}
+				className={bem("background")}
 			/>
 			<nav className={bem("content", "Elevated PaddingBottom")}>
 				<div>

@@ -6,10 +6,12 @@
 	position: absolute;
 	&__background {
 		top: 0;
-		left: 0;
+		right: 0;
 		z-index: 3;
+		height: 100%;
 		cursor: pointer;
 		position: absolute;
+		width: calc(100% - var(--sidebar-width));
 		opacity: var(--close-background-opacity);
 		background-color: var(--close-background-color); }
 	&__content {

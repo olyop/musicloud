@@ -90,7 +90,7 @@ const AlbumPage: VFC = () => {
 								albumID={albumID}
 							/>
 						</div>
-						<div className="FlexRowGapHalf MarginBottom">
+						<div className="FlexRowGapHalf MarginBottomThreeQuart">
 							{data.getAlbumByID.artists.map(
 								artist => (
 									<AlbumArtist
@@ -100,7 +100,7 @@ const AlbumPage: VFC = () => {
 								),
 							)}
 						</div>
-						<h3 className={bem("released", "BodyOne LightColor LightWeight")}>
+						<h3 className="BodyOne LightColor MarginBottomHalf LightWeight">
 							{data.getAlbumByID.released}
 						</h3>
 						<h3 className="BodyTwo MarginBottom LightColor LightWeight">

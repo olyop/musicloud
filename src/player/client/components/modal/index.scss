@@ -39,7 +39,7 @@
 		z-index: 6;
 		cursor: text;
 		position: absolute;
-		width: var(--sidebar-width);
+		width: var(--modal-width);
 		transform: translate(-50%, -50%);
 		&-visible {
 			visibility: visible; }

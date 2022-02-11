@@ -141,11 +141,13 @@ const Artist: VFC<PropTypes> = ({
 				to={createObjectPath("artist", artist.artistID)}
 				children={(
 					<Fragment>
-						<div className={bem("cover-hover", "FullWidthAndHeight")}/>
+						<div
+							className={bem("cover-hover", "FullWidthAndHeight")}
+						/>
 						<img
 							alt={artist.name}
 							crossOrigin="anonymous"
-							className={bem("cover-image")}
+							className={bem("cover-image", "FullWidthAndHeight")}
 							src={createCatalogImageURL(
 								artist.artistID,
 								"cover",

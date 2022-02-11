@@ -38,6 +38,10 @@ query getBrowsePage {
       name
       artistID
     }
+		remixers {
+			artistID
+			name
+		}
 	}
 	getTrendingPlaylists {
 		title

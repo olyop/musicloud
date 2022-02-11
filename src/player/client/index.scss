@@ -1,4 +1,5 @@
 :root {
+	--modal-width: 300rem;
 	--select-height: 29rem;
 	--content-width: 100vw;
 	--sidebar-width: 300rem;
@@ -24,7 +25,10 @@
 	@media (max-width: 800px) {
 		--content-image-width: 225rem; }
 	@media (max-width: 700px) {
-		--bar-height: calc(var(--bar-height-base) + var(--border-width) + var(--header-height)); } }
+		--modal-width: 350rem;
+		--bar-height: calc(var(--bar-height-base) + var(--border-width) + var(--header-height)); }
+	@media (max-width: 400px) {
+		--modal-width: calc(100vw - 2 * var(--space-double)); } }
 
 #Root {
 	background-color: var(--background-color); }
