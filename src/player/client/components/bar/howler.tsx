@@ -44,6 +44,7 @@ const BarHowler: VFC<PropTypes> =
 
 		return (
 			<Howler
+				html5
 				playing={play}
 				onEnd={resetPlayer}
 				volume={volume / 100}

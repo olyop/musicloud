@@ -93,11 +93,12 @@ export const baseConfig: Configuration = {
 	},
 	plugins: [
 		new DotenvPlugin(),
-		new ESLintPlugin({
-			extensions: ["ts", "tsx"],
-		}),
-		new StylelintPlugin(),
-		...(IS_DEV ? [] : [
+		...(IS_DEV ? [
+			new ESLintPlugin({
+				extensions: ["ts", "tsx"],
+			}),
+			new StylelintPlugin(),
+		] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),
 			new MiniCSSExtractPlugin({
