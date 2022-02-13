@@ -1,3 +1,4 @@
+import noop from "lodash-es/noop"
 import Howler from "react-howler"
 import { createElement, useEffect, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
@@ -15,22 +16,28 @@ const BarHowler: VFC<PropTypes> =
 		const resetPlayer = useResetPlayer()
 
 		useEffect(() => {
-			if ("navigator" in navigator) {
-				navigator.mediaSession.metadata =
-					new MediaMetadata({
-						title: song.title,
-						album: song.album.title,
-						artist: song.artists.toString(),
-						artwork: [{
-							src: createCatalogImageURL(
-								song.album.albumID,
-								"cover",
-								ImageSizes.HALF,
-								ImageDimensions.SQUARE,
-							)
-						}]
-					})
-			}
+			navigator.mediaSession.metadata =
+				new MediaMetadata({
+					title: song.title,
+					album: song.album.title,
+					artist: song.artists.toString(),
+					artwork: [{
+						type: "image/jpeg",
+						src: createCatalogImageURL(
+							song.album.albumID,
+							"cover",
+							ImageSizes.HALF,
+							ImageDimensions.SQUARE,
+						)
+					}]
+				})
+
+			navigator.mediaSession.setActionHandler("play", noop)
+			navigator.mediaSession.setActionHandler("pause", noop)
+			navigator.mediaSession.setActionHandler("nexttrack", noop)
+			navigator.mediaSession.setActionHandler("previoustrack", noop)
+
+			console.log(navigator.mediaSession.metadata.title)
 		}, [songID])
 
 		return (
