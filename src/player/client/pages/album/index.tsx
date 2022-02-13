@@ -124,7 +124,7 @@ const AlbumPage: VFC = () => {
 								</p>
 							)}
 						</div>
-						<Buttons className="MarginBottom">
+						<Buttons>
 							<Button
 								icon="shuffle"
 								text="Shuffle"

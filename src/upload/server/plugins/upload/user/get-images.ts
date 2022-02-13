@@ -1,6 +1,5 @@
 import path from "path"
 import fs from "fs/promises"
-import fetch from "node-fetch"
 
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 import { UserCover, UserName, UserProfile } from "./types"

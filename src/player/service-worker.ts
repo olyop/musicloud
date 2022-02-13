@@ -5,7 +5,7 @@
 import { registerRoute } from "workbox-routing"
 import { offlineFallback } from "workbox-recipes"
 import { precacheAndRoute } from "workbox-precaching"
-// import { ExpirationPlugin } from "workbox-expiration"
+import { ExpirationPlugin } from "workbox-expiration"
 import { RangeRequestsPlugin } from "workbox-range-requests"
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies"
 
@@ -22,24 +22,24 @@ offlineFallback({
 	pageFallback: "index.html",
 })
 
-// registerRoute(
-// 	({ url }) =>
-// 		url.origin === "https://fonts.googleapis.com",
-// 	new StaleWhileRevalidate()
-// )
+registerRoute(
+	({ url }) =>
+		url.origin === "https://fonts.googleapis.com",
+	new StaleWhileRevalidate()
+)
 
-// registerRoute(
-// 	({ url }) =>
-// 		url.origin === "https://fonts.gstatic.com",
-// 	new CacheFirst({
-// 		plugins: [
-// 			new ExpirationPlugin({
-// 				maxEntries: 30,
-// 				maxAgeSeconds: 60 * 60 * 24 * 30,
-// 			}),
-// 		],
-// 	})
-// )
+registerRoute(
+	({ url }) =>
+		url.origin === "https://fonts.gstatic.com",
+	new CacheFirst({
+		plugins: [
+			new ExpirationPlugin({
+				maxEntries: 30,
+				maxAgeSeconds: 60 * 60 * 24 * 30,
+			}),
+		],
+	})
+)
 
 registerRoute(
 	({ request }) =>

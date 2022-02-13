@@ -109,7 +109,7 @@ const Bar: VFC = () => {
 					)}
 					{data?.getQueue.nowPlaying && (
 						<BarHowler
-							songID={data.getQueue.nowPlaying.songID}
+							song={data.getQueue.nowPlaying}
 						/>
 					)}
 				</Fragment>
