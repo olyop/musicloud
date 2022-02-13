@@ -3,12 +3,13 @@
 		display: block;
 		position: relative;
 		aspect-ratio: 16 / 9;
-		&-hover {
+		&-black {
 			opacity: 0;
+			z-index: 1;
 			position: absolute;
 			background-color: var(--text-color);
 			transition: var(--transition-duration) opacity; }
 		&-image {
 			position: absolute; }
-		&:hover &-hover {
+		&:hover &-black {
 			opacity: 0.3; } } }

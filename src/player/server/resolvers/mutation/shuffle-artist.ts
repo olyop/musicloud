@@ -11,6 +11,7 @@ import { shuffle, clearQueue, updateQueueNowPlaying } from "../helpers"
 export const shuffleArtist =
 	resolver<Record<string, never>, ArtistID>(
 		async ({ args, context }) => {
+			const { artistID } = args
 			const { userID } = context.authorization!
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
@@ -27,9 +28,7 @@ export const shuffleArtist =
 							shuffle(),
 						),
 						variables: {
-							artistID: args.artistID,
-							orderByDirection: "ASC",
-							orderByField: "songs.title",
+							artistID,
 							columnNames: join(COLUMN_NAMES.SONG, "songs"),
 						},
 					})

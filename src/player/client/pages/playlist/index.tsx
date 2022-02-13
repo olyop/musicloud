@@ -56,11 +56,6 @@ const PlaylistPage: VFC = () => {
 	const isUsers =
 		data?.getPlaylistByID.user.userID === userID
 
-	const handleShufflePlaylist =
-		async () => {
-			await shufflePlaylist()
-		}
-
 	const handleRemoveSongFromPlaylist =
 		({ song }: SongChangeOptions) =>
 			async () => {
@@ -128,7 +123,7 @@ const PlaylistPage: VFC = () => {
 						<Button
 							icon="shuffle"
 							text="Shuffle"
-							onClick={handleShufflePlaylist}
+							onClick={shufflePlaylist}
 						/>
 						{isUsers || (
 							<InLibraryButton

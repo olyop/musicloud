@@ -1,4 +1,4 @@
-import isEmpty from "lodash/isEmpty"
+import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { ChangeEventHandler, createElement, VFC } from "react"

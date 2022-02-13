@@ -3,7 +3,7 @@ import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/music-app-common/
 
 import { ImageInput } from "../types"
 import { uploadFileToS3 } from "./upload-file-to-s3"
-import { determineS3ImagePath } from "./determine-s3-image-path"
+import { determineCatalogImagePath } from "./determine-catalog-image-path"
 
 interface BaseInput extends ObjectID {
 	buffer: Buffer,
@@ -41,7 +41,7 @@ const determineImageDimesnions =
 const uploadImageToS3 =
 	({ objectID, buffer, image }: UploadInput) =>
 		uploadFileToS3(
-			determineS3ImagePath(objectID, image),
+			determineCatalogImagePath(objectID, image),
 			buffer,
 		)
 

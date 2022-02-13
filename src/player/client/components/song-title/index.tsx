@@ -53,11 +53,11 @@ const SongTitle: VFC<PropTypes> = ({
 	return (
 		<Fragment>
 			{titleElement}
+			<Fragment> </Fragment>
 			{isEmpty(remixers) ? (
 				<Fragment>
 					{isEmpty(mix) || (
 						<span className="LightColor LightWeight">
-							<Fragment> </Fragment>
 							{mix}
 							<Fragment> Mix</Fragment>
 						</span>
@@ -65,7 +65,6 @@ const SongTitle: VFC<PropTypes> = ({
 				</Fragment>
 			) : (
 				<span className="LightColor LightWeight">
-					<Fragment> </Fragment>
 					<ObjectLinks
 						ampersand
 						onClick={onClick}

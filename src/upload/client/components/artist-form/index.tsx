@@ -1,4 +1,5 @@
 import { useFormik } from "formik"
+import { isEmpty } from "lodash-es"
 import { ArtistBase } from "@oly_op/music-app-common/types"
 import { ChangeEventHandler, createElement, VFC, useState } from "react"
 
@@ -6,14 +7,18 @@ import Form from "../form"
 import TextField from "../text-field"
 
 interface ArtistImages {
-	cover?: File,
-	profile?: File,
+	cover: File | null,
+	profile: File | null,
 }
 
 interface Artist
-	extends
-	ArtistImages,
-	Omit<ArtistBase, "artistID"> {}
+	extends ArtistImages, Omit<ArtistBase, "artistID"> {
+	city: string,
+	country: string,
+}
+
+const searchURL =
+	"https://google.com/search"
 
 const ArtistForm: VFC = () => {
 	const [ loading, setLoading ] =
@@ -25,22 +30,26 @@ const ArtistForm: VFC = () => {
 				city: "",
 				name: "",
 				country: "",
-				cover: undefined,
-				profile: undefined,
+				cover: null,
+				profile: null,
 			},
-			onSubmit: async artist => {
-				setLoading(true)
-				const body = new FormData()
-				body.append("name", artist.name)
-				body.append("city", artist.city)
-				body.append("cover", artist.cover!)
-				body.append("country", artist.country)
-				body.append("profile", artist.profile!)
-				try {
-					await fetch("/upload/artist", { method: "POST", body })
-				} finally {
-					formik.resetForm()
-					setLoading(false)
+			onSubmit: async (artist, { resetForm }) => {
+				if (artist.cover && artist.profile) {
+					setLoading(true)
+					const body = new FormData()
+					body.append("name", artist.name)
+					body.append("cover", artist.cover)
+					body.append("profile", artist.profile)
+					if (!isEmpty(artist.city) && !isEmpty(artist.country)) {
+						body.append("city", artist.city)
+						body.append("country", artist.country)
+					}
+					try {
+						await fetch("/upload/artist", { method: "POST", body })
+					} finally {
+						resetForm()
+						setLoading(false)
+					}
 				}
 			},
 		})
@@ -52,6 +61,8 @@ const ArtistForm: VFC = () => {
 					void formik.setFieldValue(key, files.item(0))
 				}
 			}
+
+	const { values, handleChange } = formik
 
 	return (
 		<Form
@@ -65,41 +76,61 @@ const ArtistForm: VFC = () => {
 				name="Name"
 				type="text"
 				placeholder="Name"
-				value={formik.values.name}
-				onChange={formik.handleChange}
+				value={values.name}
+				onChange={handleChange}
 			/>
 			<TextField
 				id="city"
 				name="City"
 				type="text"
 				placeholder="City"
-				value={formik.values.city}
-				onChange={formik.handleChange}
+				value={values.city}
+				onChange={handleChange}
+				action={{
+					text: "City",
+					icon: "search",
+					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+origin+city`
+				}}
 			/>
 			<TextField
 				type="text"
 				id="country"
 				name="Country"
 				placeholder="Country"
-				value={formik.values.country}
-				onChange={formik.handleChange}
+				value={values.country}
+				onChange={handleChange}
+				action={{
+					icon: "search",
+					text: "Country",
+					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+origin+country`
+				}}
 			/>
 			<TextField
 				type="file"
 				id="profile"
 				name="Profile"
 				multiple={false}
-				image={formik.values.profile}
+				image={values.profile || undefined}
 				onChange={handlePhotoChange("profile")}
+				action={values.profile ? undefined : {
+					icon: "search",
+					text: "Profile",
+					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+profile&tbm=isch`
+				}}
 			/>
 			<TextField
 				id="cover"
 				type="file"
 				name="Cover"
 				multiple={false}
-				image={formik.values.cover}
 				imageOrientation="landscape"
+				image={values.cover || undefined}
 				onChange={handlePhotoChange("cover")}
+				action={values.cover ? undefined : {
+					text: "Cover",
+					icon: "search",
+					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+photo&tbm=isch`
+				}}
 			/>
 		</Form>
 	)

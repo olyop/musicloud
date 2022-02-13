@@ -169,7 +169,7 @@ const Album: VFC<PropTypes> = ({
 					children={(
 						<Fragment>
 							<div
-								className={bem("cover-hover", "FullWidthAndHeight")}
+								className={bem("cover-black", "FullWidthAndHeight")}
 							/>
 							<img
 								alt={album.title}

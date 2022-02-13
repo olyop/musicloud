@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/tabindex-no-positive */
 import {
 	VFC,
 	useState,
@@ -8,17 +9,12 @@ import {
 } from "react"
 
 import isEmpty from "lodash-es/isEmpty"
-import Image from "@oly_op/react-image"
 import Button from "@oly_op/react-button"
 import { createBEM, BEMInput } from "@oly_op/bem"
 
 import { Item } from "../../types"
 
 import "./index.scss"
-
-import "@oly_op/css-utilities/index.css"
-import "@oly_op/react-button/build/index.css"
-import "@oly_op/react-image/build/index.css"
 
 const bem =
 	createBEM("TextField")
@@ -30,6 +26,7 @@ const TextField: VFC<TextFieldPropTypes> = ({
 	list,
 	image,
 	value,
+	action,
 	onChange,
 	className,
 	onItemAdd,
@@ -43,7 +40,7 @@ const TextField: VFC<TextFieldPropTypes> = ({
 	const [ privateValue, setPrivateValue ] = useState(value || "")
 
 	const [ imageURL, setImageURL ] =
-		useState<string | undefined>(undefined)
+		useState<string | null>(null)
 
 	const handleInputFocus =
 		() => setFocus(true)
@@ -108,9 +105,28 @@ const TextField: VFC<TextFieldPropTypes> = ({
 				}}
 			/>
 			{imageURL && (
-				<Image
-					url={imageURL}
-					className={bem("image", `image-${imageOrientation}`)}
+				<img
+					alt="temp"
+					src={imageURL}
+					className={bem("image", `image-${imageOrientation}`, "Elevated")}
+				/>
+			)}
+			{action && (
+				<a
+					tabIndex={999}
+					target="_blank"
+					rel="noreferrer"
+					href={action.url}
+					title={action.title}
+					className={bem("action")}
+					children={(
+						<Button
+							transparent
+							tabIndex={999}
+							icon={action.icon}
+							text={action.text}
+						/>
+					)}
 				/>
 			)}
 			{list && !isEmpty(list) && (
@@ -170,12 +186,20 @@ type InputPropTypes =
 		"type" | "value" | "list" | "className"
 	>
 
+interface ActionOptions {
+	url: string,
+	icon: string,
+	text: string,
+	title?: string,
+}
+
 export interface TextFieldPropTypes extends InputPropTypes {
 	type: string,
 	image?: File,
 	list?: Item[],
 	value?: string,
 	className?: BEMInput,
+	action?: ActionOptions,
 	onItemAdd?: (value: string) => () => void,
 	imageOrientation?: "portrait" | "landscape",
 	onItemRemove?: (index: number) => () => void,

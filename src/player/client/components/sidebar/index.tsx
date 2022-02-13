@@ -41,7 +41,7 @@ const Sidebar: VFC = () => {
 							textClassName={bem("content-header-close-text")}
 						/>
 					</div>
-					<div className={bem("links", "BorderBottom PaddingBottomHalf")}>
+					<div className={bem("links", "PaddingBottomHalf")}>
 						<NavLink
 							to="/"
 							title="Browse"
@@ -158,7 +158,7 @@ const Sidebar: VFC = () => {
 							onClick={handleClose}
 							to="/library/settings"
 							title="Library Settings"
-							className={bem("route")}
+							className={bem("route", "BorderBottom PaddingBottomHalf")}
 							children={
 								({ isActive }) => (
 									<Button
@@ -169,6 +169,22 @@ const Sidebar: VFC = () => {
 									/>
 								)
 							}
+						/>
+						<a
+							title="About"
+							target="_blank"
+							rel="noreferrer"
+							onClick={handleClose}
+							href="https://olyop.com/projects"
+							className={bem("route", "BorderBottom PaddingTopBottomHalf")}
+							children={(
+								<Button
+									transparent
+									icon="info"
+									text="About"
+									className={bem("route-button")}
+								/>
+							)}
 						/>
 					</div>
 				</div>

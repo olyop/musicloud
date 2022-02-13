@@ -7,8 +7,8 @@ import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
 import { AlgoliaRecordUser, ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
 
 import {
-	determineS3ImageURL,
 	addRecordToSearchIndex,
+	determineCatalogImageURL,
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
@@ -92,7 +92,7 @@ export const uploadUser: FastifyPluginCallback =
 					followers: 0,
 					typeName: "User",
 					objectID: userID,
-					image: determineS3ImageURL(userID, profileImages[2]!),
+					image: determineCatalogImageURL(userID, profileImages[2]!),
 				})
 
 				return reply.send()

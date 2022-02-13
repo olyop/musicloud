@@ -17,9 +17,9 @@ import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import {
 	uploadFileToS3,
-	determineS3ImageURL,
-	determineS3AudioPath,
 	addRecordToSearchIndex,
+	determineCatalogImageURL,
+	determineCatalogAudioPath,
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
@@ -93,7 +93,7 @@ export const uploadAlbum: FastifyPluginCallback =
 					{ albumID, title: albumTitle }
 
 				const albumCoverURL =
-					determineS3ImageURL(albumID, images[2]!)
+					determineCatalogImageURL(albumID, images[2]!)
 
 				const albumArtists: ArtistIDNameBase[] = []
 
@@ -248,7 +248,7 @@ export const uploadAlbum: FastifyPluginCallback =
 					}
 
 					await uploadFileToS3(
-						determineS3AudioPath(songID),
+						determineCatalogAudioPath(songID),
 						audio,
 					)
 

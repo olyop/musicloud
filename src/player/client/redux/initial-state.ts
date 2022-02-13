@@ -69,7 +69,7 @@ export const initialState: State = {
 	current: 0,
 	play: false,
 	loading: [],
-	sidebar: false,
+	sidebar: true,
 	isOnline: true,
 	accessToken: null,
 	settings: initialSettings,

@@ -5,6 +5,7 @@ import { KEYWORDS, DESCRIPTION } from "@oly_op/music-app-common/metadata"
 import { Configuration } from "webpack"
 import DotenvPlugin from "dotenv-webpack"
 import ESLintPlugin from "eslint-webpack-plugin"
+import StylelintPlugin from "stylelint-webpack-plugin"
 import CompressionPlugin from "compression-webpack-plugin"
 import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
@@ -95,6 +96,7 @@ export const baseConfig: Configuration = {
 		new ESLintPlugin({
 			extensions: ["ts", "tsx"],
 		}),
+		new StylelintPlugin(),
 		...(IS_DEV ? [] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),

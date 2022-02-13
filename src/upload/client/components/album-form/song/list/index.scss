@@ -5,6 +5,5 @@
 		min-height: var(--dimension); }
 	&__add {
 		--button-dimesnion: 24rem;
-		--button-dimesnion-icon: 24rem;
-		height: var(--button-dimesnion);
-		min-width: var(--button-dimesnion); } }
+		width: var(--button-dimesnion);
+		height: var(--button-dimesnion); } }

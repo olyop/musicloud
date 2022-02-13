@@ -1,8 +1,6 @@
 .TextField {
 	padding: 0;
 	position: relative;
-	&:hover &__label {
-		color: var(--primary-color); }
 	&__label {
 		top: -8rem;
 		z-index: 10;
@@ -27,13 +25,18 @@
 		transition: var(--transition-duration) border-radius; }
 	&__image {
 		left: 14rem;
-		bottom: 18rem;
+		bottom: 14rem;
 		position: absolute;
 		height: var(--content-image-height);
 		&-portrait {
 			width: var(--content-image-height); }
 		&-landscape {
 			width: var(--content-image-width); } }
+	&__action {
+		position: absolute;
+		top: 50%;
+		right: var(--space-half);
+		transform: translateY(-50%); }
 	&__list {
 		top: 18rem;
 		left: 14rem;
@@ -63,10 +66,7 @@
 		width: 100%;
 		outline: none;
 		font-size: 16rem;
-		padding-top: 18rem;
-		padding-left: 14rem;
-		padding-right: 14rem;
-		padding-bottom: 18rem;
+		padding: 18rem 14rem;
 		letter-spacing: 0.15rem;
 		border: 1rem solid var(--border-color);
 		background-color: var(--elevated-color);
@@ -77,4 +77,8 @@
 		&-list {
 			padding-top: 54rem;
 			&-add {
-				padding-bottom: 45rem; } } } }
+				padding-bottom: 45rem; } }
+		&::-webkit-calendar-picker-indicator {
+			padding-right: 135rem; } }
+	&:hover &__label {
+		color: var(--primary-color); } }

@@ -14,7 +14,6 @@ import { addDashesToUUID } from "@oly_op/uuid-dashes"
 
 import {
 	useQuery,
-	useResetPlayer,
 	useShuffleArtist,
 	useToggleObjectInLibrary,
 } from "../../hooks"
@@ -54,7 +53,6 @@ const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
 }
 
 const ArtistPage: VFC = () => {
-	const resetPlayer = useResetPlayer()
 	const params = useParams<keyof ArtistID>()
 	const artistID = addDashesToUUID(params.artistID!)
 
@@ -65,12 +63,6 @@ const ArtistPage: VFC = () => {
 
 	const [ shuffleArtist ] =
 		useShuffleArtist({ artistID })
-
-	const handleShuffle =
-		async () => {
-			resetPlayer()
-			await shuffleArtist()
-		}
 
 	if (error) {
 		return (
@@ -111,7 +103,7 @@ const ArtistPage: VFC = () => {
 									<Fragment>
 										<Button
 											icon="shuffle"
-											onClick={handleShuffle}
+											onClick={shuffleArtist}
 											text={width > 700 ? "Shuffle" : undefined}
 										/>
 										<Button

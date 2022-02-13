@@ -30,5 +30,8 @@
 	@media (max-width: 400px) {
 		--modal-width: calc(100vw - 2 * var(--space-double)); } }
 
+span {
+	display: inline-block; }
+
 #Root {
 	background-color: var(--background-color); }

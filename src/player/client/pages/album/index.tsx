@@ -10,23 +10,20 @@ import { Metadata } from "@oly_op/react-metadata"
 import { createElement, Fragment, VFC } from "react"
 import { NavLink, useParams } from "react-router-dom"
 import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import deserializeDuration from "@oly_op/music-app-common/deserialize-duration"
 
 import Disc from "./disc"
 import AlbumArtist from "./artist"
 import { Album } from "../../types"
 import createDiscs from "./create-discs"
 import AlbumPlayButton from "./play-button"
-import downloadCover from "./download-cover"
-import downloadSongs from "./download-songs"
 import Buttons from "../../components/buttons"
 import GET_ALBUM_PAGE from "./get-album-page.gql"
+import AlbumTitle from "../../components/album-title"
 import ObjectLinks from "../../components/object-links"
 import { createObjectPath, createCatalogImageURL } from "../../helpers"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
 
 import "./index.scss"
-import AlbumTitle from "../../components/album-title"
 
 const bem =
 	createBEM("AlbumPage")
@@ -46,14 +43,6 @@ const AlbumPage: VFC = () => {
 
 	const [ toggleAlbumInLibrary, inLibrary ] =
 		useToggleAlbumInLibrary({ albumID })
-
-	const handleSongsDownload =
-		async () =>
-			downloadSongs(data!.getAlbumByID)
-
-	const handleCoverDownload =
-		async () =>
-			downloadCover(data!.getAlbumByID.albumID)
 
 	if (error) {
 		return (
@@ -161,36 +150,6 @@ const AlbumPage: VFC = () => {
 								text="Share"
 							/>
 						</Buttons>
-						<details open={false}>
-							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>
-								Downloads
-							</summary>
-							<div className="FlexRowGapHalf MarginBottom">
-								<Button
-									text="Songs"
-									icon="download"
-									onClick={handleSongsDownload}
-								/>
-								<Button
-									text="Cover"
-									icon="download"
-									onClick={handleCoverDownload}
-								/>
-							</div>
-						</details>
-						<details open={false}>
-							<summary className={bem("sum", "BodyTwo MarginBottomHalf")}>
-								Details
-							</summary>
-							<p className={bem("footer-text")}>
-								<Fragment>Released: </Fragment>
-								{data.getAlbumByID.released}
-							</p>
-							<p className={bem("footer-text")}>
-								<Fragment>Duration: </Fragment>
-								{deserializeDuration(data.getAlbumByID.duration, true)}
-							</p>
-						</details>
 					</div>
 				</div>
 			</Metadata>

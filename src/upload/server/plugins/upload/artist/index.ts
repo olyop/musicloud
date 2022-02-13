@@ -6,8 +6,8 @@ import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 import { ImageDimensions, ImageSizes, ArtistBase, ArtistID, AlgoliaRecordArtist } from "@oly_op/music-app-common/types"
 
 import {
-	determineS3ImageURL,
 	addRecordToSearchIndex,
+	determineCatalogImageURL,
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
@@ -15,6 +15,8 @@ import { BodyEntry, ImageInput } from "../types"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
 interface Artist extends Omit<ArtistBase, "artistID"> {
+	city?: string,
+	country?: string,
 	cover: BodyEntry[],
 	profile: BodyEntry[],
 }
@@ -59,11 +61,12 @@ export const uploadArtist: FastifyPluginCallback =
 		fastify.post<Route>(
 			"/upload/artist",
 			async (request, reply) => {
-				const name = trim(request.body.name)
-				const city = trim(request.body.city)
-				const country = trim(request.body.country)
-				const cover = request.body.cover[0]!.data
-				const profile = request.body.profile[0]!.data
+				const { body } = request
+				const name = trim(body.name)
+				const cover = body.cover[0]!.data
+				const profile = body.profile[0]!.data
+				const city = body.city && trim(body.city)
+				const country = body.country && trim(body.country)
 
 				const doesArtistAlreadyExist =
 					await exists(fastify.pg.pool)({
@@ -83,7 +86,7 @@ export const uploadArtist: FastifyPluginCallback =
 							key: "name",
 							value: name,
 							parameterized: true,
-						},{
+						}, ...(city && country ? [{
 							key: "city",
 							value: city,
 							parameterized: true,
@@ -91,7 +94,7 @@ export const uploadArtist: FastifyPluginCallback =
 							key: "country",
 							value: country,
 							parameterized: true,
-						}],
+						}] : [])],
 					})
 
 				await normalizeImageAndUploadToS3({
@@ -108,12 +111,11 @@ export const uploadArtist: FastifyPluginCallback =
 
 				await addRecordToSearchIndex<AlgoliaRecordArtist>({
 					name,
-					city,
-					country,
 					plays: 0,
 					typeName: "Artist",
 					objectID: artistID,
-					image: determineS3ImageURL(artistID, profileImages[2]!),
+					image: determineCatalogImageURL(artistID, profileImages[2]!),
+					...(city && country ? { city, country } : {}),
 				})
 
 				return reply.send()

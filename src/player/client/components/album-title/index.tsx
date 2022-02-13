@@ -17,18 +17,20 @@ const AlbumTitle: VFC<PropTypes> = ({
 			link={{ text: title, path: createObjectPath("album", albumID) }}
 		/>
 		{isEmpty(remixers) ? null : (
-			<span className="LightColor LightWeight">
+			<Fragment>
 				<Fragment> </Fragment>
-				<ObjectLinks
-					ampersand
-					onClick={onClick}
-					links={remixers.map(({ artistID, name }) => ({
-						text: name,
-						path: createObjectPath("artist", artistID),
-					}))}
-				/>
-				<Fragment> Remix</Fragment>
-			</span>
+				<span className="LightColor LightWeight">
+					<ObjectLinks
+						ampersand
+						onClick={onClick}
+						links={remixers.map(({ artistID, name }) => ({
+							text: name,
+							path: createObjectPath("artist", artistID),
+						}))}
+					/>
+					<Fragment> Remix</Fragment>
+				</span>
+			</Fragment>
 		)}
 	</Fragment>
 )

@@ -17,17 +17,20 @@ const FeaturingArtists: VFC<PropTypes> = ({ song, onClick }) => (
 			}))}
 		/>
 		{isEmpty(song.featuring) || (
-			<span className="LightColor">
-				<Fragment> feat. </Fragment>
-				<ObjectLinks
-					ampersand
-					onClick={onClick}
-					links={song.featuring.map(({ artistID, name }) => ({
-						text: name,
-						path: `${createObjectPath("artist", artistID)}`,
-					}))}
-				/>
-			</span>
+			<Fragment>
+				<Fragment> </Fragment>
+				<span className="LightColor">
+					<Fragment>feat. </Fragment>
+					<ObjectLinks
+						ampersand
+						onClick={onClick}
+						links={song.featuring.map(({ artistID, name }) => ({
+							text: name,
+							path: `${createObjectPath("artist", artistID)}`,
+						}))}
+					/>
+				</span>
+			</Fragment>
 		)}
 	</Fragment>
 )

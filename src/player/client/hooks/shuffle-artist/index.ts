@@ -4,10 +4,12 @@ import { ArtistID } from "@oly_op/music-app-common/types"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import SHUFFLE_ARTIST from "./shuffle-artist.gql"
+import { updatePlay, useDispatch } from "../../redux"
 import { HandlerPromise, QueueNowPlaying } from "../../types"
 
 export const useShuffleArtist =
 	({ artistID }: ArtistID) => {
+		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
 		const [ shuffleArtist, result ] =
@@ -20,6 +22,7 @@ export const useShuffleArtist =
 			async () => {
 				resetPlayer()
 				await shuffleArtist()
+				dispatch(updatePlay(true))
 			}
 
 		return [ handleShuffleArtist, result ] as Result

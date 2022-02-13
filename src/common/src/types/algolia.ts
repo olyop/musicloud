@@ -72,7 +72,10 @@ export interface AlgoliaRecordArtist
 	AlgoliaRecordImage,
 	AlgoliaRecordPlays,
 	AlgoliaRecordBase<"Artist">,
-	Omit<ArtistBase, "artistID"> {}
+	Omit<ArtistBase, "artistID"> {
+	city?: string,
+	country?: string,
+}
 
 export interface AlgoliaRecordPlaylist
 	extends

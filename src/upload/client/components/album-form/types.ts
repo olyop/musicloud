@@ -9,4 +9,5 @@ export interface AlbumCover {
 export interface Album extends Pick<AlbumBase, "title">, AlbumCover {
 	artists: Item[],
 	released: string,
+	remixers: Item[],
 }

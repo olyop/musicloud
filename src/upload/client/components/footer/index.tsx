@@ -4,15 +4,14 @@ import { createElement, VFC } from "react"
 
 import "./index.scss"
 
-const musicloudURL =
-	`http://localhost:${process.env.PLAYER_CLIENT_PORT}`
-
 const bem =
 	createBEM("Footer")
 
 const Footer: VFC = () => (
 	<a
-		href={musicloudURL}
+		target="_blank"
+		rel="noreferrer"
+		href="https://musicloud-app.com"
 		className={bem("", "Elevated")}
 		children={(
 			<Button

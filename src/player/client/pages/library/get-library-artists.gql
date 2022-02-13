@@ -4,6 +4,7 @@ query getLibraryArtists($input: LibraryArtistsInput!) {
 			name
 			artistID
 			inLibrary
+			songsTotal
 			albumsTotal
 			dateAddedToLibrary
 		}

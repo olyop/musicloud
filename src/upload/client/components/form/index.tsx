@@ -5,8 +5,8 @@ import {
 	FormEventHandler,
 } from "react"
 
-import isEmpty from "lodash/isEmpty"
 import { FormikErrors } from "formik"
+import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
 
 import getInitialValues from "./get-initial-values"

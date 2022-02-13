@@ -1,13 +1,16 @@
 import { useFormik } from "formik"
-import isEmpty from "lodash/isEmpty"
+import isEmpty from "lodash-es/isEmpty"
 import { useState, createElement, VFC, ChangeEventHandler } from "react"
 
 import Form from "../form"
 import { Album } from "./types"
 import AlbumSongs from "./songs"
 import TextField from "../text-field"
-import AlbumFormSong, { Song, SongLists } from "./song"
 import createFormData from "./create-form-data"
+import AlbumFormSong, { Song, SongLists } from "./song"
+
+const searchURL =
+	"https://google.com/search"
 
 const AlbumForm: VFC = () => {
 	const [ loading, setLoading ] =
@@ -21,6 +24,7 @@ const AlbumForm: VFC = () => {
 			initialValues: {
 				title: "",
 				artists: [],
+				remixers: [],
 				released: "",
 				cover: undefined,
 			},
@@ -45,6 +49,8 @@ const AlbumForm: VFC = () => {
 			},
 		})
 
+	const { values, handleChange, setFieldValue } = formik
+
 	const handleSongAdd =
 		(audio: File) =>
 			setSongs(prevState => [ ...prevState, {
@@ -53,9 +59,9 @@ const AlbumForm: VFC = () => {
 				remixers: [],
 				featuring: [],
 				discNumber: 1,
+				artists: values.artists,
 				trackNumber: songs.length + 1,
 				title: audio.name.slice(0, -4),
-				artists: formik.values.artists,
 				genres: isEmpty(prevState) ? [] : prevState[0]!.genres,
 			}])
 
@@ -125,27 +131,48 @@ const AlbumForm: VFC = () => {
 	const handleArtistAdd =
 		(value: string) =>
 			() =>
-				formik.setFieldValue(
+				setFieldValue(
 					"artists",
-					[...formik.values.artists, {
+					[...values.artists, {
 						value,
-						index: formik.values.artists.length,
+						index: values.artists.length,
 					}],
 				)
 
 	const handleArtistRemove =
 		(index: number) =>
 			() =>
-				formik.setFieldValue(
+				setFieldValue(
 					"artists",
-					formik.values.artists.filter(
+					values.artists.filter(
 						artist => index !== artist.index,
+					),
+				)
+
+	const handleRemixerAdd =
+		(value: string) =>
+			() =>
+				setFieldValue(
+					"remixers",
+					[...values.remixers, {
+						value,
+						index: values.remixers.length,
+					}],
+				)
+
+	const handleRemixerRemove =
+		(index: number) =>
+			() =>
+				setFieldValue(
+					"remixers",
+					values.remixers.filter(
+						remixer => index !== remixer.index,
 					),
 				)
 
 	const handleCoverChange: ChangeEventHandler<HTMLInputElement> =
 		({ target: { files } }) =>
-			formik.setFieldValue("cover", files!.item(0))
+			setFieldValue("cover", files!.item(0))
 
 	return (
 		<Form
@@ -159,32 +186,51 @@ const AlbumForm: VFC = () => {
 				type="text"
 				name="Title"
 				placeholder="Title"
-				value={formik.values.title}
-				onChange={formik.handleChange}
+				value={values.title}
+				onChange={handleChange}
 			/>
 			<TextField
 				type="date"
 				id="released"
 				name="Released"
-				value={formik.values.released}
-				onChange={formik.handleChange}
+				value={values.released}
+				onChange={handleChange}
+				action={{
+					icon: "search",
+					text: "Released",
+					url: `${searchURL}?q=${values.title.toLowerCase().replace(" ", "+")}+album+release+date`
+				}}
 			/>
 			<TextField
 				id="artists"
 				name="Artists"
 				type="objects"
 				placeholder="Artist"
+				list={values.artists}
 				onItemAdd={handleArtistAdd}
-				list={formik.values.artists}
 				onItemRemove={handleArtistRemove}
+			/>
+			<TextField
+				id="remixers"
+				type="objects"
+				name="Remixers"
+				placeholder="Remixers"
+				list={values.remixers}
+				onItemAdd={handleRemixerAdd}
+				onItemRemove={handleRemixerRemove}
 			/>
 			<TextField
 				id="cover"
 				type="file"
 				name="cover"
 				multiple={false}
-				image={formik.values.cover}
+				image={values.cover}
 				onChange={handleCoverChange}
+				action={values.cover ? undefined : {
+					text: "Cover",
+					icon: "search",
+					url: `${searchURL}?q=${values.title.toLowerCase().replace(" ", "+")}+album+cover&tbm=isch`
+				}}
 			/>
 			<AlbumSongs onAddSong={handleSongAdd}>
 				{isEmpty(songs) ? (
