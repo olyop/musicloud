@@ -36,9 +36,11 @@ const BarHowler: VFC<PropTypes> =
 			navigator.mediaSession.setActionHandler("pause", noop)
 			navigator.mediaSession.setActionHandler("nexttrack", noop)
 			navigator.mediaSession.setActionHandler("previoustrack", noop)
-
-			console.log(navigator.mediaSession.metadata.title)
 		}, [songID])
+
+		useEffect(() => {
+			navigator.mediaSession.playbackState = "playing"
+		}, [])
 
 		return (
 			<Howler
