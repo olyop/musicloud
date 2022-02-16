@@ -50,7 +50,7 @@ export const useToggleObjectInLibrary =
 			useQuery<QueryData, typeof variables>(QUERY, {
 				variables,
 				hideLoading: true,
-				fetchPolicy: "cache-only",
+				fetchPolicy: "cache-first",
 			})
 
 		const inLibrary =

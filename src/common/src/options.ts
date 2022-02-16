@@ -1,11 +1,19 @@
 import { PoolConfig } from "pg"
 import { fastifyHelmet } from "fastify-helmet"
-import { FastifyServerOptions } from "fastify"
 import { FastifyCorsOptions } from "fastify-cors"
+import { FastifyLoggerOptions, FastifyServerOptions } from "fastify"
+
+const fastifyLogger: FastifyLoggerOptions = {
+	prettyPrint: {
+		translateTime: true,
+		ignore: "pid, hostname, reqId, responseTime, req, res",
+		messageFormat: "{msg} [id={reqId} {req.method} {req.url}]",
+	}
+}
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	connectionTimeout: 5 * 1000,
-	logger: process.env.NODE_ENV === "production",
+	logger: process.env.NODE_ENV === "production" && fastifyLogger,
 }
 
 export const PG_POOL_OPTIONS: PoolConfig = {
