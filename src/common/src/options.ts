@@ -9,7 +9,7 @@ export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 }
 
 export const PG_POOL_OPTIONS: PoolConfig = {
-	max: 30,
+	max: 60,
 	parseInputDatesAsUTC: true,
 	idleTimeoutMillis: 30 * 1000,
 	connectionTimeoutMillis: 5 * 1000,
