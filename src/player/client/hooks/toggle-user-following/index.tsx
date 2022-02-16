@@ -17,6 +17,7 @@ export const useToggleUserFollowing =
 		const { data } =
 			useQuery<GetUserFollowingData, UserID>(GET_USER_FOLLOWING, {
 				variables: { userID },
+				fetchPolicy: "cache-only",
 			})
 
 		const [ followUser ] =

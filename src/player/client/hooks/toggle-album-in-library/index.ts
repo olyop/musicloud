@@ -23,7 +23,7 @@ export const useToggleAlbumInLibrary =
 			useQuery<QueryData, AlbumID>(GET_ALBUM_IN_LIBRARY, {
 				variables,
 				hideLoading: true,
-				fetchPolicy: "cache-first",
+				fetchPolicy: "cache-only",
 			})
 
 		const [ addToLibrary, addResult ] =
