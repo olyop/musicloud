@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
-import { useEffect, useState, createElement, VFC, Fragment } from "react"
+import { useState, createElement, VFC, Fragment } from "react"
 
 import Song from "../song"
 import BarVolume from "./volume"
@@ -9,7 +9,6 @@ import BarHowler from "./howler"
 import Progress from "./progress"
 import BarControls from "./controls"
 import { useQuery } from "../../hooks"
-import setMetadata from "./set-metadata"
 import BarFullscreen from "./fullscreen"
 import { QueueNowPlaying } from "../../types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
@@ -31,12 +30,6 @@ const Bar: VFC = () => {
 
 	const handleExpandClose =
 		() => setExpand(false)
-
-	useEffect(() => {
-		if (data?.getQueue.nowPlaying) {
-			setMetadata(data.getQueue.nowPlaying)
-		}
-	}, [data])
 
 	return (
 		<footer className={bem("", "Elevated")}>
@@ -100,13 +93,11 @@ const Bar: VFC = () => {
 							onClick={handleExpandOpen}
 						/>
 					)}
-					{data?.getQueue.nowPlaying && (
-						<BarFullscreen
-							open={expand}
-							onClose={handleExpandClose}
-							song={data?.getQueue.nowPlaying}
-						/>
-					)}
+					<BarFullscreen
+						open={expand}
+						onClose={handleExpandClose}
+						song={data?.getQueue.nowPlaying}
+					/>
 					{data?.getQueue.nowPlaying && (
 						<BarHowler
 							song={data.getQueue.nowPlaying}

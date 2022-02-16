@@ -3,9 +3,6 @@ import { createElement, useEffect, FC, Fragment } from "react"
 import { SettingsTransitions } from "../../types"
 import { useStateGridChildWidth, useStateTransitions } from "../../redux"
 
-const reducedValue =
-	"0.1s"
-
 const determineTransitionDuration =
 	(transitions: SettingsTransitions): Parameters<CSSStyleDeclaration["setProperty"]>[1] => {
 		switch (transitions) {
@@ -16,10 +13,10 @@ const determineTransitionDuration =
 			case SettingsTransitions.DEFAULT:
 				return null
 			case SettingsTransitions.REDUCED:
-				return reducedValue
+				return "0.1s"
 			case SettingsTransitions.SYSTEM:
 				if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-					return reducedValue
+					return "0.1s"
 				} else {
 					return null
 				}

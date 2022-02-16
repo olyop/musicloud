@@ -15,6 +15,7 @@ interface ProcessEnv {
 	UPLOAD_SERVER_PORT: string,
 	UPLOAD_CLIENT_PORT: string,
 	ALGOLIA_INDEX_NAME: string,
+	AUTH0_CLIENT_SECRET: string,
 	AWS_SECRET_ACCESS_KEY: string,
 	ALGOLIA_ADMIN_API_KEY: string,
 	ALGOLIA_SEARCH_API_KEY: string,

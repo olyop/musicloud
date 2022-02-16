@@ -10,21 +10,18 @@ import {
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	PG_POOL_OPTIONS,
+	FASTIFY_SERVER_OPTIONS,
 } from "@oly_op/music-app-common/options"
 
-import {
-	SERVE_STATIC_OPTIONS,
-	APOLLO_REGISTRATION_OPTIONS,
-} from "./globals"
-
 import apollo from "./apollo"
-import serveClient from "./serve-client"
+import { serveClient } from "./plugins"
+import { SERVE_STATIC_OPTIONS, APOLLO_REGISTRATION_OPTIONS } from "./globals"
 
 const start =
 	async () => {
 		await apollo.start()
 		return (
-			fastify({ connectionTimeout: 5 * 1000 })
+			fastify(FASTIFY_SERVER_OPTIONS)
 				.register(postgres, PG_POOL_OPTIONS)
 				.register(helmet, HELMET_OPTIONS)
 				.register(cors, CORS_OPTIONS)

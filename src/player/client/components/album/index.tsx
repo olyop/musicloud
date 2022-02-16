@@ -75,6 +75,7 @@ const Album: VFC<PropTypes> = ({
 		header: {
 			text: (
 				<AlbumTitle
+					hideReleased
 					album={album}
 				/>
 			),
@@ -146,6 +147,7 @@ const Album: VFC<PropTypes> = ({
 				infoOptions={{
 					upperLeft: (
 						<AlbumTitle
+							hideReleased
 							album={album}
 						/>
 					),
@@ -157,7 +159,8 @@ const Album: VFC<PropTypes> = ({
 							}))}
 						/>
 					),
-					rightRight: hideReleased || !showReleased ? undefined : album.released,
+					rightRight:
+						hideReleased || !showReleased ? undefined : album.released,
 				}}
 			/>
 		) : (
@@ -194,21 +197,9 @@ const Album: VFC<PropTypes> = ({
 					}}
 					infoOptions={{
 						upperLeft: (
-							<Fragment>
-								<AlbumTitle
-									album={album}
-								/>
-								{showReleased && (
-									<span
-										className="LightWeight LightColor"
-										title={`${album.title} was released in ${album.released.slice(0, 4)}`}
-									>
-										<Fragment> (</Fragment>
-										{album.released.slice(0, 4)}
-										<Fragment>)</Fragment>
-									</span>
-								)}
-							</Fragment>
+							<AlbumTitle
+								album={album}
+							/>
 						),
 						lowerLeft: (
 							<ObjectLinks

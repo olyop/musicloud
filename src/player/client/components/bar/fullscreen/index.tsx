@@ -19,9 +19,9 @@ const bem =
 	createBEM("BarFullscreen")
 
 interface PropTypes {
-	song: Song,
 	open: boolean,
 	onClose: Handler,
+	song?: Song | null,
 }
 
 const BarFullscreen: VFC<PropTypes> = ({ open, song, onClose }) => {
@@ -46,51 +46,53 @@ const BarFullscreen: VFC<PropTypes> = ({ open, song, onClose }) => {
 				title="Close Player"
 				className={bem("close")}
 			/>
-			<div className={bem("content", "FlexColumn")}>
-				<img
-					alt={song.album.title}
-					crossOrigin="anonymous"
-					className={bem("content-cover", "Card")}
-					src={createCatalogImageURL(
-						song.album.albumID,
-						"cover",
-						ImageSizes.FULL,
-						ImageDimensions.SQUARE,
-					)}
-				/>
-				<div className="FlexColumnGapHalf">
-					<h1 className={bem("content-title", "content-text")}>
-						<SongTitle
-							noLink
-							song={song}
-							onClick={onClose}
-						/>
-					</h1>
-					<h3 className={bem("content-artists", "content-text")}>
-						<FeaturingArtists
-							song={song}
-							onClick={onClose}
-						/>
-					</h3>
-					<h2 className={bem("content-genres", "content-text")}>
-						<ObjectLinks
-							onClick={onClose}
-							links={song.genres.map(({ genreID, name }) => ({
-								text: name,
-								path: createObjectPath("genre", genreID),
-							}))}
-						/>
-					</h2>
+			{song && (
+				<div className={bem("content", "FlexColumn")}>
+					<img
+						alt={song.album.title}
+						crossOrigin="anonymous"
+						className={bem("content-cover", "Card")}
+						src={createCatalogImageURL(
+							song.album.albumID,
+							"cover",
+							ImageSizes.FULL,
+							ImageDimensions.SQUARE,
+						)}
+					/>
+					<div className="FlexColumnGapHalf">
+						<h1 className={bem("content-title", "content-text")}>
+							<SongTitle
+								noLink
+								song={song}
+								onClick={onClose}
+							/>
+						</h1>
+						<h3 className={bem("content-artists", "content-text")}>
+							<FeaturingArtists
+								song={song}
+								onClick={onClose}
+							/>
+						</h3>
+						<h2 className={bem("content-genres", "content-text")}>
+							<ObjectLinks
+								onClick={onClose}
+								links={song.genres.map(({ genreID, name }) => ({
+									text: name,
+									path: createObjectPath("genre", genreID),
+								}))}
+							/>
+						</h2>
+					</div>
+					<Progress
+						duration={song.duration}
+						className={bem("content-progress")}
+					/>
+					<BarControls
+						className={bem("content-controls")}
+						playButtonClassName={bem("content-controls-play")}
+					/>
 				</div>
-				<Progress
-					duration={song.duration}
-					className={bem("content-progress")}
-				/>
-				<BarControls
-					className={bem("content-controls")}
-					playButtonClassName={bem("content-controls-play")}
-				/>
-			</div>
+			)}
 		</Modal>
 	)
 }

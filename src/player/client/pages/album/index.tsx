@@ -72,6 +72,7 @@ const AlbumPage: VFC = () => {
 						<div className={bem("title", "MarginBottomHalf")}>
 							<h1 className="HeadingFour">
 								<AlbumTitle
+									hideReleased
 									album={data.getAlbumByID}
 								/>
 							</h1>

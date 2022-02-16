@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ALGOLIA_OPTIONS = exports.CORS_OPTIONS = exports.HELMET_OPTIONS = exports.PG_POOL_OPTIONS = void 0;
+exports.ALGOLIA_OPTIONS = exports.CORS_OPTIONS = exports.HELMET_OPTIONS = exports.PG_POOL_OPTIONS = exports.FASTIFY_SERVER_OPTIONS = void 0;
+exports.FASTIFY_SERVER_OPTIONS = {
+    connectionTimeout: 5 * 1000,
+};
 exports.PG_POOL_OPTIONS = {
     max: 30,
     parseInputDatesAsUTC: true,

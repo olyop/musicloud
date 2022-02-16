@@ -6,7 +6,7 @@
 	--progress-height: 15rem;
 	--button-dimesnion: 36rem;
 	--grid-child-width: unset;
-	--transition-duration: unset;
+	--transition-duration: 0.3s;
 	--content-image-width: 330rem;
 	--close-background-color: #000;
 	--close-background-opacity: 0.6;
@@ -29,9 +29,6 @@
 		--bar-height: calc(var(--bar-height-base) + var(--border-width) + var(--header-height)); }
 	@media (max-width: 400px) {
 		--modal-width: calc(100vw - 2 * var(--space-double)); } }
-
-span {
-	display: inline-block; }
 
 #Root {
 	background-color: var(--background-color); }

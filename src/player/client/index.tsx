@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom"
 import { createElement, FC, VFC } from "react"
 import { ApolloProvider } from "@apollo/client"
+import { Auth0Provider } from "@auth0/auth0-react"
 import { Provider as ReduxProvider } from "react-redux"
 import { TITLE } from "@oly_op/music-app-common/metadata"
 import { MetadataProvider } from "@oly_op/react-metadata"
@@ -16,6 +17,21 @@ import Sidebar from "./components/sidebar"
 import Authorization from "./pages/authorization"
 import ApplySettings from "./components/apply-settings"
 
+const Auth0: FC = ({ children }) => (
+	<Auth0Provider
+		children={children}
+		domain={process.env.AUTH0_DOMAIN}
+		redirectUri={window.location.origin}
+		clientId={process.env.AUTH0_CLIENT_ID}
+	/>
+)
+
+const Metadata: FC = ({ children }) => (
+	<MetadataProvider appTitle={TITLE}>
+		{children}
+	</MetadataProvider>
+)
+
 const ReactRedux: FC = ({ children }) => (
 	<ReduxProvider store={store}>
 		{children}
@@ -28,30 +44,26 @@ const ApolloClient: FC = ({ children }) => (
 	</ApolloProvider>
 )
 
-const Metadata: FC = ({ children }) => (
-	<MetadataProvider appTitle={TITLE}>
-		{children}
-	</MetadataProvider>
-)
-
 const Root: VFC = () => (
-	<Metadata>
-		<ReactRedux>
-			<ReactRouter>
-				<ApolloClient>
-					<ApplySettings>
-						<Loading/>
-						<Authorization>
-							<Sidebar/>
-							<Header/>
-							<Pages/>
-							<Bar/>
-						</Authorization>
-					</ApplySettings>
-				</ApolloClient>
-			</ReactRouter>
-		</ReactRedux>
-	</Metadata>
+	<Auth0>
+		<Metadata>
+			<ReactRedux>
+				<ReactRouter>
+					<ApolloClient>
+						<ApplySettings>
+							<Loading/>
+							<Authorization>
+								<Sidebar/>
+								<Header/>
+								<Pages/>
+								<Bar/>
+							</Authorization>
+						</ApplySettings>
+					</ApolloClient>
+				</ReactRouter>
+			</ReactRedux>
+		</Metadata>
+	</Auth0>
 )
 
 ReactDOM.render(

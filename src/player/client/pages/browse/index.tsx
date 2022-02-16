@@ -20,44 +20,45 @@ const BrowsePage: VFC = () => {
 	const { data } = useQuery<GetBrowsePageData>(GET_BROWSE_PAGE)
 	return (
 		<Metadata title="Home">
-			<div className="Content PaddingTopBottom">
-				<div className={bem("", "MarginBottom")}>
+			<div className="Content FlexColumnGap PaddingTopBottom">
+				<div className={bem("")}>
 					{data && (
 						<Fragment>
-							<div>
-								<h2 className="HeadingFive MarginBottomHalf">
-									Trending
-								</h2>
+							<div className={bem("trending", "FlexColumn")}>
 								<div className="FlexColumnGapHalf">
-									<div className="FlexColumnGapHalf">
-										<Albums
-											hideModal
-											alwaysList
-											hideInLibrary
-											orderBy={false}
-											albums={data.getTrendingAlbums}
-										/>
-										<Button
-											transparent
-											text="View All"
-											icon="arrow_forward"
-											style={{ alignSelf: "flex-start" }}
-										/>
-									</div>
-									<div className="FlexColumnGapHalf">
-										<Playlists
-											hideModal
-											hideInLibrary
-											orderBy={false}
-											playlists={data.getTrendingPlaylists}
-										/>
-										<Button
-											transparent
-											text="View All"
-											icon="arrow_forward"
-											style={{ alignSelf: "flex-start" }}
-										/>
-									</div>
+									<h2 className="HeadingFive">
+										Trending Albums
+									</h2>
+									<Albums
+										hideModal
+										alwaysList
+										hideInLibrary
+										orderBy={false}
+										albums={data.getTrendingAlbums}
+									/>
+									<Button
+										transparent
+										text="View All"
+										icon="arrow_forward"
+										style={{ alignSelf: "flex-start" }}
+									/>
+								</div>
+								<div className="FlexColumnGapHalf">
+									<h2 className="HeadingFive">
+										Trending Playlists
+									</h2>
+									<Playlists
+										hideModal
+										hideInLibrary
+										orderBy={false}
+										playlists={data.getTrendingPlaylists}
+									/>
+									<Button
+										transparent
+										text="View All"
+										icon="arrow_forward"
+										style={{ alignSelf: "flex-start" }}
+									/>
 								</div>
 							</div>
 							<div>

@@ -1,3 +1,4 @@
+import noop from "lodash-es/noop"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
 import { Song } from "../../types"
@@ -10,7 +11,7 @@ const formatItems =
 			items.pop()!
 	)
 
-const setMetadata =
+const setMediaSession =
 	(song: Song) => {
 		if ("mediaSession" in navigator) {
 			navigator.mediaSession.metadata = new MediaMetadata({
@@ -28,7 +29,11 @@ const setMetadata =
 					),
 				}],
 			})
+			navigator.mediaSession.setActionHandler("play", noop)
+			navigator.mediaSession.setActionHandler("pause", noop)
+			navigator.mediaSession.setActionHandler("nexttrack", noop)
+			navigator.mediaSession.setActionHandler("previoustrack", noop)
 		}
 	}
 
-export default setMetadata
+export default setMediaSession

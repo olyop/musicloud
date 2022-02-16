@@ -40,8 +40,10 @@
 			font-size: 20rem;
 			font-weight: 500; }
 		&-progress {
-			--progress-height: 30rem; }
+			@media (max-width: 700px) {
+				--progress-height: 30rem; } }
 		&-controls {
 			gap: var(--space-three-quart);
 			&-play {
-				--button-dimension: 80rem; } } } }
+				@media (max-width: 700px) {
+					--button-dimension: 80rem; } } } } }

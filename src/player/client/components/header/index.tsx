@@ -104,7 +104,7 @@ const Header: VFC = () => {
 						title="Offline"
 						icon="cloud_off"
 						className={bem("offline")}
-						spanClassName={bem("offline-span")}
+						iconTextClassName={bem("offline-span")}
 					/>
 				)}
 				<Button
