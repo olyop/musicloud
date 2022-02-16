@@ -5,6 +5,7 @@ import { FastifyCorsOptions } from "fastify-cors"
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	connectionTimeout: 5 * 1000,
+	logger: process.env.NODE_ENV === "production",
 }
 
 export const PG_POOL_OPTIONS: PoolConfig = {
