@@ -1,7 +1,7 @@
 type Play {
 	# base
 	playID: UUID!
-	dateCreated: Timestamp!
+	dateCreated: TimeStamp!
 
 	# relationships
 	user: User!

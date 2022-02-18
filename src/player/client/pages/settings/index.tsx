@@ -97,8 +97,8 @@ const SettingsPage: VFC = () => {
 								</p>
 								<Select
 									value={theme}
-									onChange={handleThemeChange}
 									className="BodyTwo"
+									onChange={handleThemeChange}
 									options={Object.keys(SettingsTheme)}
 								/>
 							</div>
@@ -108,8 +108,8 @@ const SettingsPage: VFC = () => {
 								</p>
 								<Select
 									value={listStyle}
-									onChange={handleListStyleChange}
 									className="BodyTwo"
+									onChange={handleListStyleChange}
 									options={Object.keys(SettingsListStyle)}
 								/>
 							</div>
@@ -119,8 +119,8 @@ const SettingsPage: VFC = () => {
 								</p>
 								<Select
 									value={transitions}
-									onChange={handleTransitionsChange}
 									className="BodyTwo"
+									onChange={handleTransitionsChange}
 									options={Object.keys(SettingsTransitions)}
 								/>
 							</div>

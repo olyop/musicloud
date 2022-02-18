@@ -44,7 +44,7 @@ export const privacy =
 export const dateCreated =
 	resolver(
 		({ parent }) => (
-			Promise.resolve(parent.dateCreated * 1000)
+			parent.dateCreated * 1000
 		),
 	)
 

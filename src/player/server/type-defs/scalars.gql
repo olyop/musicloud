@@ -1,8 +1,8 @@
 scalar JWT
-scalar Date
 scalar Void
+scalar Date
 scalar UUID
-scalar Timestamp
+scalar TimeStamp
 scalar PositiveInt
 scalar NonNegativeInt
 scalar NonEmptyString

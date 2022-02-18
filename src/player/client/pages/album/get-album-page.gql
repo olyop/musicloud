@@ -2,6 +2,7 @@ query getAlbumPage($albumID: UUID!) {
 	getAlbumByID(albumID: $albumID) {
 		albumID
 		title
+		duration
 		released
 		inLibrary
 		genres {

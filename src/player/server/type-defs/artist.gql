@@ -7,7 +7,7 @@ type Artist {
 
 	# library
 	inLibrary: Boolean!
-	dateAddedToLibrary: Timestamp
+	dateAddedToLibrary: Date
 
 	# user
 	userPlays: [Play!]!

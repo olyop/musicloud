@@ -1,7 +1,7 @@
-import ReactDOM from "react-dom"
-import { createElement, FC, VFC } from "react"
+import { render } from "react-dom"
 import { ApolloProvider } from "@apollo/client"
 import { Auth0Provider } from "@auth0/auth0-react"
+import { createElement, FC, StrictMode } from "react"
 import { Provider as ReduxProvider } from "react-redux"
 import { TITLE } from "@oly_op/music-app-common/metadata"
 import { MetadataProvider } from "@oly_op/react-metadata"
@@ -17,7 +17,7 @@ import Sidebar from "./components/sidebar"
 import Authorization from "./pages/authorization"
 import ApplySettings from "./components/apply-settings"
 
-const Auth0: FC = ({ children }) => (
+const Auth0Client: FC = ({ children }) => (
 	<Auth0Provider
 		children={children}
 		domain={process.env.AUTH0_DOMAIN}
@@ -44,30 +44,28 @@ const ApolloClient: FC = ({ children }) => (
 	</ApolloProvider>
 )
 
-const Root: VFC = () => (
-	<Auth0>
+render(
+	<StrictMode>
 		<Metadata>
-			<ReactRedux>
-				<ReactRouter>
-					<ApolloClient>
-						<ApplySettings>
-							<Loading/>
-							<Authorization>
-								<Sidebar/>
-								<Header/>
-								<Pages/>
-								<Bar/>
-							</Authorization>
-						</ApplySettings>
-					</ApolloClient>
-				</ReactRouter>
-			</ReactRedux>
+			<Auth0Client>
+				<ReactRedux>
+					<ReactRouter>
+						<ApolloClient>
+							<ApplySettings>
+								<Loading/>
+								<Authorization>
+									<Sidebar/>
+									<Header/>
+									<Pages/>
+									<Bar/>
+								</Authorization>
+							</ApplySettings>
+						</ApolloClient>
+					</ReactRouter>
+				</ReactRedux>
+			</Auth0Client>
 		</Metadata>
-	</Auth0>
-)
-
-ReactDOM.render(
-	<Root/>,
+	</StrictMode>,
 	document.getElementById("Root"),
 )
 

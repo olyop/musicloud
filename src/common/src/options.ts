@@ -3,17 +3,20 @@ import { fastifyHelmet } from "fastify-helmet"
 import { FastifyCorsOptions } from "fastify-cors"
 import { FastifyLoggerOptions, FastifyServerOptions } from "fastify"
 
+const IS_PROD =
+	process.env.NODE_ENV === "production"
+
 const fastifyLogger: FastifyLoggerOptions = {
 	prettyPrint: {
 		translateTime: true,
+		messageFormat: "{msg} [{req.method} {req.url}]",
 		ignore: "pid, hostname, reqId, responseTime, req, res",
-		messageFormat: "{msg} [id={reqId} {req.method} {req.url}]",
 	}
 }
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	connectionTimeout: 5 * 1000,
-	logger: process.env.NODE_ENV === "production" && fastifyLogger,
+	logger: IS_PROD && fastifyLogger,
 }
 
 export const PG_POOL_OPTIONS: PoolConfig = {
@@ -33,6 +36,8 @@ export const HELMET_OPTIONS: Parameters<typeof fastifyHelmet>[1] = {
 
 export const CORS_OPTIONS: FastifyCorsOptions = {
 	origin: "*",
+	maxAge: 60 * 60,
+	methods: ["GET", "POST"]
 }
 
 export const ALGOLIA_OPTIONS = [

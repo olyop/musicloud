@@ -24,7 +24,7 @@ type Song {
 
 	# library
 	inLibrary: Boolean!
-	dateAddedToLibrary: Timestamp
+	dateAddedToLibrary: TimeStamp
 	
 	# queue
 	queueIndex: NonNegativeInt
@@ -32,5 +32,5 @@ type Song {
 	# other
 	isInPlaylist(playlistID: UUID!): Boolean!
 	playlistIndex(playlistID: UUID!): NonNegativeInt
-	dateAddedToPlaylist(playlistID: UUID!): Timestamp
+	dateAddedToPlaylist(playlistID: UUID!): TimeStamp
 }

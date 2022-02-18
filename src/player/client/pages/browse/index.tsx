@@ -19,7 +19,7 @@ const bem =
 const BrowsePage: VFC = () => {
 	const { data } = useQuery<GetBrowsePageData>(GET_BROWSE_PAGE)
 	return (
-		<Metadata title="Home">
+		<Metadata>
 			<div className="Content FlexColumnGap PaddingTopBottom">
 				<div className={bem("")}>
 					{data && (

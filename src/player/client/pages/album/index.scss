@@ -8,10 +8,8 @@
 		grid-template-columns:
 			var(--content-image-width)
 			minmax(0, 1fr); }
-	&__cover,
 	&__content {
-		width: 100%;
-		height: auto; }
+		width: 100%; }
 	&__cover {
 		aspect-ratio: 1; }
 	&__title {

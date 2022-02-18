@@ -3,7 +3,7 @@ import { createElement, useEffect, FC, Fragment } from "react"
 import { SettingsTransitions } from "../../types"
 import { useStateGridChildWidth, useStateTransitions } from "../../redux"
 
-const determineTransitionDuration =
+const determineTransitionsDuration =
 	(transitions: SettingsTransitions): Parameters<CSSStyleDeclaration["setProperty"]>[1] => {
 		switch (transitions) {
 			case SettingsTransitions.ON:
@@ -32,7 +32,7 @@ const ApplySettings: FC = ({ children }) => {
 	useEffect(() => {
 		document.documentElement.style.setProperty(
 			"--transition-duration",
-			determineTransitionDuration(transitions),
+			determineTransitionsDuration(transitions),
 		)
 	}, [transitions])
 

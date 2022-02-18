@@ -5,8 +5,8 @@ type User {
 	isFollower: Boolean!
 	isFollowing: Boolean!
 	name: NonEmptyString!
+	dateJoined: TimeStamp!
 	playlists: [Playlist!]
-	dateJoined: Timestamp!
 	playsTotal: PositiveInt
 	playlistsTotal: PositiveInt
 	playlistsFilteredBySong(songID: UUID!): [Playlist!]

@@ -9,7 +9,8 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { isEmpty } from "lodash-es"
+import { head, isEmpty } from "lodash-es"
+import { ApolloError } from "apollo-server-fastify"
 import { ArtistID, UserID } from "@oly_op/music-app-common/types"
 
 import {
@@ -22,7 +23,6 @@ import {
 } from "../types"
 
 import {
-	head,
 	getObjectInLibrary,
 	getObjectDateAddedToLibrary,
 	determineSongsSQLOrderByField,
@@ -136,8 +136,14 @@ export const since =
 			query(context.pg)(SELECT_ARTIST_ALBUMS_ORDER_BY)({
 				parse: pipe(
 					convertTableToCamelCase<Album>(),
-					head(),
-					({ released }) => released,
+					head,
+					firstAlbum => {
+						if (firstAlbum) {
+							return firstAlbum.released
+						} else {
+							throw new ApolloError("Artist has no songs.")
+						}
+					},
 				),
 				variables: {
 					orderByDirection: "ASC",

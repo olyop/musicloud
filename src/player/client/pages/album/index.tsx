@@ -1,6 +1,6 @@
 import {
-	ImageSizes,
 	AlbumID,
+	ImageSizes,
 	ImageDimensions,
 } from "@oly_op/music-app-common/types"
 
@@ -60,7 +60,7 @@ const AlbumPage: VFC = () => {
 					<img
 						crossOrigin="anonymous"
 						alt={data.getAlbumByID.title}
-						className={bem("cover", "Elevated")}
+						className={bem("cover", "content", "Elevated")}
 						src={createCatalogImageURL(
 							data.getAlbumByID.albumID,
 							"cover",
@@ -68,62 +68,67 @@ const AlbumPage: VFC = () => {
 							ImageDimensions.SQUARE,
 						)}
 					/>
-					<div className={bem("content")}>
-						<div className={bem("title", "MarginBottomHalf")}>
-							<h1 className="HeadingFour">
-								<AlbumTitle
-									hideReleased
-									album={data.getAlbumByID}
+					<div className={bem("content", "FlexColumnGap")}>
+						<div>
+							<div className={bem("title", "MarginBottomHalf")}>
+								<h1 className="HeadingFour">
+									<AlbumTitle
+										hideReleased
+										album={data.getAlbumByID}
+									/>
+								</h1>
+								<AlbumPlayButton
+									albumID={albumID}
 								/>
-							</h1>
-							<AlbumPlayButton
-								albumID={albumID}
-							/>
+							</div>
+							<div className="FlexRowGapHalf MarginBottomThreeQuart">
+								{data.getAlbumByID.artists.map(
+									artist => (
+										<AlbumArtist
+											artist={artist}
+											key={artist.artistID}
+										/>
+									),
+								)}
+							</div>
+							<h3 className="BodyOne LightColor MarginBottomHalf LightWeight">
+								{data.getAlbumByID.released}
+							</h3>
+							<h3 className="BodyTwo LightColor LightWeight">
+								<ObjectLinks
+									links={data.getAlbumByID.genres.map(({ genreID, name }) => ({
+										text: name,
+										path: createObjectPath("genre", genreID),
+									}))}
+								/>
+							</h3>
 						</div>
-						<div className="FlexRowGapHalf MarginBottomThreeQuart">
-							{data.getAlbumByID.artists.map(
-								artist => (
-									<AlbumArtist
-										artist={artist}
-										key={artist.artistID}
-									/>
-								),
-							)}
-						</div>
-						<h3 className="BodyOne LightColor MarginBottomHalf LightWeight">
-							{data.getAlbumByID.released}
-						</h3>
-						<h3 className="BodyTwo MarginBottom LightColor LightWeight">
-							<ObjectLinks
-								links={data.getAlbumByID.genres.map(({ genreID, name }) => ({
-									text: name,
-									path: createObjectPath("genre", genreID),
-								}))}
-							/>
-						</h3>
-						<div className="MarginTopHalf">
-							{discs.map(
-								disc => (
-									<Disc
-										disc={disc}
-										key={disc.number}
-										className="MarginBottom"
-										isSingle={disc.songs.length === 1}
-									/>
-								),
-							)}
-							{discs.length > 1 && (
-								<p className="BodyTwo LightColor MarginTopQuart MarginBottom">
-									{discs.length > 1 && (
-										<Fragment>
-											{discs.length}
-											<Fragment> discs, </Fragment>
-										</Fragment>
-									)}
-									{data.getAlbumByID.songs.length}
-									<Fragment> songs</Fragment>
-								</p>
-							)}
+						{discs.map(
+							disc => (
+								<Disc
+									disc={disc}
+									key={disc.number}
+									isSingle={disc.songs.length === 1}
+								/>
+							),
+						)}
+						<div className="FlexColumnGapQuart">
+							<p className="BodyTwo LightColor">
+								{discs.length > 1 && (
+									<Fragment>
+										{discs.length}
+										<Fragment> discs, </Fragment>
+									</Fragment>
+								)}
+								{data.getAlbumByID.songs.length}
+								<Fragment> songs</Fragment>
+							</p>
+							<p className="BodyTwo LightColor">
+								{Math.floor(data.getAlbumByID.duration / 60)}
+								<Fragment> minutes, </Fragment>
+								{Math.floor(data.getAlbumByID.duration % 60)}
+								<Fragment> seconds</Fragment>
+							</p>
 						</div>
 						<Buttons>
 							<Button

@@ -88,19 +88,6 @@ export const duration =
 		),
 	)
 
-export const released =
-	resolver(
-		({ parent }) => (
-			Promise.resolve(
-				new Date(
-					parent.released.getFullYear(),
-					parent.released.getMonth() - 1,
-					parent.released.getDate() + 1,
-				),
-			)
-		),
-	)
-
 export const artists =
 	resolver(
 		({ parent, context }) => (

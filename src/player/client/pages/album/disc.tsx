@@ -28,7 +28,7 @@ const Disc: VFC<PropTypes> = ({
 interface PropTypes {
 	disc: DiscType,
 	isSingle: boolean,
-	className: string,
+	className?: string,
 }
 
 export default Disc
