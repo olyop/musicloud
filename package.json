@@ -66,7 +66,7 @@
 		"@oly_op/bem": "5.0.8",
 		"@oly_op/css-utilities": "2.0.68",
 		"@oly_op/graphql-create-resolver": "1.2.2",
-		"@oly_op/music-app-common": "6.9.22",
+		"@oly_op/music-app-common": "6.9.23",
 		"@oly_op/pg-helpers": "6.0.5",
 		"@oly_op/react-button": "4.6.9",
 		"@oly_op/react-image": "1.1.2",

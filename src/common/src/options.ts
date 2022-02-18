@@ -35,9 +35,17 @@ export const HELMET_OPTIONS: Parameters<typeof fastifyHelmet>[1] = {
 }
 
 export const CORS_OPTIONS: FastifyCorsOptions = {
-	origin: "*",
 	maxAge: 60 * 60,
-	methods: ["GET", "POST"]
+	origin: IS_PROD ? [
+		"https://musicloud-app.com",
+		"https://manage.auth0.com",
+	] : [
+		"http://127.0.0.1:3001",
+	],
+	methods: [
+		"GET",
+		"POST",
+	]
 }
 
 export const ALGOLIA_OPTIONS = [
