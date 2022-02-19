@@ -7,6 +7,8 @@ import {
 } from "react"
 
 import { createBEM } from "@oly_op/bem"
+import Button from "@oly_op/react-button"
+import isUndefined from "lodash-es/isUndefined"
 
 import { ClassNameBEMPropTypes } from "../../types"
 
@@ -17,6 +19,7 @@ const bem =
 
 const TextField: VFC<TextFieldPropTypes> = ({
 	name,
+	isValid,
 	fieldID,
 	onChange,
 	className,
@@ -70,6 +73,14 @@ const TextField: VFC<TextFieldPropTypes> = ({
 				style={{ borderRadius: focus ? "10rem" : undefined }}
 				{...inputPropTypes}
 			/>
+			{!isUndefined(isValid) && (
+				<Button
+					transparent
+					icon="check_circle"
+					className={bem("is-valid")}
+					iconClassName={bem("is-valid-icon")}
+				/>
+			)}
 		</div>
 	)
 }
@@ -86,6 +97,7 @@ export type TextFieldOnChange =
 
 export interface TextFieldPropTypes extends FieldID, ClassNameBEMPropTypes, InputPropTypes {
 	name: string,
+	isValid?: boolean,
 	onChange: TextFieldOnChange,
 }
 

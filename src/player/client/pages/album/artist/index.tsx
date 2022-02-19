@@ -16,11 +16,11 @@ const bem =
 	createBEM("AlbumArtist")
 
 const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
-	<h2 className="HeadingFive FlexRowGapQuart">
+	<h2 className={bem("", "HeadingFive FlexRow")}>
 		<img
 			alt={artist.name}
 			crossOrigin="anonymous"
-			className={bem("", "Elevated")}
+			className={bem("profile", "Elevated")}
 			src={createCatalogImageURL(
 				artist.artistID,
 				"profile",

@@ -5,6 +5,7 @@ import {
 	VoidResolver as Void,
 	TimestampResolver as TimeStamp,
 	PositiveIntResolver as PositiveInt,
+	EmailAddressResolver as EmailAddress,
 	NonNegativeIntResolver as NonNegativeInt,
 	NonEmptyStringResolver as NonEmptyString,
 } from "graphql-scalars"
@@ -39,6 +40,7 @@ const resolvers = {
 	Playlist,
 	TimeStamp,
 	PositiveInt,
+	EmailAddress,
 	NonNegativeInt,
 	NonEmptyString,
 }

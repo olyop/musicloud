@@ -1,14 +1,14 @@
 {
+	"lang": "en-US",
 	"name": "Musicloud",
-	"start_url": "/library",
 	"display": "fullscreen",
-	"theme_color": "#000000",
-	"short_name": "Musicloud",
+	"theme_color": "#ff5722",
 	"orientation": "portrait",
-	"background_color": "#ffffff",
+	"start_url": "/library/songs",
+	"background_color": "#fafafa",
 	"icons": [{
 		"sizes": "512x512",
-		"src": "/icon.png",
-		"type": "image/png"
+		"type": "image/png",
+		"src": "https://d3d3oicpqtadbw.cloudfront.net/icon.png"
 	}]
 }

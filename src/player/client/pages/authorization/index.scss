@@ -1,15 +1,13 @@
 .Authorization {
 	--footer-height: 60rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	padding-top: env(safe-area-inset-top);
 	padding-bottom: env(safe-area-inset-bottom);
 	&__main {
-		justify-content: center;
-		height: calc(100% - var(--footer-height));
-		&-content {
-			width: 355rem;
-			transition: var(--transition-duration) background-color; }
-		&-error {
-			color: #f44336; } }
+		width: 355rem;
+		transition: var(--transition-duration) background-color; }
 	&__footer {
 		width: 100%;
 		display: block;

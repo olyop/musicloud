@@ -26,8 +26,8 @@ export interface HandleInLibraryOptions
 	extends HandleInLibraryOptionsBase, TableNameOptions, ColumnNameOptions {
 	columnKey: string,
 	returnQuery: string,
-	columnNames:string[],
 	libraryTableName: string,
+	columnNames: readonly string[],
 }
 
 export const handleInLibrary =

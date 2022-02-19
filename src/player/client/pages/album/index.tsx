@@ -20,7 +20,7 @@ import Buttons from "../../components/buttons"
 import GET_ALBUM_PAGE from "./get-album-page.gql"
 import AlbumTitle from "../../components/album-title"
 import ObjectLinks from "../../components/object-links"
-import { createObjectPath, createCatalogImageURL } from "../../helpers"
+import { createObjectPath, createCatalogImageURL, determinePlural } from "../../helpers"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
 
 import "./index.scss"
@@ -112,24 +112,6 @@ const AlbumPage: VFC = () => {
 								/>
 							),
 						)}
-						<div className="FlexColumnGapQuart">
-							<p className="BodyTwo LightColor">
-								{discs.length > 1 && (
-									<Fragment>
-										{discs.length}
-										<Fragment> discs, </Fragment>
-									</Fragment>
-								)}
-								{data.getAlbumByID.songs.length}
-								<Fragment> songs</Fragment>
-							</p>
-							<p className="BodyTwo LightColor">
-								{Math.floor(data.getAlbumByID.duration / 60)}
-								<Fragment> minutes, </Fragment>
-								{Math.floor(data.getAlbumByID.duration % 60)}
-								<Fragment> seconds</Fragment>
-							</p>
-						</div>
 						<Buttons>
 							<Button
 								icon="shuffle"
@@ -156,6 +138,22 @@ const AlbumPage: VFC = () => {
 								text="Share"
 							/>
 						</Buttons>
+						<p className="BodyTwo LightColor">
+							{discs.length > 1 && (
+								<Fragment>
+									{discs.length}
+									<Fragment> discs, </Fragment>
+								</Fragment>
+							)}
+							{data.getAlbumByID.songs.length}
+							<Fragment> song</Fragment>
+							{determinePlural(data.getAlbumByID.songs.length)}
+							<Fragment>, </Fragment>
+							{Math.floor(data.getAlbumByID.duration / 60)}
+							<Fragment> minutes, </Fragment>
+							{Math.floor(data.getAlbumByID.duration % 60)}
+							<Fragment> seconds</Fragment>
+						</p>
 					</div>
 				</div>
 			</Metadata>

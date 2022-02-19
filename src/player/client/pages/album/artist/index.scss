@@ -1,6 +1,8 @@
 .AlbumArtist {
-	width: 26rem;
-	height: 26rem;
-	border-radius: 100%;
+	gap: calc(var(--space-quart) + 2rem);
+	&__profile {
+		width: 24rem;
+		height: 24rem;
+		border-radius: 100%; }
 	&__link {
 		margin-top: 2rem; } }

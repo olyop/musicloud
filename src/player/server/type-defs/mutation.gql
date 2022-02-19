@@ -3,8 +3,10 @@ type Mutation {
   deleteUser: Void
 	logIn(input: LogInInput!): JWT!
   followUser(userID: UUID!): User!
+	signUp(input: SignUpInput!): JWT!
   unFollowUser(userID: UUID!): User!
   changePassword(password: NonEmptyString!): Void
+  emailAddressExists(emailAddress: EmailAddress!): Boolean!
 
   # queue
   clearQueues: Queue!

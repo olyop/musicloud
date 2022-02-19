@@ -86,18 +86,18 @@ const Item: VFC<PropTypes> = ({
 								className={bem("img-link")}
 								children={(
 									<img
-										alt="temp"
 										src={imageOptions.url}
 										crossOrigin="anonymous"
+										alt={imageOptions.title}
 										className={bem("img", "Card")}
 									/>
 								)}
 							/>
 						) : (
 							<img
-								alt="temp"
 								src={imageOptions.url}
 								crossOrigin="anonymous"
+								alt={imageOptions.title}
 								className={bem("img-link", "img", "Card")}
 							/>
 						)}

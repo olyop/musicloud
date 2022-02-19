@@ -140,7 +140,7 @@ const Album: VFC<PropTypes> = ({
 					url: createCatalogImageURL(
 						album.albumID,
 						"cover",
-						ImageSizes.HALF,
+						ImageSizes.MINI,
 						ImageDimensions.SQUARE,
 					),
 				}}

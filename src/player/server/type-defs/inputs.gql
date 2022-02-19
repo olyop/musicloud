@@ -1,6 +1,12 @@
 input LogInInput {
-	userID: UUID!
 	password: NonEmptyString!
+	emailAddress: EmailAddress!
+}
+
+input SignUpInput {
+	name: NonEmptyString!
+	password: NonEmptyString!
+	emailAddress: EmailAddress!
 }
 
 input CreatePlaylistInput {

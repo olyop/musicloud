@@ -1,10 +1,9 @@
 import { render } from "react-dom"
 import { ApolloProvider } from "@apollo/client"
-import { Auth0Provider } from "@auth0/auth0-react"
-import { createElement, FC, StrictMode } from "react"
 import { Provider as ReduxProvider } from "react-redux"
 import { TITLE } from "@oly_op/music-app-common/metadata"
 import { MetadataProvider } from "@oly_op/react-metadata"
+import { createElement, FC, StrictMode, VFC } from "react"
 import { BrowserRouter as ReactRouter } from "react-router-dom"
 
 import Pages from "./pages"
@@ -16,15 +15,6 @@ import Loading from "./components/loading"
 import Sidebar from "./components/sidebar"
 import Authorization from "./pages/authorization"
 import ApplySettings from "./components/apply-settings"
-
-const Auth0Client: FC = ({ children }) => (
-	<Auth0Provider
-		children={children}
-		domain={process.env.AUTH0_DOMAIN}
-		redirectUri={window.location.origin}
-		clientId={process.env.AUTH0_CLIENT_ID}
-	/>
-)
 
 const Metadata: FC = ({ children }) => (
 	<MetadataProvider appTitle={TITLE}>
@@ -44,35 +34,44 @@ const ApolloClient: FC = ({ children }) => (
 	</ApolloProvider>
 )
 
-render(
+const Application: VFC = () => (
 	<StrictMode>
-		<Metadata>
-			<Auth0Client>
-				<ReactRedux>
-					<ReactRouter>
-						<ApolloClient>
-							<ApplySettings>
-								<Loading/>
-								<Authorization>
-									<Sidebar/>
-									<Header/>
-									<Pages/>
-									<Bar/>
-								</Authorization>
-							</ApplySettings>
-						</ApolloClient>
-					</ReactRouter>
-				</ReactRedux>
-			</Auth0Client>
-		</Metadata>
-	</StrictMode>,
+		<Loading/>
+		<Sidebar/>
+		<Header/>
+		<Pages/>
+		<Bar/>
+	</StrictMode>
+)
+
+const Root: VFC = () => (
+	<Metadata>
+		<ReactRedux>
+			<ReactRouter>
+				<ApolloClient>
+					<ApplySettings>
+						<Authorization>
+							<Application/>
+						</Authorization>
+					</ApplySettings>
+				</ApolloClient>
+			</ReactRouter>
+		</ReactRedux>
+	</Metadata>
+)
+
+render(
+	<Root/>,
 	document.getElementById("Root"),
 )
 
 if (process.env.SERVICE_WORKER === "true") {
 	if ("serviceWorker" in navigator) {
-		window.addEventListener("load", () => {
-			void navigator.serviceWorker.register("/service-worker.js")
-		})
+		window.addEventListener(
+			"load",
+			() => {
+				void navigator.serviceWorker.register("/service-worker.js")
+			},
+		)
 	}
 }

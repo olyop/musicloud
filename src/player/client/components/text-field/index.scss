@@ -23,6 +23,8 @@
 		text-transform: uppercase;
 		background-color: var(--elevated-color);
 		transition: var(--transition-duration) color; }
+	&:hover &__label {
+		color: var(--primary-color); }
 	&__input {
 		width: 100%;
 		outline: none;
@@ -33,5 +35,12 @@
 		background-color: var(--elevated-color);
 		transition: var(--transition-duration) border-color;
 		transition: var(--transition-duration) border-radius; }
-	&:hover &__label {
-		color: var(--primary-color); } }
+	&__is-valid {
+		top: 50%;
+		position: absolute;
+		right: var(--space-half);
+		transform: translateY(-50%);
+		&:hover {
+			background-color: transparent; }
+		&-icon {
+			color: #4caf50 !important; } } }
