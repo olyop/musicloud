@@ -15,6 +15,7 @@ const fastifyLogger: FastifyLoggerOptions = {
 }
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
+	bodyLimit: 20971520,
 	connectionTimeout: 5 * 1000,
 	logger: IS_PROD && fastifyLogger,
 }

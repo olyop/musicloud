@@ -21,7 +21,7 @@ const generateJWT =
 	(payload: JWTPayload) =>
 		signer(payload)
 
-const createJWT =
+export const createJWT =
 	(ag: SearchClient) =>
 		({ userID, name }: UserIDNameBase) =>
 			generateJWT({
@@ -29,5 +29,3 @@ const createJWT =
 				userID,
 				algoliaKey: createAlgoliaAPIKey(ag)({ userID }),
 			})
-
-export default createJWT

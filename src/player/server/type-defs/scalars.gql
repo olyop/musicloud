@@ -2,6 +2,7 @@ scalar JWT
 scalar Void
 scalar Date
 scalar UUID
+scalar Upload
 scalar TimeStamp
 scalar PositiveInt
 scalar EmailAddress

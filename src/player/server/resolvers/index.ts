@@ -10,6 +10,8 @@ import {
 	NonEmptyStringResolver as NonEmptyString,
 } from "graphql-scalars"
 
+import { GraphQLUpload as Upload } from "graphql-upload"
+
 import * as Play from "./play"
 import * as User from "./user"
 import * as Song from "./song"
@@ -34,6 +36,7 @@ const resolvers = {
 	Query,
 	Genre,
 	Album,
+	Upload,
 	Artist,
 	Library,
 	Mutation,

@@ -1,5 +1,6 @@
 export * from "./lodash"
 export * from "./get-queue"
+export * from "./create-jwt"
 export * from "./get-objects"
 export * from "./clear-queue"
 export * from "./get-top-songs"

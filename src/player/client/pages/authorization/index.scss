@@ -7,7 +7,12 @@
 	padding-bottom: env(safe-area-inset-bottom);
 	&__main {
 		width: 355rem;
-		transition: var(--transition-duration) background-color; }
+		transition: var(--transition-duration) background-color;
+		&-header {
+			justify-content: flex-start;
+			&-back {
+				--button-dimension: 34rem;
+				margin-left: -7rem; } } }
 	&__footer {
 		width: 100%;
 		display: block;

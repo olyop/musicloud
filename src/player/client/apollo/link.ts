@@ -1,12 +1,13 @@
+import { from } from "@apollo/client"
 import { head, isNull } from "lodash-es"
-import { from, HttpLink } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
+import { createUploadLink } from "apollo-upload-client"
 import { setContext } from "@apollo/client/link/context"
 
 import { store, updateAccessToken } from "../redux"
 
-const httpLink =
-	new HttpLink()
+const uploadLink =
+	createUploadLink()
 
 const authLink =
 	setContext(
@@ -43,7 +44,7 @@ const link =
 	from([
 		authLink,
 		checkForAuthErrorLink,
-		httpLink,
+		uploadLink,
 	])
 
 export default link

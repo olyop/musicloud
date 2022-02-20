@@ -7,12 +7,13 @@ import {
 } from "react"
 
 import Button from "@oly_op/react-button"
+import isString from "lodash-es/isString"
 import { useMutation } from "@apollo/client"
 import { UserEmailAddress } from "@oly_op/music-app-common/types"
 
 import isEmailAddress from "./is-email-address"
 import EMAIL_ADDRESS_EXISTS from "./email-address-exists.gql"
-import TextField, { TextFieldOnChange } from "../../components/text-field"
+import Input, { InputOnChange } from "../../components/input"
 
 const AuthorizationEmailAddressForm: VFC<PropTypes> = ({
 	emailAddress,
@@ -25,10 +26,12 @@ const AuthorizationEmailAddressForm: VFC<PropTypes> = ({
 	const [ emailAddressExists ] =
 		useMutation<Data, UserEmailAddress>(EMAIL_ADDRESS_EXISTS)
 
-	const handleChange: TextFieldOnChange =
+	const handleChange: InputOnChange =
 		value => {
-			setIsValid(isEmailAddress(value))
-			onEmailAddressChange(value)
+			if (isString(value)) {
+				setIsValid(isEmailAddress(value))
+				onEmailAddressChange(value)
+			}
 		}
 
 	const handleSubmit: FormEventHandler =
@@ -50,20 +53,20 @@ const AuthorizationEmailAddressForm: VFC<PropTypes> = ({
 
 	return (
 		<form onSubmit={handleSubmit} className="FlexColumnGap">
-			<TextField
+			<Input
 				name="Email"
 				tabIndex={0}
 				autoComplete="email"
 				value={emailAddress}
-				fieldID="emailAddress"
+				inputID="emailAddress"
 				onChange={handleChange}
-				isValid={isValid || undefined}
 				placeholder="example@example.com"
 			/>
 			<Button
 				text="Next"
 				type="submit"
-				icon="arrow_forward"
+				disabled={!isValid}
+				rightIcon="arrow_forward"
 			/>
 		</form>
 	)
@@ -78,7 +81,7 @@ export type EmailAddressFormOnExists =
 
 interface PropTypes {
 	emailAddress: string,
-	onEmailAddressChange: TextFieldOnChange,
+	onEmailAddressChange: InputOnChange,
 	onEmailAddressExists: EmailAddressFormOnExists,
 }
 

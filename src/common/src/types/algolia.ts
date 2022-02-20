@@ -34,7 +34,7 @@ export interface AlgoliaRecordPlays {
 export interface AlgoliaRecordUser
 	extends
 	AlgoliaRecordImage,
-	Pick<UserBase, "name">,
+	Pick<UserBase, "name" | "emailAddress">,
 	AlgoliaRecordBase<"User"> {
 	followers: number,
 }

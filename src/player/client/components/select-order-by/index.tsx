@@ -60,7 +60,6 @@ const SelectOrderBy: VFC<PropTypes> = ({
 				onChange={handleChange("field")}
 			/>
 			<Select
-				className={bem("")}
 				value={state.direction}
 				onChange={handleChange("direction")}
 				options={Object.keys(OrderByDirection)}

@@ -3,9 +3,9 @@ import { InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "../resolver"
-import createJWT from "./create-jwt"
 import { User } from "../../../types"
 import userExists from "./user-exists"
+import { createJWT } from "../../helpers"
 import isPasswordCorrect from "./is-password-correct"
 import { SELECT_USER_NAME_PASSWORD } from "../../../sql"
 

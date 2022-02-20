@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import startCase from "lodash-es/startCase"
-import { createElement, VFC, ChangeEventHandler } from "react"
+import { createElement, VFC, ChangeEventHandler, SelectHTMLAttributes } from "react"
 
 import { ClassNameBEMPropTypes, HandlerReturn } from "../../types"
 
@@ -9,13 +9,19 @@ import "./index.scss"
 const bem =
 	createBEM("Select")
 
-const Select: VFC<PropTypes> = ({ value, options, onChange, className }) => {
+const Select: VFC<PropTypes> = ({
+	value,
+	options,
+	onChange,
+	tabIndex,
+	className,
+}) => {
 	const handleChange: ChangeEventHandler<HTMLSelectElement> =
-		async event =>
-			onChange(event.target.value)
+		async event => onChange(event.target.value)
 	return (
 		<select
 			value={value}
+			tabIndex={tabIndex}
 			onChange={handleChange}
 			className={bem(className, "", "BodyTwo Border Rounded PaddingFifth")}
 		>
@@ -35,7 +41,10 @@ const Select: VFC<PropTypes> = ({ value, options, onChange, className }) => {
 export type SelectOnChange =
 	(value: string) => HandlerReturn
 
-interface PropTypes extends ClassNameBEMPropTypes {
+interface PropTypes
+	extends
+	ClassNameBEMPropTypes,
+	Pick<SelectHTMLAttributes<HTMLSelectElement>, "tabIndex"> {
 	value: string,
 	options: string[],
 	onChange: SelectOnChange,

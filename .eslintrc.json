@@ -2,5 +2,8 @@
 	"extends": "@oly_op",
 	"parserOptions": {
 		"project": "./tsconfig.eslint.json"
+	},
+	"rules": {
+		"jsx-a11y/tabindex-no-positive": "off"
 	}
 }

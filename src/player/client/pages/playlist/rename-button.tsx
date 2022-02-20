@@ -3,8 +3,8 @@ import { createElement, Fragment, useState, VFC } from "react"
 
 import { Playlist } from "../../types"
 import Modal from "../../components/modal"
-import TextField from "../../components/text-field"
 import { useUpdatePlaylistTitle } from "../../hooks"
+import Input, { InputOnChange } from "../../components/input"
 
 const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
 	const { playlistID } = playlist
@@ -20,9 +20,8 @@ const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
 	const handleModalClose =
 		() => setModal(false)
 
-	const handleChange =
-		(value: string) =>
-			setTitle(value)
+	const handleChange: InputOnChange =
+		value => setTitle(value)
 
 	const handleSubmit =
 		async () => {
@@ -43,17 +42,19 @@ const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
 						<h1 className="HeadingFive MarginBottom">
 							Rename
 						</h1>
-						<TextField
+						<Input
 							name="Title"
+							tabIndex={1}
 							value={title}
 							placeholder="Title"
 							onChange={handleChange}
 							className="MarginBottom"
-							fieldID="addToPlaylistTitle"
+							inputID="addToPlaylistTitle"
 						/>
 						<div className="FlexRowGapHalf">
 							<Button
 								icon="edit"
+								tabIndex={2}
 								text="Rename"
 								onClick={handleSubmit}
 							/>
@@ -61,6 +62,7 @@ const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
 								transparent
 								icon="close"
 								text="Close"
+								tabIndex={3}
 								onClick={onClose}
 							/>
 						</div>

@@ -6,7 +6,7 @@ import { PlaylistPrivacy } from "@oly_op/music-app-common/types"
 import { Handler } from "../../types"
 import Select from "../../components/select"
 import { useCreatePlaylist } from "../../hooks"
-import TextField, { TextFieldOnChange } from "../../components/text-field"
+import Input, { InputOnChange } from "../../components/input"
 
 const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 	const [ title, setTitle ] = useState("")
@@ -15,7 +15,7 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 	const [ createPlaylist ] =
 		useCreatePlaylist()
 
-	const handleTitleChange: TextFieldOnChange =
+	const handleTitleChange: InputOnChange =
 		value => setTitle(value)
 
 	const handleSetPrivacyChange =
@@ -36,12 +36,13 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 			<h1 className="HeadingFive MarginBottom">
 				Create Playlist
 			</h1>
-			<TextField
+			<Input
 				name="Title"
+				tabIndex={1}
 				value={title}
 				placeholder="Title"
 				onChange={handleTitleChange}
-				fieldID="addToPlaylistTitle"
+				inputID="addToPlaylistTitle"
 				className="MarginBottomThreeQuart"
 			/>
 			<div className="MarginBottom FlexColumnGapFifth">
@@ -49,6 +50,7 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 					Privacy:
 				</p>
 				<Select
+					tabIndex={2}
 					value={privacy}
 					onChange={handleSetPrivacyChange}
 					className="BodyTwo MarginRightQuart"
@@ -58,6 +60,7 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 			<div className="FlexRowGapHalf">
 				<Button
 					icon="add"
+					tabIndex={3}
 					text="Create"
 					onClick={handleSubmit}
 				/>
@@ -65,6 +68,7 @@ const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
 					transparent
 					icon="close"
 					text="Close"
+					tabIndex={4}
 					onClick={onClose}
 				/>
 			</div>
