@@ -1,17 +1,11 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
-import { createElement, VFC, useEffect } from "react"
+import { createElement, VFC } from "react"
 
-import {
-	useDispatch,
-	toggleSidebar,
-	updateIsOnline,
-	useStateIsOnline,
-} from "../../redux"
-
-import checkOnlineStatus from "./check-online-status"
-import HeaderAccountButton from "./account-button"
+import OfflineButton from "./offline-button"
+import AccountButton from "./account-button"
+import { useDispatch, toggleSidebar } from "../../redux"
 
 import "./index.scss"
 
@@ -20,34 +14,11 @@ const bem =
 
 const Header: VFC = () => {
 	const dispatch = useDispatch()
-	const isOnline = useStateIsOnline()
-
-	const checkStatus =
-		async () =>
-			dispatch(updateIsOnline(await checkOnlineStatus()))
 
 	const handleMenuClick =
 		() => {
 			dispatch(toggleSidebar())
 		}
-
-	useEffect(() => {
-		window.addEventListener("offline", () => {
-			dispatch(updateIsOnline(false))
-		})
-
-		const id =
-			setInterval(() => {
-				void checkStatus()
-			}, 20000)
-
-		return () => {
-			window.removeEventListener("offline", () => {
-				dispatch(updateIsOnline(false))
-			})
-			clearInterval(id)
-		}
-	}, [])
 
 	return (
 		<header className={bem("", "Elevated FlexRowSpaceBetween")}>
@@ -68,16 +39,8 @@ const Header: VFC = () => {
 						/>
 					)}
 				</NavLink>
-				{isOnline || (
-					<Button
-						transparent
-						title="Offline"
-						icon="cloud_off"
-						className={bem("offline")}
-						iconTextClassName={bem("offline-span")}
-					/>
-				)}
-				<HeaderAccountButton/>
+				<OfflineButton/>
+				<AccountButton/>
 			</div>
 		</header>
 	)
