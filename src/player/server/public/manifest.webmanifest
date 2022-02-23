@@ -7,8 +7,8 @@
 	"start_url": "/library/songs",
 	"background_color": "#fafafa",
 	"icons": [{
+		"src": "/icon.png",
 		"sizes": "512x512",
-		"type": "image/png",
-		"src": "https://d3d3oicpqtadbw.cloudfront.net/icon.png"
+		"type": "image/png"
 	}]
 }
