@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 import { registerRoute } from "workbox-routing"
-import { offlineFallback } from "workbox-recipes"
+// import { offlineFallback } from "workbox-recipes"
 import { precacheAndRoute } from "workbox-precaching"
 import { RangeRequestsPlugin } from "workbox-range-requests"
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies"
@@ -17,9 +17,9 @@ precacheAndRoute(self.__WB_MANIFEST)
 // @ts-ignore
 self.__WB_DISABLE_DEV_LOGS = true
 
-offlineFallback({
-	pageFallback: "index.html",
-})
+// offlineFallback({
+// 	pageFallback: "index.html",
+// })
 
 // registerRoute(
 // 	({ url }) =>
