@@ -21,17 +21,17 @@ offlineFallback({
 	pageFallback: "index.html",
 })
 
-registerRoute(
-	({ url }) =>
-		url.origin === "https://fonts.googleapis.com",
-	new StaleWhileRevalidate()
-)
+// registerRoute(
+// 	({ url }) =>
+// 		url.origin === "https://fonts.googleapis.com",
+// 	new StaleWhileRevalidate()
+// )
 
-registerRoute(
-	({ url }) =>
-		url.origin === "https://fonts.gstatic.com",
-	new CacheFirst()
-)
+// registerRoute(
+// 	({ url }) =>
+// 		url.origin === "https://fonts.gstatic.com",
+// 	new CacheFirst()
+// )
 
 registerRoute(
 	({ request }) =>
