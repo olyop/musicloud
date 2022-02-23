@@ -1,64 +1,34 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
-import { useApolloClient } from "@apollo/client"
-import { uniqueId as uniqueID } from "lodash-es"
-import { createElement, VFC, useEffect, useState } from "react"
-import { ImageSizes, ImageDimensions } from "@oly_op/music-app-common/types"
+import { createElement, VFC, useEffect } from "react"
 
 import {
-	addLoading,
 	useDispatch,
-	removeLoading,
 	toggleSidebar,
 	updateIsOnline,
 	useStateIsOnline,
 } from "../../redux"
 
-import Modal from "../modal"
 import checkOnlineStatus from "./check-online-status"
-import { useSignOut, useJWTPayload } from "../../hooks"
-import { createCatalogImageURL, createObjectPath } from "../../helpers"
+import HeaderAccountButton from "./account-button"
 
 import "./index.scss"
-
-const loadingID =
-	uniqueID()
 
 const bem =
 	createBEM("Header")
 
 const Header: VFC = () => {
-	const signOut = useSignOut()
 	const dispatch = useDispatch()
-	const client = useApolloClient()
 	const isOnline = useStateIsOnline()
-	const { userID, name } = useJWTPayload()
 
 	const checkStatus =
 		async () =>
 			dispatch(updateIsOnline(await checkOnlineStatus()))
 
-	const [ accountModal, setAccountModal ] =
-		useState(false)
-
 	const handleMenuClick =
 		() => {
 			dispatch(toggleSidebar())
-		}
-
-	const handleAccountModalOpen =
-		() => setAccountModal(true)
-
-	const handleAccountModalClose =
-		() => setAccountModal(false)
-
-	const handleRefresh =
-		async () => {
-			dispatch(addLoading(loadingID))
-			handleAccountModalClose()
-			await client.refetchQueries({ include: "all" })
-			dispatch(removeLoading(loadingID))
 		}
 
 	useEffect(() => {
@@ -107,78 +77,7 @@ const Header: VFC = () => {
 						iconTextClassName={bem("offline-span")}
 					/>
 				)}
-				<Button
-					transparent
-					text="Account"
-					className="Border"
-					rightIcon="expand_more"
-					onClick={handleAccountModalOpen}
-					imageClassName={bem("account-button")}
-					image={{
-						description: name,
-						src: createCatalogImageURL(
-							userID,
-							"profile",
-							ImageSizes.MINI,
-							ImageDimensions.SQUARE,
-						),
-					}}
-				/>
-				<Modal
-					open={accountModal}
-					onClose={handleAccountModalClose}
-					contentClassName={bem("account-modal-content", "FlexColumn Border")}
-				>
-					<NavLink
-						onClick={handleAccountModalClose}
-						to={createObjectPath("user", userID)}
-						children={(
-							<Button
-								transparent
-								text="Account"
-								title="Account"
-								rightIcon="arrow_forward"
-								className={bem("account-modal-content-button")}
-								imageClassName={bem("account-modal-content-button-image")}
-								image={{
-									description: name,
-									src: createCatalogImageURL(
-										userID,
-										"profile",
-										ImageSizes.MINI,
-										ImageDimensions.SQUARE,
-									),
-								}}
-							/>
-						)}
-					/>
-					<Button
-						transparent
-						icon="refresh"
-						text="Refresh"
-						onClick={handleRefresh}
-						className={bem("account-modal-content-button")}
-					/>
-					<NavLink
-						to="/settings"
-						onClick={handleAccountModalClose}
-						children={(
-							<Button
-								transparent
-								icon="settings"
-								text="Settings"
-								className={bem("account-modal-content-button")}
-							/>
-						)}
-					/>
-					<Button
-						transparent
-						text="Logout"
-						onClick={signOut}
-						icon="exit_to_app"
-						className={bem("account-modal-content-button")}
-					/>
-				</Modal>
+				<HeaderAccountButton/>
 			</div>
 		</header>
 	)

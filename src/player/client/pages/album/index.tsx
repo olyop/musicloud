@@ -53,7 +53,16 @@ const AlbumPage: VFC = () => {
 			</h2>
 		)
 	} else if (data) {
-		const discs = createDiscs(data.getAlbumByID.songs)
+		const discs =
+			createDiscs(data.getAlbumByID.songs)
+
+		const handleShare =
+			() =>
+				navigator.share({
+					title: data?.getAlbumByID.title,
+					url: createObjectPath("album", albumID),
+				})
+
 		return (
 			<Metadata title={data.getAlbumByID.title}>
 				<div className={bem("", "Content PaddingTopBottom")}>
@@ -136,6 +145,7 @@ const AlbumPage: VFC = () => {
 							<Button
 								icon="share"
 								text="Share"
+								onClick={handleShare}
 							/>
 						</Buttons>
 						<p className="BodyTwo LightColor">

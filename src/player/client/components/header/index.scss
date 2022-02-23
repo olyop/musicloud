@@ -20,11 +20,11 @@
 		&-span {
 			color: var(--color) !important; } }
 	&__account {
-		&-button {
+		&-button-image {
 			border-radius: 100%; }
 		&-modal {
 			&-content {
-				--width: 131rem;
+				--width: 133rem;
 				left: unset;
 				transform: none;
 				right: calc(var(--space-half));
@@ -33,6 +33,4 @@
 				&-button {
 					width: 100%;
 					border-radius: 0;
-					justify-content: flex-start;
-					&-image {
-						margin-left: -2rem; } } } } } }
+					justify-content: flex-start; } } } } }

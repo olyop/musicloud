@@ -42,8 +42,11 @@ store.subscribe(() => {
 	}
 })
 
+export const { dispatch } =
+	store
+
 export type Dispatch =
-	typeof store.dispatch
+	typeof dispatch
 
 export const useDispatch =
 	() => baseUseDispatch<Dispatch>()

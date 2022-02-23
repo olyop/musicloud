@@ -134,7 +134,7 @@ const LibrarySettings: VFC = () => {
 			<Modal open={deleteLibraryModal} onClose={handleDeleteLibraryModalClose}>
 				<ModalButtons>
 					<ModalHeader
-						hideShareButton
+						hideShare
 						text={(
 							<Fragment>
 								Are you sure you want

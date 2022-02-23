@@ -1,6 +1,6 @@
 import sharp, { ResizeOptions } from "sharp"
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 import { NAME } from "@oly_op/music-app-common/metadata"
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
 import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/music-app-common/types"
 
 import { ImageInput } from "./types"

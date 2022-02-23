@@ -1,12 +1,10 @@
 INSERT INTO users (
 	name,
-	email,
 	password,
-	emailAddress
+	email_address
 ) VALUES (
 	{{ name }},
-	{{ email }},
 	{{ password }},
 	{{ emailAddress }}
 ) RETURNING
-	user_id;
+	{{ columnNames }};

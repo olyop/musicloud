@@ -133,6 +133,10 @@ const PlaylistPage: VFC = () => {
 						<Button
 							icon="share"
 							text="Share"
+							onClick={() => navigator.share({
+								title: data.getPlaylistByID.title,
+								url: createObjectPath("playlist", data.getPlaylistByID.playlistID),
+							})}
 						/>
 					</Buttons>
 					{isUsers && (

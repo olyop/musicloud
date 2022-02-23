@@ -62,6 +62,10 @@ const Artist: VFC<PropTypes> = ({
 
 	const modalOptions: ModalOptionsWithFunction = onClose => ({
 		header: {
+			shareData: {
+				title: artist.name,
+				url: createObjectPath("artist", artist.artistID),
+			},
 			text: (
 				<ObjectLink
 					link={{

@@ -24,7 +24,10 @@ const AlbumTitle: VFC<PropTypes> = ({
 		<Fragment>
 			<ObjectLink
 				onClick={onClick}
-				link={{ text: title, path: createObjectPath("album", albumID) }}
+				link={{
+					text: title,
+					path: createObjectPath("album", albumID),
+				}}
 			/>
 			{isEmpty(remixers) ? null : (
 				<Fragment>

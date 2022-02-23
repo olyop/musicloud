@@ -13,9 +13,12 @@ export interface ContextAlgolia {
 	client: SearchClient,
 }
 
+export type ContextAuthorization =
+	JWTPayload | undefined | null
+
 export interface Context {
 	pg: Pool,
 	s3: S3Client,
 	ag: ContextAlgolia,
-	authorization: JWTPayload | undefined | null,
+	authorization: ContextAuthorization,
 }

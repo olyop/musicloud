@@ -13,7 +13,6 @@
 		"src/common/src/types/other.ts",
 		"src/common/src/types/enums.ts",
 		"src/common/src/types/objects.ts",
-		"src/common/src/deserialize-duration.ts",
-		"src/common/src/fastify-listen-callback.ts"
+		"src/common/src/deserialize-duration.ts"
 	]
 }

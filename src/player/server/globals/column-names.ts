@@ -42,8 +42,7 @@ const SONG = [
 
 const USER = [
 	"user_id",
-	"last_name",
-	"first_name",
+	"name",
 	"date_joined",
 	"email_address",
 ] as const

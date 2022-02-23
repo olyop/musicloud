@@ -204,6 +204,10 @@ const Song: VFC<PropTypes> = ({
 			}}
 			modalOptions={hideModal ? undefined : onClose => ({
 				header: {
+					shareData: {
+						title: song.title,
+						url: createObjectPath("song", songID),
+					},
 					text: (
 						<SongTitle
 							noLink

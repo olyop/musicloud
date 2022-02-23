@@ -10,15 +10,13 @@ interface Args {
 
 export const changePassword =
 	resolver<void, Args>(
-		async ({ args, context }) => {
-			// dummmy resolver
-			console.log(args.password)
-			await query(context.pg)(UPDATE_USER_PASSWORD)({
+		async ({ context }) => (
+			query(context.pg)(UPDATE_USER_PASSWORD)({
 				variables: {
 					password: "password",
 					// password: args.password,
 					userID: context.authorization!.userID,
 				},
 			})
-		},
+		),
 	)

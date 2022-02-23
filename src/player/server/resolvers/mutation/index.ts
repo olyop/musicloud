@@ -1,4 +1,5 @@
 export * from "./log-in"
+export * from "./sign-up"
 export * from "./play-song"
 export * from "./play-album"
 export * from "./follow-user"

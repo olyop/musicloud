@@ -1,6 +1,7 @@
 .Authorization {
 	--footer-height: 60rem;
 	display: flex;
+	overflow-y: visible;
 	align-items: center;
 	justify-content: center;
 	padding-top: env(safe-area-inset-top);

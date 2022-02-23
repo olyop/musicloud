@@ -1,7 +1,7 @@
 import { compare } from "bcrypt"
 
 const isPasswordCorrect =
-	(inputPassword: string, databasePassword: string) =>
-		compare(inputPassword, databasePassword)
+	(inputPassword: string, hashedPassword: string) =>
+		compare(inputPassword, hashedPassword)
 
 export default isPasswordCorrect

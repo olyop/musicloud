@@ -3,11 +3,12 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { FC, Fragment, createElement, useState } from "react"
 
+import LogInForm from "./log-in-form"
 import SignUpForm from "./sign-up-form"
 import determineTitle from "./determine-title"
-import { useStateAccessToken } from "../../redux"
 import { InputOnChange } from "../../components/input"
 import EmailAddressForm, { EmailAddressFormOnExists } from "./email-address-form"
+import { updateAccessToken, useDispatch, useStateAccessToken } from "../../redux"
 
 import "./index.scss"
 
@@ -15,15 +16,16 @@ const bem =
 	createBEM("Authorization")
 
 const Authorization: FC = ({ children }) => {
+	const dispatch = useDispatch()
 	const accessToken = useStateAccessToken()
 
 	const [ emailAddress, setEmailAddress ] =
 		useState("oliver.plummer@outlook.com")
 
-	const [ emailAddressChecked, setEmailAddressChecked ] =
-		useState(true)
-
 	const [ emailAddressExists, setEmailAddressExists ] =
+		useState(false)
+
+	const [ emailAddressChecked, setEmailAddressChecked ] =
 		useState(false)
 
 	const handleBack =
@@ -36,6 +38,11 @@ const Authorization: FC = ({ children }) => {
 		exists => {
 			setEmailAddressChecked(true)
 			setEmailAddressExists(exists)
+		}
+
+	const handleSubmit =
+		(value: string) => {
+			dispatch(updateAccessToken(value))
 		}
 
 	if (isNull(accessToken)) {
@@ -58,11 +65,14 @@ const Authorization: FC = ({ children }) => {
 					</div>
 					{emailAddressChecked ? (
 						emailAddressExists ? (
-							<p className="BodyOne">
-								{`${emailAddress} - ${String(emailAddressExists)}`}
-							</p>
+							<LogInForm
+								onSubmit={handleSubmit}
+								emailAddress={emailAddress}
+								onEmailAddressChange={handleEmailAddressChange}
+							/>
 						) : (
 							<SignUpForm
+								onSubmit={handleSubmit}
 								emailAddress={emailAddress}
 								onEmailAddressChange={handleEmailAddressChange}
 							/>

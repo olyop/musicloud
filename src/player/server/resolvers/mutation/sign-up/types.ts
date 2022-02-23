@@ -1,7 +1,7 @@
 import { FileUpload } from "graphql-upload"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
-import { User } from "../../../types"
+import { User, UserPassword } from "../../../types"
 
 export interface ImageInput {
 	name: string,
@@ -9,19 +9,24 @@ export interface ImageInput {
 	dimension: ImageDimensions,
 }
 
-type InputFile =
-	FileUpload | null
+export type FileInput =
+	Promise<FileUpload>
+
+export type FileInputOrNull =
+	FileInput | null
 
 export interface InputCover {
-	cover: InputFile,
+	cover: FileInputOrNull,
 }
 
 export interface InputProfile {
-	profile: InputFile,
+	profile: FileInputOrNull,
 }
 
-export type InputBase =
-	Omit<User, "userID" | "dateJoined">
+export interface InputBase
+	extends
+	UserPassword,
+	Omit<User, "userID" | "dateJoined"> {}
 
 export interface Input
 	extends

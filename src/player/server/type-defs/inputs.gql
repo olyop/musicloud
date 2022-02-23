@@ -4,8 +4,8 @@ input LogInInput {
 }
 
 input SignUpInput {
-	cover: Upload!
-	profile: Upload!
+	cover: Upload
+	profile: Upload
 	name: NonEmptyString!
 	password: NonEmptyString!
 	emailAddress: EmailAddress!

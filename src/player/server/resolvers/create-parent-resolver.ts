@@ -9,9 +9,9 @@ const createParentResolver =
 	createRootResolver<Context>(
 		({ context: { authorization } }) => {
 			if (isUndefined(authorization)) {
-				throw new AuthenticationError("Token not provided")
+				throw new AuthenticationError("Invalid token")
 			} else if (isNull(authorization)) {
-				throw new AuthenticationError("Token expired")
+				throw new AuthenticationError("Expired token")
 			}
 		},
 	)

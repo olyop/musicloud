@@ -22,6 +22,7 @@ import {
 	determinePlural,
 	createArtistLower,
 	createCatalogImageURL,
+	createObjectPath,
 } from "../../helpers"
 
 import routes from "./routes"
@@ -73,7 +74,16 @@ const ArtistPage: VFC = () => {
 			</h2>
 		)
 	} else if (data) {
-		const { name, city, country, playsTotal } = data.getArtistByID
+		const { name, city, country, playsTotal } =
+			data.getArtistByID
+
+		const handleShare =
+			() =>
+				navigator.share({
+					title: name,
+					url: createObjectPath("artist", artistID)
+				})
+
 		return (
 			<Metadata title={name}>
 				<Banner
@@ -108,6 +118,7 @@ const ArtistPage: VFC = () => {
 										/>
 										<Button
 											icon="share"
+											onClick={handleShare}
 											text={width > 700 ? "Share" : undefined}
 										/>
 									</Fragment>

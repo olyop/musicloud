@@ -7,21 +7,23 @@ import {
 
 import Button from "@oly_op/react-button"
 import { useMutation } from "@apollo/client"
-import { UserBase } from "@oly_op/music-app-common/types"
+import { InterfaceWithInput, UserBase } from "@oly_op/music-app-common/types"
 
 import SIGN_UP from "./sign-up.gql"
+import isSignUpFormValid from "./is-sign-up-form-valid"
 import Input, { InputOnChange } from "../../components/input"
 
 const AuthorizationSignUpForm: VFC<PropTypes> = ({
+	onSubmit,
 	emailAddress,
 	onEmailAddressChange,
 }) => {
-	const [ name, setName ] = useState("Oliver")
-	const [ password, setPassword ] = useState("password")
+	const [ name, setName ] = useState("")
+	const [ password, setPassword ] = useState("")
 	const [ cover, setCover ] = useState<File | null>(null)
 	const [ profile, setProfile ] = useState<File | null>(null)
 
-	const [ signUp ] =
+	const [ signUp, { loading } ] =
 		useMutation<Data, Args>(SIGN_UP)
 
 	const handleNameChange: InputOnChange =
@@ -36,26 +38,28 @@ const AuthorizationSignUpForm: VFC<PropTypes> = ({
 	const handleProfileChange: InputOnChange<File> =
 		value => setProfile(value)
 
-	const handleSubmit: FormEventHandler =
+	const input: SignUpInput = {
+		name,
+		cover,
+		profile,
+		password,
+		emailAddress,
+	}
+
+	const handleSignUp: FormEventHandler =
 		async event => {
 			event.preventDefault()
-			if (cover && profile) {
-				await signUp({
-					variables: {
-						input: {
-							name,
-							cover,
-							profile,
-							password,
-							emailAddress,
-						},
-					},
-				})
+			if (isSignUpFormValid(input)) {
+				const { data } =
+					await signUp({ variables: { input } })
+				if (data) {
+					onSubmit(data.signUp)
+				}
 			}
 		}
 
 	return (
-		<form onSubmit={handleSubmit} className="FlexColumnGap">
+		<form onSubmit={handleSignUp} className="FlexColumnGap">
 			<Input
 				name="Email"
 				tabIndex={1}
@@ -107,7 +111,7 @@ const AuthorizationSignUpForm: VFC<PropTypes> = ({
 				type="submit"
 				tabIndex={6}
 				rightIcon="login"
-				disabled={!cover && !profile}
+				disabled={loading || !isSignUpFormValid(input)}
 			/>
 		</form>
 	)
@@ -117,19 +121,23 @@ interface Data {
 	signUp: string,
 }
 
-export interface SignUpInput extends Omit<UserBase, "userID" | "dateJoined"> {
-	cover: File,
-	profile: File,
+type FileInput =
+	File | null
+
+export interface SignUpInput
+	extends Omit<UserBase, "userID" | "dateJoined"> {
 	password: string,
+	cover: FileInput,
+	profile: FileInput,
 }
 
-export interface Args {
-	input: SignUpInput,
-}
+export type Args =
+	InterfaceWithInput<SignUpInput>
 
 interface PropTypes {
 	emailAddress: string,
 	onEmailAddressChange: InputOnChange,
+	onSubmit: (accessToken: string) => void,
 }
 
 export default AuthorizationSignUpForm

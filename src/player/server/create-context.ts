@@ -9,24 +9,31 @@ import { createVerifier, TokenError } from "fast-jwt"
 import { JWTPayload } from "@oly_op/music-app-common/types"
 import { ALGOLIA_OPTIONS } from "@oly_op/music-app-common/options"
 
-import { Context } from "./types"
 import { COLUMN_NAMES } from "./globals"
+import { Context, ContextAuthorization } from "./types"
 
 type ContextFunction =
 	(input: { request: FastifyRequest }) => Promise<Context>
 
 const verifyAccessToken =
-	createVerifier({ key: process.env.JWT_TOKEN_SECRET })
+	createVerifier({
+		algorithms: ["HS256"],
+		key: () => Promise.resolve(process.env.JWT_TOKEN_SECRET),
+	})
 
-const determineAuthorization =
-	async (pg: Pool, authorization: IncomingHttpHeaders["authorization"]) => {
-		try {
-			if (isUndefined(authorization)) {
-				return undefined
-			} else {
-				if (authorization.startsWith("Bearer ")) {
-					const accessToken =
-						authorization.substring(7)
+type DetermineAuthorization =
+	(pg: Pool, authorization: IncomingHttpHeaders["authorization"]) =>
+	Promise<ContextAuthorization>
+
+const determineAuthorization: DetermineAuthorization =
+	async (pg, authorization) => {
+		if (isUndefined(authorization)) {
+			return undefined
+		} else {
+			if (authorization.startsWith("Bearer ")) {
+				const accessToken =
+					authorization.substring(7)
+				try {
 					const token =
 						await verifyAccessToken(accessToken) as JWTPayload
 					const userExists =
@@ -38,15 +45,15 @@ const determineAuthorization =
 					if (userExists) {
 						return token
 					} else {
-						return null
+						return undefined
 					}
-				} else {
-					return null
+				} catch (error) {
+					if (error instanceof TokenError) {
+						return null
+					} else {
+						return undefined
+					}
 				}
-			}
-		} catch (error) {
-			if (error instanceof TokenError) {
-				return null
 			} else {
 				return undefined
 			}

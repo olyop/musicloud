@@ -17,7 +17,10 @@ import {
 export type Key =
 	KeyBase
 
-export interface User extends UserBase {
+export type User =
+	UserBase
+
+export interface UserPassword {
 	password: string,
 }
 

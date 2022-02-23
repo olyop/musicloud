@@ -48,9 +48,11 @@ export interface UserEmailAddress {
 	emailAddress: string,
 }
 
-export interface UserBase extends UserIDNameBase, UserEmailAddress {
+export interface UserIDNameEmailAddressBase
+	extends UserIDNameBase, UserEmailAddress {}
+
+export interface UserBase extends UserIDNameEmailAddressBase {
 	dateJoined: number,
-	emailAddress: string,
 }
 
 export interface SongIDTitleBase extends SongID {

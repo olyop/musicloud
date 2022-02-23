@@ -11,37 +11,43 @@ const ModalHeader: VFC<ModalHeaderPropTypes> = ({
 	text,
 	icon,
 	image,
-	hideShareButton = false,
-}) => (
-	<div className={bem("", "FlexRowGapHalfCenter ItemBorder PaddingLeftRightHalf")}>
-		{icon && (
-			<Button
-				transparent
-				icon={icon}
-				className={bem("icon-left", "icon")}
-			/>
-		)}
-		{image && (
-			<img
-				src={image.src}
-				alt={image.description}
-				crossOrigin="anonymous"
-				className={bem("img", "Rounded")}
-			/>
-		)}
-		<p className={bem("text", "BodyOne")}>
-			{text}
-		</p>
-		{hideShareButton || (
-			<Button
-				transparent
-				icon="share"
-				title="Share"
-				className={bem("icon-share", "icon")}
-			/>
-		)}
-	</div>
-)
+	shareData,
+	hideShare = false,
+}) => {
+	const handleShare =
+		() => navigator.share(shareData)
+	return (
+		<div className={bem("", "FlexRowGapHalfCenter ItemBorder PaddingLeftRightHalf")}>
+			{icon && (
+				<Button
+					transparent
+					icon={icon}
+					className={bem("icon-left", "icon")}
+				/>
+			)}
+			{image && (
+				<img
+					src={image.src}
+					alt={image.description}
+					crossOrigin="anonymous"
+					className={bem("img", "Rounded")}
+				/>
+			)}
+			<p className={bem("text", "BodyOne")}>
+				{text}
+			</p>
+			{hideShare || (
+				<Button
+					transparent
+					icon="share"
+					title="Share"
+					onClick={handleShare}
+					className={bem("icon-share", "icon")}
+				/>
+			)}
+		</div>
+	)
+}
 
 interface ImageOptions {
 	src: string,
@@ -51,8 +57,9 @@ interface ImageOptions {
 export interface ModalHeaderPropTypes {
 	icon?: string,
 	text?: ReactNode,
+	hideShare?: boolean,
 	image?: ImageOptions,
-	hideShareButton?: boolean,
+	shareData?: ShareData,
 }
 
 export default ModalHeader

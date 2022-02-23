@@ -38,6 +38,10 @@ const User: VFC<PropTypes> = ({ user, className, showIcon = false }) => {
 			}}
 			modalOptions={onClose => ({
 				header: {
+					shareData: {
+						title: user.name,
+						url: createObjectPath("user", userID),
+					},
 					image: {
 						description: user.name,
 						src: createCatalogImageURL(

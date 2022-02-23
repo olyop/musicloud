@@ -1,14 +1,16 @@
 import trim from "lodash-es/trim"
 import { hash, genSalt } from "bcrypt"
-import { UserID } from "@oly_op/music-app-common/types"
-import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
+import { UserInputError } from "apollo-server-fastify"
+import { convertFirstRowToCamelCase, join, query } from "@oly_op/pg-helpers"
 
 import { Args } from "./types"
 import resolver from "../resolver"
-import { createJWT } from "../../helpers"
+import { User } from "../../../types"
 import { INSERT_USER } from "../../../sql"
 import saveToAlogilia from "./save-to-algolia"
+import { COLUMN_NAMES } from "../../../globals"
 import { coverImages, profileImages } from "./images"
+import { createJWT, emailAddressExists } from "../../helpers"
 import { determineCover, determineProfile } from "./determine-images"
 import { normalizeImageAndUploadToS3 } from "./normalize-image-and-upload-to-s3"
 
@@ -39,21 +41,16 @@ export const signUp =
 					profile: input.profile,
 				})
 
-			console.log({
-				name,
-				emailAddress,
-				password,
-				cover,
-				profile,
-			})
+			const doesUserExists =
+				await emailAddressExists(context.pg)({ emailAddress })
 
-			if (process.env.NODE_ENV === "development") {
-				throw new Error("")
+			if (doesUserExists) {
+				throw new UserInputError("Email address already exists")
 			}
 
-			const { userID } =
+			const user =
 				await query(context.pg)(INSERT_USER)({
-					parse: convertFirstRowToCamelCase<UserID>(),
+					parse: convertFirstRowToCamelCase<User>(),
 					variables: [{
 						key: "name",
 						value: name,
@@ -66,8 +63,14 @@ export const signUp =
 						key: "emailAddress",
 						value: emailAddress,
 						parameterized: true,
+					},{
+						key: "columnNames",
+						value: join(COLUMN_NAMES.USER)
 					}],
 				})
+
+			const { userID } =
+				user
 
 			await normalizeImageAndUploadToS3(context.s3)({
 				buffer: cover,
@@ -88,6 +91,7 @@ export const signUp =
 				image: profileImages[2]!,
 			})
 
-			return createJWT(context.ag.client)({ userID, name })
+			return createJWT(context.ag.client)(user)
 		},
+		{ globalContext: false }
 	)

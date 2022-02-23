@@ -1,9 +1,9 @@
 import fs from "fs"
 import { FastifyPluginCallback } from "fastify"
 
-import { CLIENT_ENTRY_PATH } from "../globals"
+import { CLIENT_ENTRY_PATH } from "./globals"
 
-export const serveClient: FastifyPluginCallback =
+const serveClient: FastifyPluginCallback =
 	(fastify, _options, done) => {
 		fastify.setNotFoundHandler(
 			(_request, reply) => {
@@ -13,3 +13,5 @@ export const serveClient: FastifyPluginCallback =
 		)
 		done()
 	}
+
+export default serveClient

@@ -34,17 +34,17 @@ const readStreamToBuffer =
 		)
 
 export const determineCover =
-	({ cover }: InputCover) =>
+	async ({ cover }: InputCover) =>
 		readStreamToBuffer(
 			cover ?
-				cover.createReadStream() :
+				(await cover).createReadStream() :
 				createReadStream(DEFAULT_COVER_PATH)
 		)
 
 export const determineProfile =
-	({ profile }: InputProfile) =>
+	async ({ profile }: InputProfile) =>
 		readStreamToBuffer(
 			profile ?
-				profile.createReadStream() :
+				(await profile).createReadStream() :
 				createReadStream(DEFAULT_PROFILE_PATH)
 		)

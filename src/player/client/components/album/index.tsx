@@ -73,6 +73,10 @@ const Album: VFC<PropTypes> = ({
 
 	const modalOptions: ModalOptionsWithFunction = onClose => ({
 		header: {
+			shareData: {
+				title: album.title,
+				url: createObjectPath("album", albumID),
+			},
 			text: (
 				<AlbumTitle
 					hideReleased
