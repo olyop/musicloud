@@ -1,6 +1,7 @@
 import noop from "lodash-es/noop"
 import Howler from "react-howler"
-import { createElement, useState, useEffect, VFC } from "react"
+import { CLOUDFRONT_URL } from "@oly_op/music-app-common/globals"
+import { createElement, useState, useEffect, VFC, Fragment } from "react"
 
 import { Song } from "../../types"
 import { useResetPlayer } from "../../hooks"
@@ -47,15 +48,23 @@ const BarHowler: VFC<PropTypes> =
 			}
 		}, [play])
 
-		return canPlay && play ? (
-			<Howler
-				playing={play}
-				onEnd={resetPlayer}
-				volume={volume / 100}
-				xhr={{ mode: "cors" }}
-				src={createCatalogMP3URL(songID)}
-			/>
-		) : null
+		return (
+			<Fragment>
+				{canPlay && play && (
+					<Howler
+						playing={play}
+						onEnd={resetPlayer}
+						volume={volume / 100}
+						xhr={{ mode: "cors" }}
+						src={createCatalogMP3URL(songID)}
+					/>
+				)}
+				<audio
+					style={{ display: "none" }}
+					src={`${CLOUDFRONT_URL}/sample.mp3`}
+				/>
+			</Fragment>
+		)
 	}
 
 interface PropTypes {
