@@ -1,3 +1,4 @@
+import noop from "lodash-es/noop"
 import Howler from "react-howler"
 import { createElement, useState, useEffect, VFC } from "react"
 
@@ -31,26 +32,22 @@ const BarHowler: VFC<PropTypes> =
 		useEffect(() => {
 			const checkFunction =
 				async () => setCanPlay(!(await isAudioBlocked()))
-			checkFunction().catch(console.error)
+			checkFunction().catch(noop)
 		}, [])
 
 		useEffect(() => {
-			if ("mediaSession" in navigator) {
-				setMediaSession(song)
-			}
+			setMediaSession(song)
 		}, [songID])
 
 		useEffect(() => {
-			if ("mediaSession" in navigator) {
-				if (play) {
-					navigator.mediaSession.playbackState = "playing"
-				} else {
-					navigator.mediaSession.playbackState = "paused"
-				}
+			if (play) {
+				navigator.mediaSession.playbackState = "playing"
+			} else {
+				navigator.mediaSession.playbackState = "paused"
 			}
 		}, [play])
 
-		return canPlay ? (
+		return canPlay && play ? (
 			<Howler
 				playing={play}
 				onEnd={resetPlayer}

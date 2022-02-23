@@ -13,23 +13,29 @@ const formatItems =
 
 const setMediaSession =
 	(song: Song) => {
-		navigator.mediaSession.metadata = new MediaMetadata({
-			title: song.title,
-			album: song.album.title,
-			artist: formatItems(song.artists.map(({ name }) => name)),
-			artwork: [{
-				type: "image/png",
-				sizes: "306x306",
-				src: createCatalogImageURL(
-					song.album.albumID,
-					"cover",
-					ImageSizes.HALF,
-					ImageDimensions.SQUARE,
-				),
-			}],
-		})
+		navigator.mediaSession.metadata =
+			new MediaMetadata({
+				title: song.title,
+				album: song.album.title,
+				artist: formatItems(song.artists.map(({ name }) => name)),
+				artwork: [{
+					type: "image/png",
+					sizes: "306x306",
+					src: createCatalogImageURL(
+						song.album.albumID,
+						"cover",
+						ImageSizes.HALF,
+						ImageDimensions.SQUARE,
+					),
+				}],
+			})
 		navigator.mediaSession.setActionHandler("play", noop)
 		navigator.mediaSession.setActionHandler("pause", noop)
+		navigator.mediaSession.setActionHandler("stop", noop)
+		navigator.mediaSession.setActionHandler("seekbackward", noop)
+		navigator.mediaSession.setActionHandler("seekforward", noop)
+		navigator.mediaSession.setActionHandler("seekto", noop)
+		navigator.mediaSession.setActionHandler("previoustrack", noop)
 		navigator.mediaSession.setActionHandler("nexttrack", noop)
 	}
 
