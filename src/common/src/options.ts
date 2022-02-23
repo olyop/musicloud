@@ -39,7 +39,9 @@ export const CORS_OPTIONS: FastifyCorsOptions = {
 	maxAge: 60 * 60,
 	origin: IS_PROD ? [
 		"https://musicloud-app.com",
-		"https://manage.auth0.com",
+		"https://fonts.gstatic.com",
+		"https://fonts.googleapis.com",
+		"https://d3d3oicpqtadbw.cloudfront.net",
 	] : [
 		"http://127.0.0.1:3001",
 	],
