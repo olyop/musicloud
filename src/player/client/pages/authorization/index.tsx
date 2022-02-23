@@ -20,7 +20,7 @@ const Authorization: FC = ({ children }) => {
 	const accessToken = useStateAccessToken()
 
 	const [ emailAddress, setEmailAddress ] =
-		useState("oliver.plummer@outlook.com")
+		useState("")
 
 	const [ emailAddressExists, setEmailAddressExists ] =
 		useState(false)

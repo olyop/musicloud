@@ -18,6 +18,7 @@ import { SERVE_STATIC_OPTIONS, APOLLO_REGISTRATION_OPTIONS } from "./globals"
 const start =
 	async () => {
 		await apollo.start()
+
 		const address =
 			await fastify
 				.register(postgres, PG_POOL_OPTIONS)
@@ -28,6 +29,7 @@ const start =
 				.register(apollo.createHandler(APOLLO_REGISTRATION_OPTIONS))
 				.register(serveClient)
 				.listen(parseInt(process.env.PLAYER_SERVER_PORT), process.env.HOST)
+
 		if (process.env.NODE_ENV === "production") {
 			console.log(address)
 		}
