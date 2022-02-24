@@ -1,8 +1,8 @@
 import noop from "lodash-es/noop"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
 
-import { Song } from "../../types"
-import { createCatalogImageURL } from "../../helpers"
+import { Song } from "../../../types"
+import { createCatalogImageURL } from "../../../helpers"
 
 const formatItems =
 	(items: string[]) => (
