@@ -37,6 +37,8 @@ const BarHowler: VFC<PropTypes> =
 					/>
 				)}
 				<audio
+					muted
+					autoPlay
 					crossOrigin="anonymous"
 					style={{ display: "none" }}
 					src={createCatalogMP3URL(songID)}
