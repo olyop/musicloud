@@ -24,7 +24,7 @@ import InLibraryButton from "./in-library-button"
 import ObjectLink from "../../components/object-link"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
 import Songs, { SongChangeOptions } from "../../components/songs"
-import { determinePlural, createObjectPath, timeStampToFullDate } from "../../helpers"
+import { determinePlural, createObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
 const PlaylistPage: VFC = () => {
@@ -105,7 +105,7 @@ const PlaylistPage: VFC = () => {
 							{startCase(toLower(data.getPlaylistByID.privacy))}
 						</h2>
 						<p className="BodyOne LightColor">
-							{timeStampToFullDate(data.getPlaylistByID.dateCreated)}
+							{data.getPlaylistByID.dateCreated}
 						</p>
 					</div>
 					{data.getPlaylistByID.songsTotal ? (

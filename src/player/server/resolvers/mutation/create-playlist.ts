@@ -35,7 +35,7 @@ export const createPlaylist =
 					}],
 				})
 
-			const { playlistID, dateCreated } = playlist
+			const { playlistID } = playlist
 
 			await query(context.pg)(INSERT_LIBRARY_OBJECT)({
 				variables: {
@@ -54,7 +54,6 @@ export const createPlaylist =
 				title,
 				privacy,
 				plays: 0,
-				dateCreated,
 				typeName: "Playlist",
 				objectID: playlistID,
 				user: { userID, name },

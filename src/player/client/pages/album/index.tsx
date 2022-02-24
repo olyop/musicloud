@@ -7,8 +7,8 @@ import {
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
+import { Link, useParams } from "react-router-dom"
 import { createElement, Fragment, VFC } from "react"
-import { NavLink, useParams } from "react-router-dom"
 import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
 
 import Disc from "./disc"
@@ -132,7 +132,7 @@ const AlbumPage: VFC = () => {
 								icon={inLibrary ? "done" : "add"}
 								text={inLibrary ? "Remove" : "Add"}
 							/>
-							<NavLink
+							<Link
 								className={bem("buttons-link")}
 								to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}
 							>
@@ -141,7 +141,7 @@ const AlbumPage: VFC = () => {
 									icon="playlist_add"
 									className={bem("buttons-link-button")}
 								/>
-							</NavLink>
+							</Link>
 							<Button
 								icon="share"
 								text="Share"

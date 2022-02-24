@@ -36,8 +36,10 @@ const resolver =
 	)
 
 export const dateJoined =
-	resolver<number>(
-		({ parent }) => parent.dateJoined * 1000,
+	resolver(
+		({ parent }) => (
+			(new Date(parent.dateJoined * 1000)).toLocaleDateString()
+		),
 		{ parentContext: false },
 	)
 

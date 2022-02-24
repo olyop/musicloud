@@ -44,7 +44,7 @@ export const privacy =
 export const dateCreated =
 	resolver(
 		({ parent }) => (
-			parent.dateCreated * 1000
+			(new Date(parent.dateCreated * 1000)).toLocaleDateString()
 		),
 	)
 

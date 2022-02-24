@@ -6,7 +6,6 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { isNull } from "lodash-es"
 import { ObjectID, UserID } from "@oly_op/music-app-common/types"
 
 import {
@@ -25,7 +24,7 @@ export const getObjectDateAddedToLibrary =
 			query(client)(SELECT_OBJECT_LIBRARY_DATE_ADDED)({
 				parse: pipe(
 					convertFirstRowToCamelCaseOrNull<LibraryObject>(),
-					result => isNull(result) || result.dateAdded * 1000,
+					result => result && new Date(result.dateAdded * 1000),
 				),
 				variables: {
 					userID,

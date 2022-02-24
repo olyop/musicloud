@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
-import { NavLink } from "react-router-dom"
 
 import { ClassNameBEMPropTypes, OnClickPropTypes } from "../../types"
 
@@ -14,7 +14,7 @@ const ObjectLink: VFC<PropTypes> = ({
 	onClick,
 	className,
 }) => (
-	<NavLink
+	<Link
 		to={link.path}
 		title={link.text}
 		onClick={onClick}

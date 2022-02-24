@@ -2,8 +2,8 @@ import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
 import { createElement, Fragment, VFC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { NavLink, Route, Routes, useParams } from "react-router-dom"
 import { ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
+import { Link, NavLink, Route, Routes, useParams, useLocation } from "react-router-dom"
 
 import { User } from "../../types"
 import UserFollowers from "./followers"
@@ -19,8 +19,11 @@ const UserPageHome: VFC = () => (
 )
 
 const UserPage: VFC = () => {
+	const location = useLocation()
 	const params = useParams<keyof UserID>()
 	const userID = addDashesToUUID(params.userID!)
+
+	console.log(location)
 
 	const { data, error } =
 		useQuery<GetUserPageData, UserID>(GET_USER_PAGE, {
@@ -40,30 +43,29 @@ const UserPage: VFC = () => {
 		)
 	} else if (data) {
 		const { name, isFollower, dateJoined } = data.getUserByID
-		const dateJoinedString = new Date(dateJoined).toISOString().slice(0, 10)
 		return (
 			<Metadata title={name}>
 				<Banner
 					title={(
-						<NavLink to="">
+						<Link to="/">
 							{name}
-						</NavLink>
+						</Link>
 					)}
 					subTitle={(
 						!isUser && isFollower ?
-							`${dateJoinedString} - Follows you` :
-							`${dateJoinedString}`
+							`${dateJoined} - Follows you` :
+							`${dateJoined}`
 					)}
 					buttons={(
 						<Fragment>
 							{isUser ? (
-								<NavLink to="/manage-account">
+								<Link to="/manage-account">
 									<Button
 										text="Manage"
 										title="Manage Account"
 										icon="manage_accounts"
 									/>
-								</NavLink>
+								</Link>
 							) : (
 								<Button
 									onClick={toggleUserFollowing}

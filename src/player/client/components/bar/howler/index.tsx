@@ -26,16 +26,14 @@ const BarHowler: VFC<PropTypes> =
 			}
 		}, [play])
 
-		return (
+		return play ? (
 			<Fragment>
-				{play && (
-					<Howler
-						playing={play}
-						onEnd={resetPlayer}
-						volume={volume / 100}
-						src={createCatalogMP3URL(songID)}
-					/>
-				)}
+				<Howler
+					playing={play}
+					onEnd={resetPlayer}
+					volume={volume / 100}
+					src={createCatalogMP3URL(songID)}
+				/>
 				<audio
 					muted
 					autoPlay
@@ -44,7 +42,7 @@ const BarHowler: VFC<PropTypes> =
 					src={createCatalogMP3URL(songID)}
 				/>
 			</Fragment>
-		)
+		) : null
 	}
 
 interface PropTypes {

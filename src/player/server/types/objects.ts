@@ -17,8 +17,9 @@ import {
 export type Key =
 	KeyBase
 
-export type User =
-	UserBase
+export interface User extends UserBase {
+	dateJoined: number,
+}
 
 export interface UserPassword {
 	password: string,
@@ -36,9 +37,13 @@ export interface Artist extends ArtistBase {
 	country: string,
 }
 
-export interface Playlist extends UserID, PlaylistBase {}
+export interface Playlist extends UserID, PlaylistBase {
+	dateCreated: number,
+}
 
-export interface Play extends PlayBase, UserID, SongID {}
+export interface Play extends PlayBase, UserID, SongID {
+	dateCreated: number,
+}
 
 export interface Song extends SongBase, KeyID, AlbumID {
 	queueIndex: number | null,

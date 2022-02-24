@@ -16,12 +16,10 @@ import {
 export type AlgoliaRecordTypeName =
 	Exclude<TypeNames, "Key" | "Play">
 
-export interface AlgoliaRecordTypeNameBase<T extends AlgoliaRecordTypeName> {
+export interface AlgoliaRecordBase<T extends AlgoliaRecordTypeName>
+	extends ObjectID {
 	typeName: T,
 }
-
-export interface AlgoliaRecordBase<T extends AlgoliaRecordTypeName>
-	extends ObjectID, AlgoliaRecordTypeNameBase<T> {}
 
 export interface AlgoliaRecordImage {
 	image: string,
@@ -34,8 +32,8 @@ export interface AlgoliaRecordPlays {
 export interface AlgoliaRecordUser
 	extends
 	AlgoliaRecordImage,
-	Pick<UserBase, "name" | "emailAddress">,
-	AlgoliaRecordBase<"User"> {
+	AlgoliaRecordBase<"User">,
+	Pick<UserBase, "name" | "emailAddress"> {
 	followers: number,
 }
 

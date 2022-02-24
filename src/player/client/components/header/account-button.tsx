@@ -1,7 +1,7 @@
+import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import uniqueID from "lodash-es/uniqueId"
 import Button from "@oly_op/react-button"
-import { NavLink } from "react-router-dom"
 import { useApolloClient } from "@apollo/client"
 import { createElement, Fragment, useState, VFC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
@@ -64,7 +64,7 @@ const HeaderAccountButton: VFC = () => {
 				onClose={handleAccountModalClose}
 				contentClassName={bem("account-modal-content", "FlexColumn Border")}
 			>
-				<NavLink
+				<Link
 					onClick={handleAccountModalClose}
 					to={createObjectPath("user", userID)}
 					children={(
@@ -94,7 +94,7 @@ const HeaderAccountButton: VFC = () => {
 					onClick={handleRefresh}
 					className={bem("account-modal-content-button")}
 				/>
-				<NavLink
+				<Link
 					to="/settings"
 					onClick={handleAccountModalClose}
 					children={(

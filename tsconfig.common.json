@@ -5,6 +5,9 @@
 		"module": "CommonJS",
 		"outDir": "src/common"
 	},
+	"include": [
+		"src/types"
+	],
 	"files": [
 		"src/common/src/globals.ts",
 		"src/common/src/options.ts",

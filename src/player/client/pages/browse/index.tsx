@@ -1,6 +1,6 @@
+import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { NavLink } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 
@@ -76,13 +76,13 @@ const BrowsePage: VFC = () => {
 									songs={data.getTopTenSongs}
 									className="MarginBottomHalf"
 								/>
-								<NavLink to="/top-one-hundred-songs">
+								<Link to="/top-one-hundred-songs">
 									<Button
 										transparent
 										text="View All"
 										icon="arrow_forward"
 									/>
-								</NavLink>
+								</Link>
 							</div>
 						</Fragment>
 					)}

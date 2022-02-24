@@ -1,6 +1,8 @@
 import { createSigner } from "fast-jwt"
 import { SearchClient } from "algoliasearch"
-import { JWTPayload, UserBase, UserID } from "@oly_op/music-app-common/types"
+import { JWTPayload, UserID } from "@oly_op/music-app-common/types"
+
+import { User } from "../../types"
 
 const createAlgoliaAPIKey =
 	(ag: SearchClient) =>
@@ -21,13 +23,17 @@ const generateJWT =
 	(payload: JWTPayload) =>
 		signer(payload)
 
+const timeStampToDateString =
+	(timeStamp: number) =>
+		(new Date(timeStamp * 1000)).toLocaleDateString()
+
 export const createJWT =
 	(ag: SearchClient) =>
-		({ userID, name, dateJoined, emailAddress }: UserBase) =>
+		({ userID, name, dateJoined, emailAddress }: User) =>
 			generateJWT({
 				name,
 				userID,
-				dateJoined,
 				emailAddress,
+				dateJoined: timeStampToDateString(dateJoined),
 				algoliaKey: createAlgoliaAPIKey(ag)({ userID }),
 			})

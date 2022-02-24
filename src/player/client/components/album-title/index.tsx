@@ -8,12 +8,6 @@ import { Handler, Album } from "../../types"
 import { createObjectPath } from "../../helpers"
 import { useStateShowReleased } from "../../redux"
 
-const getYearFromReleased =
-	({ released }: Pick<Album, "released">) => {
-		const END_INDEX = 4
-		return released.slice(0, END_INDEX)
-	}
-
 const AlbumTitle: VFC<PropTypes> = ({
 	onClick,
 	hideReleased = false,
@@ -50,7 +44,7 @@ const AlbumTitle: VFC<PropTypes> = ({
 					<Fragment> </Fragment>
 					<span className="LightColor LightWeight">
 						<Fragment>(</Fragment>
-						{getYearFromReleased({ released })}
+						{released.slice(0, 4)}
 						<Fragment>)</Fragment>
 					</span>
 				</Fragment>

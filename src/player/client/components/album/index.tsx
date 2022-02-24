@@ -1,6 +1,6 @@
 /* eslint-disable prefer-template */
+import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
-import { NavLink } from "react-router-dom"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
@@ -169,7 +169,7 @@ const Album: VFC<PropTypes> = ({
 			/>
 		) : (
 			<div className={bem(className, "Card")}>
-				<NavLink
+				<Link
 					to={path}
 					title={album.title}
 					className={bem("cover")}

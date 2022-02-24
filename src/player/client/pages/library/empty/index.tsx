@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
-import { NavLink } from "react-router-dom"
 import { createElement, VFC, Fragment, ReactNode } from "react"
 
 import "./index.scss"
@@ -15,13 +15,13 @@ const LibraryEmpty: VFC<PropTypes> = ({ name, content }) => (
 			<Fragment>.</Fragment>
 		</h2>
 		<h3 className={bem("text")}>
-			<NavLink
+			<Link
 				to="/"
 				children="Browse"
 				className={bem("link")}
 			/>
 			<Fragment> or </Fragment>
-			<NavLink
+			<Link
 				children="search"
 				to="/search?query="
 				className={bem("link")}
