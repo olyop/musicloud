@@ -2,8 +2,9 @@
 /* eslint-disable react/function-component-definition */
 import { isEmpty } from "lodash-es"
 import { AlbumID } from "@oly_op/music-app-common/types"
+import { ApolloCache, Reference } from "@apollo/client/cache"
 import { gql, MutationUpdaterFunction } from "@apollo/client"
-import { ApolloCache, Modifier, Reference } from "@apollo/client/cache"
+import { Modifier } from "@apollo/client/cache/core/types/common"
 
 import { Album } from "../../types"
 import { AddData, RemoveData } from "./types"

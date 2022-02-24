@@ -1,4 +1,3 @@
-import noop from "lodash-es/noop"
 import Howler from "react-howler"
 import { CLOUDFRONT_URL } from "@oly_op/music-app-common/globals"
 import { createElement, useState, useEffect, VFC, Fragment } from "react"
@@ -11,13 +10,10 @@ import { useStatePlay, useStateVolume } from "../../redux"
 
 const isAudioBlocked =
 	async () => {
-		try {
-			const context = new AudioContext()
-			await context.close()
-			return true
-		} catch (error) {
-			return false
-		}
+		const context = new AudioContext()
+		const isBlocked = context.state === "suspended"
+		await context.close()
+		return isBlocked
 	}
 
 const BarHowler: VFC<PropTypes> =
@@ -31,10 +27,14 @@ const BarHowler: VFC<PropTypes> =
 			useState(false)
 
 		useEffect(() => {
-			const checkFunction =
-				async () => setCanPlay(!(await isAudioBlocked()))
-			checkFunction().catch(noop)
-		}, [])
+			const handler =
+				async () => {
+					const isBlocked = await isAudioBlocked()
+					setCanPlay(!isBlocked)
+				}
+			handler()
+				.catch(console.error)
+		}, [play, songID])
 
 		useEffect(() => {
 			setMediaSession(song)
@@ -48,14 +48,19 @@ const BarHowler: VFC<PropTypes> =
 			}
 		}, [play])
 
+		console.log({
+			canPlay,
+			play,
+		})
+
 		return (
 			<Fragment>
 				{canPlay && play && (
 					<Howler
+						preload
 						playing={play}
 						onEnd={resetPlayer}
 						volume={volume / 100}
-						xhr={{ mode: "cors" }}
 						src={createCatalogMP3URL(songID)}
 					/>
 				)}

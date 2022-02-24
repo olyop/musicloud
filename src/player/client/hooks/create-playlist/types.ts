@@ -1,4 +1,5 @@
-import { Modifier, Reference } from "@apollo/client/cache"
+import { Reference } from "@apollo/client/cache"
+import { Modifier } from "@apollo/client/cache/core/types/common"
 import { PlaylistBase, InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { ApolloCache, MutationResult, MutationUpdaterFunction } from "@apollo/client"
 

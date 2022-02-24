@@ -3,6 +3,12 @@ import createFastify from "fastify"
 import { processRequest } from "graphql-upload"
 import { FASTIFY_SERVER_OPTIONS } from "@oly_op/music-app-common/options"
 
+declare module "fastify" {
+	export interface FastifyRequest {
+		isMultipart: boolean,
+	}
+}
+
 const fastify =
 	createFastify(FASTIFY_SERVER_OPTIONS)
 

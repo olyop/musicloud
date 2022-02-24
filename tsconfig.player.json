@@ -1,9 +1,10 @@
 {
 	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"outDir": "build/player"
+		"outDir": "build/player",
 	},
 	"include": [
+		"src/types",
 		"src/player/server"
 	]
 }

@@ -1,6 +1,7 @@
 /* eslint-disable react/function-component-definition */
+import { Reference } from "@apollo/client/cache"
 import { ObjectID } from "@oly_op/music-app-common/types"
-import { Modifier, Reference } from "@apollo/client/cache"
+import { Modifier } from "@apollo/client/cache/core/types/common"
 
 import { InLibraryObject } from "../../types"
 
