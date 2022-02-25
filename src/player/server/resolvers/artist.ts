@@ -9,7 +9,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { head, isEmpty } from "lodash-es"
+import { head } from "lodash-es"
 import { ApolloError } from "apollo-server-fastify"
 import { ArtistID, UserID } from "@oly_op/music-app-common/types"
 
@@ -47,18 +47,18 @@ const resolver =
 export const city =
 	resolver(
 		({ parent }) => (
-			isEmpty(parent.city) ?
-				null :
-				parent.city
+			Promise.resolve(
+				parent.city,
+			)
 		)
 	)
 
 export const country =
 	resolver(
 		({ parent }) => (
-			isEmpty(parent.country) ?
-				null :
-				parent.country
+			Promise.resolve(
+				parent.country,
+			)
 		)
 	)
 

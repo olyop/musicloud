@@ -105,7 +105,7 @@ const PlaylistPage: VFC = () => {
 							{startCase(toLower(data.getPlaylistByID.privacy))}
 						</h2>
 						<p className="BodyOne LightColor">
-							{data.getPlaylistByID.dateCreated}
+							{(new Date(data.getPlaylistByID.dateCreated)).toLocaleDateString()}
 						</p>
 					</div>
 					{data.getPlaylistByID.songsTotal ? (
@@ -115,7 +115,7 @@ const PlaylistPage: VFC = () => {
 							onRemove={isUsers ? handleRemoveSongFromPlaylist : undefined}
 						/>
 					) : (
-						<p className="BodyTwo">
+						<p className="BodyOneBold">
 							No songs.
 						</p>
 					)}

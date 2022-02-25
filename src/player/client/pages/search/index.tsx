@@ -78,8 +78,12 @@ const SearchPage: VFC = () => {
 
 	const handleClear =
 		() => {
-			setInput("")
-			setHits([])
+			if (isEmpty("")) {
+				navigate(-1)
+			} else {
+				setInput("")
+				setHits([])
+			}
 		}
 
 	const handleInput: ChangeEventHandler<HTMLInputElement> =
@@ -97,8 +101,9 @@ const SearchPage: VFC = () => {
 			if (isEmpty(input)) {
 				navigate("/search")
 			} else {
-				const newParams = new URLSearchParams({ query: input })
-				navigate({ search: newParams.toString() })
+				navigate({
+					search: (new URLSearchParams({ query: input })).toString(),
+				})
 			}
 		}
 	}, [input])
@@ -121,8 +126,8 @@ const SearchPage: VFC = () => {
 					/>
 					<Button
 						transparent
-						icon="close"
 						onClick={handleClear}
+						icon={isEmpty(input) ? "arrow_back" : "close"}
 						className={bem("bar-input-close", "bar-input-icon")}
 					/>
 				</div>

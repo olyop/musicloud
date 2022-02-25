@@ -22,6 +22,7 @@ import {
 import { COLUMN_NAMES } from "../globals"
 import createParentResolver from "./create-parent-resolver"
 import { Play, User, Playlist, GetObjectsOptions } from "../types"
+import { timeStampToMilliseconds } from "./helpers"
 
 interface GetUserObjectsOptions<T>
 	extends UserID, GetObjectsOptions<T> {}
@@ -38,9 +39,11 @@ const resolver =
 export const dateJoined =
 	resolver(
 		({ parent }) => (
-			(new Date(parent.dateJoined * 1000)).toLocaleDateString()
+			Promise.resolve(
+				timeStampToMilliseconds(parent.dateJoined),
+			)
 		),
-		{ parentContext: false },
+		{ parent: false },
 	)
 
 export const plays =
@@ -64,7 +67,7 @@ export const isFollowing =
 				},
 			})
 		),
-		{ parentContext: false },
+		{ parent: false },
 	)
 
 export const isFollower =
@@ -78,7 +81,7 @@ export const isFollower =
 				},
 			})
 		),
-		{ parentContext: false },
+		{ parent: false },
 	)
 
 export const followers =
@@ -92,7 +95,7 @@ export const followers =
 				},
 			})
 		),
-		{ parentContext: false },
+		{ parent: false },
 	)
 
 const getUserPlaylists =

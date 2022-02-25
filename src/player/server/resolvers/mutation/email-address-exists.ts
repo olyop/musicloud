@@ -8,5 +8,5 @@ export const emailAddressExists =
 		({ args, context }) => (
 			emailAddressExistsHelper(context.pg)(args)
 		),
-		{ globalContext: false }
+		{ global: false }
 	)

@@ -2,8 +2,8 @@ import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
 import { createElement, Fragment, VFC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { Link, NavLink, Route, Routes, useParams } from "react-router-dom"
 import { ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
-import { Link, NavLink, Route, Routes, useParams, useLocation } from "react-router-dom"
 
 import { User } from "../../types"
 import UserFollowers from "./followers"
@@ -19,11 +19,8 @@ const UserPageHome: VFC = () => (
 )
 
 const UserPage: VFC = () => {
-	const location = useLocation()
 	const params = useParams<keyof UserID>()
 	const userID = addDashesToUUID(params.userID!)
-
-	console.log(location)
 
 	const { data, error } =
 		useQuery<GetUserPageData, UserID>(GET_USER_PAGE, {
@@ -42,12 +39,16 @@ const UserPage: VFC = () => {
 			</h2>
 		)
 	} else if (data) {
-		const { name, isFollower, dateJoined } = data.getUserByID
+		const { name, isFollower } = data.getUserByID
+
+		const dateJoined =
+			(new Date(data.getUserByID.dateJoined)).toLocaleDateString()
+
 		return (
 			<Metadata title={name}>
 				<Banner
 					title={(
-						<Link to="/">
+						<Link to="">
 							{name}
 						</Link>
 					)}

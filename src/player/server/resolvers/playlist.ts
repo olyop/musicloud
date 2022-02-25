@@ -16,6 +16,7 @@ import {
 	getObjectInLibrary,
 	getSongsDurationOrNull,
 	getObjectDateAddedToLibrary,
+	timeStampToMilliseconds,
 } from "./helpers"
 
 import { COLUMN_NAMES } from "../globals"
@@ -37,14 +38,18 @@ const resolver =
 export const privacy =
 	resolver(
 		({ parent }) => (
-			parent.privacy.toUpperCase()
+			Promise.resolve(
+				parent.privacy.toUpperCase(),
+			)
 		),
 	)
 
 export const dateCreated =
 	resolver(
 		({ parent }) => (
-			(new Date(parent.dateCreated * 1000)).toLocaleDateString()
+			Promise.resolve(
+				timeStampToMilliseconds(parent.dateCreated),
+			)
 		),
 	)
 

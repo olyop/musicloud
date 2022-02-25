@@ -60,9 +60,12 @@ const Root: VFC = () => (
 	</Metadata>
 )
 
+const rootElement =
+	document.getElementById("Root")
+
 render(
 	<Root/>,
-	document.getElementById("Root"),
+	rootElement,
 )
 
 if (process.env.SERVICE_WORKER === "true") {

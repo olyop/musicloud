@@ -5,5 +5,15 @@
 	],
 	"parserOptions": {
 		"project": "./tsconfig.eslint.json"
+	},
+	"rules": {
+		"jsx-a11y/tabindex-no-positive": "off",
+		"jsx-a11y/anchor-is-valid": [
+			"error",
+			{
+				"specialLink": ["to"],
+				"components": ["Link"]
+			}
+		]
 	}
 }

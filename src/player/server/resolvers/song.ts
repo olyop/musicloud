@@ -30,6 +30,7 @@ import {
 	getAlbum,
 	getObjectInLibrary,
 	getObjectDateAddedToLibrary,
+	timeStampToMilliseconds,
 } from "./helpers"
 
 import {
@@ -258,7 +259,11 @@ export const dateAddedToPlaylist =
 					result => (
 						result.rowCount === 0 ?
 							null :
-							convertFirstRowToCamelCase<PlaylistSong>()(result).dateAdded * 1000
+							pipe(
+								convertFirstRowToCamelCase<PlaylistSong>(),
+								({ dateAdded }) => dateAdded,
+								timeStampToMilliseconds,
+							)(result)
 					),
 			})
 		),

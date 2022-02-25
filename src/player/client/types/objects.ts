@@ -39,9 +39,7 @@ export interface User
 	extends
 	UserBase,
 	UserPlaylists,
-	UserClientBase {
-	dateJoined: string,
-}
+	UserClientBase {}
 
 export interface Play
 	extends PlayBase, StoreObject<"Play"> {
@@ -76,7 +74,7 @@ export interface Album
 
 export interface InLibraryObject<T = string>
 	extends InLibraryBase, LibraryObject<T> {
-		dateAddedToLibrary: string | null,
+		dateAddedToLibrary: number | null,
 	}
 
 export interface ArtistSongs {
@@ -116,7 +114,6 @@ export interface Playlist
 	extends PlaylistBase, InLibraryObject<"Playlist"> {
 		user: User,
 		songs: Song[],
-		dateCreated: string,
 		songsTotal: number | null,
 	}
 

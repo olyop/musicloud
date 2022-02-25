@@ -1,6 +1,6 @@
 import { Play } from "../types"
-import { getSong, getUser } from "./helpers"
 import createParentResolver from "./create-parent-resolver"
+import { getSong, getUser, timeStampToMilliseconds } from "./helpers"
 
 const resolver =
 	createParentResolver<Play>()
@@ -8,7 +8,9 @@ const resolver =
 export const dateCreated =
 	resolver(
 		({ parent }) => (
-			parent.dateCreated * 1000
+			Promise.resolve(
+				timeStampToMilliseconds(parent.dateCreated),
+			)
 		),
 	)
 

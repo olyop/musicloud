@@ -38,9 +38,12 @@ const Modal: VFC<ModalPropTypes> = ({
 				"content",
 				"Elevated Rounded OverflowHidden",
 			)}
-		>
-			{isFunction(children) ? children(onClose) : children}
-		</div>
+			children={(
+				isFunction(children) ?
+					children(onClose) :
+					children
+			)}
+		/>
 	</div>
 )
 

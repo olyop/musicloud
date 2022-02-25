@@ -34,10 +34,10 @@ import {
 import resolver from "./resolver"
 
 export const getQueue =
-	resolver(() => ({}))
+	resolver(() => Promise.resolve({}))
 
 export const getLibrary =
-	resolver(() => ({}))
+	resolver(() => Promise.resolve({}))
 
 export const getUser =
 	resolver(

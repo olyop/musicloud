@@ -1,3 +1,4 @@
+import { pipe } from "rxjs"
 import { AuthenticationError } from "apollo-server-fastify"
 import { InterfaceWithInput, UserEmailAddress, UserID } from "@oly_op/music-app-common/types"
 import { query, convertFirstRowToCamelCase, join, PoolOrClient } from "@oly_op/pg-helpers"
@@ -9,7 +10,7 @@ import isPasswordCorrect from "./is-password-correct"
 import { createJWT, emailAddressExists } from "../../helpers"
 import { SELECT_USER_BY_EMAIL, SELECT_USER_PASSWORD } from "../../../sql"
 
-const getUserByEmailAddress =
+const getUser =
 	(pg: PoolOrClient) =>
 		({ emailAddress }: UserEmailAddress) =>
 			query(pg)(SELECT_USER_BY_EMAIL)({
@@ -25,23 +26,29 @@ const getUserPassword =
 		({ userID }: UserID) =>
 			query(pg)(SELECT_USER_PASSWORD)({
 				variables: { userID },
-				parse: convertFirstRowToCamelCase<UserPassword>(),
+				parse: pipe(
+					convertFirstRowToCamelCase<UserPassword>(),
+					({ password }) => password
+				),
 			})
 
 export const logIn =
 	resolver<string, Args>(
 		async ({ args, context }) => {
-			const { password, emailAddress } =
-				args.input
+			const { password, emailAddress } = args.input
+
 			const doesUserExists =
 				await emailAddressExists(context.pg)({ emailAddress })
+
 			if (doesUserExists) {
 				const user =
-					await getUserByEmailAddress(context.pg)({ emailAddress })
-				const { userID } =
-					user
-				const { password: hashedPassword } =
+					await getUser(context.pg)({ emailAddress })
+
+				const { userID } = user
+
+				const hashedPassword =
 					await getUserPassword(context.pg)({ userID })
+
 				if (await isPasswordCorrect(password, hashedPassword)) {
 					return createJWT(context.ag.client)(user)
 				} else {
@@ -51,7 +58,7 @@ export const logIn =
 				throw new AuthenticationError("Email Address does not exist")
 			}
 		},
-		{ globalContext: false },
+		{ global: false },
 	)
 
 interface Input

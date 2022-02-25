@@ -13,6 +13,7 @@ import {
 	SELECT_OBJECT_LIBRARY_DATE_ADDED,
 } from "../../sql"
 
+import { timeStampToMilliseconds } from "./time-stamp-to-milliseconds"
 import { TableNameOptions, ColumnNameOptions, LibraryObject } from "../../types"
 
 export interface GetLibraryObjectOptions
@@ -24,7 +25,7 @@ export const getObjectDateAddedToLibrary =
 			query(client)(SELECT_OBJECT_LIBRARY_DATE_ADDED)({
 				parse: pipe(
 					convertFirstRowToCamelCaseOrNull<LibraryObject>(),
-					result => result && new Date(result.dateAdded * 1000),
+					result => result && timeStampToMilliseconds(result.dateAdded),
 				),
 				variables: {
 					userID,

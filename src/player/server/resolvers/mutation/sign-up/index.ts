@@ -19,27 +19,8 @@ export const signUp =
 		async ({ args, context }) => {
 			const { input } = args
 
-			const name =
-				trim(input.name)
-
 			const emailAddress =
 				trim(input.emailAddress)
-
-			const password =
-				await hash(
-					input.password,
-					await genSalt(),
-				)
-
-			const cover =
-				await determineCover({
-					cover: input.cover,
-				})
-
-			const profile =
-				await determineProfile({
-					profile: input.profile,
-				})
 
 			const doesUserExists =
 				await emailAddressExists(context.pg)({ emailAddress })
@@ -47,6 +28,15 @@ export const signUp =
 			if (doesUserExists) {
 				throw new UserInputError("Email address already exists")
 			}
+
+			const name =
+				trim(input.name)
+
+			const password =
+				await hash(
+					input.password,
+					await genSalt(),
+				)
 
 			const user =
 				await query(context.pg)(INSERT_USER)({
@@ -69,8 +59,17 @@ export const signUp =
 					}],
 				})
 
-			const { userID } =
-				user
+			const { userID } = user
+
+			const cover =
+				await determineCover({
+					cover: input.cover,
+				})
+
+			const profile =
+				await determineProfile({
+					profile: input.profile,
+				})
 
 			await normalizeImageAndUploadToS3(context.s3)({
 				buffer: cover,
@@ -93,5 +92,5 @@ export const signUp =
 
 			return createJWT(context.ag.client)(user)
 		},
-		{ globalContext: false }
+		{ global: false }
 	)

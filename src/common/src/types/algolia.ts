@@ -60,8 +60,8 @@ export interface AlgoliaRecordAlbum
 	extends
 	AlgoliaRecordImage,
 	AlgoliaRecordPlays,
-	AlgoliaRecordBase<"Album">,
-	Omit<AlbumBase, "albumID"> {
+	Omit<AlbumBase, "albumID">,
+	AlgoliaRecordBase<"Album"> {
 	artists: ArtistIDNameBase[],
 }
 
@@ -79,7 +79,7 @@ export interface AlgoliaRecordPlaylist
 	extends
 	AlgoliaRecordPlays,
 	AlgoliaRecordBase<"Playlist">,
-	Omit<PlaylistBase, "playlistID"> {
+	Omit<PlaylistBase, "playlistID" | "dateCreated"> {
 	user: UserIDNameBase,
 }
 
