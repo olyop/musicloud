@@ -12,6 +12,7 @@
 			"error",
 			{
 				"specialLink": ["to"],
+				"aspects": ["noHref"],
 				"components": ["Link"]
 			}
 		]
