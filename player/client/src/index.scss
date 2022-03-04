@@ -1,0 +1,34 @@
+:root {
+	--modal-width: 300rem;
+	--select-height: 29rem;
+	--content-width: 100vw;
+	--sidebar-width: 300rem;
+	--progress-height: 15rem;
+	--button-dimesnion: 36rem;
+	--grid-child-width: unset;
+	--transition-duration: 0.3s;
+	--content-image-width: 330rem;
+	--close-background-color: #000;
+	--close-background-opacity: 0.6;
+	--font-family: "Roboto", system-ui;
+
+	--primary-color: #ff5722;
+	--primary-color-dark: #c41c00;
+	--primary-color-light: #ff8a50;
+
+	--bar-height: var(--bar-height-base);
+	--header-height: calc(var(--button-dimesnion) + var(--space));
+	--bar-height-base: calc(var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height));
+
+	@media (max-width: 900px) {
+		--content-image-width: 275rem; }
+	@media (max-width: 800px) {
+		--content-image-width: 225rem; }
+	@media (max-width: 700px) {
+		--modal-width: 400rem;
+		--bar-height: calc(var(--bar-height-base) + var(--border-width) + var(--header-height)); }
+	@media (max-width: 450px) {
+		--modal-width: calc(100vw - 2 * var(--space-double)); } }
+
+#Root {
+	background-color: var(--background-color); }

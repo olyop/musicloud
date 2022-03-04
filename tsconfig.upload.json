@@ -1,9 +1,0 @@
-{
-	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"outDir": "build/upload"
-	},
-	"include": [
-		"src/upload/server"
-	]
-}

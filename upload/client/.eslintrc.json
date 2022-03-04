@@ -1,0 +1,12 @@
+{
+	"extends": [
+		"@oly_op/eslint-config-react",
+		"../../.eslintrc.json"
+	],
+	"env": {
+		"browser": true
+	},
+	"parserOptions": {
+		"project": "./upload/client/tsconfig.json"
+	}
+}

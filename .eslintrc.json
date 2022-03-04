@@ -1,6 +1,9 @@
 {
 	"extends": "@oly_op",
+	"env": {
+		"shared-node-browser": true
+	},
 	"parserOptions": {
-		"project": "./tsconfig.eslint.json"
+		"project": "./tsconfig.json"
 	}
 }

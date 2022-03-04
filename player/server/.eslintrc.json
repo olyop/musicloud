@@ -1,0 +1,9 @@
+{
+	"extends": "../../.eslintrc.json",
+	"env": {
+		"node": true
+	},
+	"parserOptions": {
+		"project": "./player/server/tsconfig.json"
+	}
+}

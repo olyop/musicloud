@@ -1,0 +1,20 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"outDir": "common",
+		"declaration": true,
+		"module": "CommonJS"
+	},
+	"include": [
+		"../types"
+	],
+	"files": [
+		"common/src/globals.ts",
+		"common/src/options.ts",
+		"common/src/metadata.ts",
+		"common/src/types/index.ts",
+		"common/src/types/other.ts",
+		"common/src/types/enums.ts",
+		"common/src/types/objects.ts"
+	]
+}

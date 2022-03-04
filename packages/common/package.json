@@ -1,0 +1,25 @@
+{
+	"license": "MIT",
+	"version": "6.9.60",
+	"description": "music-app-common",
+	"name": "@oly_op/music-app-common",
+	"bugs": "https://github.com/olyop/music-app/issues",
+	"homepage": "https://github.com/olyop/music-app/blob/master/README.md",
+	"author": {
+		"name": "Oliver Plummer",
+		"email": "oliver.plummer@outlook.com"
+	},
+	"repository": {
+		"type": "git",
+		"directory": "packages/common",
+		"url": "https://github.com/olyop/music-app.git"
+	},
+	"dependencies": {
+		"pg": "*",
+		"graphql": "*",
+		"fastify": "*",
+		"fastify-cors": "*",
+		"fastify-static": "*",
+		"fastify-helmet": "*"
+	}
+}

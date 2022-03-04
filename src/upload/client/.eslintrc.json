@@ -1,9 +1,0 @@
-{
-	"extends": [
-		"@oly_op/eslint-config-react",
-		"../../../.eslintrc.json"
-	],
-	"parserOptions": {
-		"project": "./tsconfig.eslint.json"
-	}
-}

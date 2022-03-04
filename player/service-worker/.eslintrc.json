@@ -1,0 +1,13 @@
+{
+	"extends": "../../.eslintrc.json",
+	"env": {
+		"browser": true,
+		"serviceworker": true
+	},
+	"parserOptions": {
+		"project": "./player/service-worker/tsconfig.json"
+	},
+	"rules": {
+		"no-underscore-dangle": "off"
+	}
+}

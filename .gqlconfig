@@ -1,12 +1,12 @@
 {
 	schema: {
-		files: 'src/player/server/type-defs/*.gql',
+		files: 'player/server/src/type-defs/*.gql',
 	},
 	query: {
 		files: [
 			{
 				parser: 'QueryParser',
-				match: 'src/player/client/**/*.gql',
+				match: 'player/client/src/**/*.gql',
 			}
 		]
 	}
