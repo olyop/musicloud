@@ -26,7 +26,6 @@ declare namespace NodeJS {
 		ALGOLIA_SEARCH_API_KEY: string,
 		ALGOLIA_APPLICATION_ID: string,
 		SOURCE_MAPS: ProcessEnvTrueFalse,
-		SERVICE_WORKER: ProcessEnvTrueFalse,
 		ANALYZE_BUNDLE: ProcessEnvTrueFalse,
 	}
 }

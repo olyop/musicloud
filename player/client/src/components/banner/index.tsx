@@ -1,4 +1,3 @@
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC, ReactNode } from "react"
 
@@ -15,11 +14,14 @@ const Banner: VFC<PropTypes> = ({
 	coverURL,
 	profileURL,
 }) => (
-	<Image
-		url={coverURL}
-		imgClassName={bem("img")}
-		className={bem("", "Elevated")}
-	>
+	<div className={bem("", "Elevated")}>
+		<div
+			className={bem("shade", "FullWidthAndHeight")}
+		/>
+		<div
+			style={{ backgroundImage: `url("${coverURL}")` }}
+			className={bem("background", "FullWidthAndHeight")}
+		/>
 		<div className={bem("content", "Content PaddingBottom")}>
 			<img
 				alt="Profile"
@@ -27,29 +29,26 @@ const Banner: VFC<PropTypes> = ({
 				crossOrigin="anonymous"
 				className={bem("content-profile", "Elevated")}
 			/>
-			<div>
+			<div className={bem("FlexColumnGap")}>
 				<h1 className={bem("content-title", "HeadingTwoInverted")}>
 					{title}
 				</h1>
-				{subTitle && (
-					<p className="HeadingSixInverted MarginTopHalf">
-						{subTitle}
-					</p>
-				)}
-				<div className="MarginTopHalf">
+				<div className="FlexColumnGapHalf">
+					{subTitle && (
+						<p className="HeadingSixInverted">
+							{subTitle}
+						</p>
+					)}
 					{content}
 				</div>
 				{buttons && (
-					<div className={bem("content-buttons", "MarginTop FlexRowGapHalf")}>
+					<div className={bem("content-buttons", "FlexRowGapHalf")}>
 						{buttons}
 					</div>
 				)}
 			</div>
 		</div>
-		<div
-			className={bem("black")}
-		/>
-	</Image>
+	</div>
 )
 
 interface PropTypes {

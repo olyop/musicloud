@@ -2,7 +2,6 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
 import { createElement, VFC, Fragment } from "react"
-import { VERSION } from "@oly_op/music-app-common/globals"
 
 import { useDispatch, toggleSidebar, useStateSidebar } from "../../redux"
 

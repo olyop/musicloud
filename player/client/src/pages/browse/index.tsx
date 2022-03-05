@@ -68,7 +68,6 @@ const BrowsePage: VFC = () => {
 								<Songs
 									hideCover
 									hideIndex
-									hideModal
 									hideDuration
 									hideInLibrary
 									hideTrackNumber

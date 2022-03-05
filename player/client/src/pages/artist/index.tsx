@@ -127,7 +127,7 @@ const ArtistPage: VFC = () => {
 						</Fragment>
 					)}
 					content={(
-						<Fragment>
+						<div className="FlexColumnGapQuart">
 							<p className="BodyTwoInverted">
 								<Fragment>Formed in </Fragment>
 								{data.getArtistByID.since.slice(0, -6)}
@@ -136,8 +136,8 @@ const ArtistPage: VFC = () => {
 								<a
 									target="_blank"
 									rel="noreferrer"
+									className="BodyTwoInverted"
 									style={{ display: "inline-block" }}
-									className="BodyTwoInverted MarginTopQuart"
 									href={createArtistGoogleMapsURL(data.getArtistByID)}
 								>
 									{city}
@@ -146,13 +146,13 @@ const ArtistPage: VFC = () => {
 								</a>
 							)}
 							{playsTotal && (
-								<p className=" BodyTwoInverted MarginTopQuart">
+								<p className=" BodyTwoInverted">
 									{playsTotal.toLocaleString() ?? 0}
 									<Fragment> play</Fragment>
 									{determinePlural(playsTotal)}
 								</p>
 							)}
-						</Fragment>
+						</div>
 					)}
 				/>
 				<Navigation

@@ -2,6 +2,7 @@
 	"extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"jsx": "react",
+		"sourceMap": true,
 		"lib": ["ESNext", "DOM"],
 		"jsxFactory": "createElement"
 	},

@@ -3,7 +3,6 @@ import { merge } from "webpack-merge"
 import { Configuration } from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
 import { TITLE } from "@oly_op/music-app-common/metadata"
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 import baseConfiguration, {
 	BASE_ROOT_PATH,
@@ -11,10 +10,10 @@ import baseConfiguration, {
 	createDevServerProxy,
 	createTSLoaderOptions,
 	createHTMLPluginOptions,
-} from "../../webpack.config"
+} from "./base"
 
 const ROOT_PATH =
-	path.join(BASE_ROOT_PATH, "player", "client")
+	path.join(BASE_ROOT_PATH, "upload", "client")
 
 const SRC_PATH =
 	path.join(ROOT_PATH, "src")
@@ -31,26 +30,13 @@ const ROOT_TSCONFIG_PATH =
 const BUILD_PATH =
 	path.join(BASE_BUILD_PATH, "player", "public")
 
-const playerConfiguration: Configuration = {
+const uploadConfiguration: Configuration = {
 	entry: SRC_ENTRY_PATH,
 	output: {
 		path: BUILD_PATH,
 	},
-	devServer: {
-		port: parseInt(process.env.PLAYER_CLIENT_PORT),
-		proxy: createDevServerProxy(process.env.PLAYER_SERVER_PORT, [
-			"/graphql",
-			"/ping.txt",
-			"/service-worker.js",
-			"/manifest.webmanifest",
-		]),
-	},
 	module: {
 		rules: [{
-			test: /\.gql$/,
-			exclude: /node_modules/,
-			loader: "graphql-tag/loader",
-		},{
 			test: /\.tsx?$/,
 			exclude: /node_modules/,
 			use: [{
@@ -61,24 +47,26 @@ const playerConfiguration: Configuration = {
 			}],
 		}],
 	},
+	devServer: {
+		port: parseInt(process.env.UPLOAD_CLIENT_PORT),
+		proxy: createDevServerProxy(process.env.UPLOAD_SERVER_PORT, [
+			"/upload/user",
+			"/upload/album",
+			"/upload/genre",
+			"/upload/artist",
+		]),
+	},
 	plugins: [
 		new HTMLWebpackPlugin(
 			createHTMLPluginOptions({
-				title: TITLE,
 				template: SRC_INDEX_PATH,
+				title: `${TITLE} Upload Client`,
 			}),
 		),
-		...(process.env.ANALYZE_BUNDLE === "true" ? [
-			new BundleAnalyzerPlugin({
-				openAnalyzer: true,
-				defaultSizes: "gzip",
-				analyzerMode: "static",
-			}),
-		] : []),
 	],
 }
 
 const configuration =
-	merge(baseConfiguration, playerConfiguration)
+	merge(baseConfiguration, uploadConfiguration)
 
 export default configuration

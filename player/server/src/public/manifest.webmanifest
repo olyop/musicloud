@@ -1,14 +1,17 @@
 {
+	"scope": "/",
 	"lang": "en-US",
 	"name": "Musicloud",
-	"display": "fullscreen",
+	"display": "standalone",
 	"theme_color": "#ff5722",
 	"orientation": "portrait",
 	"start_url": "/library/songs",
 	"background_color": "#fafafa",
-	"icons": [{
-		"src": "/icon.png",
-		"sizes": "512x512",
-		"type": "image/png"
-	}]
+	"icons": [
+		{
+			"src": "/icon.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	]
 }

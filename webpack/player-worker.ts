@@ -1,13 +1,11 @@
 import path from "path"
 import { Configuration } from "webpack"
-import ESLintPlugin from "eslint-webpack-plugin"
 
 import {
-	IS_DEV,
 	BASE_ROOT_PATH,
 	BASE_BUILD_PATH,
 	createTSLoaderOptions,
-} from "../../webpack.config"
+} from "./base"
 
 const ROOT_PATH =
 	path.join(BASE_ROOT_PATH, "player", "service-worker")
@@ -49,11 +47,6 @@ const configuration: Configuration = {
 			}],
 		}],
 	},
-	plugins: IS_DEV ? [
-		new ESLintPlugin({
-			extensions: ["ts"],
-		}),
-	] : undefined,
 }
 
 export default configuration

@@ -2,12 +2,25 @@
 	"extends": "@oly_op/tsconfig/tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": "./",
-		"lib": ["ESNext", "DOM"],
+		"lib": ["ESNext"],
 		"paths": { "*": ["types/*"] }
 	},
 	"include": [
 		"types",
-		"scripts",
-		"**/webpack.config.ts"
-	]
+		"webpack",
+		"scripts"
+	],
+	"ts-node": {
+		"files": true,
+		"compilerOptions": {
+			"target": "ES6",
+			"baseUrl": "./",
+			"module": "CommonJS",
+			"paths": { "*": ["types/*"] }
+		},
+		"moduleTypes": {
+			"webpack/**": "cjs",
+			"scripts/**/*": "cjs"
+		}
+	}
 }

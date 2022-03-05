@@ -1,7 +1,7 @@
 {
 	"extends": "@oly_op",
 	"env": {
-		"shared-node-browser": true
+		"node": true
 	},
 	"parserOptions": {
 		"project": "./tsconfig.json"
