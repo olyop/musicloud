@@ -1,6 +1,6 @@
 import { pipe } from "rxjs"
 import { isEmpty } from "lodash-es"
-import { PlaylistID } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/musicloud-common"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"

@@ -1,5 +1,5 @@
 import { join, query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
-import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common"
 
 import resolver from "./resolver"
 import { getUser } from "../helpers"

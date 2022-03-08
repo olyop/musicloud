@@ -10,7 +10,6 @@ import {
 	updateTheme,
 	updateVolume,
 	removeLoading,
-	updateCurrent,
 	updateOrderBy,
 	toggleSidebar,
 	updateIsOnline,
@@ -33,11 +32,6 @@ const sidebar =
 	createReducer(initialState.sidebar, builder =>
 		builder
 			.addCase(toggleSidebar, state => !state))
-
-const current =
-	createReducer(initialState.current, builder =>
-		builder
-			.addCase(updateCurrent, (_state, { payload }) => payload))
 
 const play =
 	createReducer(initialState.play, builder =>
@@ -135,7 +129,6 @@ const settings =
 const reducer =
 	combineReducers<State>({
 		play,
-		current,
 		sidebar,
 		loading,
 		settings,

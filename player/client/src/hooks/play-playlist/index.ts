@@ -1,13 +1,12 @@
-import { useEffect } from "react"
 import { isNull, isUndefined } from "lodash-es"
-import { PlaylistID } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/musicloud-common"
 
 import { useQuery } from "../query"
 import { useMutation } from "../mutation"
 import { QueueNowPlaying } from "../../types"
 import PLAY_PLAYLIST from "./play-playlist.gql"
 import { useResetPlayer } from "../reset-player"
-import { useDispatch, togglePlay, updatePlay } from "../../redux"
+import { useDispatch, togglePlay } from "../../redux"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 export const usePlayPlaylist =
@@ -43,12 +42,6 @@ export const usePlayPlaylist =
 					}
 				}
 			}
-
-		useEffect(() => {
-			if (result.data) {
-				dispatch(updatePlay(true))
-			}
-		}, [result.data])
 
 		return [ handlePlayPlaylist, isNowPlaying, result ] as const
 	}

@@ -1,4 +1,4 @@
-import { PlaylistID, InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { PlaylistID, InterfaceWithInput } from "@oly_op/musicloud-common"
 
 import { Playlist } from "../../types"
 import { useMutation } from "../mutation"

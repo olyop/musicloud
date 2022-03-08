@@ -1,7 +1,7 @@
 import { Reference } from "@apollo/client/cache"
 import { Modifier } from "@apollo/client/cache/core/types/common"
 import { ApolloCache, MutationUpdaterFunction } from "@apollo/client"
-import { PlaylistBase, InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { PlaylistBase, InterfaceWithInput } from "@oly_op/musicloud-common"
 
 import { Playlist } from "../../types"
 

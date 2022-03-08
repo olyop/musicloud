@@ -1,5 +1,5 @@
 import sharp, { ResizeOptions } from "sharp"
-import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/music-app-common/types"
+import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/musicloud-common"
 
 import { ImageInput } from "../types"
 import { uploadFileToS3 } from "./upload-file-to-s3"

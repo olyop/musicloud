@@ -1,4 +1,4 @@
-import { AlbumBase, SongBase } from "@oly_op/music-app-common/types"
+import { AlbumBase, SongBase } from "@oly_op/musicloud-common"
 
 import { BodyEntry } from "../types"
 

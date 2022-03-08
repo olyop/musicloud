@@ -8,7 +8,7 @@ import {
 	ArtistIDNameBase,
 	AlgoliaRecordAlbum,
 	AlgoliaRecordSong,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 import { random, trim } from "lodash-es"
 import { FastifyPluginCallback } from "fastify"

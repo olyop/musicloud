@@ -1,4 +1,4 @@
-import { NAME as Bucket } from "@oly_op/music-app-common/metadata"
+import { NAME as Bucket } from "@oly_op/musicloud-common"
 import { CreateBucketCommand, PutBucketCorsCommand, S3Client } from "@aws-sdk/client-s3"
 
 const s3Client =

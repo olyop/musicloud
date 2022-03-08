@@ -1,5 +1,5 @@
 import { UserInputError } from "apollo-server-fastify"
-import { PlaylistID, SongID } from "@oly_op/music-app-common/types"
+import { PlaylistID, SongID } from "@oly_op/musicloud-common"
 import { query, getResultExists, PoolOrClient } from "@oly_op/pg-helpers"
 
 import { IndexOptions } from "../../types"

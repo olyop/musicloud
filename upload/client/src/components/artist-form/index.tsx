@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import { isEmpty } from "lodash-es"
-import { ArtistBase } from "@oly_op/music-app-common/types"
+import { ArtistBase } from "@oly_op/musicloud-common"
 import { ChangeEventHandler, createElement, VFC, useState } from "react"
 
 import Form from "../form"

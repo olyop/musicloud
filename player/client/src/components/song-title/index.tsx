@@ -1,16 +1,15 @@
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
-import { ArtistIDNameBase } from "@oly_op/music-app-common/types"
-import { createElement, Fragment, VFC, MouseEventHandler, useEffect } from "react"
+import { ArtistIDNameBase } from "@oly_op/musicloud-common"
+import { createElement, Fragment, VFC, MouseEventHandler } from "react"
 
+import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
 import { usePlaySong } from "../../hooks"
 import { Song, Handler } from "../../types"
 import { createObjectPath } from "../../helpers"
-import { updatePlay, useDispatch } from "../../redux"
 
 import "./index.scss"
-import ObjectLink from "../object-link"
 
 const bem =
 	createBEM("SongTitle")
@@ -20,8 +19,7 @@ const SongTitle: VFC<PropTypes> = ({
 	noLink = false,
 	song: { mix, title, songID, remixers },
 }) => {
-	const dispatch = useDispatch()
-	const [ playSong, isPlaying, { data } ] = usePlaySong({ songID })
+	const [ playSong, isPlaying ] = usePlaySong({ songID })
 
 	const handleClick: MouseEventHandler =
 		event => {
@@ -33,12 +31,6 @@ const SongTitle: VFC<PropTypes> = ({
 				void onClick()
 			}
 		}
-
-	useEffect(() => {
-		if (data) {
-			dispatch(updatePlay(true))
-		}
-	}, [data])
 
 	const titleElement = noLink ? (
 		<ObjectLink

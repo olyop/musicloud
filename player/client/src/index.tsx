@@ -1,11 +1,12 @@
 import { render } from "react-dom"
 import { Workbox } from "workbox-window"
 import { ApolloProvider } from "@apollo/client"
+import { TITLE } from "@oly_op/musicloud-common"
 import { Provider as ReduxProvider } from "react-redux"
-import { TITLE } from "@oly_op/music-app-common/metadata"
 import { MetadataProvider } from "@oly_op/react-metadata"
 import { createElement, FC, StrictMode, VFC } from "react"
 import { BrowserRouter as ReactRouter } from "react-router-dom"
+import { AudioPlayerProvider as AudioPlayer } from "react-use-audio-player"
 
 import Pages from "./pages"
 import client from "./apollo"
@@ -35,30 +36,29 @@ const ApolloClient: FC = ({ children }) => (
 	</ApolloProvider>
 )
 
-const Application: VFC = () => (
-	<StrictMode>
-		<Loading/>
-		<Sidebar/>
-		<Header/>
-		<Pages/>
-		<Bar/>
-	</StrictMode>
-)
-
 const Root: VFC = () => (
-	<Metadata>
+	<StrictMode>
 		<ReactRedux>
 			<ReactRouter>
 				<ApolloClient>
-					<ApplySettings>
-						<Authorization>
-							<Application/>
-						</Authorization>
-					</ApplySettings>
+					<AudioPlayer>
+						<Loading>
+							<Metadata>
+								<ApplySettings>
+									<Authorization>
+										<Sidebar/>
+										<Header/>
+										<Pages/>
+										<Bar/>
+									</Authorization>
+								</ApplySettings>
+							</Metadata>
+						</Loading>
+					</AudioPlayer>
 				</ApolloClient>
 			</ReactRouter>
 		</ReactRedux>
-	</Metadata>
+	</StrictMode>
 )
 
 const rootElement =

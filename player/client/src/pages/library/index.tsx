@@ -3,49 +3,30 @@ import { Route, Routes, NavLink } from "react-router-dom"
 import { useState, createElement, VFC, Fragment } from "react"
 
 import routes from "./routes"
+import Modal from "../../components/modal"
 import Window from "../../components/window"
 import SHUFFLE_LIBRARY from "./shuffle-library.gql"
 import Navigation from "../../components/navigation"
 import LibraryCreatePlaylist from "./create-playlist"
 import { useMutation, useResetPlayer } from "../../hooks"
-import Modal, { ModalButton, ModalButtons } from "../../components/modal"
 
 const Library: VFC = () => {
 	const resetPlayer = useResetPlayer()
 
-	const [ modals, setModals ] =
-		useState({
-			shuffle: false,
-			createPlaylist: false,
-		})
+	const [ createPlaylistModal, setCreatePlaylistModal ] =
+		useState(false)
 
 	const [ libraryShuffle ] =
 		useMutation(SHUFFLE_LIBRARY)
 
-	const handleModalsClose =
-		() =>
-			setModals({
-				shuffle: false,
-				createPlaylist: false,
-			})
-
-	const handleShuffleModalOpen =
-		() =>
-			setModals({
-				shuffle: true,
-				createPlaylist: false,
-			})
-
 	const handleCreatePlaylistModalOpen =
-		() =>
-			setModals({
-				shuffle: false,
-				createPlaylist: true,
-			})
+		() => setCreatePlaylistModal(true)
+
+	const handleCreatePlaylistModalClose =
+		() => setCreatePlaylistModal(false)
 
 	const handleLibraryShuffle =
 		() => {
-			handleModalsClose()
 			resetPlayer()
 			void libraryShuffle()
 		}
@@ -81,7 +62,7 @@ const Library: VFC = () => {
 									<Button
 										icon="shuffle"
 										title="Shuffle"
-										onClick={handleShuffleModalOpen}
+										onClick={handleLibraryShuffle}
 										text={width > 1000 ? "Shuffle" : undefined}
 									/>
 								</Fragment>
@@ -101,29 +82,12 @@ const Library: VFC = () => {
 					),
 				)}
 			</Routes>
-			<Modal open={modals.shuffle} onClose={handleModalsClose}>
-				<ModalButtons>
-					<ModalButton
-						icon="list"
-						text="Shuffle"
-						onClick={handleLibraryShuffle}
-					/>
-					<ModalButton
-						icon="handyman"
-						text="Custom Shuffle"
-						link="/custom-library-shuffle"
-					/>
-				</ModalButtons>
-			</Modal>
 			<Modal
 				className="Padding"
-				onClose={handleModalsClose}
-				open={modals.createPlaylist}
-			>
-				<LibraryCreatePlaylist
-					onClose={handleModalsClose}
-				/>
-			</Modal>
+				open={createPlaylistModal}
+				onClose={handleCreatePlaylistModalClose}
+				children={<LibraryCreatePlaylist onClose={handleCreatePlaylistModalClose}/>}
+			/>
 		</section>
 	)
 }

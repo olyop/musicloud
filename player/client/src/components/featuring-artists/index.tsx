@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash-es"
 import { createElement, Fragment, VFC } from "react"
-import { ArtistIDNameBase } from "@oly_op/music-app-common/types"
+import { ArtistIDNameBase } from "@oly_op/musicloud-common"
 
 import ObjectLinks from "../object-links"
 import { OnClickPropTypes } from "../../types"

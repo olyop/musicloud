@@ -1,0 +1,10 @@
+{
+	"extends": "../../.eslintrc.json",
+	"env": {
+		"node": true,
+		"browser": true
+	},
+	"parserOptions": {
+		"project": "./packages/common/tsconfig.json"
+	}
+}

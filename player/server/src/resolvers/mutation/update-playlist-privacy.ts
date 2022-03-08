@@ -1,6 +1,6 @@
 import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common"
 import { convertFirstRowToCamelCase, exists, join, query } from "@oly_op/pg-helpers"
-import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { Playlist } from "../../types"

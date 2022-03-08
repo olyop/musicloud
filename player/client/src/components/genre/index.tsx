@@ -27,8 +27,8 @@ const Genre: VFC<PropTypes> = ({
 )
 
 interface PropTypes extends ObjectShowIcon {
-	genre: GenreType,
 	className?: string,
+	genre: Pick<GenreType, "name" | "genreID">,
 }
 
 export default Genre

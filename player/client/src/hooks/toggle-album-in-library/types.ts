@@ -1,4 +1,4 @@
-import { AlbumID } from "@oly_op/music-app-common/types"
+import { AlbumID } from "@oly_op/musicloud-common"
 
 import { Album, InLibraryBase } from "../../types"
 

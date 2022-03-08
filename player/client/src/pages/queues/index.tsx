@@ -1,5 +1,6 @@
 import Button from "@oly_op/react-button"
 import { createElement, VFC } from "react"
+import { useNavigate } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 
 import {
@@ -43,6 +44,7 @@ const NowPlaying: VFC = () => {
 }
 
 const Queues: VFC = () => {
+	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
 
@@ -82,21 +84,24 @@ const Queues: VFC = () => {
 		}
 
 	const handleShuffleNext =
-		async () => {
-			await shuffleNext()
+		() => {
+			void shuffleNext()
 		}
 
 	const handleClearNextQueues =
-		async () => {
-			await clearNext()
+		() => {
+			void clearNext()
 			handleCollapseDisclosure()
 		}
 
 	const handleClearQueues =
-		async () => {
-			await clear()
+		() => {
+			void clear()
 			handleCollapseDisclosure()
 		}
+
+	const handleBack =
+		() => navigate(-1)
 
 	const areQueuesCollapsed =
 		queuesDisclosure.next &&
@@ -105,7 +110,17 @@ const Queues: VFC = () => {
 
 	return (
 		<Metadata title="Queue">
-			<div className="Content PaddingTopBottom">
+			<div className="Content FlexColumnGap PaddingTopBottom">
+				<div className="FlexRowGapQuart">
+					<Button
+						transparent
+						icon="arrow_back"
+						onClick={handleBack}
+					/>
+					<h1 className="HeadingFour">
+						Queue
+					</h1>
+				</div>
 				<div className="Elevated">
 					<Queue
 						name="Previous"
@@ -124,7 +139,7 @@ const Queues: VFC = () => {
 						query={GET_QUEUE_LATER}
 					/>
 				</div>
-				<Buttons className="MarginTop">
+				<Buttons>
 					<Button
 						text={areQueuesCollapsed ? "Collapse" : "Expand"}
 						icon={areQueuesCollapsed ? "unfold_more" : "unfold_less"}

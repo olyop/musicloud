@@ -1,5 +1,5 @@
 import { FileUpload } from "graphql-upload"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import { User, UserPassword } from "../../../types"
 

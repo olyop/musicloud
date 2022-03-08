@@ -11,7 +11,7 @@ import {
 	AlbumID,
 	ArtistID,
 	PlaylistID,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 import { UserInputError } from "apollo-server-fastify"
 

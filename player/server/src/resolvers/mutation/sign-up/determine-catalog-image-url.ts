@@ -1,4 +1,4 @@
-import { CLOUDFRONT_CATALOG_URL } from "@oly_op/music-app-common/globals"
+import { CLOUDFRONT_CATALOG_URL } from "@oly_op/musicloud-common"
 
 import { ImageInput } from "./types"
 import determineCatalogImagePath from "./determine-catalog-image-path"

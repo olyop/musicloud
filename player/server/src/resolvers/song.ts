@@ -12,9 +12,8 @@ import {
 import { pipe } from "rxjs"
 import { random } from "lodash-es"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
-import { NAME } from "@oly_op/music-app-common/metadata"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { PlaylistID, SongID, UserID } from "@oly_op/music-app-common/types"
+import { PlaylistID, SongID, UserID, NAME } from "@oly_op/musicloud-common"
 
 import {
 	Song,
@@ -132,8 +131,7 @@ export const playsTotal =
 			query(context.pg)(SELECT_SONG_PLAYS)({
 				parse: pipe(
 					getResultRowCountOrNull,
-					plays => plays && (plays * 10000),
-					plays => plays && plays + random(0, 10000),
+					plays => plays && plays * 10000 + random(0, 10000),
 				),
 				variables: {
 					songID: parent.songID,

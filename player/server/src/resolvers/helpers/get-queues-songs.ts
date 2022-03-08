@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { UserID } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/musicloud-common"
 
 import { COLUMN_NAMES } from "../../globals"
 import { SELECT_QUEUE_SONGS } from "../../sql"

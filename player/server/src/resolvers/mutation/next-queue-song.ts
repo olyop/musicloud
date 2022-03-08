@@ -4,7 +4,8 @@ import {
 	convertFirstRowToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { isNull } from "lodash-es"
+import { head, isNull } from "lodash-es"
+import { ApolloError } from "apollo-server-fastify"
 
 import {
 	INSERT_QUEUE_SONG,
@@ -38,14 +39,18 @@ export const nextQueueSong =
 					const queueToBeEditedName =
 						isNull(next) ? "later" : "next"
 
+					if (head(queueToBeEdited)?.index !== 0) {
+						throw new ApolloError("Invalid queue")
+					}
+
 					const newNowPlaying =
 						await query(SELECT_QUEUE_SONG)({
 							parse: convertFirstRowToCamelCase<QueueSong>(),
 							variables: {
 								userID,
 								index: 0,
-								columnNames: join(COLUMN_NAMES.QUEUE_SONG),
 								tableName: `queue_${queueToBeEditedName}s`,
+								columnNames: join(COLUMN_NAMES.QUEUE_SONG),
 							},
 						})
 

@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useRef } from "react"
-import { isUndefined } from "lodash-es"
+import isUndefined from "lodash-es/isUndefined"
 
 import modifer from "./modifer"
 import { useQuery } from "../query"
@@ -20,7 +21,11 @@ import REMOVE_ARTIST from "./remove-artist-from-library.gql"
 import REMOVE_PLAYLIST from "./remove-playlist-from-library.gql"
 
 export const useToggleObjectInLibrary =
-	(object: InLibraryObjects) => {
+	(object?: InLibraryObjects) => {
+		if (isUndefined(object)) {
+			return [ () => {}, false, false ] as const
+		}
+
 		const isOptimistic = useRef(true)
 		const dr = determineReturn(object)
 		const objectID = determineID(object)

@@ -1,5 +1,5 @@
-import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/music-app-common/types"
 import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common"
 import { join, query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"

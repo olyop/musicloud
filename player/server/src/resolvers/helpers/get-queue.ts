@@ -1,5 +1,5 @@
+import { UserID } from "@oly_op/musicloud-common"
 import { PoolOrClient } from "@oly_op/pg-helpers"
-import { UserID } from "@oly_op/music-app-common/types"
 
 import { Queue } from "../../types"
 import { getQueueSection } from "./get-queue-section"

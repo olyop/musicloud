@@ -1,5 +1,5 @@
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { CLOUDFRONT_CATALOG_URL } from "@oly_op/music-app-common/globals"
+import { CLOUDFRONT_CATALOG_URL } from "@oly_op/musicloud-common"
 
 export const createCatalogMP3URL =
 	(songID: string) =>

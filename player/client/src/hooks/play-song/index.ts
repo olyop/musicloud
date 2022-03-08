@@ -1,6 +1,8 @@
-import { useEffect, useRef } from "react"
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useRef } from "react"
+import { MutationResult } from "@apollo/client"
 import { isNull, isUndefined } from "lodash-es"
-import { SongID } from "@oly_op/music-app-common/types"
+import { SongID } from "@oly_op/musicloud-common"
 
 import update from "./update"
 import { Song } from "../../types"
@@ -9,7 +11,7 @@ import PLAY_SONG from "./play-song.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import { Input, QueryData, Data } from "./types"
-import { togglePlay, updatePlay, useDispatch } from "../../redux"
+import { togglePlay, useDispatch } from "../../redux"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 const isSong =
@@ -17,7 +19,11 @@ const isSong =
 		"__typeName" in song
 
 export const usePlaySong =
-	(song: Input) => {
+	(song?: Input) => {
+		if (isUndefined(song)) {
+			return [ () => {}, false, {} as MutationResult<Data> ] as const
+		}
+
 		const { songID } = song
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
@@ -66,12 +72,6 @@ export const usePlaySong =
 					}
 				}
 			}
-
-		useEffect(() => {
-			if (result.data) {
-				dispatch(updatePlay(true))
-			}
-		}, [result.data])
 
 		return [ handlePlaySong, isPlaying, result ] as const
 	}

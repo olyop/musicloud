@@ -2,7 +2,7 @@ import {
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	PG_POOL_OPTIONS,
-} from "@oly_op/music-app-common/options"
+} from "@oly_op/musicloud-common"
 
 import fastify from "fastify"
 import cors from "fastify-cors"

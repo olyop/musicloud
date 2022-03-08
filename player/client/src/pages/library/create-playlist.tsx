@@ -1,7 +1,7 @@
 import { isEmpty } from "lodash-es"
 import Button from "@oly_op/react-button"
+import { PlaylistPrivacy } from "@oly_op/musicloud-common"
 import { useState, createElement, VFC, Fragment } from "react"
-import { PlaylistPrivacy } from "@oly_op/music-app-common/types"
 
 import { Handler } from "../../types"
 import Select from "../../components/select"

@@ -1,11 +1,6 @@
 import { useSelector } from "./store"
 import { OrderBy, SettingsOrderBy } from "../types"
 
-export const useStateCurrent =
-() => useSelector(
-	({ current }) => current,
-)
-
 export const useStatePlay =
 	() => useSelector(
 		({ play }) => play,

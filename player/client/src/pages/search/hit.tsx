@@ -1,5 +1,5 @@
-import { createElement, VFC, Fragment } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { createElement, VFC } from "react"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import {
 	isUser,
@@ -11,11 +11,14 @@ import {
 } from "./is-object"
 
 import { Hit } from "./types"
+import User from "../../components/user"
 import Item from "../../components/item"
-import SongTitle from "../../components/song-title"
+import Song from "../../components/song"
+import Genre from "../../components/genre"
+import Artist from "../../components/artist"
 import ObjectLink from "../../components/object-link"
 import ObjectLinks from "../../components/object-links"
-import FeaturingArtists from "../../components/featuring-artists"
+import { Song as SongType, Artist as ArtistType } from "../../types"
 import { createCatalogImageURL, createObjectPath } from "../../helpers"
 
 const className =
@@ -24,83 +27,45 @@ const className =
 const SearchHit: VFC<PropTypes> = ({ hit }) => {
 	if (isUser(hit)) {
 		return (
-			<Item
-				leftIcon="person"
+			<User
+				showIcon
 				className={className}
-				infoOptions={{
-					upperLeft: (
-						<ObjectLink
-							link={{
-								text: hit.name,
-								path: createObjectPath("user", hit.objectID),
-							}}
-						/>
-					),
-				}}
-				imageOptions={{
-					title: hit.name,
-					path: createObjectPath(
-						"user",
-						hit.objectID,
-					),
-					url: createCatalogImageURL(
-						hit.objectID,
-						"profile",
-						ImageSizes.MINI,
-						ImageDimensions.SQUARE,
-					),
+				user={{
+					name: hit.name,
+					userID: hit.objectID,
 				}}
 			/>
 		)
 	} else if (isSong(hit)) {
 		return (
-			<Item
-				leftIcon="audiotrack"
+			<Song
+				showIcon
+				hidePlay
+				hidePlays
+				hideModal
+				hideDuration
+				hideInLibrary
+				hideTrackNumber
 				className={className}
-				infoOptions={{
-					upperLeft: (
-						<SongTitle
-							song={{
-								songID: hit.objectID,
-								...hit,
-							}}
-						/>
-					),
-					lowerLeft: (
-						<FeaturingArtists
-							song={hit}
-						/>
-					),
-				}}
-				imageOptions={{
+				song={{
 					title: hit.title,
-					path: createObjectPath(
-						"album",
-						hit.album.albumID,
-					),
-					url: createCatalogImageURL(
-						hit.album.albumID,
-						"cover",
-						ImageSizes.MINI,
-						ImageDimensions.SQUARE,
-					),
-				}}
+					album: hit.album,
+					genres: hit.genres,
+					artists: hit.artists,
+					songID: hit.objectID,
+					remixers: hit.remixers,
+					featuring: hit.featuring,
+				} as SongType}
 			/>
 		)
 	} else if (isGenre(hit)) {
 		return (
-			<Item
-				leftIcon="list"
+			<Genre
+				showIcon
 				className={className}
-				infoOptions={{
-					upperLeft: (
-						<ObjectLink
-							link={{
-								text: hit.name,
-								path: createObjectPath("genre", hit.objectID),
-							}}
-						/>
-					),
+				genre={{
+					name: hit.name,
+					genreID: hit.objectID,
 				}}
 			/>
 		)
@@ -144,32 +109,15 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 		)
 	} else if (isArtist(hit)) {
 		return (
-			<Item
-				leftIcon="person"
-				className={className}
-				infoOptions={{
-					upperLeft: (
-						<ObjectLink
-							link={{
-								text: hit.name,
-								path: createObjectPath("artist", hit.objectID),
-							}}
-						/>
-					),
-				}}
-				imageOptions={{
-					title: hit.name,
-					path: createObjectPath(
-						"artist",
-						hit.objectID,
-					),
-					url: createCatalogImageURL(
-						hit.objectID,
-						"profile",
-						ImageSizes.MINI,
-						ImageDimensions.SQUARE,
-					),
-				}}
+			<Artist
+				hideModal
+				alwaysList
+				hideInLibrary
+				hideArtistLower
+				artist={({
+					name: hit.name,
+					artistID: hit.objectID,
+				} as Partial<ArtistType>) as ArtistType}
 			/>
 		)
 	} else if (isPlaylist(hit)) {
@@ -198,11 +146,7 @@ const SearchHit: VFC<PropTypes> = ({ hit }) => {
 			/>
 		)
 	} else {
-		return (
-			<Fragment>
-				{null}
-			</Fragment>
-		)
+		return null
 	}
 }
 

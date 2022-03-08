@@ -1,5 +1,5 @@
-import { GenreBase } from "@oly_op/music-app-common/types"
 import { useFormik } from "formik"
+import { GenreBase } from "@oly_op/musicloud-common"
 import { createElement, VFC, useState } from "react"
 
 import Form from "../form"

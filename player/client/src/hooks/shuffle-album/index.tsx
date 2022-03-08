@@ -1,15 +1,12 @@
-import { useEffect } from "react"
-import { AlbumID } from "@oly_op/music-app-common/types"
+import { AlbumID } from "@oly_op/musicloud-common"
 
 import { useMutation } from "../mutation"
 import { QueueNowPlaying } from "../../types"
 import SHUFFLE_ALBUM from "./shuffle-album.gql"
 import { useResetPlayer } from "../reset-player"
-import { updatePlay, useDispatch } from "../../redux"
 
 export const useShuffleAlbum =
 	({ albumID }: AlbumID) => {
-		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
 		const [ shuffleAlbum, result ] =
@@ -24,12 +21,6 @@ export const useShuffleAlbum =
 					void shuffleAlbum()
 				}
 			}
-
-		useEffect(() => {
-			if (result.data) {
-				dispatch(updatePlay(true))
-			}
-		}, [result.data])
 
 		return [ handleShuffleAlbum, result ] as const
 	}

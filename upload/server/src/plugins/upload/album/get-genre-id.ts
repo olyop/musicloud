@@ -1,6 +1,6 @@
 import { pipe } from "rxjs"
 import { trim } from "lodash-es"
-import { GenreID } from "@oly_op/music-app-common/types"
+import { GenreID } from "@oly_op/musicloud-common"
 import { query, PoolOrClient, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import importSQL from "./import-sql"

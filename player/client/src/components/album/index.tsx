@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import {
 	Handler,

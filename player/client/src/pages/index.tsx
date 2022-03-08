@@ -16,13 +16,12 @@ import BrowsePage from "./browse"
 import LibraryPage from "./library"
 import SettingsPage from "./settings"
 import PlaylistPage from "./playlist"
+import ManageAccount from "./manage-account"
 import AddSongToPlaylistPage from "./add-song-to-playlist"
 import AddAlbumToPlaylistPage from "./add-album-to-playlist"
 import TopOneHundredSongsPage from "./top-one-hundred-songs"
-import CustomLibraryShufflePage from "./custom-library-shuffle"
 
 import "./index.scss"
-import ManageAccount from "./manage-account"
 
 const routes: RouteType[] = [{
 	path: "",
@@ -76,10 +75,6 @@ const routes: RouteType[] = [{
 	routeID: uniqueID(),
 	path: "top-one-hundred-songs",
 	element: <TopOneHundredSongsPage/>,
-},{
-	routeID: uniqueID(),
-	path: "custom-library-shuffle",
-	element: <CustomLibraryShufflePage/>,
 },{
 	routeID: uniqueID(),
 	element: <AddSongToPlaylistPage/>,

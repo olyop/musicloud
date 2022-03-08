@@ -89,7 +89,6 @@ export interface Settings {
 
 export interface State {
 	play: boolean,
-	current: number,
 	sidebar: boolean,
 	loading: string[],
 	isOnline: boolean,

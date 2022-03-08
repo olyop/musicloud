@@ -1,4 +1,4 @@
-import { SongID } from "@oly_op/music-app-common/types"
+import { SongID } from "@oly_op/musicloud-common"
 import { ApolloCache, MutationUpdaterFunction } from "@apollo/client"
 
 import { QueueNowPlaying, Song } from "../../types"

@@ -10,14 +10,13 @@ import {
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
+import { AlgoliaRecord } from "@oly_op/musicloud-common"
 import { isEmpty, uniqueId as uniqueID } from "lodash-es"
-import algoliasearch, { SearchIndex } from "algoliasearch"
-import { AlgoliaRecord } from "@oly_op/music-app-common/types"
+import algoliasearch, { SearchIndex } from "algoliasearch/lite"
 import { useSearchParams, useNavigate } from "react-router-dom"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
-import algoliaImageURL from "./algolia-image-url"
 import { useHasMounted, useJWTPayload } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
 
@@ -32,8 +31,7 @@ const bem =
 const getAlgoliaHits =
 	(index: SearchIndex) =>
 		async (value: string) => {
-			const { hits } =
-				await index.search<AlgoliaRecord>(value)
+			const { hits } = await index.search<AlgoliaRecord>(value)
 			return hits
 		}
 
@@ -78,12 +76,8 @@ const SearchPage: VFC = () => {
 
 	const handleClear =
 		() => {
-			if (isEmpty("")) {
-				navigate(-1)
-			} else {
-				setInput("")
-				setHits([])
-			}
+			setInput("")
+			setHits([])
 		}
 
 	const handleInput: ChangeEventHandler<HTMLInputElement> =
@@ -102,8 +96,10 @@ const SearchPage: VFC = () => {
 			if (isEmpty(input)) {
 				navigate("/search")
 			} else {
+				const querySearchParams =
+					new URLSearchParams({ query: input })
 				navigate({
-					search: (new URLSearchParams({ query: input })).toString(),
+					search: querySearchParams.toString(),
 				})
 			}
 		}
@@ -125,12 +121,14 @@ const SearchPage: VFC = () => {
 						placeholder="Search..."
 						className={bem("bar-input", "PaddingHalf")}
 					/>
-					<Button
-						transparent
-						onClick={handleClear}
-						icon={isEmpty(input) ? "arrow_back" : "close"}
-						className={bem("bar-input-close", "bar-input-icon")}
-					/>
+					{isEmpty(input) || (
+						<Button
+							transparent
+							icon="close"
+							onClick={handleClear}
+							className={bem("bar-input-close", "bar-input-icon")}
+						/>
+					)}
 				</div>
 				{!isEmpty(input) && !isEmpty(hits) && (
 					<div className="Content Elevated">
@@ -147,13 +145,12 @@ const SearchPage: VFC = () => {
 				<a
 					target="_blank"
 					rel="noreferrer"
+					href="https://algolia.com"
 					className={bem("algolia")}
-					href="https://www.algolia.com"
 				>
 					<img
-						alt="algolia"
-						src={algoliaImageURL}
-						crossOrigin="anonymous"
+						alt="Search by Algolia"
+						src="./search-by-algolia.svg"
 						className={bem("algolia-image", "PaddingHalf Rounded")}
 					/>
 				</a>

@@ -5,9 +5,9 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN npm i -g npm@latest
-RUN npm install
+RUN npm i
 RUN npm run build-player
 
 EXPOSE 3000
 
-CMD npm run host:player
+CMD npm run host-player

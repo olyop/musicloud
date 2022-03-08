@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { Pool } from "pg"
-import { PG_POOL_OPTIONS } from "@oly_op/music-app-common/options"
+import { PG_POOL_OPTIONS } from "@oly_op/musicloud-common"
 
 const DELETE_SCHEMA =
 	fs.readFileSync(

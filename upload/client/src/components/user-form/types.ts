@@ -1,4 +1,4 @@
-import { UserBase } from "@oly_op/music-app-common/types"
+import { UserBase } from "@oly_op/musicloud-common"
 
 export interface UserImages {
 	cover?: File,

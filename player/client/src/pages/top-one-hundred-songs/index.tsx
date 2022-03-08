@@ -19,10 +19,10 @@ const TopOneHundredSongsPage: VFC = () => {
 		useMutation<MutationData>(PLAY_TOP_ONE_HUNDRED_SONGS)
 
 	const handlePlay =
-		async () => {
+		() => {
 			if (!loading) {
 				resetPlayer()
-				await playTopOneHundredSongs()
+				void playTopOneHundredSongs()
 			}
 		}
 

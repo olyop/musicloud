@@ -4,7 +4,7 @@ import { trim } from "lodash-es"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
 import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
-import { AlgoliaRecordUser, ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
+import { AlgoliaRecordUser, ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common"
 
 import {
 	addRecordToSearchIndex,

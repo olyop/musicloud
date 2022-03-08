@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode"
-import { JWTPayload } from "@oly_op/music-app-common/types"
+import { JWTPayload } from "@oly_op/musicloud-common"
 
 import { useStateAccessToken } from "../redux"
 

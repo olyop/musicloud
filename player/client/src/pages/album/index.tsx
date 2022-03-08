@@ -2,7 +2,7 @@ import {
 	AlbumID,
 	ImageSizes,
 	ImageDimensions,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
@@ -57,11 +57,12 @@ const AlbumPage: VFC = () => {
 			createDiscs(data.getAlbumByID.songs)
 
 		const handleShare =
-			() =>
-				navigator.share({
+			() => {
+				void navigator.share({
 					title: data?.getAlbumByID.title,
 					url: createObjectPath("album", albumID),
 				})
+			}
 
 		return (
 			<Metadata title={data.getAlbumByID.title}>

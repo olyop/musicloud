@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/function-component-definition */
 import { isEmpty } from "lodash-es"
-import { AlbumID } from "@oly_op/music-app-common/types"
+import { AlbumID } from "@oly_op/musicloud-common"
 import { ApolloCache, Reference } from "@apollo/client/cache"
 import { gql, MutationUpdaterFunction } from "@apollo/client"
 import { Modifier } from "@apollo/client/cache/core/types/common"

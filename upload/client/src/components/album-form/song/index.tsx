@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { SongBase } from "@oly_op/music-app-common/types"
+import { SongBase } from "@oly_op/musicloud-common"
 import { createElement, VFC, ChangeEventHandler } from "react"
 
 import { Item } from "../../../types"

@@ -6,8 +6,8 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
+import { AlbumID } from "@oly_op/musicloud-common"
 import { UserInputError } from "apollo-server-fastify"
-import { AlbumID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { Song } from "../../types"
@@ -41,12 +41,9 @@ export const shuffleAlbum =
 
 				const [ nowPlaying, ...shuffled ] =
 					await query(SELECT_ALBUM_SONGS)({
-						parse: pipe(
-							convertTableToCamelCase<Song>(),
-							shuffle(),
-						),
+						parse: pipe(convertTableToCamelCase<Song>(), shuffle()),
 						variables: {
-							albumID: args.albumID,
+							albumID,
 							columnNames: join(COLUMN_NAMES.SONG),
 						},
 					})

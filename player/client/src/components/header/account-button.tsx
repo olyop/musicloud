@@ -4,7 +4,7 @@ import uniqueID from "lodash-es/uniqueId"
 import Button from "@oly_op/react-button"
 import { useApolloClient } from "@apollo/client"
 import { createElement, Fragment, useState, VFC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import Modal from "../modal"
 import { useJWTPayload, useSignOut } from "../../hooks"
@@ -33,11 +33,11 @@ const HeaderAccountButton: VFC = () => {
 		() => setAccountModal(false)
 
 	const handleRefresh =
-		async () => {
+		() => {
 			dispatch(addLoading(loadingID))
 			handleAccountModalClose()
-			await client.refetchQueries({ include: "all" })
-			dispatch(removeLoading(loadingID))
+			void client.refetchQueries({ include: "all" })
+				.then(() => dispatch(removeLoading(loadingID)))
 		}
 
 	return (

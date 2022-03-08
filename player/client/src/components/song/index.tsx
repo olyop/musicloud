@@ -2,7 +2,7 @@ import { isNull } from "lodash-es"
 import { BEMInput } from "@oly_op/bem"
 import { createElement, VFC, Fragment } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { ImageDimensions, ImageSizes, SongID } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common"
 
 import {
 	useStatePlay,
@@ -81,10 +81,10 @@ const Song: VFC<PropTypes> = ({
 		useStateShowDuration()
 
 	const [ playSong, isPlaying ] =
-		usePlaySong(song)
+		usePlaySong(hidePlay ? undefined : song)
 
 	const [ toggleInLibrary, inLibrary, isError ] =
-		useToggleObjectInLibrary(song)
+		useToggleObjectInLibrary(hideInLibrary ? undefined : song)
 
 	const [ next, { loading: nextLoading } ] =
 		useMutation<QueueData, SongID>(
@@ -141,7 +141,7 @@ const Song: VFC<PropTypes> = ({
 			playOptions={
 				onJump ? {
 					onClick: onJump,
-					isPlaying: true,
+					isPlaying: false,
 				} : (
 					hidePlay ? undefined : {
 						isPlaying,
@@ -220,11 +220,13 @@ const Song: VFC<PropTypes> = ({
 				},
 				content: (
 					<ModalButtons>
-						<ModalPlayButton
-							onClose={onClose}
-							onClick={playSong}
-							isPlaying={isPlaying}
-						/>
+						{hidePlay || (
+							<ModalPlayButton
+								onClose={onClose}
+								onClick={playSong}
+								isPlaying={isPlaying}
+							/>
+						)}
 						<ModalButton
 							text="Next"
 							onClose={onClose}
@@ -255,12 +257,14 @@ const Song: VFC<PropTypes> = ({
 							onClose={onClose}
 							link={createObjectPath("artist", song.artists[0]!.artistID)}
 						/>
-						<ModalButton
-							text="Library"
-							onClose={onClose}
-							onClick={toggleInLibrary}
-							icon={inLibrary ? "done" : "add"}
-						/>
+						{hideInLibrary || (
+							<ModalButton
+								text="Library"
+								onClose={onClose}
+								onClick={toggleInLibrary}
+								icon={inLibrary ? "done" : "add"}
+							/>
+						)}
 						<ModalButton
 							text="Playlist"
 							onClose={onClose}

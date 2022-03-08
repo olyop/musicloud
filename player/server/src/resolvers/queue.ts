@@ -1,4 +1,4 @@
-import { QUEUE_PAGE_SIZE } from "@oly_op/music-app-common/globals"
+import { QUEUE_PAGE_SIZE } from "@oly_op/musicloud-common"
 import { join, query, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers"
 
 import { Song } from "../types"

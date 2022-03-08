@@ -13,7 +13,6 @@ import {
 	ModalOptionsWithFunction,
 } from "./types"
 
-import Window from "../window"
 import ItemModal from "./modal"
 import PlayButton from "./play-button"
 import InLibraryButton from "./in-library-button"
@@ -129,18 +128,14 @@ const Item: VFC<PropTypes> = ({
 						</p>
 					)}
 				</div>
-				<Window>
-					{({ width }) => (
-						width >= 700 && inLibraryOptions && (
-							<InLibraryButton
-								className={bem(iconClassName)}
-								isError={inLibraryOptions.isError}
-								onClick={inLibraryOptions.onClick}
-								inLibrary={inLibraryOptions.inLibrary}
-							/>
-						)
-					)}
-				</Window>
+				{inLibraryOptions && (
+					<InLibraryButton
+						isError={inLibraryOptions.isError}
+						onClick={inLibraryOptions.onClick}
+						inLibrary={inLibraryOptions.inLibrary}
+						className={bem(iconClassName, "in-library")}
+					/>
+				)}
 				{modalOptions && (
 					<Button
 						transparent

@@ -8,7 +8,7 @@ import {
 	ArtistID,
 	PlaylistID,
 	PlaylistPrivacy,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 import {
 	join,

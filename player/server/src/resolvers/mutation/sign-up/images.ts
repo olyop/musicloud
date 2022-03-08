@@ -1,4 +1,4 @@
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import { ImageInput } from "./types"
 

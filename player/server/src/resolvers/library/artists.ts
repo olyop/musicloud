@@ -6,8 +6,7 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { UserID } from "@oly_op/music-app-common/types"
-import { PAGINATION_PAGE_SIZE } from "@oly_op/music-app-common/globals"
+import { UserID, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"

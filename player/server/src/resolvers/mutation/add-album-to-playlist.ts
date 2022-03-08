@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { last } from "lodash-es"
-import { AlbumID, PlaylistID } from "@oly_op/music-app-common/types"
+import { AlbumID, PlaylistID } from "@oly_op/musicloud-common"
 import { ForbiddenError, UserInputError } from "apollo-server-fastify"
 
 import resolver from "./resolver"

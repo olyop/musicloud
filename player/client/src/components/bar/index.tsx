@@ -1,19 +1,21 @@
+import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
+import isUndefined from "lodash-es/isUndefined"
 import { useState, createElement, VFC, Fragment } from "react"
 
 import Song from "../song"
-import BarVolume from "./volume"
-import BarHowler from "./howler"
+import Volume from "./volume"
 import Progress from "./progress"
-import BarControls from "./controls"
+import Controls from "./controls"
+import Fullscreen from "./fullscreen"
 import { useQuery } from "../../hooks"
-import BarFullscreen from "./fullscreen"
 import { QueueNowPlaying } from "../../types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 import "./index.scss"
+import useSongAudio from "./user-song-audio"
 
 const bem =
 	createBEM("Bar")
@@ -25,6 +27,12 @@ const Bar: VFC = () => {
 	const { data, loading } =
 		useQuery<Data>(GET_QUEUE_NOW_PLAYING)
 
+	const songAudio =
+		useSongAudio(data?.getQueue.nowPlaying || null)
+
+	const isNowPlaying =
+		!isUndefined(data) && !isNull(data.getQueue.nowPlaying)
+
 	const handleExpandOpen =
 		() => setExpand(true)
 
@@ -35,7 +43,8 @@ const Bar: VFC = () => {
 		<footer className={bem("", "Elevated")}>
 			{loading || (
 				<Fragment>
-					<BarControls
+					<Controls
+						ready={songAudio.ready}
 						className={bem("controls")}
 						buttonClassName={bem("controls-button")}
 						buttonIconClassName={bem("controls-button-icon")}
@@ -62,7 +71,7 @@ const Bar: VFC = () => {
 													/>
 												)}
 											</NavLink>
-											<BarVolume/>
+											<Volume/>
 											<Button
 												transparent
 												title="Player"
@@ -81,7 +90,8 @@ const Bar: VFC = () => {
 							</div>
 						</div>
 						<Progress
-							duration={data?.getQueue.nowPlaying?.duration || 0}
+							ready={songAudio.ready}
+							isNowPlaying={isNowPlaying}
 						/>
 					</div>
 					{data?.getQueue.nowPlaying && (
@@ -93,16 +103,13 @@ const Bar: VFC = () => {
 							onClick={handleExpandOpen}
 						/>
 					)}
-					<BarFullscreen
+					<Fullscreen
 						open={expand}
+						ready={songAudio.ready}
+						isNowPlaying={isNowPlaying}
 						onClose={handleExpandClose}
 						song={data?.getQueue.nowPlaying}
 					/>
-					{data?.getQueue.nowPlaying && (
-						<BarHowler
-							song={data.getQueue.nowPlaying}
-						/>
-					)}
 				</Fragment>
 			)}
 		</footer>

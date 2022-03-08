@@ -3,12 +3,12 @@ import {
 	ImageSizes,
 	PlaylistID,
 	ImageDimensions,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { useState, createElement, VFC } from "react"
+import { useState, createElement, VFC, useEffect } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useParams, useNavigate } from "react-router-dom"
 
@@ -46,7 +46,7 @@ const AddAlbumToPlaylistPage: VFC = () => {
 			{ variables: { albumID } },
 		)
 
-	const [ add ] =
+	const [ add, { data } ] =
 		useMutation<AddAlbumToPlaylistData, AddAlbumToPlaylistVars>(
 			ADD_ALBUM_TO_PLAYLIST,
 		)
@@ -55,16 +55,21 @@ const AddAlbumToPlaylistPage: VFC = () => {
 		() => navigate(-1)
 
 	const handleAdd =
-		async () => {
+		() => {
 			if (playlistID) {
-				await add({ variables: { albumID, playlistID } })
-				onClose()
+				void add({ variables: { albumID, playlistID } })
 			}
 		}
 
 	const handlePlaylistSelect =
 		(value: string) =>
 			setPlaylistID(value === playlistID ? null : value)
+
+	useEffect(() => {
+		if (data) {
+			onClose()
+		}
+	}, [data])
 
 	return albumData ? (
 		<div className={bem("", "Content PaddingTopBottom")}>

@@ -1,12 +1,6 @@
 import { createBEM } from "@oly_op/bem"
-import { useEffect, createElement, ChangeEventHandler, VFC } from "react"
-
-import {
-	useDispatch,
-	useStatePlay,
-	updateCurrent,
-	useStateCurrent,
-} from "../../../redux"
+import { useAudioPosition } from "react-use-audio-player"
+import { createElement, ChangeEventHandler, VFC } from "react"
 
 import { deserializeDuration } from "../../../helpers"
 import { ClassNameBEMPropTypes } from "../../../types"
@@ -16,43 +10,37 @@ import "./index.scss"
 const bem =
 	createBEM("Progress")
 
-const Progress: VFC<ProgressPropTypes> = ({
-	duration,
-	className,
-}) => {
-	const play = useStatePlay()
-	const dispatch = useDispatch()
-	const current = useStateCurrent()
+const Progress: VFC<PropTypes> = ({ ready, isNowPlaying, className }) => {
+	const audioPosition = useAudioPosition()
 
-	const handleChange: HandleChange =
+	const handleSeek: HandleChange =
 		event => {
-			if (!play) {
-				dispatch(updateCurrent(parseInt(event.target.value)))
+			if (ready) {
+				audioPosition.seek(parseInt(event.target.value))
 			}
 		}
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			if (play) {
-				dispatch(updateCurrent(current + 1))
-			}
-		}, 1000)
-		return () => clearInterval(interval)
-	}, [play, current])
+	const position =
+		isNowPlaying ?
+			Math.floor(audioPosition.position) : 0
+
+	const duration =
+		isNowPlaying ?
+			Math.floor(audioPosition.duration) : 0
 
 	return (
 		<div className={bem(className, "", "FlexRowGapHalf")}>
 			<p
 				className={bem("text", "BodyTwo")}
-				children={deserializeDuration(current)}
+				children={deserializeDuration(position)}
 			/>
 			<input
 				min={0}
 				step={1}
 				type="range"
 				max={duration}
-				value={current}
-				onInput={handleChange}
+				value={position}
+				onInput={handleSeek}
 				className={bem("slider", "OverflowHidden")}
 			/>
 			<p
@@ -66,8 +54,9 @@ const Progress: VFC<ProgressPropTypes> = ({
 type HandleChange =
 	ChangeEventHandler<HTMLInputElement>
 
-interface ProgressPropTypes extends ClassNameBEMPropTypes {
-	duration: number,
+interface PropTypes extends ClassNameBEMPropTypes {
+	ready: boolean,
+	isNowPlaying: boolean,
 }
 
 export default Progress

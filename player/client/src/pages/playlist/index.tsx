@@ -2,9 +2,9 @@ import Button from "@oly_op/react-button"
 import { useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
+import { PlaylistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { isNull, toLower, startCase } from "lodash-es"
-import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import {
 	useQuery,
@@ -58,9 +58,9 @@ const PlaylistPage: VFC = () => {
 
 	const handleRemoveSongFromPlaylist =
 		({ song }: SongChangeOptions) =>
-			async () => {
+			() => {
 				if (!isNull(song.playlistIndex)) {
-					await removeSongFromPlaylist({
+					void removeSongFromPlaylist({
 						variables: {
 							playlistID,
 							index: song.playlistIndex,
@@ -68,6 +68,16 @@ const PlaylistPage: VFC = () => {
 					})
 				}
 			}
+
+	const handleShare =
+		() => {
+			if (data) {
+				void navigator.share({
+					title: data.getPlaylistByID.title,
+					url: createObjectPath("playlist", data.getPlaylistByID.playlistID),
+				})
+			}
+		}
 
 	if (error?.message === "Playlist does not exist") {
 		return (
@@ -133,10 +143,7 @@ const PlaylistPage: VFC = () => {
 						<Button
 							icon="share"
 							text="Share"
-							onClick={() => navigator.share({
-								title: data.getPlaylistByID.title,
-								url: createObjectPath("playlist", data.getPlaylistByID.playlistID),
-							})}
+							onClick={handleShare}
 						/>
 					</Buttons>
 					{isUsers && (

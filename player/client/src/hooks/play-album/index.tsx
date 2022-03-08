@@ -1,13 +1,12 @@
-import { useEffect } from "react"
-import { AlbumID } from "@oly_op/music-app-common/types"
+import { AlbumID } from "@oly_op/musicloud-common"
 
 import { useQuery } from "../query"
 import PLAY_ALBUM from "./play-album.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
+import { useDispatch, togglePlay } from "../../redux"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 import { PlayAlbumData, GetQueueNowPlayingData } from "./types"
-import { useDispatch, togglePlay, updatePlay } from "../../redux"
 
 export const usePlayAlbum =
 	({ albumID }: AlbumID) => {
@@ -41,12 +40,6 @@ export const usePlayAlbum =
 					}
 				}
 			}
-
-		useEffect(() => {
-			if (result.data) {
-				dispatch(updatePlay(true))
-			}
-		}, [result.data])
 
 		return [ handlePlayAlbum, isNowPlaying, result ] as const
 	}

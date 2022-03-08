@@ -1,6 +1,6 @@
 import { isNull } from "lodash-es"
 import { Reference } from "@apollo/client"
-import { PlaylistID } from "@oly_op/music-app-common/types"
+import { PlaylistID } from "@oly_op/musicloud-common"
 
 import { useMutation } from "../mutation"
 import { DeletePlaylistData } from "./types"

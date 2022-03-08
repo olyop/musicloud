@@ -8,9 +8,9 @@ import {
 
 import Button from "@oly_op/react-button"
 import isString from "lodash-es/isString"
-import { useMutation } from "@apollo/client"
-import { UserEmailAddress } from "@oly_op/music-app-common/types"
+import { UserEmailAddress } from "@oly_op/musicloud-common"
 
+import { useMutation } from "../../hooks"
 import isEmailAddress from "./is-email-address"
 import EMAIL_ADDRESS_EXISTS from "./email-address-exists.gql"
 import Input, { InputOnChange } from "../../components/input"

@@ -2,7 +2,7 @@ import { join } from "path"
 import { trim } from "lodash-es"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
-import { GenreBase, GenreID } from "@oly_op/music-app-common/types"
+import { GenreBase, GenreID } from "@oly_op/musicloud-common"
 import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import { addRecordToSearchIndex } from "../helpers"

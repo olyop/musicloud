@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
 import { createElement, Fragment, VFC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import Item, {
 	InfoOptions,
@@ -38,6 +38,8 @@ const Artist: VFC<PropTypes> = ({
 	showIcon = false,
 	hideModal = false,
 	alwaysList = false,
+	hideInLibrary = false,
+	hideArtistLower = false,
 }) => {
 	const { artistID } = artist
 	const listStyle = useStateListStyle()
@@ -46,9 +48,9 @@ const Artist: VFC<PropTypes> = ({
 		useShuffleArtist({ artistID })
 
 	const [ toggleInLibrary, inLibrary, isError ] =
-		useToggleObjectInLibrary(artist)
+		useToggleObjectInLibrary(hideInLibrary ? undefined : artist)
 
-	const inLibraryConfig: InLibraryOptions = {
+	const inLibraryConfig: InLibraryOptions | undefined = hideInLibrary ? undefined : {
 		isError,
 		inLibrary,
 		onClick: toggleInLibrary,
@@ -80,12 +82,14 @@ const Artist: VFC<PropTypes> = ({
 		},
 		content: (
 			<ModalButtons>
-				<ModalButton
-					onClose={onClose}
-					onClick={toggleInLibrary}
-					icon={inLibrary ? "done" : "add"}
-					text={inLibrary ? "Remove" : "Add"}
-				/>
+				{hideInLibrary || (
+					<ModalButton
+						onClose={onClose}
+						onClick={toggleInLibrary}
+						icon={inLibrary ? "done" : "add"}
+						text={inLibrary ? "Remove" : "Add"}
+					/>
+				)}
 				<ModalButton
 					icon="shuffle"
 					text="Shuffle"
@@ -97,7 +101,7 @@ const Artist: VFC<PropTypes> = ({
 	})
 
 	const info: InfoOptions = {
-		lowerLeft: createArtistLower(artist),
+		lowerLeft: hideArtistLower ? undefined : createArtistLower(artist),
 		upperLeft: (
 			<ObjectLink
 				link={{
@@ -171,6 +175,8 @@ interface PropTypes extends ObjectShowIcon {
 	className?: string,
 	hideModal?: boolean,
 	alwaysList?: boolean,
+	hideInLibrary?: boolean,
+	hideArtistLower?: boolean,
 }
 
 export default Artist

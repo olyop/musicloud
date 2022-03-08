@@ -1,4 +1,4 @@
-import { TITLE } from "@oly_op/music-app-common/metadata"
+import { TITLE } from "@oly_op/musicloud-common"
 
 const determineTitle =
 	(checked: boolean, exists: boolean) => (

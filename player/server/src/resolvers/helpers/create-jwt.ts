@@ -1,6 +1,6 @@
 import { createSigner } from "fast-jwt"
 import { SearchClient } from "algoliasearch"
-import { JWTPayload, JWTPayloadUser, UserID } from "@oly_op/music-app-common/types"
+import { JWTPayload, JWTPayloadUser, UserID } from "@oly_op/musicloud-common"
 
 const createAlgoliaAPIKey =
 	(ag: SearchClient) =>

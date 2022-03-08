@@ -1,8 +1,8 @@
 import isEmpty from "lodash-es/isEmpty"
 import { useParams } from "react-router-dom"
+import { UserID } from "@oly_op/musicloud-common"
 import { createElement, Fragment, VFC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { UserID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../../hooks"
 import User from "../../components/user"

@@ -1,5 +1,5 @@
 import isUndefined from "lodash-es/isUndefined"
-import { UserID } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/musicloud-common"
 
 import { User } from "../../types"
 import { useQuery } from "../query"

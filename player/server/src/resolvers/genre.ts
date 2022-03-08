@@ -1,4 +1,4 @@
-import { GenreID, UserID } from "@oly_op/music-app-common/types"
+import { GenreID, UserID } from "@oly_op/musicloud-common"
 
 import {
 	join,

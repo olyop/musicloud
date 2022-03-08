@@ -3,7 +3,7 @@ import { trim } from "lodash-es"
 import { readFileSync } from "fs"
 import { FastifyPluginCallback } from "fastify"
 import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
-import { ImageDimensions, ImageSizes, ArtistBase, ArtistID, AlgoliaRecordArtist } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, ArtistBase, ArtistID, AlgoliaRecordArtist } from "@oly_op/musicloud-common"
 
 import {
 	addRecordToSearchIndex,

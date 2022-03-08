@@ -9,7 +9,7 @@ import {
 
 import { pipe } from "rxjs"
 import { ForbiddenError } from "apollo-server-fastify"
-import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/music-app-common/types"
+import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/musicloud-common"
 
 import {
 	getUser,

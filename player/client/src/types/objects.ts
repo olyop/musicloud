@@ -9,7 +9,7 @@ import {
 	ArtistBase,
 	UserID,
 	PlaylistBase,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 export interface StoreObject<T = string> {
 	__typename: T,

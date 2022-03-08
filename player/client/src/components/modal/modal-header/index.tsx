@@ -18,10 +18,9 @@ const ModalHeader: VFC<ModalHeaderPropTypes> = ({
 	hideShare = false,
 }) => {
 	const handleShare =
-		async () => {
+		() => {
 			if (onClose) {
-				await navigator.share(shareData)
-				void onClose()
+				void navigator.share(shareData).then(onClose)
 			}
 		}
 	return (

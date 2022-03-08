@@ -3,7 +3,7 @@ import { Metadata } from "@oly_op/react-metadata"
 import { createElement, Fragment, VFC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { Link, NavLink, Route, Routes, useParams } from "react-router-dom"
-import { ImageDimensions, ImageSizes, UserID } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common"
 
 import { User } from "../../types"
 import UserFollowers from "./followers"

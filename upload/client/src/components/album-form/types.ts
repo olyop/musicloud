@@ -1,4 +1,4 @@
-import { AlbumBase } from "@oly_op/music-app-common/types"
+import { AlbumBase } from "@oly_op/musicloud-common"
 
 import { Item } from "../../types"
 

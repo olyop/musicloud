@@ -3,14 +3,14 @@ import {
 	ImageSizes,
 	PlaylistID,
 	ImageDimensions,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useNavigate, useParams } from "react-router-dom"
-import { useState, createElement, VFC, Fragment } from "react"
+import { useState, createElement, VFC, Fragment, useEffect } from "react"
 
 import GET_SONG_DATA from "./get-song-data.gql"
 import Playlists from "../../components/playlists"
@@ -46,7 +46,7 @@ const AddSongToPlaylistPage: VFC = () => {
 			{ fetchPolicy: "no-cache", variables: { songID } },
 		)
 
-	const [ add ] =
+	const [ add, { data } ] =
 		useMutation<AddSongToPlaylistData, AddSongToPlaylistVars>(
 			ADD_SONG_TO_PLAYLIST,
 		)
@@ -55,19 +55,21 @@ const AddSongToPlaylistPage: VFC = () => {
 		() => navigate(-1)
 
 	const handleAdd =
-		async () => {
+		() => {
 			if (playlistID) {
-				try {
-					await add({ variables: { songID, playlistID } })
-				} finally {
-					handleClose()
-				}
+				void add({ variables: { songID, playlistID } })
 			}
 		}
 
 	const handlePlaylistSelect =
 		(value: string) =>
 			setPlaylistID(value === playlistID ? null : value)
+
+	useEffect(() => {
+		if (data) {
+			handleClose()
+		}
+	}, [data])
 
 	return (
 		<div className={bem("", "Content PaddingTopBottom")}>

@@ -7,10 +7,10 @@ import {
 } from "react"
 
 import Button from "@oly_op/react-button"
-import { useMutation } from "@apollo/client"
-import { InterfaceWithInput, UserBase } from "@oly_op/music-app-common/types"
+import { InterfaceWithInput, UserBase } from "@oly_op/musicloud-common"
 
 import SIGN_UP from "./sign-up.gql"
+import { useMutation } from "../../hooks"
 import isSignUpFormValid from "./is-sign-up-form-valid"
 import Input, { InputOnChange } from "../../components/input"
 

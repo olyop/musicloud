@@ -9,7 +9,7 @@ import {
 
 import { Pool } from "pg"
 import { UserInputError } from "apollo-server-fastify"
-import { UserID, ObjectID } from "@oly_op/music-app-common/types"
+import { UserID, ObjectID } from "@oly_op/musicloud-common"
 
 import {
 	INSERT_LIBRARY_OBJECT,

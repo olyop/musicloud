@@ -1,4 +1,4 @@
-import { AlgoliaRecord } from "@oly_op/music-app-common/types"
+import { AlgoliaRecord } from "@oly_op/musicloud-common"
 
 import { ag } from "../../../services"
 

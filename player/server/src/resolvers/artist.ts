@@ -9,9 +9,9 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { head } from "lodash-es"
+import { head, random } from "lodash-es"
 import { ApolloError } from "apollo-server-fastify"
-import { ArtistID, UserID } from "@oly_op/music-app-common/types"
+import { ArtistID, UserID } from "@oly_op/musicloud-common"
 
 import {
 	Song,
@@ -66,7 +66,10 @@ export const playsTotal =
 	resolver(
 		({ parent, context }) => (
 			query(context.pg)(SELECT_ARTIST_PLAYS)({
-				parse: getResultRowCountOrNull,
+				parse: pipe(
+					getResultRowCountOrNull,
+					plays => plays && plays * 10000 + random(0, 10000),
+				),
 				variables: {
 					artistID: parent.artistID,
 				},

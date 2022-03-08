@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import {
 	createObjectPath,

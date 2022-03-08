@@ -1,4 +1,4 @@
-import { CLOUDFRONT_URL } from "@oly_op/music-app-common/globals"
+import { CLOUDFRONT_URL } from "@oly_op/musicloud-common"
 
 import { determineCatalogAudioPath } from "./determine-catalog-audio-path"
 

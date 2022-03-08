@@ -48,13 +48,6 @@ export const updateVolume =
 		"UPDATE_VOLUME",
 		withPayloadType<number>(),
 	)
-
-export const updateCurrent =
-	createAction(
-		"UPDATE_CURRENT",
-		withPayloadType<number>(),
-	)
-
 export const removeLoading =
 	createAction(
 		"REMOVE_LOADING",

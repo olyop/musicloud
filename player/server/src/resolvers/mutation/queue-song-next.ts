@@ -6,8 +6,8 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { isEmpty } from "lodash-es"
+import { SongID } from "@oly_op/musicloud-common"
 import { UserInputError } from "apollo-server-fastify"
-import { SongID } from "@oly_op/music-app-common/types"
 
 import {
 	SELECT_QUEUE,

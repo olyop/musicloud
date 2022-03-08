@@ -7,9 +7,6 @@ import { useDispatch, toggleSidebar, useStateSidebar } from "../../redux"
 
 import "./index.scss"
 
-const ADD_URL =
-	`http://localhost:${parseInt(process.env.UPLOAD_CLIENT_PORT)}/artist`
-
 const bem =
 	createBEM("Sidebar")
 
@@ -187,16 +184,19 @@ const Sidebar: VFC = () => {
 						/>
 					</div>
 				</div>
-				<p className="BodyOne PaddingLeftRight">
-					v
-					{VERSION}
-					<Fragment> - </Fragment>
-					<a
-						title="Add"
-						href={ADD_URL}
-						children="Add"
-					/>
-				</p>
+				<a
+					target="_blank"
+					rel="noreferrer"
+					title="Source Code"
+					className="BodyOne PaddingLeftRight"
+					href="https://github.com/olyop/music-app"
+					children={(
+						<Fragment>
+							<Fragment>Github: v</Fragment>
+							{VERSION}
+						</Fragment>
+					)}
+				/>
 			</nav>
 		</div>
 	) : null

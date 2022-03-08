@@ -1,6 +1,6 @@
 import { exists } from "@oly_op/pg-helpers"
+import { SongID } from "@oly_op/musicloud-common"
 import { UserInputError } from "apollo-server-fastify"
-import { SongID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"

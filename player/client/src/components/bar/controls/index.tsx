@@ -10,7 +10,8 @@ import "./index.scss"
 const bem =
 	createBEM("BarControls")
 
-const BarControlsPlayButton: VFC<ButtonPropTypes> = ({
+const BarControlsPlayButton: VFC<PlayButtonPropTypes> = ({
+	ready,
 	loading,
 	buttonClassName,
 	buttonIconClassName,
@@ -21,8 +22,11 @@ const BarControlsPlayButton: VFC<ButtonPropTypes> = ({
 	const dispatch = useDispatch()
 	const playPausePress = useKeyPress("MediaPlayPause")
 
+	const showLoop =
+		loading || !ready
+
 	const icon =
-		loading ?
+		showLoop ?
 			"loop" : (
 				play ?
 					"pause" :
@@ -31,7 +35,9 @@ const BarControlsPlayButton: VFC<ButtonPropTypes> = ({
 
 	const handleClick =
 		() => {
-			dispatch(togglePlay())
+			if (!showLoop) {
+				dispatch(togglePlay())
+			}
 		}
 
 	useEffect(() => {
@@ -43,49 +49,54 @@ const BarControlsPlayButton: VFC<ButtonPropTypes> = ({
 	return (
 		<Button
 			icon={icon}
-			onClick={loading ? undefined : handleClick}
-			iconClassName={bem(playButtonIconClassName, buttonIconClassName)}
-			className={bem(playButtonClassName, buttonClassName, loading && "loading")}
+			onClick={handleClick}
+			className={bem(playButtonClassName, buttonClassName)}
+			iconClassName={bem(playButtonIconClassName, buttonIconClassName, showLoop && "loading")}
 		/>
 	)
 }
 
 const BarControls: VFC<PropTypes> = ({
+	ready,
 	className,
 	buttonClassName,
 	buttonIconClassName,
 	playButtonClassName,
 	playButtonIconClassName,
 }) => {
-	const [ nextQueueSong, { loading: nextLoading } ] =
+	const [ nextQueueSong, nextData ] =
 		useNextQueueSong()
 
-	const [ previousQueueSong, { loading: previousLoading } ] =
+	const [ previousQueueSong, previousData ] =
 		usePreviousQueueSong()
 
-	const loading =
-		nextLoading || previousLoading
+	const handleNextQueueSong =
+		() => { void nextQueueSong() }
+
+	const handlePreviousQueueSong =
+		() => { void previousQueueSong() }
 
 	return (
 		<div className={bem(className, "")}>
 			<Button
 				transparent
 				icon="skip_previous"
-				onClick={previousQueueSong}
 				className={buttonClassName}
+				onClick={handlePreviousQueueSong}
 				iconClassName={buttonIconClassName}
 			/>
 			<BarControlsPlayButton
-				loading={loading}
+				ready={ready}
 				buttonClassName={buttonClassName}
 				buttonIconClassName={buttonIconClassName}
 				playButtonClassName={playButtonClassName}
 				playButtonIconClassName={playButtonIconClassName}
+				loading={nextData.loading || previousData.loading}
 			/>
 			<Button
 				transparent
 				icon="skip_next"
-				onClick={nextQueueSong}
+				onClick={handleNextQueueSong}
 				className={buttonClassName}
 				iconClassName={buttonIconClassName}
 			/>
@@ -94,13 +105,14 @@ const BarControls: VFC<PropTypes> = ({
 }
 
 interface PropTypesBase {
+	ready: boolean,
 	buttonClassName?: BEMInput,
 	buttonIconClassName?: BEMInput,
 	playButtonClassName?: BEMInput,
 	playButtonIconClassName?: BEMInput,
 }
 
-interface ButtonPropTypes extends PropTypesBase {
+interface PlayButtonPropTypes extends PropTypesBase {
 	loading: boolean,
 }
 

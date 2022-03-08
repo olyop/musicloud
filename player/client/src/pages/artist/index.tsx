@@ -5,7 +5,7 @@ import {
 	ImageSizes,
 	ArtistID,
 	ImageDimensions,
-} from "@oly_op/music-app-common/types"
+} from "@oly_op/musicloud-common"
 
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
@@ -78,11 +78,12 @@ const ArtistPage: VFC = () => {
 			data.getArtistByID
 
 		const handleShare =
-			() =>
-				navigator.share({
+			() => {
+				void navigator.share({
 					title: name,
 					url: createObjectPath("artist", artistID)
 				})
+			}
 
 		return (
 			<Metadata title={name}>

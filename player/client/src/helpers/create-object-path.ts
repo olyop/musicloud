@@ -1,4 +1,4 @@
-import { TypeNames } from "@oly_op/music-app-common/types"
+import { TypeNames } from "@oly_op/musicloud-common"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 
 export const createObjectPath =

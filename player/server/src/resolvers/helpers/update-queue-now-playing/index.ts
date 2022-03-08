@@ -6,7 +6,7 @@ import {
 
 import { isNull } from "lodash-es"
 import { SearchIndex } from "algoliasearch"
-import { UserID } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/musicloud-common"
 
 import {
 	INSERT_PLAY,
@@ -26,9 +26,14 @@ export const updateQueueNowPlaying =
 		async (options: UpdateQueueNowPlayingOptions) => {
 			const { userID, value } = options
 
-			const query = pgHelpersQuery(pg)
+			const query =
+				pgHelpersQuery(pg)
 
-			if (ag && !isNull(value)) {
+			if (isNull(value)) {
+				await query(DELETE_QUEUE_NOW_PLAYING)({
+					variables: { userID },
+				})
+			} else {
 				const songID = value
 
 				const doesUserHaveNowPlaying =
@@ -52,13 +57,11 @@ export const updateQueueNowPlaying =
 					variables: { userID, songID },
 				})
 
-				await incrementPlays(pg, ag)({
-					songID,
-					userID,
-				})
-			} else {
-				await query(DELETE_QUEUE_NOW_PLAYING)({
-					variables: { userID },
-				})
+				if (ag) {
+					await incrementPlays(pg, ag)({
+						songID,
+						userID,
+					})
+				}
 			}
 		}

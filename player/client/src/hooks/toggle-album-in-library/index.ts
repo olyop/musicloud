@@ -1,5 +1,5 @@
 import { isUndefined } from "lodash-es"
-import { AlbumID } from "@oly_op/music-app-common/types"
+import { AlbumID } from "@oly_op/musicloud-common"
 
 import { useQuery } from "../query"
 import { useMutation } from "../mutation"

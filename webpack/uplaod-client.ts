@@ -1,8 +1,8 @@
 import path from "path"
 import { merge } from "webpack-merge"
 import { Configuration } from "webpack"
+import { TITLE } from "@oly_op/musicloud-common"
 import HTMLWebpackPlugin from "html-webpack-plugin"
-import { TITLE } from "@oly_op/music-app-common/metadata"
 
 import baseConfiguration, {
 	BASE_ROOT_PATH,

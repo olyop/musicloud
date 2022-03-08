@@ -7,7 +7,7 @@ import {
 
 import { Pool } from "pg"
 import { UserInputError } from "apollo-server-fastify"
-import { UserID } from "@oly_op/music-app-common/types"
+import { UserID } from "@oly_op/musicloud-common"
 
 import {
 	SELECT_QUEUE,

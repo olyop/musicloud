@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import { createElement, VFC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import Item from "../item"
 import ObjectLink from "../object-link"
@@ -89,8 +89,8 @@ const User: VFC<PropTypes> = ({ user, className, showIcon = false }) => {
 }
 
 interface PropTypes extends ObjectShowIcon {
-	user: UserType,
 	className?: string,
+	user: Pick<UserType, "userID" | "name">,
 }
 
 export default User

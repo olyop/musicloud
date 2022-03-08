@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
+import { PlaylistPrivacy } from "@oly_op/musicloud-common"
 import { createElement, Fragment, useState, VFC } from "react"
-import { PlaylistPrivacy } from "@oly_op/music-app-common/types"
 
 import { Playlist } from "../../types"
 import { useUpdatePlaylistPrivacy } from "../../hooks"

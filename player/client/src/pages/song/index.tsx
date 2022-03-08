@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { ImageDimensions, ImageSizes, SongID } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common"
 
 import {
 	numberWithCommas,

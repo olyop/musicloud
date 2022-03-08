@@ -1,13 +1,13 @@
 /* eslint-disable quote-props */
 import path from "path"
-import { KEYWORDS, DESCRIPTION } from "@oly_op/music-app-common/metadata"
+import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common"
 
 import DotenvPlugin from "dotenv-webpack"
 import ESLintPlugin from "eslint-webpack-plugin"
+import { ProxyConfigArray } from "webpack-dev-server"
 import { Configuration, DefinePlugin } from "webpack"
 import StylelintPlugin from "stylelint-webpack-plugin"
 import { Options as TSLoaderOptions } from "ts-loader"
-import { ProxyConfigArrayItem } from "webpack-dev-server"
 import CompressionPlugin from "compression-webpack-plugin"
 import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
@@ -58,7 +58,15 @@ export const createTSLoaderOptions =
 	})
 
 export const createDevServerProxy =
-	(port: string, proxy: string[]): ProxyConfigArrayItem => ({
+	(port: string, proxy: string[]): ProxyConfigArray => [{
+		logLevel: "silent",
+		target: `http://${process.env.HOST}:${port}`,
+		context: [
+			"/ios/**",
+			"/andriod/**",
+			"/windows11/**",
+		],
+	},{
 		logLevel: "silent",
 		target: `http://${process.env.HOST}:${port}`,
 		context: [
@@ -68,7 +76,7 @@ export const createDevServerProxy =
 			"/security.txt",
 			...proxy,
 		]
-	})
+	}]
 
 const finalCSSLoader =
 	IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader
@@ -89,6 +97,9 @@ const baseConfiguration: Configuration = {
 	resolve: {
 		symlinks: false,
 		extensions: [".js", ".ts", ".tsx"],
+	},
+	watchOptions: {
+		ignored: "/node_modules/",
 	},
 	module: {
 		rules: [{
@@ -111,18 +122,17 @@ const baseConfiguration: Configuration = {
 			VERSION: JSON.stringify(packageJSON.version),
 		}),
 		new DotenvPlugin(),
-		...(IS_DEV ? [
-			new ESLintPlugin({
-				extensions: ["ts", "tsx"],
-			}),
-			new StylelintPlugin(),
-		] : [
+		new ESLintPlugin({
+			extensions: ["ts", "tsx"],
+		}),
+		new StylelintPlugin(),
+		...(IS_DEV ? [] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),
 			new MiniCSSExtractPlugin({
 				filename: "index-[fullhash].css",
 			}),
-		]),
+		])
 	],
 }
 

@@ -1,5 +1,5 @@
 import { pipe } from "rxjs"
-import { ArtistID } from "@oly_op/music-app-common/types"
+import { ArtistID } from "@oly_op/musicloud-common"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"

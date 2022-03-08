@@ -8,7 +8,7 @@ import {
 	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	PG_POOL_OPTIONS,
-} from "@oly_op/music-app-common/options"
+} from "@oly_op/musicloud-common"
 
 import apollo from "./apollo"
 import fastify from "./fastify"
@@ -28,10 +28,10 @@ void (async () => {
 	await fastify.register(serveClient)
 
 	const address =
-		await fastify.listen(
-			parseInt(process.env.PLAYER_SERVER_PORT),
-			process.env.HOST,
-		)
+		await fastify.listen({
+			host: process.env.HOST,
+			port: parseInt(process.env.PLAYER_SERVER_PORT),
+		})
 
 	if (process.env.NODE_ENV === "production") {
 		console.log(address)

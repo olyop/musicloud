@@ -10,7 +10,7 @@ import {
 
 import { pipe } from "rxjs"
 import { sum } from "lodash-es"
-import { UserID, AlbumID } from "@oly_op/music-app-common/types"
+import { UserID, AlbumID } from "@oly_op/musicloud-common"
 
 import {
 	Song,

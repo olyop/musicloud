@@ -8,8 +8,8 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
+import { SongID, AlbumID, UserID } from "@oly_op/musicloud-common"
 import { ApolloError, ForbiddenError } from "apollo-server-fastify"
-import { SongID, AlbumID, UserID } from "@oly_op/music-app-common/types"
 
 import {
 	SELECT_USER_PLAYS,

@@ -1,5 +1,5 @@
+import { NAME } from "@oly_op/musicloud-common"
 import { PutObjectCommand } from "@aws-sdk/client-s3"
-import { NAME } from "@oly_op/music-app-common/metadata"
 
 import { s3 } from "../../../services"
 

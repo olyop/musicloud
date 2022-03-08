@@ -18,8 +18,10 @@ const Banner: VFC<PropTypes> = ({
 		<div
 			className={bem("shade", "FullWidthAndHeight")}
 		/>
-		<div
-			style={{ backgroundImage: `url("${coverURL}")` }}
+		<img
+			src={coverURL}
+			alt="background"
+			crossOrigin="anonymous"
 			className={bem("background", "FullWidthAndHeight")}
 		/>
 		<div className={bem("content", "Content PaddingBottom")}>

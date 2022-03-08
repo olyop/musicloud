@@ -5,11 +5,9 @@ import { useKeyPress } from "../../key-press"
 import { QueueNowPlaying } from "../../../types"
 import { useResetPlayer } from "../../reset-player"
 import NEXT_QUEUE_SONG from "./next-queue-song.gql"
-import { updatePlay, useDispatch } from "../../../redux"
 
 export const useNextQueueSong =
 	() => {
-		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 		const nextPress = useKeyPress("MediaTrackNext")
 
@@ -21,7 +19,6 @@ export const useNextQueueSong =
 				if (!result.loading) {
 					resetPlayer()
 					await nextQueueSong()
-					dispatch(updatePlay(true))
 				}
 			}
 

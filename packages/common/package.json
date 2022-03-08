@@ -1,10 +1,12 @@
 {
 	"license": "MIT",
-	"version": "6.9.61",
-	"description": "music-app-common",
-	"name": "@oly_op/music-app-common",
-	"bugs": "https://github.com/olyop/music-app/issues",
-	"homepage": "https://github.com/olyop/music-app/blob/master/README.md",
+	"version": "1.0.14",
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
+	"description": "musicloud-common",
+	"name": "@oly_op/musicloud-common",
+	"bugs": "https://github.com/olyop/musicloud/issues",
+	"homepage": "https://github.com/olyop/musicloud/blob/master/README.md",
 	"author": {
 		"name": "Oliver Plummer",
 		"email": "oliver.plummer@outlook.com"
@@ -12,9 +14,9 @@
 	"repository": {
 		"type": "git",
 		"directory": "packages/common",
-		"url": "https://github.com/olyop/music-app.git"
+		"url": "https://github.com/olyop/musicloud.git"
 	},
-	"dependencies": {
+	"peerDependencies": {
 		"pg": "*",
 		"graphql": "*",
 		"fastify": "*",

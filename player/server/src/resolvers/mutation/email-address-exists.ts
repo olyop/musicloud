@@ -1,4 +1,4 @@
-import { UserEmailAddress } from "@oly_op/music-app-common/types"
+import { UserEmailAddress } from "@oly_op/musicloud-common"
 
 import resolver from "./resolver"
 import { emailAddressExists as emailAddressExistsHelper } from "../helpers"

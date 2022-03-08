@@ -1,4 +1,4 @@
-import { InterfaceWithInput } from "@oly_op/music-app-common/types"
+import { InterfaceWithInput } from "@oly_op/musicloud-common"
 
 import { OrderBy } from "./other"
 

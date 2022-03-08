@@ -1,5 +1,5 @@
 import algoliasearch from "algoliasearch"
-import { ALGOLIA_OPTIONS } from "@oly_op/music-app-common/options"
+import { ALGOLIA_OPTIONS } from "@oly_op/musicloud-common"
 
 const client =
 	algoliasearch(...ALGOLIA_OPTIONS)

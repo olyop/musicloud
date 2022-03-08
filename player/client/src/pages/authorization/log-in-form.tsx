@@ -1,12 +1,12 @@
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
-import { useMutation } from "@apollo/client"
+import { InterfaceWithInput, UserEmailAddress } from "@oly_op/musicloud-common"
 import { useState, createElement, VFC, FormEventHandler, useEffect } from "react"
-import { InterfaceWithInput, UserEmailAddress } from "@oly_op/music-app-common/types"
 
 import Input, { InputOnChange } from "../../components/input"
 
 import LOG_IN from "./log-in.gql"
+import { useMutation } from "../../hooks"
 
 const AuthorizationLogInForm: VFC<PropTypes> = ({
 	onSubmit,

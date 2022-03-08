@@ -1,7 +1,7 @@
 import { createElement, VFC } from "react"
 import { useParams } from "react-router-dom"
+import { ArtistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { ArtistID } from "@oly_op/music-app-common/types"
 
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"

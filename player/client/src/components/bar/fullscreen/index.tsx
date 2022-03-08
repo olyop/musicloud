@@ -1,11 +1,11 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, useEffect, VFC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/music-app-common/types"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import Modal from "../../modal"
 import Progress from "../progress"
-import BarControls from "../controls"
+import Controls from "../controls"
 import SongTitle from "../../song-title"
 import ObjectLinks from "../../object-links"
 import { useKeyPress } from "../../../hooks"
@@ -18,13 +18,7 @@ import "./index.scss"
 const bem =
 	createBEM("BarFullscreen")
 
-interface PropTypes {
-	open: boolean,
-	onClose: Handler,
-	song?: Song | null,
-}
-
-const BarFullscreen: VFC<PropTypes> = ({ open, song, onClose }) => {
+const BarFullscreen: VFC<PropTypes> = ({ open, song, ready, onClose }) => {
 	const escapePress = useKeyPress("Escape")
 
 	useEffect(() => {
@@ -84,10 +78,12 @@ const BarFullscreen: VFC<PropTypes> = ({ open, song, onClose }) => {
 						</h2>
 					</div>
 					<Progress
-						duration={song.duration}
+						ready={ready}
+						isNowPlaying={!song}
 						className={bem("content-progress")}
 					/>
-					<BarControls
+					<Controls
+						ready={ready}
 						className={bem("content-controls")}
 						playButtonClassName={bem("content-controls-play")}
 					/>
@@ -95,6 +91,14 @@ const BarFullscreen: VFC<PropTypes> = ({ open, song, onClose }) => {
 			)}
 		</Modal>
 	)
+}
+
+interface PropTypes {
+	open: boolean,
+	ready: boolean,
+	onClose: Handler,
+	song?: Song | null,
+	isNowPlaying: boolean,
 }
 
 export default BarFullscreen

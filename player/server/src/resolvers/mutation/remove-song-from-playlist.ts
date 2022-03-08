@@ -1,6 +1,6 @@
 import { query } from "@oly_op/pg-helpers"
+import { PlaylistID } from "@oly_op/musicloud-common"
 import { ForbiddenError } from "apollo-server-fastify"
-import { PlaylistID } from "@oly_op/music-app-common/types"
 
 import resolver from "./resolver"
 import { DELETE_PLAYLIST_SONG } from "../../sql"
