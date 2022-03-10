@@ -3,10 +3,13 @@
 		"@oly_op/eslint-config-react",
 		"../../.eslintrc.json"
 	],
+	"parserOptions": {
+		"project": "./player/client/tsconfig.json"
+	},
 	"env": {
 		"browser": true
 	},
-	"parserOptions": {
-		"project": "./player/client/tsconfig.json"
+	"rules": {
+		"jsx-a11y/label-has-associated-control": "off"
 	}
 }

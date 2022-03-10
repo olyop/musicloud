@@ -22,6 +22,7 @@ const Modal: VFC<ModalPropTypes> = ({
 }) => (
 	<div className={bem(open ? "visible" : "hidden", "")}>
 		<div
+			aria-hidden
 			onClick={onClose}
 			className={bem(
 				backgroundClassName,

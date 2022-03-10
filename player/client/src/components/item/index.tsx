@@ -54,7 +54,12 @@ const Item: VFC<PropTypes> = ({
 
 	return (
 		<div style={style} className={className}>
-			<div className={bem("")} onClick={onClick}>
+			<div
+				aria-hidden
+				onClick={onClick}
+				className={bem("")}
+				role={onClick ? undefined : "button"}
+			>
 				{leftIcon && (
 					<Button
 						transparent

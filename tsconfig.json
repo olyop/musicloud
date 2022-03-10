@@ -2,14 +2,8 @@
 	"extends": "@oly_op/tsconfig/tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": "./",
-		"lib": ["ESNext"],
 		"paths": { "*": ["types/*"] }
 	},
-	"include": [
-		"types",
-		"webpack",
-		"scripts"
-	],
 	"ts-node": {
 		"files": true,
 		"compilerOptions": {

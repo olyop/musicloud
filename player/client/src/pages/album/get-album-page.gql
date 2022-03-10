@@ -1,4 +1,4 @@
-query getAlbumPage($albumID: UUID!) {
+query AlbumPage($albumID: UUID!) {
 	getAlbumByID(albumID: $albumID) {
 		albumID
 		title

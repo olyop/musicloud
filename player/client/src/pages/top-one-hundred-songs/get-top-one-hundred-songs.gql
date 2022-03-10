@@ -1,4 +1,4 @@
-query getTopOneHundredSongs {
+query TopOneHundredSongs {
 	getTopOneHundredSongs {
 		mix
 		title

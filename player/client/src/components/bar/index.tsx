@@ -11,11 +11,11 @@ import Progress from "./progress"
 import Controls from "./controls"
 import Fullscreen from "./fullscreen"
 import { useQuery } from "../../hooks"
+import useSongAudio from "./user-song-audio"
 import { QueueNowPlaying } from "../../types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 import "./index.scss"
-import useSongAudio from "./user-song-audio"
 
 const bem =
 	createBEM("Bar")

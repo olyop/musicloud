@@ -6,6 +6,9 @@ import { Handler } from "../../../types"
 
 import "./index.scss"
 
+const canShare =
+	() => "share" in navigator
+
 const bem =
 	createBEM("ModalHeader")
 
@@ -43,7 +46,7 @@ const ModalHeader: VFC<ModalHeaderPropTypes> = ({
 			<p className={bem("text", "BodyOne")}>
 				{text}
 			</p>
-			{!hideShare && shareData && (
+			{canShare() && !hideShare && shareData && (
 				<Button
 					transparent
 					icon="share"

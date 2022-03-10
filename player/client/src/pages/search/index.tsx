@@ -115,7 +115,6 @@ const SearchPage: VFC = () => {
 						className={bem("bar-input-search", "bar-input-icon")}
 					/>
 					<input
-						autoFocus
 						value={input}
 						onChange={handleInput}
 						placeholder="Search..."

@@ -22,6 +22,7 @@ const Sidebar: VFC = () => {
 	return sidebar ? (
 		<div className={bem("")}>
 			<div
+				aria-hidden
 				onClick={handleClose}
 				className={bem("background")}
 			/>
