@@ -1,6 +1,6 @@
 {
 	"license": "MIT",
-	"version": "1.0.14",
+	"version": "1.0.20",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"description": "musicloud-common",
@@ -20,7 +20,6 @@
 		"pg": "*",
 		"graphql": "*",
 		"fastify": "*",
-		"fastify-cors": "*",
 		"fastify-static": "*",
 		"fastify-helmet": "*"
 	}

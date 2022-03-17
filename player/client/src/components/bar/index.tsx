@@ -11,7 +11,7 @@ import Progress from "./progress"
 import Controls from "./controls"
 import Fullscreen from "./fullscreen"
 import { useQuery } from "../../hooks"
-import useSongAudio from "./user-song-audio"
+import useSongAudio from "./use-song-audio"
 import { QueueNowPlaying } from "../../types"
 import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
@@ -30,14 +30,15 @@ const Bar: VFC = () => {
 	const songAudio =
 		useSongAudio(data?.getQueue.nowPlaying || null)
 
-	const isNowPlaying =
-		!isUndefined(data) && !isNull(data.getQueue.nowPlaying)
-
 	const handleExpandOpen =
 		() => setExpand(true)
 
 	const handleExpandClose =
 		() => setExpand(false)
+
+	const isNowPlaying =
+		!isUndefined(data) &&
+		!isNull(data.getQueue.nowPlaying)
 
 	return (
 		<footer className={bem("", "Elevated")}>

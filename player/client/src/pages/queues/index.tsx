@@ -33,8 +33,8 @@ const NowPlaying: VFC = () => {
 	const { data } = useQuery<Data>(GET_QUEUE_NOW_PLAYING)
 	return data?.getQueue.nowPlaying ? (
 		<Song
-			hidePlay
 			hidePlays
+			shareIcon
 			hideTrackNumber
 			leftIcon="double_arrow"
 			className="PaddingHalf"

@@ -4,10 +4,10 @@ import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common"
 
 import DotenvPlugin from "dotenv-webpack"
 import ESLintPlugin from "eslint-webpack-plugin"
-import { ProxyConfigArray } from "webpack-dev-server"
 import { Configuration, DefinePlugin } from "webpack"
 import StylelintPlugin from "stylelint-webpack-plugin"
 import { Options as TSLoaderOptions } from "ts-loader"
+import { ProxyConfigArray } from "webpack-dev-server"
 import CompressionPlugin from "compression-webpack-plugin"
 import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
@@ -32,7 +32,7 @@ interface CreateHTMLWebpackPluginOptions
 export const createHTMLPluginOptions =
 	({ title, ...options }: CreateHTMLWebpackPluginOptions): HTMLWebpackPluginOptions => ({
 		title,
-		minify: !IS_DEV,
+		minify: false,
 		filename: "index.html",
 		meta: {
 			"og:title": title,
@@ -60,12 +60,8 @@ export const createTSLoaderOptions =
 export const createDevServerProxy =
 	(port: string, proxy: string[]): ProxyConfigArray => [{
 		logLevel: "silent",
+		context: ["/logo/**"],
 		target: `http://${process.env.HOST}:${port}`,
-		context: [
-			"/ios/**",
-			"/andriod/**",
-			"/windows11/**",
-		],
 	},{
 		logLevel: "silent",
 		target: `http://${process.env.HOST}:${port}`,
@@ -75,7 +71,7 @@ export const createDevServerProxy =
 			"/favicon.ico",
 			"/security.txt",
 			...proxy,
-		]
+		],
 	}]
 
 const finalCSSLoader =

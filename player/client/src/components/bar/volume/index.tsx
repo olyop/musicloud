@@ -60,27 +60,30 @@ const BarVolume: VFC<PropTypes> = ({ className, iconClassName }) => {
 				open={modal}
 				onClose={handleModalClose}
 				contentClassName={bem("content", "PaddingHalf")}
-			>
-				<Button
-					transparent
-					icon="volume_up"
-					onClick={handleVolumeFull}
-				/>
-				<input
-					min={0}
-					step={1}
-					max={100}
-					type="range"
-					value={volume}
-					onChange={handleChange}
-					className={bem("slider", "OverflowHidden")}
-				/>
-				<Button
-					transparent
-					icon="volume_off"
-					onClick={handleVolumeMute}
-				/>
-			</Modal>
+				children={(
+					<Fragment>
+						<Button
+							transparent
+							icon="volume_up"
+							onClick={handleVolumeFull}
+						/>
+						<input
+							min={0}
+							step={1}
+							max={100}
+							type="range"
+							value={volume}
+							onChange={handleChange}
+							className={bem("slider", "OverflowHidden")}
+						/>
+						<Button
+							transparent
+							icon="volume_off"
+							onClick={handleVolumeMute}
+						/>
+					</Fragment>
+				)}
+			/>
 		</Fragment>
 	)
 }

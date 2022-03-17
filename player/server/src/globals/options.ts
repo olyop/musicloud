@@ -1,4 +1,6 @@
+import { FastifyInstance } from "fastify"
 import { SearchIndex } from "algoliasearch"
+import { FastifyCorsOptions } from "fastify-cors"
 import { FastifyStaticOptions } from "fastify-static"
 import { ServerRegistration } from "apollo-server-fastify"
 
@@ -16,4 +18,16 @@ export const ALGOLIA_SEARCH_OPTIONS: Parameters<SearchIndex["setSettings"]>[0] =
 	customRanking: ["asc(text)"],
 	searchableAttributes: ["ordered(text)"],
 	attributesForFaceting: ["filter(privacy)"],
+}
+
+export const FASTIFY_CORS_OPTIONS: FastifyCorsOptions = {
+	origin:
+		process.env.NODE_ENV === "development" ?
+			`http://127.0.0.1:${process.env.PLAYER_CLIENT_PORT}` :
+			"https://musicloud-app.com",
+}
+
+export const FASTIFY_LISTEN_OPTIONS: Parameters<FastifyInstance["listen"]>[0] = {
+	host: process.env.HOST,
+	port: parseInt(process.env.PLAYER_SERVER_PORT),
 }

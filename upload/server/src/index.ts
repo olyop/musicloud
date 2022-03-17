@@ -1,11 +1,9 @@
 import {
-	CORS_OPTIONS,
 	HELMET_OPTIONS,
 	PG_POOL_OPTIONS,
 } from "@oly_op/musicloud-common"
 
 import fastify from "fastify"
-import cors from "fastify-cors"
 import helmet from "fastify-helmet"
 import postgres from "fastify-postgres"
 import compress from "fastify-compress"
@@ -30,7 +28,6 @@ const start =
 	async () => (
 		fastify(FASTIFY_SERVER_OPTIONS)
 			.register(helmet, HELMET_OPTIONS)
-			.register(cors, CORS_OPTIONS)
 			.register(compress)
 			.register(multiPart, MULTIPART_OPTIONS)
 			.register(postgres, PG_POOL_OPTIONS)
@@ -43,7 +40,6 @@ const start =
 			.listen(
 				parseInt(process.env.UPLOAD_SERVER_PORT),
 				process.env.HOST,
-				listenCallback,
 			)
 	)
 

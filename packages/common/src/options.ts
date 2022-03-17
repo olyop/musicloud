@@ -1,6 +1,5 @@
 import { PoolConfig } from "pg"
 import { fastifyHelmet } from "fastify-helmet"
-import { FastifyCorsOptions } from "fastify-cors"
 import { FastifyLoggerOptions, FastifyServerOptions } from "fastify"
 
 const IS_PROD =
@@ -33,11 +32,7 @@ export const PG_POOL_OPTIONS: PoolConfig = {
 
 export const HELMET_OPTIONS: Parameters<typeof fastifyHelmet>[1] = {
 	contentSecurityPolicy: false,
-}
-
-export const CORS_OPTIONS: FastifyCorsOptions = {
-	maxAge: 60 * 120,
-	origin: IS_PROD ? "https://musicloud-app.com" : "http://127.0.0.1:3001",
+	crossOriginResourcePolicy: false,
 }
 
 export const ALGOLIA_OPTIONS = [

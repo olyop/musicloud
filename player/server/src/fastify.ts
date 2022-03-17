@@ -16,7 +16,6 @@ fastify.addContentTypeParser(
 
 fastify.addHook(
 	"preValidation",
-	// eslint-disable-next-line @typescript-eslint/no-misused-promises
 	async (request, reply) => {
 		if (request.isMultipart) {
 			request.body =

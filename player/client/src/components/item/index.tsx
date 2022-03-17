@@ -36,6 +36,7 @@ const Item: VFC<PropTypes> = ({
 	iconClassName,
 	rightClassName,
 	inLibraryOptions,
+	shareIcon = false,
 	infoOptions: {
 		lowerLeft,
 		rightLeft,
@@ -156,6 +157,15 @@ const Item: VFC<PropTypes> = ({
 						icon="close"
 						title="Close"
 						onClick={onRemove}
+						className={iconClassName}
+					/>
+				)}
+				{shareIcon && (
+					<Button
+						transparent
+						icon="share"
+						title="Share"
+						onClick={() => {}}
 						className={iconClassName}
 					/>
 				)}

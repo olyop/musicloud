@@ -10,10 +10,10 @@ import {
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { AlgoliaRecord } from "@oly_op/musicloud-common"
 import { isEmpty, uniqueId as uniqueID } from "lodash-es"
 import algoliasearch, { SearchIndex } from "algoliasearch/lite"
 import { useSearchParams, useNavigate } from "react-router-dom"
+import { AlgoliaRecord, CLOUDFRONT_URL } from "@oly_op/musicloud-common"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
@@ -146,13 +146,14 @@ const SearchPage: VFC = () => {
 					rel="noreferrer"
 					href="https://algolia.com"
 					className={bem("algolia")}
-				>
-					<img
-						alt="Search by Algolia"
-						src="./search-by-algolia.svg"
-						className={bem("algolia-image", "PaddingHalf Rounded")}
-					/>
-				</a>
+					children={(
+						<img
+							alt="Search by Algolia"
+							src={`${CLOUDFRONT_URL}/search-by-algolia.svg`}
+							className={bem("algolia-image", "PaddingHalf Rounded")}
+						/>
+					)}
+				/>
 			</section>
 		</Metadata>
 	)

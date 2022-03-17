@@ -57,6 +57,7 @@ const Song: VFC<PropTypes> = ({
 	hideCover = false,
 	hidePlays = false,
 	hideModal = false,
+	shareIcon = false,
 	hideDuration = false,
 	hideInLibrary = false,
 	leftIcon = "audiotrack",
@@ -119,6 +120,7 @@ const Song: VFC<PropTypes> = ({
 	return (
 		<Item
 			onRemove={onRemove}
+			shareIcon={shareIcon}
 			className={className}
 			iconClassName={iconClassName}
 			leftIcon={showIcon ? leftIcon : undefined}
@@ -298,6 +300,7 @@ interface PropTypes extends ObjectShowIcon {
 	onRemove?: Handler,
 	hidePlay?: boolean,
 	className?: string,
+	shareIcon?: boolean,
 	hideCover?: boolean,
 	hidePlays?: boolean,
 	hideModal?: boolean,

@@ -18,7 +18,13 @@ import "./index.scss"
 const bem =
 	createBEM("BarFullscreen")
 
-const BarFullscreen: VFC<PropTypes> = ({ open, song, ready, onClose }) => {
+const BarFullscreen: VFC<PropTypes> = ({
+	open,
+	song,
+	ready,
+	onClose,
+	isNowPlaying,
+}) => {
 	const escapePress = useKeyPress("Escape")
 
 	useEffect(() => {
@@ -79,7 +85,7 @@ const BarFullscreen: VFC<PropTypes> = ({ open, song, ready, onClose }) => {
 					</div>
 					<Progress
 						ready={ready}
-						isNowPlaying={!song}
+						isNowPlaying={isNowPlaying}
 						className={bem("content-progress")}
 					/>
 					<Controls

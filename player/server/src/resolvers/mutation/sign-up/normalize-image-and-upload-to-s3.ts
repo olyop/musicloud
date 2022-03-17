@@ -1,7 +1,6 @@
 import sharp, { ResizeOptions } from "sharp"
-import { NAME } from "@oly_op/musicloud-common"
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
-import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/musicloud-common"
+import { NAME, ImageSizes, ObjectID, ImageDimensions } from "@oly_op/musicloud-common"
 
 import { ImageInput } from "./types"
 import determineCatalogImagePath from "./determine-catalog-image-path"

@@ -59,9 +59,7 @@ interface Other {
 	left?: ReactNode,
 	leftIcon?: string,
 	onRemove?: Handler,
-}
-
-interface Style {
+	shareIcon?: boolean,
 	style?: CSSProperties,
 }
 
@@ -69,5 +67,4 @@ export interface PropTypes extends
 	OnClickPropTypes,
 	ClassNames,
 	Options,
-	Other,
-	Style {}
+	Other {}
