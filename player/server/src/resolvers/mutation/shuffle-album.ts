@@ -41,7 +41,10 @@ export const shuffleAlbum =
 
 				const [ nowPlaying, ...shuffled ] =
 					await query(SELECT_ALBUM_SONGS)({
-						parse: pipe(convertTableToCamelCase<Song>(), shuffle()),
+						parse: pipe(
+							convertTableToCamelCase<Song>(),
+							shuffle(),
+						),
 						variables: {
 							albumID,
 							columnNames: join(COLUMN_NAMES.SONG),
@@ -53,20 +56,18 @@ export const shuffleAlbum =
 					value: nowPlaying!.songID,
 				})
 
-				await Promise.all(
-					shuffled.map(
-						({ songID }, index) => (
-							query(INSERT_QUEUE_SONG)({
-								variables: {
-									index,
-									userID,
-									songID,
-									tableName: "queue_laters",
-								},
-							})
-						),
-					),
-				)
+				let index = 0
+				for (const { songID } of shuffled) {
+					await query(INSERT_QUEUE_SONG)({
+						variables: {
+							index,
+							userID,
+							songID,
+							tableName: "queue_laters",
+						},
+					})
+					index += 1
+				}
 
 				await query("COMMIT")()
 			} catch (error) {
