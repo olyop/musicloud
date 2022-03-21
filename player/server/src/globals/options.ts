@@ -23,8 +23,7 @@ export const ALGOLIA_SEARCH_OPTIONS: Parameters<SearchIndex["setSettings"]>[0] =
 export const FASTIFY_CORS_OPTIONS: FastifyCorsOptions = {
 	origin:
 		process.env.NODE_ENV === "development" ?
-			`http://127.0.0.1:${process.env.PLAYER_CLIENT_PORT}` :
-			"https://musicloud-app.com",
+			"*" : "https://musicloud-app.com",
 }
 
 export const FASTIFY_LISTEN_OPTIONS: Parameters<FastifyInstance["listen"]>[0] = {

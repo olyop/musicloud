@@ -25,6 +25,7 @@
 	},
 	"scripts": {
 		"start": "npm run player",
+		"ngrok-player": "ngrok http 3001 --region au --host-header=127.0.0.1:3001",
 		"player": "npm-run-all init-player -p devel:player:**",
 		"upload": "npm-run-all init-upload -p devel:upload:**",
 		"init-player": "npm-run-all init kill-ports:player build:player:server:copy build:player:server:typescript",
