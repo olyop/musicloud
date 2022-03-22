@@ -6,4 +6,5 @@ INSERT INTO {{ tableName }} (
 	{{ index }},
 	'{{ userID }}',
 	'{{ songID }}'
-);
+) RETURNING
+	*;

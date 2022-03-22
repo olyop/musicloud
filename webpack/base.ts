@@ -82,6 +82,7 @@ const baseConfiguration: Configuration = {
 	mode: process.env.NODE_ENV,
 	devtool: IS_DEV && process.env.SOURCE_MAPS && "inline-source-map",
 	devServer: {
+		static: false,
 		host: process.env.HOST,
 		historyApiFallback: true,
 		client: { logging: "error" },
