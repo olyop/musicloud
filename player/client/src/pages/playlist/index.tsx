@@ -4,7 +4,7 @@ import { Metadata } from "@oly_op/react-metadata"
 import { createElement, VFC, Fragment } from "react"
 import { PlaylistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { isNull, toLower, startCase } from "lodash-es"
+import { isNull, toLower, startCase, isEmpty } from "lodash-es"
 
 import {
 	useQuery,
@@ -86,7 +86,6 @@ const PlaylistPage: VFC = () => {
 			</p>
 		)
 	}
-
 	return (
 		<div className="Content FlexColumnGap PaddingTopBottom">
 			{data && (
@@ -118,15 +117,23 @@ const PlaylistPage: VFC = () => {
 							{(new Date(data.getPlaylistByID.dateCreated)).toLocaleDateString()}
 						</p>
 					</div>
-					{data.getPlaylistByID.songsTotal ? (
+					{isEmpty(data.getPlaylistByID.songs) ? (
+						<p className="BodyOneBold">
+							No songs.
+						</p>
+					) : (
 						<Songs
 							orderBy={false}
 							songs={data.getPlaylistByID.songs}
 							onRemove={isUsers ? handleRemoveSongFromPlaylist : undefined}
 						/>
-					) : (
-						<p className="BodyOneBold">
-							No songs.
+					)}
+					{data.getPlaylistByID.songsTotal && (
+						<p className="BodyTwoBold">
+							{data.getPlaylistByID.songsTotal}
+							{" "}
+							song
+							{determinePlural(data.getPlaylistByID.songsTotal)}
 						</p>
 					)}
 					<Buttons>
@@ -163,14 +170,6 @@ const PlaylistPage: VFC = () => {
 								/>
 							</Buttons>
 						</div>
-					)}
-					{data.getPlaylistByID.songsTotal && (
-						<p className="MarginTop BodyTwoBold">
-							{data.getPlaylistByID.songsTotal}
-							{" "}
-							song
-							{determinePlural(data.getPlaylistByID.songsTotal)}
-						</p>
 					)}
 				</Metadata>
 			)}

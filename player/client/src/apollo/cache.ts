@@ -1,28 +1,19 @@
-/* eslint-disable react/function-component-definition */
-/* eslint-disable @typescript-eslint/default-param-last */
-import { isNull } from "lodash-es"
-import { InMemoryCache, FieldMergeFunction } from "@apollo/client"
+import isNull from "lodash-es/isNull"
+import { concatPagination } from "@apollo/client/utilities"
+import { FieldMergeFunction, InMemoryCache } from "@apollo/client"
 
-import { StoreObject } from "../types"
-
-const mergeArrays =
-	(): FieldMergeFunction<StoreObject[] | null> =>
-		(existing = [], incoming) => {
-			if (isNull(incoming)) {
-				return null
-			} else if (isNull(existing)) {
-				return incoming
-			} else {
-				return [...existing, ...incoming]
-			}
+const replacePossibleNullArray: FieldMergeFunction<unknown[] | null> =
+	(_existing, incoming) => {
+		if (isNull(incoming)) {
+			return null
+		} else {
+			return incoming
 		}
+	}
 
 const cache =
 	new InMemoryCache({
 		typePolicies: {
-			Queue: {
-				keyFields: [],
-			},
 			Key: {
 				keyFields: ["keyID"],
 			},
@@ -46,30 +37,34 @@ const cache =
 			},
 			Playlist: {
 				keyFields: ["playlistID"],
+				fields: {
+					songs: {
+						merge: replacePossibleNullArray,
+					},
+				}
+			},
+			Queue: {
+				keyFields: [],
+				fields: {
+					next: {
+						merge: replacePossibleNullArray,
+					},
+					later: {
+						merge: replacePossibleNullArray,
+					},
+					previous: {
+						merge: replacePossibleNullArray,
+					},
+				},
 			},
 			Library: {
 				keyFields: [],
 				fields: {
-					songsPaginated: {
-						merge: mergeArrays(),
-						keyArgs: ["input", ["orderBy"]],
-					},
-					albumsPaginated: {
-						merge: mergeArrays(),
-						keyArgs: ["input", ["orderBy"]],
-					},
-					genresPaginated: {
-						merge: mergeArrays(),
-						keyArgs: ["input", ["orderBy"]],
-					},
-					artistsPaginated: {
-						merge: mergeArrays(),
-						keyArgs: ["input", ["orderBy"]],
-					},
-					playlistsPaginated: {
-						merge: mergeArrays(),
-						keyArgs: ["input", ["orderBy"]],
-					},
+					songsPaginated: concatPagination(["input", ["orderBy"]]),
+					albumsPaginated: concatPagination(["input", ["orderBy"]]),
+					genresPaginated: concatPagination(["input", ["orderBy"]]),
+					artistsPaginated: concatPagination(["input", ["orderBy"]]),
+					playlistsPaginated: concatPagination(["input", ["orderBy"]]),
 				},
 			},
 		},

@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 
 import {
-	Data,
 	ClearQueuesData,
 	ShuffleNextData,
 	ClearNextQueuesData,
 } from "./types"
 
 import {
+	updatePlay,
 	useDispatch,
 	expandQueuesDisclosure,
 	collapseQueuesDisclosure,
@@ -18,30 +18,17 @@ import {
 } from "../../redux"
 
 import Queue from "./queue"
-import Song from "../../components/song"
+import NowPlaying from "./now-playing"
+import { useMutation } from "../../hooks"
 import SHUFFLE_NEXT from "./shuffle-next.gql"
 import CLEAR_QUEUES from "./clear-queues.gql"
 import Buttons from "../../components/buttons"
 import GET_QUEUE_NEXT from "./get-queue-next.gql"
 import GET_QUEUE_LATER from "./get-queue-later.gql"
-import { useQuery, useMutation } from "../../hooks"
 import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql"
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql"
-import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
-const NowPlaying: VFC = () => {
-	const { data } = useQuery<Data>(GET_QUEUE_NOW_PLAYING)
-	return data?.getQueue.nowPlaying ? (
-		<Song
-			hidePlays
-			shareIcon
-			hideTrackNumber
-			leftIcon="double_arrow"
-			className="PaddingHalf"
-			song={data.getQueue.nowPlaying}
-		/>
-	) : null
-}
+import "./index.scss"
 
 const Queues: VFC = () => {
 	const navigate = useNavigate()
@@ -98,6 +85,7 @@ const Queues: VFC = () => {
 		() => {
 			void clear()
 			handleCollapseDisclosure()
+			dispatch(updatePlay(false))
 		}
 
 	const handleBack =
@@ -121,7 +109,7 @@ const Queues: VFC = () => {
 						Queue
 					</h1>
 				</div>
-				<div className="Elevated">
+				<div className="Elevated Queues">
 					<Queue
 						name="Previous"
 						queueKey="previous"

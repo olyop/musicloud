@@ -9,10 +9,6 @@ import {
 	SettingsQueuesDisclosureKeys,
 } from "../../types"
 
-export interface Data {
-	getQueue: Queue,
-}
-
 export interface IndexVars {
 	index: number,
 }

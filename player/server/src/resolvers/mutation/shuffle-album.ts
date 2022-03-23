@@ -56,22 +56,18 @@ export const shuffleAlbum =
 					value: nowPlaying!.songID,
 				})
 
-				console.log(shuffled)
-
-				await Promise.all(
-					shuffled.map(
-						({ songID }, index) => (
-							query(INSERT_QUEUE_SONG)({
-								variables: {
-									index,
-									userID,
-									songID,
-									tableName: "queue_laters",
-								},
-							})
-						),
-					),
-				)
+				let index = 0
+				for (const { songID } of shuffled) {
+					await query(INSERT_QUEUE_SONG)({
+						variables: {
+							index,
+							userID,
+							songID,
+							tableName: "queue_laters",
+						},
+					})
+					index += 1
+				}
 
 				await query("COMMIT")()
 			} catch (error) {

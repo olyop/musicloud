@@ -1,6 +1,6 @@
 import { isUndefined } from "lodash-es"
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, Fragment, VFC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 
 import { Song, Queue } from "../../types"
@@ -8,6 +8,8 @@ import Songs from "../../components/songs"
 import { useQuery, useMutation, useResetPlayer } from "../../hooks"
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
 import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
+import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql"
+import Window from "../../components/window"
 
 const TopOneHundredSongsPage: VFC = () => {
 	const resetPlayer = useResetPlayer()
@@ -15,15 +17,22 @@ const TopOneHundredSongsPage: VFC = () => {
 	const { data } =
 		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS)
 
-	const [ playTopOneHundredSongs, { loading } ] =
+	const [ playTopOneHundredSongs ] =
 		useMutation<MutationData>(PLAY_TOP_ONE_HUNDRED_SONGS)
+
+	const [ shuffleTopOneHundredSongs ] =
+		useMutation<MutationData>(SHUFFLE_TOP_ONE_HUNDRED_SONGS)
 
 	const handlePlay =
 		() => {
-			if (!loading) {
-				resetPlayer()
-				void playTopOneHundredSongs()
-			}
+			resetPlayer()
+			void playTopOneHundredSongs()
+		}
+
+	const handleShuffle =
+		() => {
+			resetPlayer()
+			void shuffleTopOneHundredSongs()
 		}
 
 	return (
@@ -35,13 +44,26 @@ const TopOneHundredSongsPage: VFC = () => {
 						className="HeadingFour"
 						style={{ marginTop: -3 }}
 					/>
-					<Button
-						text="Play"
-						transparent
-						icon="play_arrow"
-						className="Border"
-						onClick={handlePlay}
-					/>
+					<Window>
+						{({ width }) => (
+							<Fragment>
+								<Button
+									transparent
+									icon="play_arrow"
+									className="Border"
+									onClick={handlePlay}
+									text={width <= 500 ? undefined : "Play"}
+								/>
+								<Button
+									transparent
+									icon="shuffle"
+									className="Border"
+									onClick={handleShuffle}
+									text={width <= 500 ? undefined : "Shuffle"}
+								/>
+							</Fragment>
+						)}
+					</Window>
 				</div>
 				{!isUndefined(data) && (
 					<Songs

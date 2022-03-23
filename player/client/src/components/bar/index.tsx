@@ -46,6 +46,7 @@ const Bar: VFC = () => {
 				<Fragment>
 					<Controls
 						ready={songAudio.ready}
+						isNowPlaying={isNowPlaying}
 						className={bem("controls")}
 						buttonClassName={bem("controls-button")}
 						buttonIconClassName={bem("controls-button-icon")}

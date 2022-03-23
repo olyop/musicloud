@@ -4,7 +4,6 @@ import { createElement, VFC } from "react"
 import { isEmpty, orderBy } from "lodash-es"
 
 import {
-	Data,
 	IndexVars,
 	QueuePropTypes,
 	RemoveNextData,
@@ -17,9 +16,9 @@ import {
 	useStateQueuesDisclosure,
 } from "../../../redux"
 
-import { Song as SongType } from "../../../types"
-import { useQuery, useMutation, useJWTPayload } from "../../../hooks"
 import Songs, { SongChangeOptions } from "../../../components/songs"
+import { useQuery, useMutation, useJWTPayload } from "../../../hooks"
+import { Queue as QueueType, Song as SongType } from "../../../types"
 import JUMP_TO_SONG_IN_QUEUE_NEXT from "./jump-to-song-in-queue-next.gql"
 import JUMP_TO_SONG_IN_QUEUE_LATER from "./jump-to-song-in-queue-later.gql"
 import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
@@ -135,6 +134,10 @@ const Queue: VFC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 			)}
 		</div>
 	) : null
+}
+
+interface Data {
+	getQueue: QueueType,
 }
 
 export default Queue

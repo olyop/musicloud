@@ -90,6 +90,7 @@ const BarFullscreen: VFC<PropTypes> = ({
 					/>
 					<Controls
 						ready={ready}
+						isNowPlaying={isNowPlaying}
 						className={bem("content-controls")}
 						playButtonClassName={bem("content-controls-play")}
 					/>

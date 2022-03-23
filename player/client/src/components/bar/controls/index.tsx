@@ -10,9 +10,10 @@ import "./index.scss"
 const bem =
 	createBEM("BarControls")
 
-const BarControlsPlayButton: VFC<PlayButtonPropTypes> = ({
+const PlayButton: VFC<PlayButtonPropTypes> = ({
 	ready,
 	loading,
+	isNowPlaying,
 	buttonClassName,
 	buttonIconClassName,
 	playButtonClassName,
@@ -23,7 +24,9 @@ const BarControlsPlayButton: VFC<PlayButtonPropTypes> = ({
 	const playPausePress = useKeyPress("MediaPlayPause")
 
 	const showLoop =
-		loading || !ready
+		isNowPlaying ?
+			(loading || !ready) :
+			false
 
 	const icon =
 		showLoop ?
@@ -33,23 +36,23 @@ const BarControlsPlayButton: VFC<PlayButtonPropTypes> = ({
 					"play_arrow"
 			)
 
-	const handleClick =
+	const handleTogglePlay =
 		() => {
-			if (!showLoop) {
+			if (isNowPlaying && !showLoop) {
 				dispatch(togglePlay())
 			}
 		}
 
 	useEffect(() => {
 		if (playPausePress) {
-			dispatch(togglePlay())
+			handleTogglePlay()
 		}
 	}, [playPausePress])
 
 	return (
 		<Button
 			icon={icon}
-			onClick={handleClick}
+			onClick={handleTogglePlay}
 			className={bem(playButtonClassName, buttonClassName)}
 			iconClassName={bem(playButtonIconClassName, buttonIconClassName, showLoop && "loading")}
 		/>
@@ -59,6 +62,7 @@ const BarControlsPlayButton: VFC<PlayButtonPropTypes> = ({
 const BarControls: VFC<PropTypes> = ({
 	ready,
 	className,
+	isNowPlaying,
 	buttonClassName,
 	buttonIconClassName,
 	playButtonClassName,
@@ -85,8 +89,9 @@ const BarControls: VFC<PropTypes> = ({
 				onClick={handlePreviousQueueSong}
 				iconClassName={buttonIconClassName}
 			/>
-			<BarControlsPlayButton
+			<PlayButton
 				ready={ready}
+				isNowPlaying={isNowPlaying}
 				buttonClassName={buttonClassName}
 				buttonIconClassName={buttonIconClassName}
 				playButtonClassName={playButtonClassName}
@@ -106,6 +111,7 @@ const BarControls: VFC<PropTypes> = ({
 
 interface PropTypesBase {
 	ready: boolean,
+	isNowPlaying: boolean,
 	buttonClassName?: BEMInput,
 	buttonIconClassName?: BEMInput,
 	playButtonClassName?: BEMInput,

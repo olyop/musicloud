@@ -27,6 +27,7 @@ type Mutation {
   removeSongFromQueueLater(index: NonNegativeInt!): Queue!
   shuffleNext: Queue!
   shuffleLibrary: Queue!
+  shuffleTopOneHundredSongs: Queue!
   shuffleAlbum(albumID: UUID!): Queue!
   shuffleArtist(artistID: UUID!): Queue!
   shufflePlaylist(playlistID: UUID!): Queue!

@@ -36,12 +36,12 @@ const BrowsePage: VFC = () => {
 										orderBy={false}
 										albums={data.getTrendingAlbums}
 									/>
-									<Button
+									{/* <Button
 										transparent
 										text="View All"
 										icon="arrow_forward"
 										style={{ alignSelf: "flex-start" }}
-									/>
+									/> */}
 								</div>
 								<div className="FlexColumnGapHalf">
 									<h2 className="HeadingFive">
@@ -53,12 +53,12 @@ const BrowsePage: VFC = () => {
 										orderBy={false}
 										playlists={data.getTrendingPlaylists}
 									/>
-									<Button
+									{/* <Button
 										transparent
 										text="View All"
 										icon="arrow_forward"
 										style={{ alignSelf: "flex-start" }}
-									/>
+									/> */}
 								</div>
 							</div>
 							<div>
