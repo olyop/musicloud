@@ -1,5 +1,6 @@
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
+import { Metadata } from "@oly_op/react-metadata"
 import { InterfaceWithInput, UserEmailAddress } from "@oly_op/musicloud-common"
 import { useState, createElement, VFC, FormEventHandler, useEffect } from "react"
 
@@ -39,35 +40,37 @@ const AuthorizationLogInForm: VFC<PropTypes> = ({
 	})
 
 	return (
-		<form onSubmit={handleLogIn} className="FlexColumnGap">
-			<Input
-				name="Email"
-				tabIndex={1}
-				placeholder="Email"
-				autoComplete="email"
-				value={emailAddress}
-				inputID="emailAddress"
-				onChange={onEmailAddressChange}
-			/>
-			<Input
-				autoFocus
-				tabIndex={2}
-				type="password"
-				name="Password"
-				value={password}
-				inputID="password"
-				placeholder="Password"
-				autoComplete="password"
-				onChange={handlePasswordChange}
-			/>
-			<Button
-				text="Submit"
-				type="submit"
-				tabIndex={3}
-				rightIcon="login"
-				disabled={loading || isEmpty(password)}
-			/>
-		</form>
+		<Metadata title="Log In">
+			<form onSubmit={handleLogIn} className="FlexColumnGap">
+				<Input
+					name="Email"
+					tabIndex={1}
+					placeholder="Email"
+					autoComplete="email"
+					value={emailAddress}
+					inputID="emailAddress"
+					onChange={onEmailAddressChange}
+				/>
+				<Input
+					autoFocus
+					tabIndex={2}
+					type="password"
+					name="Password"
+					value={password}
+					inputID="password"
+					placeholder="Password"
+					autoComplete="password"
+					onChange={handlePasswordChange}
+				/>
+				<Button
+					text="Submit"
+					type="submit"
+					tabIndex={3}
+					rightIcon="login"
+					disabled={loading || isEmpty(password)}
+				/>
+			</form>
+		</Metadata>
 	)
 }
 

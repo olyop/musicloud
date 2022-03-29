@@ -11,7 +11,7 @@ const uploadLink =
 
 const setAuthorizationLink =
 	setContext(
-		(_request, { headers }: { headers: Record<string, unknown> }) => {
+		(request, { headers }: { headers: Record<string, unknown> }) => {
 			const { accessToken } = store.getState()
 			if (isNull(accessToken)) {
 				return { headers }

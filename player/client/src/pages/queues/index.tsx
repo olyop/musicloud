@@ -10,7 +10,6 @@ import {
 } from "./types"
 
 import {
-	updatePlay,
 	useDispatch,
 	expandQueuesDisclosure,
 	collapseQueuesDisclosure,
@@ -19,7 +18,6 @@ import {
 
 import Queue from "./queue"
 import NowPlaying from "./now-playing"
-import { useMutation } from "../../hooks"
 import SHUFFLE_NEXT from "./shuffle-next.gql"
 import CLEAR_QUEUES from "./clear-queues.gql"
 import Buttons from "../../components/buttons"
@@ -27,12 +25,14 @@ import GET_QUEUE_NEXT from "./get-queue-next.gql"
 import GET_QUEUE_LATER from "./get-queue-later.gql"
 import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql"
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql"
+import { useMutation, useResetPlayer } from "../../hooks"
 
 import "./index.scss"
 
 const Queues: VFC = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
+	const resetPlayer = useResetPlayer()
 	const queuesDisclosure = useStateQueuesDisclosure()
 
 	const [ shuffleNext ] =
@@ -85,7 +85,7 @@ const Queues: VFC = () => {
 		() => {
 			void clear()
 			handleCollapseDisclosure()
-			dispatch(updatePlay(false))
+			resetPlayer()
 		}
 
 	const handleBack =

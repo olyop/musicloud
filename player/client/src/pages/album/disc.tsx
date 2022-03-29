@@ -6,12 +6,12 @@ import { Disc as DiscType } from "../../types"
 const Disc: VFC<PropTypes> = ({
 	isSingle,
 	className,
-	disc: { songs, number, hideLabel },
+	disc: { songs, index, hideLabel },
 }) => (
 	<div className={className}>
 		{hideLabel || (
 			<h4
-				children={`Disc ${number}`}
+				children={`Disc ${index}`}
 				className="BodyTwo MarginBottomHalf UpperCase"
 			/>
 		)}

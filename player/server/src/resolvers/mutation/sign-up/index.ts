@@ -1,5 +1,7 @@
 import trim from "lodash-es/trim"
 import { hash, genSalt } from "bcrypt"
+// eslint-disable-next-line node/no-missing-import
+import { setTimeout } from "timers/promises"
 import { UserInputError } from "apollo-server-fastify"
 import { convertFirstRowToCamelCase, join, query } from "@oly_op/pg-helpers"
 
@@ -55,7 +57,7 @@ export const signUp =
 						parameterized: true,
 					},{
 						key: "columnNames",
-						value: join(COLUMN_NAMES.USER)
+						value: join(COLUMN_NAMES.USER),
 					}],
 				})
 
@@ -90,7 +92,9 @@ export const signUp =
 				image: profileImages[2]!,
 			})
 
+			await setTimeout(3000)
+
 			return createJWT(context.ag.client)(user)
 		},
-		{ global: false }
+		{ global: false },
 	)

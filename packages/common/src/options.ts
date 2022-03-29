@@ -6,11 +6,7 @@ const IS_PROD =
 	process.env.NODE_ENV === "production"
 
 const fastifyLogger: FastifyLoggerOptions = {
-	prettyPrint: {
-		translateTime: true,
-		messageFormat: "{msg} [{req.method} {req.url}]",
-		ignore: "pid, hostname, reqId, responseTime, req, res",
-	}
+	prettyPrint: true,
 }
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {

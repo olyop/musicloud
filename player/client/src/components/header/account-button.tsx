@@ -36,8 +36,13 @@ const HeaderAccountButton: VFC = () => {
 		() => {
 			dispatch(addLoading(loadingID))
 			handleAccountModalClose()
-			void client.refetchQueries({ include: "all" })
-				.then(() => dispatch(removeLoading(loadingID)))
+			void (
+				client
+					.refetchQueries({ include: "all" })
+					.then(() => (
+						dispatch(removeLoading(loadingID))
+					))
+			)
 		}
 
 	return (

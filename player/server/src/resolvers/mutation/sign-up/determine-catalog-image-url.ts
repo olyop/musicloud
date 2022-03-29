@@ -1,10 +1,10 @@
-import { CLOUDFRONT_CATALOG_URL } from "@oly_op/musicloud-common"
+import { FILES_CATALOG_URL } from "@oly_op/musicloud-common"
 
 import { ImageInput } from "./types"
 import determineCatalogImagePath from "./determine-catalog-image-path"
 
 const determineCatalogImageURL =
 	(objectID: string, image: ImageInput) =>
-		`${CLOUDFRONT_CATALOG_URL}/${determineCatalogImagePath(objectID, image)}`
+		`${FILES_CATALOG_URL}/${determineCatalogImagePath(objectID, image)}`
 
 export default determineCatalogImageURL

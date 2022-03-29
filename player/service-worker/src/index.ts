@@ -23,7 +23,11 @@ pageCache()
 
 googleFontsCache()
 
-staticResourceCache()
+staticResourceCache({
+	matchCallback:
+		({ url }) =>
+			url.pathname !== "/ping.txt",
+})
 
 imageCache()
 

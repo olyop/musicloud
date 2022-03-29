@@ -13,7 +13,7 @@ import { Metadata } from "@oly_op/react-metadata"
 import { isEmpty, uniqueId as uniqueID } from "lodash-es"
 import algoliasearch, { SearchIndex } from "algoliasearch/lite"
 import { useSearchParams, useNavigate } from "react-router-dom"
-import { AlgoliaRecord, CLOUDFRONT_URL } from "@oly_op/musicloud-common"
+import { AlgoliaRecord, FILES_URL } from "@oly_op/musicloud-common"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
@@ -149,7 +149,7 @@ const SearchPage: VFC = () => {
 					children={(
 						<img
 							alt="Search by Algolia"
-							src={`${CLOUDFRONT_URL}/search-by-algolia.svg`}
+							src={`${FILES_URL}/search-by-algolia.svg`}
 							className={bem("algolia-image", "PaddingHalf Rounded")}
 						/>
 					)}

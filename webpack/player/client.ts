@@ -11,7 +11,7 @@ import baseConfiguration, {
 	createDevServerProxy,
 	createTSLoaderOptions,
 	createHTMLPluginOptions,
-} from "./base"
+} from "../base"
 
 const ROOT_PATH =
 	path.join(BASE_ROOT_PATH, "player", "client")

@@ -6,7 +6,7 @@ import { Song, Artist, Playlist } from "./objects"
 
 export interface Disc {
 	songs: Song[],
-	number: number,
+	index: number,
 	hideLabel: boolean,
 }
 

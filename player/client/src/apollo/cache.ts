@@ -3,7 +3,7 @@ import { concatPagination } from "@apollo/client/utilities"
 import { FieldMergeFunction, InMemoryCache } from "@apollo/client"
 
 const replacePossibleNullArray: FieldMergeFunction<unknown[] | null> =
-	(_existing, incoming) => {
+	(existing, incoming) => {
 		if (isNull(incoming)) {
 			return null
 		} else {
@@ -41,7 +41,7 @@ const cache =
 					songs: {
 						merge: replacePossibleNullArray,
 					},
-				}
+				},
 			},
 			Queue: {
 				keyFields: [],

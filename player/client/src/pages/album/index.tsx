@@ -117,7 +117,7 @@ const AlbumPage: VFC = () => {
 							disc => (
 								<Disc
 									disc={disc}
-									key={disc.number}
+									key={disc.index}
 									isSingle={disc.songs.length === 1}
 								/>
 							),

@@ -63,7 +63,9 @@ const Feed = <Data, Vars>({
 												page: page.current,
 											},
 										},
-									}).then(() => dispatch(removeLoading(queryID)))
+									}).then(() => (
+										dispatch(removeLoading(queryID))
+									))
 								}
 							}}
 						/>

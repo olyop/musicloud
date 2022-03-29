@@ -8,10 +8,11 @@ import { updatePlay, useDispatch, useStatePlay, useStateVolume } from "../../red
 
 const useSongAudio =
 	(song: Song | null) => {
-		const audio = useAudio()
 		const play = useStatePlay()
 		const dispatch = useDispatch()
 		const volume = useStateVolume()
+
+		const audio = useAudio()
 
 		const [ hasHitPlay, setHasHitPlay ] =
 			useState(false)

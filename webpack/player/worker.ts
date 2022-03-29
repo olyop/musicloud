@@ -5,7 +5,7 @@ import {
 	BASE_ROOT_PATH,
 	BASE_BUILD_PATH,
 	createTSLoaderOptions,
-} from "./base"
+} from "../base"
 
 const ROOT_PATH =
 	path.join(BASE_ROOT_PATH, "player", "service-worker")

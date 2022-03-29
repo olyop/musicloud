@@ -20,9 +20,9 @@ import {
 
 import {
 	determinePlural,
+	createObjectPath,
 	createArtistLower,
 	createCatalogImageURL,
-	createObjectPath,
 } from "../../helpers"
 
 import routes from "./routes"
@@ -32,12 +32,14 @@ import Window from "../../components/window"
 import GET_ARTIST_PAGE from "./get-artist-page.gql"
 import Navigation from "../../components/navigation"
 
+const googleMapsBaseURL =
+	"https://www.google.com.au/maps/search"
+
 const createArtistGoogleMapsURL =
 	(artist: Pick<Artist, "city" | "country">) => {
-		const base = "https://www.google.com.au/maps/search"
 		const city = artist.city!.toLowerCase().replace(" ", "+")
 		const country = artist.country!.toLowerCase().replace(" ", "+")
-		return `${base}/${city}+${country}`
+		return `${googleMapsBaseURL}/${city}+${country}`
 	}
 
 const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
@@ -81,7 +83,7 @@ const ArtistPage: VFC = () => {
 			() => {
 				void navigator.share({
 					title: name,
-					url: createObjectPath("artist", artistID)
+					url: createObjectPath("artist", artistID),
 				})
 			}
 
@@ -128,7 +130,7 @@ const ArtistPage: VFC = () => {
 						</Fragment>
 					)}
 					content={(
-						<div className="FlexColumnGapQuart">
+						<div className="FlexColumnGapQuart" style={{ alignItems: "flex-start" }}>
 							<p className="BodyTwoInverted">
 								<Fragment>Formed in </Fragment>
 								{data.getArtistByID.since.slice(0, -6)}
@@ -138,7 +140,6 @@ const ArtistPage: VFC = () => {
 									target="_blank"
 									rel="noreferrer"
 									className="BodyTwoInverted"
-									style={{ display: "inline-block" }}
 									href={createArtistGoogleMapsURL(data.getArtistByID)}
 								>
 									{city}

@@ -43,7 +43,11 @@ export const useToggleUserFollowing =
 
 		const handler =
 			() => {
-				void (isFollowing ? unFollowUser : followUser)()
+				if (isFollowing) {
+					void unFollowUser()
+				} else {
+					void followUser()
+				}
 			}
 
 		return [ handler, isFollowing, isUser ] as const

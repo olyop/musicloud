@@ -4,10 +4,9 @@
 		"lib": ["ESNext"]
 	},
 	"include": [
-		"../types",
+		"player",
+		"upload",
 		"base.ts",
-		"player-client.ts",
-		"player-worker.ts",
-		"upload-client.ts"
+		"../types"
 	]
 }

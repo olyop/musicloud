@@ -60,7 +60,7 @@ export const createTSLoaderOptions =
 export const createDevServerProxy =
 	(port: string, proxy: string[]): ProxyConfigArray => [{
 		logLevel: "silent",
-		context: ["/logo/**"],
+		context: "/logo/**",
 		target: `http://${process.env.HOST}:${port}`,
 	},{
 		logLevel: "silent",
@@ -129,7 +129,7 @@ const baseConfiguration: Configuration = {
 			new MiniCSSExtractPlugin({
 				filename: "index-[fullhash].css",
 			}),
-		])
+		]),
 	],
 }
 

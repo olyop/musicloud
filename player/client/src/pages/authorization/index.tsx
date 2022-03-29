@@ -43,25 +43,34 @@ const Authorization: FC = ({ children }) => {
 	const handleSubmit =
 		(value: string) => {
 			dispatch(updateAccessToken(value))
+			setEmailAddressExists(false)
+			setEmailAddressChecked(false)
 		}
 
 	if (isNull(accessToken)) {
 		return (
 			<div className={bem("", "FullWidthAndHeight")}>
 				<div className={bem("main", "FlexColumnGap Elevated Padding")}>
-					<div className={bem("main-header", "FlexRowGapQuart")}>
-						{emailAddressChecked && (
-							<Button
-								transparent
-								tabIndex={5}
-								icon="arrow_back"
-								onClick={handleBack}
-								className={bem("main-header-back")}
-							/>
+					<div className="FlexColumnGapHalf">
+						<div className={bem("main-header", "FlexRowGapQuart")}>
+							{emailAddressChecked && (
+								<Button
+									transparent
+									tabIndex={5}
+									icon="arrow_back"
+									onClick={handleBack}
+									className={bem("main-header-back")}
+								/>
+							)}
+							<h1 className="HeadingFour">
+								{determineTitle(emailAddressChecked, emailAddressExists)}
+							</h1>
+						</div>
+						{emailAddressChecked || (
+							<p className="BodyTwo">
+								Created by Oliver Plummer
+							</p>
 						)}
-						<h1 className="HeadingFour">
-							{determineTitle(emailAddressChecked, emailAddressExists)}
-						</h1>
 					</div>
 					{emailAddressChecked ? (
 						emailAddressExists ? (

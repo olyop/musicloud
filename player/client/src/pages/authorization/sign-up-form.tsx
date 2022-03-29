@@ -7,6 +7,7 @@ import {
 } from "react"
 
 import Button from "@oly_op/react-button"
+import { Metadata } from "@oly_op/react-metadata"
 import { InterfaceWithInput, UserBase } from "@oly_op/musicloud-common"
 
 import SIGN_UP from "./sign-up.gql"
@@ -62,62 +63,64 @@ const AuthorizationSignUpForm: VFC<PropTypes> = ({
 	}, [data])
 
 	return (
-		<form onSubmit={handleSignUp} className="FlexColumnGap">
-			<Input
-				name="Email"
-				tabIndex={1}
-				placeholder="Email"
-				autoComplete="email"
-				value={emailAddress}
-				inputID="emailAddress"
-				onChange={onEmailAddressChange}
-			/>
-			<Input
-				autoFocus
-				name="Name"
-				value={name}
-				tabIndex={2}
-				inputID="name"
-				placeholder="Name"
-				autoComplete="given-name"
-				onChange={handleNameChange}
-			/>
-			<Input
-				tabIndex={3}
-				type="password"
-				name="Password"
-				value={password}
-				inputID="password"
-				placeholder="Password"
-				autoComplete="password"
-				onChange={handlePasswordChange}
-			/>
-			<Input
-				type="file"
-				tabIndex={4}
-				name="Profile"
-				value={profile}
-				inputID="profile"
-				imageOrientation="portrait"
-				onChange={handleProfileChange}
-			/>
-			<Input
-				type="file"
-				name="Cover"
-				tabIndex={5}
-				value={cover}
-				inputID="cover"
-				imageOrientation="landscape"
-				onChange={handleCoverChange}
-			/>
-			<Button
-				text="Submit"
-				type="submit"
-				tabIndex={6}
-				rightIcon="login"
-				disabled={loading || !isSignUpFormValid(input)}
-			/>
-		</form>
+		<Metadata title="Sign Up">
+			<form onSubmit={handleSignUp} className="FlexColumnGap">
+				<Input
+					name="Email"
+					tabIndex={1}
+					placeholder="Email"
+					autoComplete="email"
+					value={emailAddress}
+					inputID="emailAddress"
+					onChange={onEmailAddressChange}
+				/>
+				<Input
+					autoFocus
+					name="Name"
+					value={name}
+					tabIndex={2}
+					inputID="name"
+					placeholder="Name"
+					autoComplete="given-name"
+					onChange={handleNameChange}
+				/>
+				<Input
+					tabIndex={3}
+					type="password"
+					name="Password"
+					value={password}
+					inputID="password"
+					placeholder="Password"
+					autoComplete="password"
+					onChange={handlePasswordChange}
+				/>
+				<Input
+					type="file"
+					tabIndex={4}
+					name="Profile"
+					value={profile}
+					inputID="profile"
+					imageOrientation="portrait"
+					onChange={handleProfileChange}
+				/>
+				<Input
+					type="file"
+					name="Cover"
+					tabIndex={5}
+					value={cover}
+					inputID="cover"
+					imageOrientation="landscape"
+					onChange={handleCoverChange}
+				/>
+				<Button
+					text="Submit"
+					type="submit"
+					tabIndex={6}
+					rightIcon="login"
+					disabled={loading || !isSignUpFormValid(input)}
+				/>
+			</form>
+		</Metadata>
 	)
 }
 

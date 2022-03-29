@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { createElement, Fragment, useState, VFC } from "react"
+import { createElement, Fragment, useEffect, useState, VFC } from "react"
 
 import Modal, {
 	ModalHeader,
@@ -24,7 +24,7 @@ const ManageAccount: VFC = () => {
 	const [ deleteUserModal, setDeleteUserModal ] =
 		useState(false)
 
-	const [ deleteUser ] =
+	const [ deleteUser, { data } ] =
 		useMutation(DELETE_USER)
 
 	const [ changePassword ] =
@@ -33,7 +33,6 @@ const ManageAccount: VFC = () => {
 	const handleDeleteUser =
 		() => {
 			void deleteUser()
-			signOut()
 		}
 
 	const handleChangePassword =
@@ -48,6 +47,12 @@ const ManageAccount: VFC = () => {
 
 	const handleDeleteUserModalClose =
 		() => setDeleteUserModal(false)
+
+	useEffect(() => {
+		if (data) {
+			signOut()
+		}
+	}, [data])
 
 	return (
 		<Metadata title="Manage Account">
