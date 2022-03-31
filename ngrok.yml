@@ -1,0 +1,10 @@
+region: au
+tunnels:
+  player:
+    addr: 3001
+    proto: http
+    host-header: 127.0.0.1:3001
+  upload:
+    addr: 3003
+    proto: http
+    host-header: 127.0.0.1:3003

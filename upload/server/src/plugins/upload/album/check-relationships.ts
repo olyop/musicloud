@@ -1,15 +1,8 @@
 import { Pool } from "pg"
 import { trim } from "lodash-es"
-import createError from "fastify-error"
 import { exists } from "@oly_op/pg-helpers"
 
 import { List, Song } from "./types"
-
-const ExistsError =
-	createError(
-		"FST_ERR_CTP_INVALID_TYPE",
-		"%s %s does not exist",
-	)
 
 const checkRelationships =
 	(pg: Pool) =>
@@ -22,7 +15,7 @@ const checkRelationships =
 						value: trim(albumArtist.value),
 					})
 				if (!artistExists) {
-					throw new ExistsError("Artist", albumArtist.value)
+					throw new Error(`Artist ${albumArtist.value} does not exist`)
 				}
 			}
 			for (const song of songs) {
@@ -34,7 +27,7 @@ const checkRelationships =
 							value: trim(genre.value),
 						})
 					if (!genreExists) {
-						throw new ExistsError("Genre", genre.value)
+						throw new Error(`Genre ${genre.value} does not exist`)
 					}
 				}
 				for (const artist of song.artists) {
@@ -45,7 +38,7 @@ const checkRelationships =
 							value: trim(artist.value),
 						})
 					if (!artistExists) {
-						throw new ExistsError("Artist", artist.value)
+						throw new Error(`Artist ${artist.value} on ${song.title} does not exist`)
 					}
 				}
 				for (const remixer of song.remixers) {
@@ -56,7 +49,7 @@ const checkRelationships =
 							value: trim(remixer.value),
 						})
 					if (!remixerExists) {
-						throw new ExistsError("Artist", remixer.value)
+						throw new Error(`Remixer ${remixer.value} on ${song.title} does not exist`)
 					}
 				}
 				for (const feature of song.featuring) {
@@ -67,7 +60,7 @@ const checkRelationships =
 							value: trim(feature.value),
 						})
 					if (!featureExists) {
-						throw new ExistsError("Artist", feature.value)
+						throw new Error(`Feature ${feature.value} on ${song.title} does not exist`)
 					}
 				}
 			}

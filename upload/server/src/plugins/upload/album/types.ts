@@ -1,6 +1,6 @@
 import { AlbumBase, SongBase } from "@oly_op/musicloud-common"
 
-import { BodyEntry } from "../types"
+import { BodyEntry } from "../../types"
 
 export interface Item {
 	index: number,

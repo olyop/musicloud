@@ -27,8 +27,9 @@ import importSQL from "./import-sql"
 import getGenreID from "./get-genre-id"
 import getArtistID from "./get-artist-id"
 import { List, Route, Song } from "./types"
-import { BodyEntry, ImageInput } from "../types"
+import { BodyEntry, ImageInput } from "../../types"
 import checkRelationships from "./check-relationships"
+import { doesAlbumExist } from "./does-album-exist"
 
 const keyID =
 	"13e9c04a-a1e5-4405-870c-8520fbc2854f"
@@ -68,6 +69,11 @@ export const uploadAlbum: FastifyPluginCallback =
 				await checkRelationships(fastify.pg.pool)(
 					albumArtistsList,
 					songs,
+				)
+
+				await doesAlbumExist(fastify.pg.pool)(
+					albumTitle,
+					albumArtistsList,
 				)
 
 				const { albumID } =

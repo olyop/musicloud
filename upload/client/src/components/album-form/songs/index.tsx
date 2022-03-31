@@ -8,8 +8,8 @@ const bem =
 
 const AlbumSongs: FC<PropTypes> = ({ onAddSong, children }) => {
 	const handleChange: ChangeEventHandler<HTMLInputElement> =
-		({ target: { files } }) =>
-			onAddSong(files!.item(0)!)
+		// eslint-disable-next-line @typescript-eslint/no-misused-promises
+		({ target: { files } }) => onAddSong(files!.item(0)!)
 	return (
 		<div className="FlexColumnGapQuart">
 			<p className={bem("label")}>
@@ -30,7 +30,7 @@ const AlbumSongs: FC<PropTypes> = ({ onAddSong, children }) => {
 }
 
 interface PropTypes {
-	onAddSong: (audio: File) => void,
+	onAddSong: (audio: File) => Promise<void>,
 }
 
 export default AlbumSongs

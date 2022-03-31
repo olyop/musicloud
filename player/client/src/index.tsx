@@ -69,7 +69,7 @@ render(
 	rootElement,
 )
 
-const workbox =
-	new Workbox("/service-worker.js")
-
-void workbox.register()
+if (process.env.SERVICE_WORKER === "true") {
+	const workbox = new Workbox("/service-worker.js")
+	void workbox.register()
+}

@@ -2,7 +2,8 @@ import { Song } from "./song"
 import { Album } from "./types"
 
 const omitAudioFromSong =
-	({ audio, ...song }: Song): Omit<Song, "audio"> => song
+	({ audio, ...song }: Song): Omit<Song, "audio"> =>
+		song
 
 const createFormData =
 	(album: Album, songs: Song[]) => {

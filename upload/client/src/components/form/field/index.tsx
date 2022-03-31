@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/comma-dangle */
 import { useFormik } from "formik"
-import Image from "@oly_op/react-image"
 import { createBEM } from "@oly_op/bem"
 import { createElement, ChangeEventHandler, VFC } from "react"
 
@@ -38,8 +36,9 @@ const FormField: VFC<PropTypes> = ({ field, value, onChange }) => {
 				</p>
 				<div className={bem("image-box", "FlexColumnGapHalf")}>
 					{value && (
-						<Image
-							url={value}
+						<img
+							alt="img"
+							src={value}
 							className={bem(
 								field.landscape ?
 									"image-image-landscape" :

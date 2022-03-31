@@ -1,7 +1,6 @@
 import { createElement, VFC } from "react"
 import { Route, Routes, Navigate } from "react-router-dom"
 
-import UserForm from "../user-form"
 import GenreForm from "../genre-form"
 import AlbumForm from "../album-form"
 import ArtistForm from "../artist-form"
@@ -16,13 +15,9 @@ const Pages: VFC = () => (
 				element={(
 					<Navigate
 						replace
-						to="user"
+						to="album"
 					/>
 				)}
-			/>
-			<Route
-				path="user"
-				element={<UserForm/>}
 			/>
 			<Route
 				path="genre"

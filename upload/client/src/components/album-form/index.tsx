@@ -7,17 +7,13 @@ import { Album } from "./types"
 import AlbumSongs from "./songs"
 import TextField from "../text-field"
 import createFormData from "./create-form-data"
+import { createGoogleSearchURL } from "../../helpers"
 import AlbumFormSong, { Song, SongLists } from "./song"
-
-const searchURL =
-	"https://google.com/search"
+import getAudioMetadata from "./get-audio-metadata"
 
 const AlbumForm: VFC = () => {
-	const [ loading, setLoading ] =
-		useState(false)
-
-	const [ songs, setSongs ] =
-		useState<Song[]>([])
+	const [ loading, setLoading ] = useState(false)
+	const [ songs, setSongs ] = useState<Song[]>([])
 
 	const formik =
 		useFormik<Album>({
@@ -49,21 +45,26 @@ const AlbumForm: VFC = () => {
 			},
 		})
 
-	const { values, handleChange, setFieldValue } = formik
+	const { values, errors, handleChange, handleSubmit, setFieldValue } = formik
+	const { title, released, artists, remixers, cover } = values
 
 	const handleSongAdd =
-		(audio: File) =>
-			setSongs(prevState => [ ...prevState, {
-				audio,
-				mix: "",
-				remixers: [],
-				featuring: [],
-				discNumber: 1,
-				artists: values.artists,
-				trackNumber: songs.length + 1,
-				title: audio.name.slice(0, -4),
-				genres: isEmpty(prevState) ? [] : prevState[0]!.genres,
-			}])
+		async (audio: File) => {
+			const metadata = await getAudioMetadata(audio)
+			setSongs(
+				prevState => [ ...prevState, {
+					audio,
+					artists,
+					mix: "",
+					remixers: [],
+					featuring: [],
+					discNumber: 1,
+					title: metadata.title,
+					trackNumber: songs.length + 1,
+					genres: isEmpty(prevState) ? [] : prevState[0]!.genres,
+				}],
+			)
+		}
 
 	const handleSongRemove =
 		(trackNumber: number) =>
@@ -86,12 +87,12 @@ const AlbumForm: VFC = () => {
 
 	const handleSongTitleChange =
 		(trackNumber: number) =>
-			(title: string) =>
+			(value: string) =>
 				setSongs(prevState => prevState.map(
 					song => (
 						song.trackNumber === trackNumber ? ({
 							...song,
-							title,
+							title: value,
 						}) : song
 					),
 				))
@@ -133,9 +134,9 @@ const AlbumForm: VFC = () => {
 			() =>
 				setFieldValue(
 					"artists",
-					[...values.artists, {
+					[...artists, {
 						value,
-						index: values.artists.length,
+						index: artists.length,
 					}],
 				)
 
@@ -144,7 +145,7 @@ const AlbumForm: VFC = () => {
 			() =>
 				setFieldValue(
 					"artists",
-					values.artists.filter(
+					artists.filter(
 						artist => index !== artist.index,
 					),
 				)
@@ -154,9 +155,9 @@ const AlbumForm: VFC = () => {
 			() =>
 				setFieldValue(
 					"remixers",
-					[...values.remixers, {
+					[...remixers, {
 						value,
-						index: values.remixers.length,
+						index: remixers.length,
 					}],
 				)
 
@@ -165,48 +166,50 @@ const AlbumForm: VFC = () => {
 			() =>
 				setFieldValue(
 					"remixers",
-					values.remixers.filter(
+					remixers.filter(
 						remixer => index !== remixer.index,
 					),
 				)
 
 	const handleCoverChange: ChangeEventHandler<HTMLInputElement> =
-		({ target: { files } }) =>
-			setFieldValue("cover", files!.item(0))
+		({ target: { files } }) => {
+			void setFieldValue("cover", files!.item(0))
+		}
 
 	return (
 		<Form
 			title="Album"
+			errors={errors}
 			loading={loading}
-			errors={formik.errors}
-			onSubmit={formik.handleSubmit}
+			onSubmit={handleSubmit}
 		>
 			<TextField
 				id="title"
 				type="text"
 				name="Title"
+				value={title}
 				placeholder="Title"
-				value={values.title}
 				onChange={handleChange}
 			/>
 			<TextField
 				type="date"
 				id="released"
 				name="Released"
-				value={values.released}
+				value={released}
 				onChange={handleChange}
 				action={{
 					icon: "search",
 					text: "Released",
-					url: `${searchURL}?q=${values.title.toLowerCase().replace(" ", "+")}+album+release+date`
+					disabled: isEmpty(title),
+					url: createGoogleSearchURL({ query: `${title} album release date` }),
 				}}
 			/>
 			<TextField
 				id="artists"
 				name="Artists"
 				type="objects"
+				list={artists}
 				placeholder="Artist"
-				list={values.artists}
 				onItemAdd={handleArtistAdd}
 				onItemRemove={handleArtistRemove}
 			/>
@@ -214,8 +217,8 @@ const AlbumForm: VFC = () => {
 				id="remixers"
 				type="objects"
 				name="Remixers"
+				list={remixers}
 				placeholder="Remixers"
-				list={values.remixers}
 				onItemAdd={handleRemixerAdd}
 				onItemRemove={handleRemixerRemove}
 			/>
@@ -223,13 +226,17 @@ const AlbumForm: VFC = () => {
 				id="cover"
 				type="file"
 				name="cover"
+				image={cover}
 				multiple={false}
-				image={values.cover}
 				onChange={handleCoverChange}
-				action={values.cover ? undefined : {
+				action={cover ? undefined : {
 					text: "Cover",
 					icon: "search",
-					url: `${searchURL}?q=${values.title.toLowerCase().replace(" ", "+")}+album+cover&tbm=isch`
+					disabled: isEmpty(title) || isEmpty(artists),
+					url: createGoogleSearchURL({
+						isImage: true,
+						query: `${title} ${artists[0]?.value || ""} album cover`,
+					}),
 				}}
 			/>
 			<AlbumSongs onAddSong={handleSongAdd}>

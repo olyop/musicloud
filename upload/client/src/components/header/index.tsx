@@ -19,16 +19,6 @@ const Header: VFC = () => {
 	return (
 		<div className={bem("", "Elevated")}>
 			<Button
-				text="User"
-				transparent
-				icon="person"
-				onClick={handleRouteChange("/user")}
-				className={bem(
-					pathname === "/user" && "button-active",
-					"button",
-				)}
-			/>
-			<Button
 				transparent
 				icon="person"
 				text="Artist"

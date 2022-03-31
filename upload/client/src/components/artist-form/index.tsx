@@ -5,6 +5,7 @@ import { ChangeEventHandler, createElement, VFC, useState } from "react"
 
 import Form from "../form"
 import TextField from "../text-field"
+import { createGoogleSearchURL } from "../../helpers"
 
 interface ArtistImages {
 	cover: File | null,
@@ -16,9 +17,6 @@ interface Artist
 	city: string,
 	country: string,
 }
-
-const searchURL =
-	"https://google.com/search"
 
 const ArtistForm: VFC = () => {
 	const [ loading, setLoading ] =
@@ -62,47 +60,53 @@ const ArtistForm: VFC = () => {
 				}
 			}
 
-	const { values, handleChange } = formik
+	const { values, errors, handleChange, handleSubmit } = formik
+	const { name, city, country, cover, profile } = values
+
+	const isNameEmpty = isEmpty(name)
 
 	return (
 		<Form
 			title="Artist"
+			errors={errors}
 			loading={loading}
-			errors={formik.errors}
-			onSubmit={formik.handleSubmit}
+			autoComplete="nope"
+			onSubmit={handleSubmit}
 		>
 			<TextField
 				id="name"
 				name="Name"
 				type="text"
+				value={name}
 				placeholder="Name"
-				value={values.name}
 				onChange={handleChange}
 			/>
 			<TextField
 				id="city"
 				name="City"
 				type="text"
+				value={city}
 				placeholder="City"
-				value={values.city}
 				onChange={handleChange}
 				action={{
 					text: "City",
 					icon: "search",
-					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+origin+city`
+					disabled: isNameEmpty,
+					url: createGoogleSearchURL({ query: `${name} artist origin` }),
 				}}
 			/>
 			<TextField
 				type="text"
 				id="country"
 				name="Country"
+				value={country}
 				placeholder="Country"
-				value={values.country}
 				onChange={handleChange}
 				action={{
 					icon: "search",
 					text: "Country",
-					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+origin+country`
+					disabled: isNameEmpty,
+					url: createGoogleSearchURL({ query: `${name} artist origin country` }),
 				}}
 			/>
 			<TextField
@@ -110,12 +114,13 @@ const ArtistForm: VFC = () => {
 				id="profile"
 				name="Profile"
 				multiple={false}
-				image={values.profile || undefined}
+				image={profile || undefined}
 				onChange={handlePhotoChange("profile")}
-				action={values.profile ? undefined : {
+				action={profile ? undefined : {
 					icon: "search",
 					text: "Profile",
-					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+profile&tbm=isch`
+					disabled: isEmpty(name),
+					url: createGoogleSearchURL({ isImage: true, query: `${name} artist profile` }),
 				}}
 			/>
 			<TextField
@@ -123,13 +128,14 @@ const ArtistForm: VFC = () => {
 				type="file"
 				name="Cover"
 				multiple={false}
+				image={cover || undefined}
 				imageOrientation="landscape"
-				image={values.cover || undefined}
 				onChange={handlePhotoChange("cover")}
-				action={values.cover ? undefined : {
+				action={cover ? undefined : {
 					text: "Cover",
 					icon: "search",
-					url: `${searchURL}?q=${values.name.toLowerCase().replace(" ", "+")}+artist+photo&tbm=isch`
+					disabled: isNameEmpty,
+					url: createGoogleSearchURL({ isImage: true, query: `${name} artist cover` }),
 				}}
 			/>
 		</Form>

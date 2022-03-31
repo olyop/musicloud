@@ -3,6 +3,7 @@ import {
 	Fragment,
 	createElement,
 	FormEventHandler,
+	FormHTMLAttributes,
 } from "react"
 
 import { FormikErrors } from "formik"
@@ -12,7 +13,14 @@ import Button from "@oly_op/react-button"
 import getInitialValues from "./get-initial-values"
 import FormField, { Field, FieldValue, FieldTypeEnum } from "./field"
 
-const Form: FC<PropTypes> = ({ title, errors, loading, onSubmit, children }) => {
+const Form: FC<PropTypes> = ({
+	title,
+	errors,
+	loading,
+	onSubmit,
+	children,
+	...formProps
+}) => {
 	if (loading) {
 		return (
 			<p className="HeadingFive">
@@ -24,6 +32,7 @@ const Form: FC<PropTypes> = ({ title, errors, loading, onSubmit, children }) => 
 			<form
 				onSubmit={onSubmit}
 				className="FlexColumnGap"
+				{...formProps}
 			>
 				<h1 className="HeadingFive">
 					<Fragment>Upload </Fragment>
@@ -52,7 +61,7 @@ const Form: FC<PropTypes> = ({ title, errors, loading, onSubmit, children }) => 
 	}
 }
 
-interface PropTypes {
+interface PropTypes extends FormHTMLAttributes<HTMLFormElement> {
 	title: string,
 	loading: boolean,
 	errors: FormikErrors<unknown>,

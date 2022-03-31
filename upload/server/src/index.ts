@@ -11,11 +11,11 @@ import serveStatic from "fastify-static"
 import multiPart from "fastify-multipart"
 
 import {
-	uploadUser,
 	serveClient,
 	uploadGenre,
 	uploadAlbum,
 	uploadArtist,
+	audioMetadata,
 } from "./plugins"
 
 import {
@@ -32,7 +32,7 @@ const start =
 			.register(multiPart, MULTIPART_OPTIONS)
 			.register(postgres, PG_POOL_OPTIONS)
 			.register(serveStatic, SERVE_STATIC_OPTIONS)
-			.register(uploadUser)
+			.register(audioMetadata)
 			.register(uploadAlbum)
 			.register(uploadGenre)
 			.register(uploadArtist)

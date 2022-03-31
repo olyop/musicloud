@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/tabindex-no-positive */
 import {
 	VFC,
 	useState,
@@ -111,24 +110,6 @@ const TextField: VFC<TextFieldPropTypes> = ({
 					className={bem("image", `image-${imageOrientation}`, "Elevated")}
 				/>
 			)}
-			{action && (
-				<a
-					tabIndex={999}
-					target="_blank"
-					rel="noreferrer"
-					href={action.url}
-					title={action.title}
-					className={bem("action")}
-					children={(
-						<Button
-							transparent
-							tabIndex={999}
-							icon={action.icon}
-							text={action.text}
-						/>
-					)}
-				/>
-			)}
 			{list && !isEmpty(list) && (
 				<div className={bem("list", "FlexRowGapHalf MarginBottomHalf")}>
 					{list.map(
@@ -153,6 +134,7 @@ const TextField: VFC<TextFieldPropTypes> = ({
 				id={id}
 				name={id}
 				type={type}
+				autoComplete="nope"
 				value={privateValue}
 				style={{ borderRadius }}
 				onBlur={handleInputBlur}
@@ -167,6 +149,24 @@ const TextField: VFC<TextFieldPropTypes> = ({
 				)}
 				{...inputPropTypes}
 			/>
+			{action && !action.disabled && (
+				<a
+					tabIndex={999}
+					target="_blank"
+					rel="noreferrer"
+					href={action.url}
+					title={action.title}
+					className={bem("action")}
+					children={(
+						<Button
+							transparent
+							tabIndex={999}
+							icon={action.icon}
+							text={action.text}
+						/>
+					)}
+				/>
+			)}
 			{list && (
 				<Button
 					icon="add"
@@ -191,6 +191,7 @@ interface ActionOptions {
 	icon: string,
 	text: string,
 	title?: string,
+	disabled?: boolean,
 }
 
 export interface TextFieldPropTypes extends InputPropTypes {

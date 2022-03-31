@@ -11,7 +11,7 @@ import {
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
-import { BodyEntry, ImageInput } from "../types"
+import { BodyEntry, ImageInput } from "../../types"
 import { UPLOAD_PLUGINS_PATH } from "../../../globals"
 
 interface Artist extends Omit<ArtistBase, "artistID"> {

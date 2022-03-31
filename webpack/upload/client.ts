@@ -50,10 +50,10 @@ const uploadConfiguration: Configuration = {
 	devServer: {
 		port: parseInt(process.env.UPLOAD_CLIENT_PORT),
 		proxy: createDevServerProxy(process.env.UPLOAD_SERVER_PORT, [
-			"/upload/user",
 			"/upload/album",
 			"/upload/genre",
 			"/upload/artist",
+			"/audio-metadata",
 		]),
 	},
 	plugins: [

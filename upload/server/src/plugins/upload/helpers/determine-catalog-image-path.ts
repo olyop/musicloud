@@ -1,4 +1,4 @@
-import { ImageInput } from "../types"
+import { ImageInput } from "../../types"
 import { determineCatalogPath } from "./determine-catalog-path"
 
 export const determineCatalogImagePath =
