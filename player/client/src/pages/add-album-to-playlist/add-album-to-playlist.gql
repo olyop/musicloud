@@ -1,4 +1,4 @@
-mutation addAlbumToPlaylist(
+mutation AddAlbumToPlaylist(
 	$albumID: UUID!
 	$playlistID: UUID!
 ) {

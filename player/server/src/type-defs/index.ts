@@ -3,7 +3,7 @@ import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
 
 const typeDefs =
 	loadSchemaSync("./player/server/src/type-defs/*.gql", {
-		loaders: [new GraphQLFileLoader()]
+		loaders: [new GraphQLFileLoader()],
 	})
 
 export default typeDefs
