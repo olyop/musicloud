@@ -1,8 +1,0 @@
-[sqlfluff]
-exclude_rules = L009
-
-[sqlfluff:rules]
-indent_unit = tab
-tab_space_size = 4
-max_line_length = 80
-comma_style = trailing

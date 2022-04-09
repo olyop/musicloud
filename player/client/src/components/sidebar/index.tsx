@@ -183,6 +183,23 @@ const Sidebar: VFC = () => {
 								/>
 							)}
 						/>
+						{process.env.NODE_ENV === "development" && (
+							<a
+								title="Upload"
+								onClick={handleClose}
+								className={bem("route", "BorderBottom PaddingTopBottomHalf")}
+								// eslint-disable-next-line max-len
+								href={`http://${process.env.HOST === "0.0.0.0" ? "127.0.0.1" : process.env.HOST}:${process.env.UPLOAD_CLIENT_PORT}`}
+								children={(
+									<Button
+										transparent
+										icon="upload"
+										text="Upload"
+										className={bem("route-button")}
+									/>
+								)}
+							/>
+						)}
 					</div>
 				</div>
 				<a
@@ -193,7 +210,7 @@ const Sidebar: VFC = () => {
 					href="https://github.com/olyop/music-app"
 					children={(
 						<Fragment>
-							<Fragment>Github: v</Fragment>
+							<Fragment>Github v</Fragment>
 							{VERSION}
 						</Fragment>
 					)}

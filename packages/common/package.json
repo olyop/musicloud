@@ -1,6 +1,6 @@
 {
 	"license": "MIT",
-	"version": "1.0.24",
+	"version": "1.0.30",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"description": "musicloud-common",
@@ -16,6 +16,9 @@
 		"directory": "packages/common",
 		"url": "https://github.com/olyop/musicloud.git"
 	},
+	"files": [
+		"build"
+	],
 	"peerDependencies": {
 		"pg": "*",
 		"graphql": "*",

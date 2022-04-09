@@ -1,8 +1,10 @@
 import cors from "fastify-cors"
+import createFastify from "fastify"
 import postgres from "fastify-postgres"
 import compress from "fastify-compress"
 import serveStatic from "fastify-static"
-import { PG_POOL_OPTIONS } from "@oly_op/musicloud-common"
+import { processRequest } from "graphql-upload"
+import { PG_POOL_OPTIONS, FASTIFY_SERVER_OPTIONS } from "@oly_op/musicloud-common"
 
 import {
 	SERVE_STATIC_OPTIONS,
@@ -12,8 +14,31 @@ import {
 } from "./globals"
 
 import apollo from "./apollo"
-import fastify from "./fastify"
 import serveClient from "./serve-client"
+
+const fastify =
+	createFastify(FASTIFY_SERVER_OPTIONS)
+
+fastify.addContentTypeParser(
+	"multipart/form-data",
+	(request, payload, done) => {
+		request.isMultipart = true
+		done(null)
+	},
+)
+
+fastify.addHook(
+	"preValidation",
+	async (request, reply) => {
+		if (request.isMultipart) {
+			request.body =
+				await processRequest(
+					request.raw,
+					reply.raw,
+				)
+		}
+	},
+)
 
 void (async () => {
 	await apollo.start()

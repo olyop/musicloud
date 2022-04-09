@@ -20,10 +20,6 @@ export type Key =
 export type User =
 	UserBase
 
-export interface UserPassword {
-	password: string,
-}
-
 export interface Album
 	extends AlbumBase {
 	released: Date,

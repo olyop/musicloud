@@ -1,13 +1,12 @@
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { InterfaceWithInput, UserEmailAddress } from "@oly_op/musicloud-common"
 import { useState, createElement, VFC, FormEventHandler, useEffect } from "react"
-
-import Input, { InputOnChange } from "../../components/input"
 
 import LOG_IN from "./log-in.gql"
 import { useMutation } from "../../hooks"
+import { LogInArgs, LogInData, LogInInput } from "./types"
+import Input, { InputOnChange } from "../../components/input"
 
 const AuthorizationLogInForm: VFC<PropTypes> = ({
 	onSubmit,
@@ -17,7 +16,7 @@ const AuthorizationLogInForm: VFC<PropTypes> = ({
 	const [ password, setPassword ] = useState("")
 
 	const [ logIn, { data, loading } ] =
-		useMutation<Data, Args>(LOG_IN)
+		useMutation<LogInData, LogInArgs>(LOG_IN)
 
 	const handlePasswordChange: InputOnChange =
 		value => setPassword(value)
@@ -73,17 +72,6 @@ const AuthorizationLogInForm: VFC<PropTypes> = ({
 		</Metadata>
 	)
 }
-
-interface Data {
-	logIn: string,
-}
-
-interface LogInInput extends UserEmailAddress {
-	password: string,
-}
-
-type Args =
-	InterfaceWithInput<LogInInput>
 
 interface PropTypes {
 	emailAddress: string,

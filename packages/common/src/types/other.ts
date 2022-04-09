@@ -1,4 +1,4 @@
-import { UserIDNameBase, UserDateJoinedBase, UserEmailAddress } from "./objects"
+import { UserIDNameBase, UserDateJoinedBase, UserEmailAddressBase } from "./objects"
 
 export interface InterfaceWithInput<T> {
 	input: T,
@@ -11,8 +11,8 @@ export interface JWTPayloadAlgoliaKey {
 export interface JWTPayloadUser
 	extends
 	UserIDNameBase,
-	UserEmailAddress,
-	UserDateJoinedBase {}
+	UserDateJoinedBase,
+	UserEmailAddressBase {}
 
 export interface JWTPayload
 	extends

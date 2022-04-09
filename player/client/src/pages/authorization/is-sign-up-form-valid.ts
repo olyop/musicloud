@@ -1,7 +1,7 @@
 import isNull from "lodash-es/isNull"
 import isEmpty from "lodash-es/isEmpty"
 
-import { SignUpInput } from "./sign-up-form"
+import { SignUpInput } from "./types"
 import isEmailAddress from "./is-email-address"
 
 const isSignUpFormValid =

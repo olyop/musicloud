@@ -1,5 +1,4 @@
 import trim from "lodash-es/trim"
-import { hash, genSalt } from "bcrypt"
 // eslint-disable-next-line node/no-missing-import
 import { setTimeout } from "timers/promises"
 import { UserInputError } from "apollo-server-fastify"
@@ -12,7 +11,7 @@ import { INSERT_USER } from "../../../sql"
 import saveToAlogilia from "./save-to-algolia"
 import { COLUMN_NAMES } from "../../../globals"
 import { coverImages, profileImages } from "./images"
-import { createJWT, emailAddressExists } from "../../helpers"
+import { createJWT, emailAddressExists, hashPassword } from "../../helpers"
 import { determineCover, determineProfile } from "./determine-images"
 import { normalizeImageAndUploadToS3 } from "./normalize-image-and-upload-to-s3"
 
@@ -35,10 +34,7 @@ export const signUp =
 				trim(input.name)
 
 			const password =
-				await hash(
-					input.password,
-					await genSalt(),
-				)
+				await hashPassword(input)
 
 			const user =
 				await query(context.pg)(INSERT_USER)({

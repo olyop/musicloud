@@ -1,7 +1,7 @@
 import { FileUpload } from "graphql-upload"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes, UserPasswordBase } from "@oly_op/musicloud-common"
 
-import { User, UserPassword } from "../../../types"
+import { User } from "../../../types"
 
 export interface ImageInput {
 	name: string,
@@ -25,7 +25,7 @@ export interface InputProfile {
 
 export interface InputBase
 	extends
-	UserPassword,
+	UserPasswordBase,
 	Omit<User, "userID" | "dateJoined"> {}
 
 export interface Input

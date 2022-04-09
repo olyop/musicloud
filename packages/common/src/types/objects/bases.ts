@@ -1,38 +1,14 @@
-export interface ObjectID {
-	objectID: string,
-}
-
-export interface KeyID {
-	keyID: string,
-}
-
-export interface UserID {
-	userID: string,
-}
-
-export interface SongID {
-	songID: string,
-}
-
-export interface PlayID {
-	playID: string,
-}
-
-export interface AlbumID {
-	albumID: string,
-}
-
-export interface GenreID {
-	genreID: string,
-}
-
-export interface ArtistID {
-	artistID: string,
-}
-
-export interface PlaylistID {
-	playlistID: string,
-}
+import { PlaylistPrivacy } from "./enums"
+import {
+	KeyID,
+	PlayID,
+	SongID,
+	UserID,
+	AlbumID,
+	GenreID,
+	ArtistID,
+	PlaylistID,
+} from "./ids"
 
 export interface KeyBase
 	extends KeyID {
@@ -56,16 +32,20 @@ export interface DateCreatedBase {
 export interface UserIDNameBase
 	extends UserID, NameBase {}
 
+export interface UserPasswordBase {
+	password: string,
+}
+
 export interface UserDateJoinedBase {
 	dateJoined: number,
 }
 
-export interface UserEmailAddress {
+export interface UserEmailAddressBase {
 	emailAddress: string,
 }
 
 export interface UserIDNameEmailAddressBase
-	extends UserIDNameBase, UserEmailAddress {}
+	extends UserIDNameBase, UserEmailAddressBase {}
 
 export interface UserBase
 	extends
@@ -105,12 +85,6 @@ export interface ArtistIDNameBase
 export type ArtistBase =
 	ArtistIDNameBase
 
-export enum PlaylistPrivacy {
-	PUBLIC = "PUBLIC",
-	PRIVATE = "PRIVATE",
-	FOLLOWERS = "FOLLOWERS",
-}
-
 export interface PlaylistIDTitleBase
 	extends PlaylistID, TitleBase {}
 
@@ -120,6 +94,3 @@ export interface PlaylistBase
 	PlaylistIDTitleBase {
 	privacy: PlaylistPrivacy,
 }
-
-export type TypeNames =
-	"Key" | "User" | "Play" | "Song" | "Genre" | "Album" | "Artist" | "Playlist"

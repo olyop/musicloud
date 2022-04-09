@@ -1,18 +1,18 @@
 import { pipe } from "rxjs"
 import { AuthenticationError } from "apollo-server-fastify"
-import { InterfaceWithInput, UserEmailAddress, UserID } from "@oly_op/musicloud-common"
 import { query, convertFirstRowToCamelCase, join, PoolOrClient } from "@oly_op/pg-helpers"
+import { InterfaceWithInput, UserEmailAddressBase, UserID, UserPasswordBase } from "@oly_op/musicloud-common"
 
 import resolver from "../resolver"
+import { User } from "../../../types"
 import { COLUMN_NAMES } from "../../../globals"
-import { User, UserPassword } from "../../../types"
 import isPasswordCorrect from "./is-password-correct"
 import { createJWT, emailAddressExists } from "../../helpers"
 import { SELECT_USER_BY_EMAIL, SELECT_USER_PASSWORD } from "../../../sql"
 
 const getUser =
 	(pg: PoolOrClient) =>
-		({ emailAddress }: UserEmailAddress) =>
+		({ emailAddress }: UserEmailAddressBase) =>
 			query(pg)(SELECT_USER_BY_EMAIL)({
 				parse: convertFirstRowToCamelCase<User>(),
 				variables: {
@@ -27,8 +27,8 @@ const getUserPassword =
 			query(pg)(SELECT_USER_PASSWORD)({
 				variables: { userID },
 				parse: pipe(
-					convertFirstRowToCamelCase<UserPassword>(),
-					({ password }) => password
+					convertFirstRowToCamelCase<UserPasswordBase>(),
+					({ password }) => password,
 				),
 			})
 
@@ -63,8 +63,8 @@ export const logIn =
 
 interface Input
 	extends
-	UserPassword,
-	Pick<User, "emailAddress"> {}
+	UserPasswordBase,
+	UserEmailAddressBase {}
 
 type Args =
 	InterfaceWithInput<Input>

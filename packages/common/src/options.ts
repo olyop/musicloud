@@ -1,18 +1,13 @@
 import { PoolConfig } from "pg"
 import { fastifyHelmet } from "fastify-helmet"
-import { FastifyLoggerOptions, FastifyServerOptions } from "fastify"
-
-const IS_PROD =
-	process.env.NODE_ENV === "production"
-
-const fastifyLogger: FastifyLoggerOptions = {
-	prettyPrint: true,
-}
+import { FastifyServerOptions } from "fastify"
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	bodyLimit: 20971520,
 	connectionTimeout: 5 * 1000,
-	logger: IS_PROD && fastifyLogger,
+	logger: process.env.NODE_ENV === "production" && {
+		prettyPrint: true,
+	},
 }
 
 export const PG_POOL_OPTIONS: PoolConfig = {
@@ -26,7 +21,10 @@ export const PG_POOL_OPTIONS: PoolConfig = {
 	database: process.env.AWS_RDS_DATABASE,
 }
 
-export const HELMET_OPTIONS: Parameters<typeof fastifyHelmet>[1] = {
+type HelmetOptions =
+	Parameters<typeof fastifyHelmet>[1]
+
+export const HELMET_OPTIONS: HelmetOptions = {
 	contentSecurityPolicy: false,
 	crossOriginResourcePolicy: false,
 }

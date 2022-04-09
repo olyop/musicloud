@@ -8,10 +8,10 @@ import {
 
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { InterfaceWithInput, UserBase } from "@oly_op/musicloud-common"
 
 import SIGN_UP from "./sign-up.gql"
 import { useMutation } from "../../hooks"
+import { SignUpArgs, SignUpData, SignUpInput } from "./types"
 import isSignUpFormValid from "./is-sign-up-form-valid"
 import Input, { InputOnChange } from "../../components/input"
 
@@ -26,7 +26,7 @@ const AuthorizationSignUpForm: VFC<PropTypes> = ({
 	const [ profile, setProfile ] = useState<File | null>(null)
 
 	const [ signUp, { data, loading } ] =
-		useMutation<Data, Args>(SIGN_UP)
+		useMutation<SignUpData, SignUpArgs>(SIGN_UP)
 
 	const handleNameChange: InputOnChange =
 		value => setName(value)
@@ -123,23 +123,6 @@ const AuthorizationSignUpForm: VFC<PropTypes> = ({
 		</Metadata>
 	)
 }
-
-interface Data {
-	signUp: string,
-}
-
-type FileInput =
-	File | null
-
-export interface SignUpInput
-	extends Omit<UserBase, "userID" | "dateJoined"> {
-	password: string,
-	cover: FileInput,
-	profile: FileInput,
-}
-
-export type Args =
-	InterfaceWithInput<SignUpInput>
 
 interface PropTypes {
 	emailAddress: string,

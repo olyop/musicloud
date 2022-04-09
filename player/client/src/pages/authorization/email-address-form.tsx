@@ -1,14 +1,14 @@
 import {
 	VFC,
 	useState,
+	useEffect,
 	createElement,
 	FormEventHandler,
-	useEffect,
 } from "react"
 
 import Button from "@oly_op/react-button"
 import isString from "lodash-es/isString"
-import { UserEmailAddress } from "@oly_op/musicloud-common"
+import { UserEmailAddressBase } from "@oly_op/musicloud-common"
 
 import { useMutation } from "../../hooks"
 import isEmailAddress from "./is-email-address"
@@ -24,7 +24,7 @@ const AuthorizationEmailAddressForm: VFC<PropTypes> = ({
 		useState(false)
 
 	const [ emailAddressExists, { data } ] =
-		useMutation<Data, UserEmailAddress>(EMAIL_ADDRESS_EXISTS)
+		useMutation<Data, UserEmailAddressBase>(EMAIL_ADDRESS_EXISTS)
 
 	const handleChange: InputOnChange =
 		value => {

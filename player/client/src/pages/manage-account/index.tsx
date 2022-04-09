@@ -38,7 +38,7 @@ const ManageAccount: VFC = () => {
 	const handleChangePassword =
 		() => {
 			void changePassword({
-				variables: { password: "password" },
+				variables: { password: "asdfasdf" },
 			})
 		}
 
