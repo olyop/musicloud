@@ -1,3 +1,4 @@
+import noop from "lodash-es/noop"
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
@@ -5,7 +6,7 @@ import { useState, createElement, VFC, FormEventHandler, useEffect } from "react
 
 import LOG_IN from "./log-in.gql"
 import { useMutation } from "../../hooks"
-import { LogInArgs, LogInData, LogInInput } from "./types"
+import { LogInArgs, LogInData } from "./types"
 import Input, { InputOnChange } from "../../components/input"
 
 const AuthorizationLogInForm: VFC<PropTypes> = ({
@@ -15,21 +16,24 @@ const AuthorizationLogInForm: VFC<PropTypes> = ({
 }) => {
 	const [ password, setPassword ] = useState("")
 
-	const [ logIn, { data, loading } ] =
+	const [ logIn, { data, loading, error } ] =
 		useMutation<LogInData, LogInArgs>(LOG_IN)
 
 	const handlePasswordChange: InputOnChange =
 		value => setPassword(value)
 
-	const input: LogInInput = {
-		password,
-		emailAddress,
-	}
-
 	const handleLogIn: FormEventHandler =
 		event => {
 			event.preventDefault()
-			void logIn({ variables: { input } })
+
+			const variables: LogInArgs = {
+				input: {
+					password,
+					emailAddress,
+				},
+			}
+
+			void logIn({ variables }).catch(noop)
 		}
 
 	useEffect(() => {
@@ -61,6 +65,11 @@ const AuthorizationLogInForm: VFC<PropTypes> = ({
 					autoComplete="password"
 					onChange={handlePasswordChange}
 				/>
+				{error && (
+					<p className="BodyOne Error">
+						{error.message}
+					</p>
+				)}
 				<Button
 					text="Submit"
 					type="submit"

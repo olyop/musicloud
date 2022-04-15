@@ -1,47 +1,31 @@
 import { createElement, useEffect, FC, Fragment } from "react"
 
-import { SettingsTransitions } from "../../types"
-import { useStateGridChildWidth, useStateTransitions } from "../../redux"
+import {
+	useStateTheme,
+	useStateTransitions,
+	useStateGridChildWidth,
+} from "../../redux"
 
-const determineTransitionsDuration =
-	(transitions: SettingsTransitions): Parameters<CSSStyleDeclaration["setProperty"]>[1] => {
-		switch (transitions) {
-			case SettingsTransitions.ON:
-				return null
-			case SettingsTransitions.OFF:
-				return "0"
-			case SettingsTransitions.DEFAULT:
-				return null
-			case SettingsTransitions.REDUCED:
-				return "0.1s"
-			case SettingsTransitions.SYSTEM:
-				if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-					return "0.1s"
-				} else {
-					return null
-				}
-			default:
-				return null
-		}
-	}
+import applyTheme from "./apply-theme"
+import applyTransitions from "./apply-transitions"
+import applyGridChildWidth from "./apply-grid-child-width"
 
 const ApplySettings: FC = ({ children }) => {
+	const theme = useStateTheme()
 	const transitions = useStateTransitions()
 	const gridChildWidth = useStateGridChildWidth()
 
 	useEffect(() => {
-		document.documentElement.style.setProperty(
-			"--transition-duration",
-			determineTransitionsDuration(transitions),
-		)
+		applyTransitions(transitions)
 	}, [transitions])
 
 	useEffect(() => {
-		document.documentElement.style.setProperty(
-			"--grid-child-width",
-			`${gridChildWidth.toString()}rem`,
-		)
+		applyGridChildWidth(gridChildWidth)
 	}, [gridChildWidth])
+
+	useEffect(() => {
+		applyTheme(theme)
+	}, [theme])
 
 	return (
 		<Fragment>

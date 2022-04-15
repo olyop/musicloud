@@ -78,8 +78,9 @@ const HeaderAccountButton: VFC = () => {
 							text="Account"
 							title="Account"
 							rightIcon="arrow_forward"
-							imageClassName={bem("account-button-image")}
 							className={bem("account-modal-content-button")}
+							textClassName={bem("account-modal-content-button-text")}
+							imageClassName={bem("account-button-image", "account-modal-content-button-image")}
 							image={{
 								description: name,
 								src: createCatalogImageURL(

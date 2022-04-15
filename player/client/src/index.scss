@@ -8,9 +8,12 @@
 	--grid-child-width: unset;
 	--transition-duration: 0.3s;
 	--content-image-width: 330rem;
-	--close-background-color: #000;
+	--close-background-color: #333;
+	--grid-image-hover-color: #333;
 	--close-background-opacity: 0.6;
+	--grid-image-hover-opacity: 0.3;
 	--font-family: "Roboto", system-ui;
+	--progress-color: var(--grey-color-300);
 
 	--primary-color: #ff5722;
 	--primary-color-dark: #c41c00;

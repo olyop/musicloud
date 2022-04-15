@@ -7,9 +7,9 @@
 			opacity: 0;
 			z-index: 1;
 			position: absolute;
-			background-color: var(--text-color);
-			transition: var(--transition-duration) opacity; }
+			transition: var(--transition-duration) opacity;
+			background-color: var(--grid-image-hover-color); }
 		&-image {
 			position: absolute; }
 		&:hover &-black {
-			opacity: 0.3; } } }
+			opacity: var(--grid-image-hover-opacity); } } }

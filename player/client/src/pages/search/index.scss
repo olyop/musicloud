@@ -9,22 +9,19 @@
 			background-color: transparent;
 			padding-left: calc(var(--space-quart) + var(--button-dimesnion));
 			border-bottom: calc(var(--border-width) * 2) solid var(--border-color);
-			&-icon {
-				top: 50%;
-				position: absolute;
-				transform: translateY(-50%); }
 			&-search {
 				left: 0;
+				top: 50%;
 				cursor: unset;
+				position: absolute;
+				transform: translateY(-50%);
 				&:hover,
 				&:focus {
 					background-color: transparent; } }
-			&-close {
-				right: 0; } } }
-	&__algolia {
-		align-self: center;
-		&-image {
-			height: 41em;
-			transition: var(--transition-duration) background-color;
-			&:hover {
-				background-color: var(--hover-color); } } } }
+			&-right {
+				top: 0;
+				height: 100%;
+				position: absolute;
+				right: var(--space-half);
+				&-algolia {
+					height: calc(100% - var(--space) - var(--border-width) * 2 - var(--space-fifth)); } } } } }

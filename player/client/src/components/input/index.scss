@@ -11,8 +11,8 @@
 		font-weight: 600;
 		position: absolute;
 		border-radius: 5rem;
-		background-color: #fff;
 		text-transform: uppercase;
+		background-color: var(--elevated-color);
 		transition: var(--transition-duration) color; }
 	&__image {
 		left: 50%;

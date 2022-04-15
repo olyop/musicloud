@@ -10,13 +10,14 @@ import {
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
+import { AlgoliaRecord } from "@oly_op/musicloud-common"
 import { isEmpty, uniqueId as uniqueID } from "lodash-es"
 import algoliasearch, { SearchIndex } from "algoliasearch/lite"
 import { useSearchParams, useNavigate } from "react-router-dom"
-import { AlgoliaRecord, FILES_URL } from "@oly_op/musicloud-common"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
+import AlgoliaLogo from "./algolia-logo"
 import { useHasMounted, useJWTPayload } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
 
@@ -107,12 +108,12 @@ const SearchPage: VFC = () => {
 
 	return (
 		<Metadata title="Search">
-			<section className="FlexColumnGap PaddingTopBottom">
-				<div className={bem("bar", "Content")}>
+			<section className={bem("", "Content PaddingTopBottom")}>
+				<div className={bem("bar")}>
 					<Button
 						transparent
 						icon="search"
-						className={bem("bar-input-search", "bar-input-icon")}
+						className={bem("bar-input-search")}
 					/>
 					<input
 						value={input}
@@ -120,17 +121,20 @@ const SearchPage: VFC = () => {
 						placeholder="Search..."
 						className={bem("bar-input", "PaddingHalf")}
 					/>
-					{isEmpty(input) || (
-						<Button
-							transparent
-							icon="close"
-							onClick={handleClear}
-							className={bem("bar-input-close", "bar-input-icon")}
-						/>
-					)}
+					<div className={bem("bar-input-right", "FlexRowGapQuartCenter")}>
+						{isEmpty(input) || (
+							<Button
+								transparent
+								icon="close"
+								onClick={handleClear}
+								className={bem("bar-input-right-close")}
+							/>
+						)}
+						<AlgoliaLogo/>
+					</div>
 				</div>
 				{!isEmpty(input) && !isEmpty(hits) && (
-					<div className="Content Elevated">
+					<div className="Elevated">
 						{hits.map(
 							hit => (
 								<SearchHit
@@ -141,19 +145,6 @@ const SearchPage: VFC = () => {
 						)}
 					</div>
 				)}
-				<a
-					target="_blank"
-					rel="noreferrer"
-					href="https://algolia.com"
-					className={bem("algolia")}
-					children={(
-						<img
-							alt="Search by Algolia"
-							src={`${FILES_URL}/search-by-algolia.svg`}
-							className={bem("algolia-image", "PaddingHalf Rounded")}
-						/>
-					)}
-				/>
 			</section>
 		</Metadata>
 	)
