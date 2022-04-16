@@ -1,7 +1,10 @@
 import { SettingsTheme } from "../../types"
 
 type ThemeTemplate =
-	Record<string, string>
+	Record<
+		Parameters<CSSStyleDeclaration["setProperty"]>[0],
+		Parameters<CSSStyleDeclaration["setProperty"]>[1]
+	>
 
 const lightTheme: ThemeTemplate = {
 	"--text-color": "var(--grey-color-900)",

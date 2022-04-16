@@ -8,6 +8,9 @@ import { COLUMN_NAMES } from "../../globals"
 import { isNotUsersPlaylist } from "../helpers"
 import { UPDATE_PLAYLIST_PRIVACY } from "../../sql"
 
+type Input =
+	Pick<Playlist, "playlistID" | "privacy">
+
 export const updatePlaylistPrivacy =
 	resolver<Playlist, InterfaceWithInput<Input>>(
 		async ({ args, context }) => {
@@ -46,6 +49,3 @@ export const updatePlaylistPrivacy =
 			})
 		},
 	)
-
-type Input =
-	Pick<Playlist, "playlistID" | "privacy">

@@ -81,8 +81,8 @@
 	},
 	"dependencies": {
 		"@apollo/client": "3.5.10",
-		"@aws-sdk/client-s3": "3.67.0",
-		"@graphql-tools/graphql-file-loader": "7.3.9",
+		"@aws-sdk/client-s3": "3.72.0",
+		"@graphql-tools/graphql-file-loader": "7.3.10",
 		"@oly_op/bem": "5.0.8",
 		"@oly_op/css-utilities": "2.0.68",
 		"@oly_op/graphql-create-resolver": "2.0.1",
@@ -131,7 +131,7 @@
 	},
 	"devDependencies": {
 		"@graphql-eslint/eslint-plugin": "3.10.2",
-		"@graphql-tools/load": "7.5.8",
+		"@graphql-tools/load": "7.5.9",
 		"@oly_op/eslint-config": "5.1.40",
 		"@oly_op/eslint-config-react": "3.0.19",
 		"@oly_op/stylelint-config": "2.0.19",
@@ -182,7 +182,7 @@
 		"sass-loader": "12.6.0",
 		"sitemap": "7.1.1",
 		"style-loader": "3.3.1",
-		"stylelint": "14.6.1",
+		"stylelint": "14.7.0",
 		"stylelint-webpack-plugin": "3.2.0",
 		"ts-loader": "9.2.8",
 		"ts-node": "10.7.0",

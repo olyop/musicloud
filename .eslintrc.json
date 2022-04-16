@@ -2,13 +2,5 @@
 	"extends": "@oly_op",
 	"parserOptions": {
 		"project": "./tsconfig.json"
-	},
-	"rules": {
-		"@typescript-eslint/no-unused-vars": [
-			"error",
-			{
-				"ignoreRestSiblings": true
-			}
-		]
 	}
 }

@@ -3,7 +3,6 @@ import { fastifyHelmet } from "fastify-helmet"
 import { FastifyServerOptions } from "fastify"
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
-	bodyLimit: 20971520,
 	connectionTimeout: 5 * 1000,
 	logger: process.env.NODE_ENV === "production" && {
 		prettyPrint: true,

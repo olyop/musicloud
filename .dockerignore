@@ -1,3 +1,8 @@
+LICENSE
+ngrok.yml
+nodemon.json
+.env.template
+
 build
 scripts
 packages
