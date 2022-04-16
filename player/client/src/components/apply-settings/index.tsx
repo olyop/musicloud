@@ -27,6 +27,19 @@ const ApplySettings: FC = ({ children }) => {
 		applyTheme(theme)
 	}, [theme])
 
+	useEffect(() => {
+		window.matchMedia("(prefers-color-scheme: dark)")
+			.addEventListener("change", () => {
+				console.log("!")
+				applyTheme(theme)
+			})
+
+		return (
+			window.matchMedia("(prefers-color-scheme: dark)")
+				.removeEventListener("change", () => applyTheme(theme))
+		)
+	}, [])
+
 	return (
 		<Fragment>
 			{children}
