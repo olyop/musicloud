@@ -1,14 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
-import { createElement, Fragment, VFC } from "react"
+import { createElement, Fragment, FC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
-
-import Item, {
-	InfoOptions,
-	ImageOptions,
-	InLibraryOptions,
-	ModalOptionsWithFunction,
-} from "../item"
 
 import {
 	ObjectShowIcon,
@@ -22,17 +15,17 @@ import {
 	createCatalogImageURL,
 } from "../../helpers"
 
+import Modal from "./modal"
 import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
-import { ModalButton, ModalButtons } from "../modal"
-import { useToggleObjectInLibrary, useShuffleArtist } from "../../hooks"
+import Item, { ItemModal, InfoOptions, ImageOptions } from "../item"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Artist")
 
-const Artist: VFC<PropTypes> = ({
+const Artist: FC<PropTypes> = ({
 	artist,
 	className,
 	showIcon = false,
@@ -41,64 +34,7 @@ const Artist: VFC<PropTypes> = ({
 	hideInLibrary = false,
 	hideArtistLower = false,
 }) => {
-	const { artistID } = artist
 	const listStyle = useStateListStyle()
-
-	const [ shuffle ] =
-		useShuffleArtist({ artistID })
-
-	const [ toggleInLibrary, inLibrary, isError ] =
-		useToggleObjectInLibrary(hideInLibrary ? undefined : artist)
-
-	const inLibraryConfig: InLibraryOptions | undefined = hideInLibrary ? undefined : {
-		isError,
-		inLibrary,
-		onClick: toggleInLibrary,
-	}
-
-	const modalOptions: ModalOptionsWithFunction = onClose => ({
-		header: {
-			shareData: {
-				title: artist.name,
-				url: createObjectPath("artist", artist.artistID),
-			},
-			text: (
-				<ObjectLink
-					link={{
-						text: artist.name,
-						path: createObjectPath("artist", artist.artistID),
-					}}
-				/>
-			),
-			image: {
-				description: artist.name,
-				src: createCatalogImageURL(
-					artist.artistID,
-					"profile",
-					ImageSizes.MINI,
-					ImageDimensions.SQUARE,
-				),
-			},
-		},
-		content: (
-			<ModalButtons>
-				{hideInLibrary || (
-					<ModalButton
-						onClose={onClose}
-						onClick={toggleInLibrary}
-						icon={inLibrary ? "done" : "add"}
-						text={inLibrary ? "Remove" : "Add"}
-					/>
-				)}
-				<ModalButton
-					icon="shuffle"
-					text="Shuffle"
-					onClick={shuffle}
-					onClose={onClose}
-				/>
-			</ModalButtons>
-		),
-	})
 
 	const info: InfoOptions = {
 		lowerLeft: hideArtistLower ? undefined : createArtistLower(artist),
@@ -126,13 +62,21 @@ const Artist: VFC<PropTypes> = ({
 		),
 	}
 
+	const modal: ItemModal = ({ open, onClose }) => hideModal || (
+		<Modal
+			open={open}
+			artist={artist}
+			onClose={onClose}
+			hideInLibrary={hideInLibrary}
+		/>
+	)
+
 	return listStyle === SettingsListStyle.LIST || alwaysList ? (
 		<Item
+			modal={modal}
 			infoOptions={info}
 			imageOptions={imageOptions}
-			inLibraryOptions={inLibraryConfig}
 			leftIcon={showIcon ? "person" : undefined}
-			modalOptions={hideModal ? undefined : modalOptions}
 			className={bem(className, "PaddingHalf ItemBorder")}
 		/>
 	) : (
@@ -161,10 +105,9 @@ const Artist: VFC<PropTypes> = ({
 				)}
 			/>
 			<Item
+				modal={modal}
 				infoOptions={info}
 				className="PaddingHalf"
-				modalOptions={modalOptions}
-				inLibraryOptions={inLibraryConfig}
 			/>
 		</div>
 	)

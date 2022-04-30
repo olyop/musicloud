@@ -1,5 +1,5 @@
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { useNavigate } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
 
@@ -29,7 +29,7 @@ import { useMutation, useResetPlayer } from "../../hooks"
 
 import "./index.scss"
 
-const Queues: VFC = () => {
+const Queues: FC = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()

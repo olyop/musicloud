@@ -1,5 +1,5 @@
 import { isEmpty } from "lodash-es"
-import { createElement, Fragment, VFC } from "react"
+import { createElement, Fragment, FC } from "react"
 import { ArtistIDNameBase } from "@oly_op/musicloud-common"
 
 import ObjectLink from "../object-link"
@@ -8,7 +8,7 @@ import { Handler, Album } from "../../types"
 import { createObjectPath } from "../../helpers"
 import { useStateShowReleased } from "../../redux"
 
-const AlbumTitle: VFC<PropTypes> = ({
+const AlbumTitle: FC<PropTypes> = ({
 	onClick,
 	hideReleased = false,
 	album: { title, albumID, remixers, released },

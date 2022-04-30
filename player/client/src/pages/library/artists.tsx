@@ -1,5 +1,5 @@
 import { isNull } from "lodash-es"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 
 import {
@@ -15,7 +15,7 @@ import Artists from "../../components/artists"
 import GET_LIBRARY_ARTISTS from "./get-library-artists.gql"
 import { useStateOrderBy, useStateListStyle } from "../../redux"
 
-const LibraryArtists: VFC = () => {
+const LibraryArtists: FC = () => {
 	const listStyle = useStateListStyle()
 	const isList = listStyle === SettingsListStyle.LIST
 	const orderBy = useStateOrderBy<LibraryArtistsOrderByField>("libraryArtists")

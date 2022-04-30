@@ -1,8 +1,8 @@
-import cors from "fastify-cors"
+import cors from "@fastify/cors"
 import createFastify from "fastify"
-import postgres from "fastify-postgres"
-import compress from "fastify-compress"
-import serveStatic from "fastify-static"
+import postgres from "@fastify/postgres"
+import compress from "@fastify/compress"
+import serveStatic from "@fastify/static"
 import { processRequest } from "graphql-upload"
 import { PG_POOL_OPTIONS, FASTIFY_SERVER_OPTIONS } from "@oly_op/musicloud-common"
 

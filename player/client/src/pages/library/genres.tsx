@@ -1,5 +1,5 @@
 import { isNull } from "lodash-es"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 
 import LibraryEmpty from "./empty"
@@ -9,7 +9,7 @@ import { useStateOrderBy } from "../../redux"
 import GET_LIBRARY_GENRES from "./get-library-genres.gql"
 import { GenresOrderBy, GenresOrderByField, LibraryGenresPaginated } from "../../types"
 
-const LibraryGenres: VFC = () => {
+const LibraryGenres: FC = () => {
 	const orderBy = useStateOrderBy<GenresOrderByField>("genres")
 	return (
 		<Metadata title="Library Genres">

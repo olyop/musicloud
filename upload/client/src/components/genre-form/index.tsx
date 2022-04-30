@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import { GenreBase } from "@oly_op/musicloud-common"
-import { createElement, VFC, useState } from "react"
+import { createElement, FC, useState } from "react"
 
 import Form from "../form"
 import TextField from "../text-field"
@@ -8,7 +8,7 @@ import TextField from "../text-field"
 type Genre =
 	Pick<GenreBase, "name">
 
-const GenreForm: VFC = () => {
+const GenreForm: FC = () => {
 	const [ loading, setLoading ] =
 		useState(false)
 
@@ -42,6 +42,7 @@ const GenreForm: VFC = () => {
 				name="Name"
 				type="text"
 				placeholder="Name"
+				autoComplete="nope"
 				value={formik.values.name}
 				onChange={formik.handleChange}
 			/>

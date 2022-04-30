@@ -1,5 +1,5 @@
 import {
-	VFC,
+	FC,
 	useState,
 	Fragment,
 	createElement,
@@ -18,7 +18,7 @@ import "./index.scss"
 const bem =
 	createBEM("BarVolume")
 
-const BarVolume: VFC<PropTypes> = ({ className, iconClassName }) => {
+const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
 	const dispatch = useDispatch()
 	const volume = useStateVolume()
 

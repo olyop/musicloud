@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { createElement, Fragment, useEffect, useState, VFC } from "react"
+import { createElement, Fragment, useEffect, useState, FC } from "react"
 
 import Modal, {
 	ModalHeader,
@@ -18,7 +18,7 @@ import "./index.scss"
 const bem =
 	createBEM("ManageAccount")
 
-const ManageAccount: VFC = () => {
+const ManageAccount: FC = () => {
 	const signOut = useSignOut()
 
 	const [ deleteUserModal, setDeleteUserModal ] =

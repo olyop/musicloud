@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import { useAudioPosition } from "react-use-audio-player"
-import { createElement, ChangeEventHandler, VFC } from "react"
+import { createElement, ChangeEventHandler, FC } from "react"
 
 import { deserializeDuration } from "../../../helpers"
 import { ClassNameBEMPropTypes } from "../../../types"
@@ -10,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("Progress")
 
-const Progress: VFC<PropTypes> = ({ ready, isNowPlaying, className }) => {
+const Progress: FC<PropTypes> = ({ ready, isNowPlaying, className }) => {
 	const audioPosition = useAudioPosition()
 
 	const handleSeek: HandleChange =

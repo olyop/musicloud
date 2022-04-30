@@ -1,5 +1,5 @@
+import musicMetadata from "music-metadata"
 import { FastifyPluginCallback } from "fastify"
-import { parseBuffer } from "music-metadata/lib/core"
 
 import { BodyEntry } from "./types"
 
@@ -14,15 +14,27 @@ export const audioMetadata: FastifyPluginCallback =
 		fastify.put<Route>(
 			"/audio-metadata",
 			async (request, reply) => {
-				const audio = request.body.audio[0]!.data
+				const audio =
+					request.body.audio[0]!.data
 
 				const metadata =
-					await parseBuffer(audio)
+					await musicMetadata.parseBuffer(audio)
 
-				const { title } = metadata.common
+				const {
+					title,
+					genre,
+					disk,
+					track,
+				} = metadata.common
+
+				const genres =
+					genre![0]
 
 				return reply.send({
 					title,
+					genres,
+					discNumber: disk.no || 1,
+					trackNumber: track.no || 1,
 				})
 			},
 		)

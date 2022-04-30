@@ -1,5 +1,5 @@
 import {
-	VFC,
+	FC,
 	useState,
 	ChangeEvent,
 	createElement,
@@ -17,7 +17,7 @@ import "./index.scss"
 const bem =
 	createBEM("TextField")
 
-const TextField: VFC<TextFieldPropTypes> = ({
+const TextField: FC<TextFieldPropTypes> = ({
 	name,
 	fieldID,
 	onChange,

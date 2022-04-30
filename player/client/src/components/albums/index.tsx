@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import {
 	SettingsListStyle,
@@ -17,7 +17,7 @@ import { useStateListStyle } from "../../redux"
 const bem =
 	createBEM("Albums")
 
-const Albums: VFC<AlbumsPropTypes> = ({
+const Albums: FC<AlbumsPropTypes> = ({
 	className,
 	albums = [],
 	orderBy = false,

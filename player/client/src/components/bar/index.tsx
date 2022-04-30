@@ -3,7 +3,7 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
 import isUndefined from "lodash-es/isUndefined"
-import { useState, createElement, VFC, Fragment } from "react"
+import { useState, createElement, FC, Fragment } from "react"
 
 import Song from "../song"
 import Volume from "./volume"
@@ -20,7 +20,7 @@ import "./index.scss"
 const bem =
 	createBEM("Bar")
 
-const Bar: VFC = () => {
+const Bar: FC = () => {
 	const [ expand, setExpand ] =
 		useState(false)
 

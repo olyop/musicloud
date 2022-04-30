@@ -1,7 +1,7 @@
 import { useFormik } from "formik"
 import { isEmpty } from "lodash-es"
 import { ArtistBase } from "@oly_op/musicloud-common"
-import { ChangeEventHandler, createElement, VFC, useState } from "react"
+import { ChangeEventHandler, createElement, FC, useState } from "react"
 
 import Form from "../form"
 import TextField from "../text-field"
@@ -18,7 +18,7 @@ interface Artist
 	country: string,
 }
 
-const ArtistForm: VFC = () => {
+const ArtistForm: FC = () => {
 	const [ loading, setLoading ] =
 		useState(false)
 
@@ -70,7 +70,6 @@ const ArtistForm: VFC = () => {
 			title="Artist"
 			errors={errors}
 			loading={loading}
-			autoComplete="nope"
 			onSubmit={handleSubmit}
 		>
 			<TextField
@@ -79,6 +78,7 @@ const ArtistForm: VFC = () => {
 				type="text"
 				value={name}
 				placeholder="Name"
+				autoComplete="nope"
 				onChange={handleChange}
 			/>
 			<TextField
@@ -92,7 +92,9 @@ const ArtistForm: VFC = () => {
 					text: "City",
 					icon: "search",
 					disabled: isNameEmpty,
-					url: createGoogleSearchURL({ query: `${name} artist origin` }),
+					url: createGoogleSearchURL({
+						query: `${name} artist origin`,
+					}),
 				}}
 			/>
 			<TextField

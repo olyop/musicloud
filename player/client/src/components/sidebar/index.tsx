@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
-import { createElement, VFC, Fragment } from "react"
+import { createElement, FC, Fragment } from "react"
 
 import { useDispatch, toggleSidebar, useStateSidebar } from "../../redux"
 
@@ -10,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("Sidebar")
 
-const Sidebar: VFC = () => {
+const Sidebar: FC = () => {
 	const dispatch = useDispatch()
 	const sidebar = useStateSidebar()
 

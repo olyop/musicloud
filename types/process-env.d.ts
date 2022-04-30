@@ -11,6 +11,7 @@ declare namespace NodeJS {
 		NODE_ENV: NodeENV,
 		AWS_REGION: string,
 		SOURCE_MAPS: TrueFalse,
+		JWT_ALGORITHM: "HS256",
 		AWS_RDS_USERNAME: string,
 		AWS_RDS_DATABASE: string,
 		AWS_RDS_PASSWORD: string,

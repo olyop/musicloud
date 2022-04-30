@@ -2,7 +2,6 @@
 	"extends": "@oly_op/tsconfig/tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": "./",
-		"noUnusedParameters": false,
 		"paths": { "*": ["types/*"] }
 	},
 	"ts-node": {

@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { Route, Routes, NavLink } from "react-router-dom"
-import { useState, createElement, VFC, Fragment } from "react"
+import { useState, createElement, FC, Fragment } from "react"
 
 import routes from "./routes"
 import Modal from "../../components/modal"
@@ -10,7 +10,7 @@ import Navigation from "../../components/navigation"
 import LibraryCreatePlaylist from "./create-playlist"
 import { useMutation, useResetPlayer } from "../../hooks"
 
-const Library: VFC = () => {
+const Library: FC = () => {
 	const resetPlayer = useResetPlayer()
 
 	const [ createPlaylistModal, setCreatePlaylistModal ] =

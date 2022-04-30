@@ -3,7 +3,7 @@ import { createBEM } from "@oly_op/bem"
 import uniqueID from "lodash-es/uniqueId"
 import Button from "@oly_op/react-button"
 import { useApolloClient } from "@apollo/client"
-import { createElement, Fragment, useState, VFC } from "react"
+import { createElement, Fragment, useState, FC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import Modal from "../modal"
@@ -17,7 +17,7 @@ const bem =
 const loadingID =
 	uniqueID()
 
-const HeaderAccountButton: VFC = () => {
+const HeaderAccountButton: FC = () => {
 	const signOut = useSignOut()
 	const dispatch = useDispatch()
 	const client = useApolloClient()

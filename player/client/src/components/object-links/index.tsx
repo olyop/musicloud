@@ -1,10 +1,10 @@
-import { createElement, Fragment, VFC } from "react"
+import { createElement, Fragment, FC } from "react"
 
 import { OnClickPropTypes } from "../../types"
 import determineConcat from "./determine-concat"
 import ObjectLink, { ObjectLinkOptions } from "../object-link"
 
-const ObjectLinks: VFC<PropTypes> = ({
+const ObjectLinks: FC<PropTypes> = ({
 	links,
 	onClick,
 	ampersand = true,

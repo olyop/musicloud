@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, useEffect, VFC } from "react"
+import { createElement, useEffect, FC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import Modal from "../../modal"
@@ -18,7 +18,7 @@ import "./index.scss"
 const bem =
 	createBEM("BarFullscreen")
 
-const BarFullscreen: VFC<PropTypes> = ({
+const BarFullscreen: FC<PropTypes> = ({
 	open,
 	song,
 	ready,

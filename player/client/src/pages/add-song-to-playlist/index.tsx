@@ -10,7 +10,7 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useNavigate, useParams } from "react-router-dom"
-import { useState, createElement, VFC, Fragment, useEffect } from "react"
+import { useState, createElement, FC, Fragment, useEffect } from "react"
 
 import GET_SONG_DATA from "./get-song-data.gql"
 import Playlists from "../../components/playlists"
@@ -26,7 +26,7 @@ import "./index.scss"
 const bem =
 	createBEM("AddSongToPlaylistPage")
 
-const AddSongToPlaylistPage: VFC = () => {
+const AddSongToPlaylistPage: FC = () => {
 	const navigate = useNavigate()
 	const params = useParams<keyof SongID>()
 	const songID = addDashesToUUID(params.songID!)

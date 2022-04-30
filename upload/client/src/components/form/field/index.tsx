@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import { createBEM } from "@oly_op/bem"
-import { createElement, ChangeEventHandler, VFC } from "react"
+import { createElement, ChangeEventHandler, FC } from "react"
 
 import TextField from "./text-field"
 
@@ -27,7 +27,7 @@ export interface Field {
 const bem =
 	createBEM("FormField")
 
-const FormField: VFC<PropTypes> = ({ field, value, onChange }) => {
+const FormField: FC<PropTypes> = ({ field, value, onChange }) => {
 	if (field.type === FieldTypeEnum.IMAGE) {
 		return (
 			<div key={field.fieldID} className="FlexColumnGapQuart">

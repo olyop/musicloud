@@ -2,7 +2,7 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
-import { createElement, VFC, Fragment } from "react"
+import { createElement, FC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common"
 
@@ -26,7 +26,7 @@ import "./index.scss"
 const bem =
 	createBEM("SongPage")
 
-const SongPagePlayButton: VFC<PropTypes> = ({ song }) => {
+const SongPagePlayButton: FC<PropTypes> = ({ song }) => {
 	const play = useStatePlay()
 	const [ playSong, isPlaying ] = usePlaySong(song)
 	return (
@@ -41,7 +41,7 @@ const SongPagePlayButton: VFC<PropTypes> = ({ song }) => {
 	)
 }
 
-const SongPage: VFC<PropTypes> = ({ song }) => (
+const SongPage: FC<PropTypes> = ({ song }) => (
 	<Metadata title={song.title}>
 		<div className={bem("", "Content PaddingTopBottom")}>
 			<img
@@ -128,7 +128,7 @@ interface PropTypes {
 	song: Song,
 }
 
-const SongPageWrapper: VFC = () => {
+const SongPageWrapper: FC = () => {
 	const params = useParams<keyof SongID>()
 	const songID = addDashesToUUID(params.songID!)
 

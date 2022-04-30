@@ -1,4 +1,4 @@
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import {
@@ -24,7 +24,7 @@ import { createCatalogImageURL, createObjectPath } from "../../helpers"
 const className =
 	"PaddingHalf ItemBorder"
 
-const SearchHit: VFC<PropTypes> = ({ hit }) => {
+const SearchHit: FC<PropTypes> = ({ hit }) => {
 	if (isUser(hit)) {
 		return (
 			<User

@@ -9,7 +9,7 @@ import {
 
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { createElement, Fragment, VFC } from "react"
+import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 
 import {
@@ -42,7 +42,7 @@ const createArtistGoogleMapsURL =
 		return `${googleMapsBaseURL}/${city}+${country}`
 	}
 
-const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
+const ArtistFollowButton: FC<ArtistFollowButtonPropTypes> = ({ artist }) => {
 	const [ toggleInLibrary, inLibrary, isError ] = useToggleObjectInLibrary(artist)
 	return (
 		<Button
@@ -55,7 +55,7 @@ const ArtistFollowButton: VFC<ArtistFollowButtonPropTypes> = ({ artist }) => {
 	)
 }
 
-const ArtistPage: VFC = () => {
+const ArtistPage: FC = () => {
 	const params = useParams<keyof ArtistID>()
 	const artistID = addDashesToUUID(params.artistID!)
 

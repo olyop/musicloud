@@ -1,8 +1,8 @@
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 
-const CustomLibraryShufflePage: VFC = () => (
+const CustomLibraryShufflePage: FC = () => (
 	<Metadata title="Custom Library Shuffle">
 		<div className="Content PaddingTopBottom">
 			<div className="FlexRowGapHalf">

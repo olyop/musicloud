@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { createBEM, BEMInput } from "@oly_op/bem"
-import { useEffect, createElement, VFC } from "react"
+import { useEffect, createElement, FC } from "react"
 
 import { togglePlay, useDispatch, useStatePlay } from "../../../redux"
 import { useKeyPress, useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
@@ -10,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("BarControls")
 
-const PlayButton: VFC<PlayButtonPropTypes> = ({
+const PlayButton: FC<PlayButtonPropTypes> = ({
 	ready,
 	loading,
 	isNowPlaying,
@@ -59,7 +59,7 @@ const PlayButton: VFC<PlayButtonPropTypes> = ({
 	)
 }
 
-const BarControls: VFC<PropTypes> = ({
+const BarControls: FC<PropTypes> = ({
 	ready,
 	className,
 	isNowPlaying,

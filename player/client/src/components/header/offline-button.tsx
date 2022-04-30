@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, useEffect, VFC } from "react"
+import { createElement, useEffect, FC } from "react"
 
 import checkOnlineStatus from "./check-online-status"
 import { updateIsOnline, useDispatch, useStateIsOnline } from "../../redux"
@@ -8,7 +8,7 @@ import { updateIsOnline, useDispatch, useStateIsOnline } from "../../redux"
 const bem =
 	createBEM("Header")
 
-const HeaderOfflineButton: VFC = () => {
+const HeaderOfflineButton: FC = () => {
 	const dispatch = useDispatch()
 	const isOnline = useStateIsOnline()
 

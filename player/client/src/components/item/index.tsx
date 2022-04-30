@@ -1,41 +1,39 @@
 import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { useState, createElement, VFC, Fragment } from "react"
+import { useState, createElement, FC, Fragment } from "react"
 
 import {
 	PropTypes,
 	InfoOptions,
 	PlayOptions,
 	ImageOptions,
-	ModalOptions,
-	InLibraryOptions,
-	ModalOptionsWithFunction,
+	// InLibraryOptions,
+	Modal as ItemModal,
 } from "./types"
 
-import ItemModal from "./modal"
 import PlayButton from "./play-button"
-import InLibraryButton from "./in-library-button"
+// import InLibraryButton from "./in-library-button"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Item")
 
-const Item: VFC<PropTypes> = ({
+const Item: FC<PropTypes> = ({
 	left,
+	modal,
 	style,
 	onClick,
 	onRemove,
 	leftIcon,
 	className,
 	playOptions,
-	modalOptions,
 	imageOptions,
 	infoClassName,
 	iconClassName,
 	rightClassName,
-	inLibraryOptions,
+	// inLibraryOptions,
 	shareIcon = false,
 	infoOptions: {
 		lowerLeft,
@@ -134,15 +132,15 @@ const Item: VFC<PropTypes> = ({
 						</p>
 					)}
 				</div>
-				{inLibraryOptions && (
+				{/* {inLibraryOptions && (
 					<InLibraryButton
 						isError={inLibraryOptions.isError}
 						onClick={inLibraryOptions.onClick}
 						inLibrary={inLibraryOptions.inLibrary}
 						className={bem(iconClassName, "in-library")}
 					/>
-				)}
-				{modalOptions && (
+				)} */}
+				{modal && (
 					<Button
 						transparent
 						title="Options"
@@ -169,12 +167,12 @@ const Item: VFC<PropTypes> = ({
 						className={iconClassName}
 					/>
 				)}
-				{modalOptions && (
-					<ItemModal
-						open={showModal}
-						onClose={handleModalClose}
-						modalOptions={modalOptions}
-					/>
+				{modal && (
+					modal({
+						open: showModal,
+						onOpen: handleModalOpen,
+						onClose: handleModalClose,
+					})
 				)}
 			</div>
 		</div>
@@ -182,12 +180,11 @@ const Item: VFC<PropTypes> = ({
 }
 
 export {
+	ItemModal,
 	InfoOptions,
 	PlayOptions,
 	ImageOptions,
-	ModalOptions,
-	InLibraryOptions,
-	ModalOptionsWithFunction,
+	// InLibraryOptions,
 }
 
 export default Item

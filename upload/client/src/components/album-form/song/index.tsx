@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { SongBase } from "@oly_op/musicloud-common"
-import { createElement, VFC, ChangeEventHandler } from "react"
+import { createElement, FC, ChangeEventHandler } from "react"
 
 import { Item } from "../../../types"
 import AlbumFormSongList from "./list"
@@ -11,7 +11,7 @@ import "./index.scss"
 const bem =
 	createBEM("AlbumFormSong")
 
-const AlbumFormSong: VFC<PropTypes> = ({
+const AlbumFormSong: FC<PropTypes> = ({
 	song,
 	onMixChange,
 	onSongRemove,
@@ -35,6 +35,7 @@ const AlbumFormSong: VFC<PropTypes> = ({
 				<input
 					type="text"
 					value={song.title}
+					autoComplete="nope"
 					onChange={handleTitleChange}
 					className={bem("field-input")}
 				/>

@@ -1,7 +1,7 @@
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import { ArtistIDNameBase } from "@oly_op/musicloud-common"
-import { createElement, Fragment, VFC, MouseEventHandler } from "react"
+import { createElement, Fragment, FC, MouseEventHandler } from "react"
 
 import ObjectLink from "../object-link"
 import ObjectLinks from "../object-links"
@@ -14,7 +14,7 @@ import "./index.scss"
 const bem =
 	createBEM("SongTitle")
 
-const SongTitle: VFC<PropTypes> = ({
+const SongTitle: FC<PropTypes> = ({
 	onClick,
 	noLink = false,
 	song: { mix, title, songID, remixers },
@@ -35,7 +35,10 @@ const SongTitle: VFC<PropTypes> = ({
 	const titleElement = noLink ? (
 		<ObjectLink
 			onClick={onClick}
-			link={{ text: title, path: createObjectPath("song", songID) }}
+			link={{
+				text: title,
+				path: createObjectPath("song", songID),
+			}}
 		/>
 	) : (
 		<button

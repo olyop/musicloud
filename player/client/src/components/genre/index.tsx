@@ -1,11 +1,11 @@
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import Item from "../item"
 import ObjectLink from "../object-link"
 import { createObjectPath } from "../../helpers"
 import { Genre as GenreType, ObjectShowIcon } from "../../types"
 
-const Genre: VFC<PropTypes> = ({
+const Genre: FC<PropTypes> = ({
 	genre,
 	className,
 	showIcon = false,

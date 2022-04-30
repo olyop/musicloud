@@ -1,17 +1,17 @@
 import { useFormik } from "formik"
 import isEmpty from "lodash-es/isEmpty"
-import { useState, createElement, VFC, ChangeEventHandler } from "react"
+import { useState, createElement, FC, ChangeEventHandler } from "react"
 
 import Form from "../form"
 import { Album } from "./types"
-import AlbumSongs from "./songs"
+import AlbumSongs, { OnAddSong } from "./songs"
 import TextField from "../text-field"
 import createFormData from "./create-form-data"
 import { createGoogleSearchURL } from "../../helpers"
 import AlbumFormSong, { Song, SongLists } from "./song"
 import getAudioMetadata from "./get-audio-metadata"
 
-const AlbumForm: VFC = () => {
+const AlbumForm: FC = () => {
 	const [ loading, setLoading ] = useState(false)
 	const [ songs, setSongs ] = useState<Song[]>([])
 
@@ -48,22 +48,34 @@ const AlbumForm: VFC = () => {
 	const { values, errors, handleChange, handleSubmit, setFieldValue } = formik
 	const { title, released, artists, remixers, cover } = values
 
-	const handleSongAdd =
-		async (audio: File) => {
-			const metadata = await getAudioMetadata(audio)
-			setSongs(
-				prevState => [ ...prevState, {
-					audio,
-					artists,
-					mix: "",
-					remixers: [],
-					featuring: [],
-					discNumber: 1,
-					title: metadata.title,
-					trackNumber: songs.length + 1,
-					genres: isEmpty(prevState) ? [] : prevState[0]!.genres,
-				}],
-			)
+	const handleSongAdd: OnAddSong =
+		async files => {
+			for (const audio of files) {
+				const metadata = await getAudioMetadata(audio)
+				setSongs(prevState => [
+					...prevState,
+					{
+						audio,
+						artists,
+						mix: "",
+						remixers: [],
+						featuring: [],
+						title: metadata.title,
+						discNumber: metadata.discNumber,
+						trackNumber: metadata.trackNumber,
+						genres: (
+							isEmpty(metadata.genres) ? (
+								isEmpty(prevState) ?
+									[] :
+									prevState[0]!.genres
+							) : [{
+								index: 0,
+								value: metadata.genres,
+							}]
+						),
+					},
+				])
+			}
 		}
 
 	const handleSongRemove =
@@ -189,6 +201,7 @@ const AlbumForm: VFC = () => {
 				name="Title"
 				value={title}
 				placeholder="Title"
+				autoComplete="nope"
 				onChange={handleChange}
 			/>
 			<TextField

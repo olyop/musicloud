@@ -1,12 +1,12 @@
 import Button from "@oly_op/react-button"
-import { createElement, Fragment, useState, VFC } from "react"
+import { createElement, Fragment, useState, FC } from "react"
 
 import { Playlist } from "../../types"
 import Modal from "../../components/modal"
 import { useUpdatePlaylistTitle } from "../../hooks"
 import Input, { InputOnChange } from "../../components/input"
 
-const PlaylistPageRenameButton: VFC<PropTypes> = ({ playlist }) => {
+const PlaylistPageRenameButton: FC<PropTypes> = ({ playlist }) => {
 	const { playlistID } = playlist
 	const [ modal, setModal ] = useState(false)
 	const [ title, setTitle ] = useState(playlist.title)

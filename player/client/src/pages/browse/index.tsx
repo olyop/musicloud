@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { createElement, VFC, Fragment } from "react"
+import { createElement, FC, Fragment } from "react"
 
 import { useQuery } from "../../hooks"
 import Songs from "../../components/songs"
@@ -16,7 +16,7 @@ import "./index.scss"
 const bem =
 	createBEM("BrowsePage")
 
-const BrowsePage: VFC = () => {
+const BrowsePage: FC = () => {
 	const { data } = useQuery<GetBrowsePageData>(GET_BROWSE_PAGE)
 	return (
 		<Metadata>

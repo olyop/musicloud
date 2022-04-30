@@ -1,36 +1,36 @@
 import { createBEM } from "@oly_op/bem"
-import { ChangeEventHandler, createElement, FC } from "react"
+import { createElement, FC } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("AlbumSongs")
 
-const AlbumSongs: FC<PropTypes> = ({ onAddSong, children }) => {
-	const handleChange: ChangeEventHandler<HTMLInputElement> =
-		// eslint-disable-next-line @typescript-eslint/no-misused-promises
-		({ target: { files } }) => onAddSong(files!.item(0)!)
-	return (
-		<div className="FlexColumnGapQuart">
-			<p className={bem("label")}>
-				Songs
-			</p>
-			<div className="Elevated PaddingHalf">
-				<div>
-					{children}
-				</div>
-				<input
-					type="file"
-					multiple={false}
-					onChange={handleChange}
-				/>
+const AlbumSongs: FC<PropTypes> = ({ onAddSong, children }) => (
+	<div className="FlexColumnGapQuart">
+		<p className={bem("label")}>
+			Songs
+		</p>
+		<div className="Elevated PaddingHalf">
+			<div>
+				{children}
 			</div>
+			<input
+				multiple
+				type="file"
+				onChange={({ target: { files } }) => {
+					void onAddSong(Array.from(files!))
+				}}
+			/>
 		</div>
-	)
-}
+	</div>
+)
+
+export type OnAddSong =
+	(files: File[]) => Promise<void>
 
 interface PropTypes {
-	onAddSong: (audio: File) => Promise<void>,
+	onAddSong: OnAddSong,
 }
 
 export default AlbumSongs

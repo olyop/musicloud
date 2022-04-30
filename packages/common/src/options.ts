@@ -1,6 +1,6 @@
 import { PoolConfig } from "pg"
-import { fastifyHelmet } from "fastify-helmet"
 import { FastifyServerOptions } from "fastify"
+import { fastifyHelmet } from "@fastify/helmet"
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	connectionTimeout: 5 * 1000,

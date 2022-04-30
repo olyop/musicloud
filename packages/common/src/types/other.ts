@@ -1,4 +1,10 @@
+import type { ReactNode } from "react"
+
 import { UserIDNameBase, UserDateJoinedBase, UserEmailAddressBase } from "./objects"
+
+export interface ChildrenProps {
+	children?: ReactNode,
+}
 
 export interface InterfaceWithInput<T> {
 	input: T,

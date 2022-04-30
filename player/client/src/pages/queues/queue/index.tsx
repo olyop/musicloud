@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { isEmpty, orderBy } from "lodash-es"
 
 import {
@@ -29,7 +29,7 @@ import "./index.scss"
 const bem =
 	createBEM("Queue")
 
-const Queue: VFC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
+const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 	const dispatch = useDispatch()
 	const { userID } = useJWTPayload()
 	const queuesDisclosure = useStateQueuesDisclosure()

@@ -12,16 +12,17 @@
 			},
 			"env": {
 				"browser": true
-			},
-			"rules": {
-				"jsx-a11y/label-has-associated-control": "off"
 			}
 		},
 		{
 			"files": ["*.gql"],
 			"extends": "plugin:@graphql-eslint/operations-recommended",
 			"parserOptions": {
-				"schema": "player/server/src/type-defs/*.gql"
+				"operations": "./player/client/src/**/*.gql",
+				"schema": "./player/server/src/type-defs/*.gql"
+			},
+			"rules": {
+				"@graphql-eslint/naming-convention": "off"
 			}
 		}
 	]

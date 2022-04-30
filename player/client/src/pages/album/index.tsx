@@ -8,7 +8,7 @@ import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
 import { Link, useParams } from "react-router-dom"
-import { createElement, Fragment, VFC } from "react"
+import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
 
 import Disc from "./disc"
@@ -28,7 +28,7 @@ import "./index.scss"
 const bem =
 	createBEM("AlbumPage")
 
-const AlbumPage: VFC = () => {
+const AlbumPage: FC = () => {
 	const params = useParams<keyof AlbumID>()
 	const albumID = addDashesToUUID(params.albumID!)
 

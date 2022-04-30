@@ -1,5 +1,9 @@
-interface Metadata {
-	title: string,
+import { SongBase } from "@oly_op/musicloud-common"
+
+interface Metadata
+	extends
+	Pick<SongBase, "title" | "discNumber" | "trackNumber"> {
+	genres: string,
 }
 
 const getAudioMetadata =

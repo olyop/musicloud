@@ -1,6 +1,6 @@
 import { isUndefined } from "lodash-es"
 import Button from "@oly_op/react-button"
-import { createElement, Fragment, VFC } from "react"
+import { createElement, Fragment, FC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 
 import { Song, Queue } from "../../types"
@@ -11,7 +11,7 @@ import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
 import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql"
 import Window from "../../components/window"
 
-const TopOneHundredSongsPage: VFC = () => {
+const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer()
 
 	const { data } =

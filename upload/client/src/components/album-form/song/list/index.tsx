@@ -1,7 +1,7 @@
 import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { ChangeEventHandler, createElement, VFC } from "react"
+import { ChangeEventHandler, createElement, FC } from "react"
 
 import { Item } from "../../../../types"
 
@@ -10,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("AlbumFormSongList")
 
-const AlbumFormSongList: VFC<PropTypes> = ({ list, onAdd, onChange }) => {
+const AlbumFormSongList: FC<PropTypes> = ({ list, onAdd, onChange }) => {
 	const handleChange =
 		(index: number): ChangeEventHandler<HTMLInputElement> =>
 			({ target: { value } }) =>

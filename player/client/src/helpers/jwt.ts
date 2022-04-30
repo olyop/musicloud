@@ -10,8 +10,10 @@ export const removeJWT =
 		localStorage.removeItem("authorization")
 
 export const getUserID =
-	() =>
-		jwtDecode<UserID>(getJWT()!).userID
+	() => {
+		const { userID } = jwtDecode<UserID>(getJWT()!)
+		return userID
+	}
 
 export const setJWT =
 	(value: string) =>

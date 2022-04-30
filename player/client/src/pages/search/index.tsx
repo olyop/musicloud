@@ -1,5 +1,5 @@
 import {
-	VFC,
+	FC,
 	useRef,
 	useState,
 	useEffect,
@@ -36,7 +36,7 @@ const getAlgoliaHits =
 			return hits
 		}
 
-const SearchPage: VFC = () => {
+const SearchPage: FC = () => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 	const hasMounted = useHasMounted()
@@ -116,6 +116,8 @@ const SearchPage: VFC = () => {
 						className={bem("bar-input-search")}
 					/>
 					<input
+						// eslint-disable-next-line jsx-a11y/no-autofocus
+						autoFocus
 						value={input}
 						onChange={handleInput}
 						placeholder="Search..."

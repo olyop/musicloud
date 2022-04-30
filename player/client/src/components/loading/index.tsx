@@ -1,6 +1,7 @@
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
 import { createElement, FC, Fragment } from "react"
+import { ChildrenProps } from "@oly_op/musicloud-common"
 
 import { useStateLoading } from "../../redux"
 
@@ -9,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("Loading")
 
-const Loading: FC = ({ children }) => {
+const Loading: FC<ChildrenProps> = ({ children }) => {
 	const loading = useStateLoading()
 	return (
 		<Fragment>

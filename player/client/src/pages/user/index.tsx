@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { createElement, Fragment, VFC } from "react"
+import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { Link, NavLink, Route, Routes, useParams } from "react-router-dom"
 import { ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common"
@@ -12,13 +12,13 @@ import GET_USER_PAGE from "./get-user-page.gql"
 import { createCatalogImageURL } from "../../helpers"
 import { useQuery, useToggleUserFollowing } from "../../hooks"
 
-const UserPageHome: VFC = () => (
+const UserPageHome: FC = () => (
 	<p className="BodyOne">
 		W.I.P.
 	</p>
 )
 
-const UserPage: VFC = () => {
+const UserPage: FC = () => {
 	const params = useParams<keyof UserID>()
 	const userID = addDashesToUUID(params.userID!)
 

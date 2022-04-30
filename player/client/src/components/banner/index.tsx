@@ -1,12 +1,12 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC, ReactNode } from "react"
+import { createElement, FC, ReactNode } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Banner")
 
-const Banner: VFC<PropTypes> = ({
+const Banner: FC<PropTypes> = ({
 	title,
 	buttons,
 	content,

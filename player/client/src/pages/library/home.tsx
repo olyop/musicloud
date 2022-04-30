@@ -1,7 +1,7 @@
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 
-const LibraryHome: VFC = () => (
+const LibraryHome: FC = () => (
 	<Metadata title="Library">
 		<div className="Content FlexColumnGap">
 			<h2 className="BodyTwo">

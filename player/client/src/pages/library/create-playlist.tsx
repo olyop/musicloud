@@ -1,14 +1,14 @@
 import { isEmpty } from "lodash-es"
 import Button from "@oly_op/react-button"
 import { PlaylistPrivacy } from "@oly_op/musicloud-common"
-import { useState, createElement, VFC, Fragment } from "react"
+import { useState, createElement, FC, Fragment } from "react"
 
 import { Handler } from "../../types"
 import Select from "../../components/select"
 import { useCreatePlaylist } from "../../hooks"
 import Input, { InputOnChange } from "../../components/input"
 
-const LibraryCreatePlaylist: VFC<PropTypes> = ({ onClose }) => {
+const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
 	const [ title, setTitle ] = useState("")
 	const [ privacy, setPrivacy ] = useState(PlaylistPrivacy.PUBLIC)
 

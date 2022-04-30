@@ -1,4 +1,4 @@
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { useParams } from "react-router-dom"
 import { ArtistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
@@ -8,7 +8,7 @@ import Songs from "../../components/songs"
 import { ArtistTopTenSongs } from "../../types"
 import GET_ARTIST_PAGE_HOME from "./get-artist-page-home.gql"
 
-const ArtistPageHome: VFC = () => {
+const ArtistPageHome: FC = () => {
 	const params = useParams<keyof ArtistID>()
 	const artistID = addDashesToUUID(params.artistID!)
 

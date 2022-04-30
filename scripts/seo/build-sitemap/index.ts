@@ -18,8 +18,6 @@ const main =
 
 		const xml =
 			xmlBuffer.toString()
-
-		console.log(formatXML(xml))
 	}
 
 void main()

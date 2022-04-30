@@ -1,11 +1,11 @@
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { AlbumID } from "@oly_op/musicloud-common"
 
 import { usePlayAlbum } from "../../hooks"
 import { useStatePlay } from "../../redux"
 
-const AlbumPlayButton: VFC<AlbumID> = ({ albumID }) => {
+const AlbumPlayButton: FC<AlbumID> = ({ albumID }) => {
 	const play = useStatePlay()
 
 	const [ playAlbum, isPlaying ] =

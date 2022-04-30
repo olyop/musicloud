@@ -1,13 +1,13 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Footer")
 
-const Footer: VFC = () => (
+const Footer: FC = () => (
 	<a
 		target="_blank"
 		rel="noreferrer"

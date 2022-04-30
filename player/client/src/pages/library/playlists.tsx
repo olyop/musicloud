@@ -1,5 +1,5 @@
 import { isNull } from "lodash-es"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { Metadata } from "@oly_op/react-metadata"
 
 import {
@@ -14,7 +14,7 @@ import { useStateOrderBy } from "../../redux"
 import Playlists from "../../components/playlists"
 import GET_LIBRARY_PLAYLISTS from "./get-library-playlists.gql"
 
-const LibraryPlaylists: VFC = () => {
+const LibraryPlaylists: FC = () => {
 	const orderBy = useStateOrderBy<LibraryPlaylistsOrderByField>("libraryPlaylists")
 	return (
 		<Metadata title="Library Playlists">

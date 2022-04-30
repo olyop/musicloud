@@ -1,13 +1,13 @@
 import Button from "@oly_op/react-button"
 import { useNavigate } from "react-router-dom"
 import { PlaylistID } from "@oly_op/musicloud-common"
-import { createElement, Fragment, useEffect, useState, VFC } from "react"
+import { createElement, Fragment, useEffect, useState, FC } from "react"
 
 import Modal, { ModalButton, ModalButtons, ModalHeader } from "../../components/modal"
 
 import { useDeletePlaylist } from "../../hooks"
 
-const PlaylistPageDeleteButton: VFC<PlaylistID> = ({ playlistID }) => {
+const PlaylistPageDeleteButton: FC<PlaylistID> = ({ playlistID }) => {
 	const navigate = useNavigate()
 	const [ modal, setModal ] = useState(false)
 

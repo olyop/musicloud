@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC, Fragment, ReactNode } from "react"
+import { createElement, FC, Fragment, ReactNode } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("LibraryEmpty")
 
-const LibraryEmpty: VFC<PropTypes> = ({ name, content }) => (
+const LibraryEmpty: FC<PropTypes> = ({ name, content }) => (
 	<div className="Content PaddingBottom FlexColumnGapHalf">
 		<h2 className={bem("heading")}>
 			<Fragment>No </Fragment>

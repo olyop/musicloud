@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import toNumber from "lodash-es/toNumber"
 import { Metadata } from "@oly_op/react-metadata"
-import { ChangeEventHandler, createElement, VFC } from "react"
+import { ChangeEventHandler, createElement, FC } from "react"
 
 import {
 	SettingsTheme,
@@ -34,7 +34,7 @@ import "./index.scss"
 const bem =
 	createBEM("SettingsPage")
 
-const SettingsPage: VFC = () => {
+const SettingsPage: FC = () => {
 	const theme = useStateTheme()
 	const dispatch = useDispatch()
 	const listStyle = useStateListStyle()

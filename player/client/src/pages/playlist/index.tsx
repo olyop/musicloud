@@ -1,7 +1,7 @@
 import Button from "@oly_op/react-button"
 import { useParams } from "react-router-dom"
 import { Metadata } from "@oly_op/react-metadata"
-import { createElement, VFC, Fragment } from "react"
+import { createElement, FC, Fragment } from "react"
 import { PlaylistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { isNull, toLower, startCase, isEmpty } from "lodash-es"
@@ -27,7 +27,7 @@ import Songs, { SongChangeOptions } from "../../components/songs"
 import { determinePlural, createObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
-const PlaylistPage: VFC = () => {
+const PlaylistPage: FC = () => {
 	const play = useStatePlay()
 	const { userID } = useJWTPayload()
 	const params = useParams<keyof PlaylistID>()

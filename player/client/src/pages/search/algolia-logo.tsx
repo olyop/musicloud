@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { FILES_URL } from "@oly_op/musicloud-common"
 
 import { useStateTheme } from "../../redux"
@@ -8,7 +8,7 @@ import { SettingsTheme } from "../../types"
 const bem =
 	createBEM("SearchPage")
 
-const AlgoliaLogo: VFC = () => {
+const AlgoliaLogo: FC = () => {
 	const theme = useStateTheme()
 
 	const fileName =

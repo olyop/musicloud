@@ -1,14 +1,20 @@
+import {
+	QueryResult,
+	QueryHookOptions,
+	OperationVariables,
+	useQuery as useBaseQuery,
+} from "@apollo/client"
+
 import { useRef, useEffect } from "react"
 import type { DocumentNode } from "graphql"
 import { uniqueId as uniqueID } from "lodash-es"
-import { QueryResult, QueryHookOptions, useQuery as useBaseQuery } from "@apollo/client"
 
 import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../redux"
 
-export const useQuery = <Data, Vars = Record<string, unknown>>(
+export const useQuery = <Data, Vars extends OperationVariables = OperationVariables>(
 	query: DocumentNode,
 	{ queryID, hideLoading = false, ...options }: Options<Data, Vars> = {},
-): QueryResult<Data> => {
+): QueryResult<Data, Vars> => {
 	const dispatch = useDispatch()
 
 	const id =

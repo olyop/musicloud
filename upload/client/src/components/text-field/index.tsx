@@ -1,5 +1,5 @@
 import {
-	VFC,
+	FC,
 	useState,
 	useEffect,
 	createElement,
@@ -18,7 +18,7 @@ import "./index.scss"
 const bem =
 	createBEM("TextField")
 
-const TextField: VFC<TextFieldPropTypes> = ({
+const TextField: FC<TextFieldPropTypes> = ({
 	id,
 	type,
 	name,
@@ -105,8 +105,8 @@ const TextField: VFC<TextFieldPropTypes> = ({
 			/>
 			{imageURL && (
 				<img
-					alt="temp"
 					src={imageURL}
+					alt="Album Cover"
 					className={bem("image", `image-${imageOrientation}`, "Elevated")}
 				/>
 			)}
@@ -134,7 +134,6 @@ const TextField: VFC<TextFieldPropTypes> = ({
 				id={id}
 				name={id}
 				type={type}
-				autoComplete="nope"
 				value={privateValue}
 				style={{ borderRadius }}
 				onBlur={handleInputBlur}

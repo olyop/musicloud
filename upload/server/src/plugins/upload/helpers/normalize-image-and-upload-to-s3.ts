@@ -17,9 +17,8 @@ export interface Input extends BaseInput {
 	images: ImageInput[],
 }
 
-const determineImageDimesnions =
-	(image: ImageInput): ResizeOptions => {
-		const { size, dimension } = image
+const determineDimesnions =
+	({ size, dimension }: ImageInput): ResizeOptions => {
 		if (size === ImageSizes.MINI) {
 			return {
 				height: 36,
@@ -38,27 +37,27 @@ const determineImageDimesnions =
 		}
 	}
 
-const uploadImageToS3 =
+const uploadToS3 =
 	({ objectID, buffer, image }: UploadInput) =>
 		uploadFileToS3(
 			determineCatalogImagePath(objectID, image),
 			buffer,
 		)
 
-const resizeImage =
+const normalize =
 	(image: ImageInput, buffer: Buffer) =>
 		sharp(buffer)
 			.jpeg()
-			.resize(determineImageDimesnions(image))
+			.resize(determineDimesnions(image))
 			.toBuffer()
 
 export const normalizeImageAndUploadToS3 =
 	async ({ objectID, buffer, images }: Input) => {
 		for (const image of images) {
-			await uploadImageToS3({
+			await uploadToS3({
 				image,
 				objectID,
-				buffer: await resizeImage(image, buffer),
+				buffer: await normalize(image, buffer),
 			})
 		}
 	}

@@ -13,6 +13,7 @@ import { RangeRequestsPlugin } from "workbox-range-requests"
 
 declare const self: ServiceWorkerGlobalScope
 
+// eslint-disable-next-line no-underscore-dangle
 self.__WB_DISABLE_DEV_LOGS = true
 
 void self.skipWaiting()
@@ -24,9 +25,9 @@ pageCache()
 googleFontsCache()
 
 staticResourceCache({
-	matchCallback:
-		({ url }) =>
-			url.pathname !== "/ping.txt",
+	matchCallback: ({ url }) => (
+		url.pathname !== "/ping.txt"
+	),
 })
 
 imageCache()

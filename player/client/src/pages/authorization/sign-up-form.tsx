@@ -1,5 +1,5 @@
 import {
-	VFC,
+	FC,
 	useState,
 	createElement,
 	FormEventHandler,
@@ -15,7 +15,7 @@ import { SignUpArgs, SignUpData, SignUpInput } from "./types"
 import isSignUpFormValid from "./is-sign-up-form-valid"
 import Input, { InputOnChange } from "../../components/input"
 
-const AuthorizationSignUpForm: VFC<PropTypes> = ({
+const AuthorizationSignUpForm: FC<PropTypes> = ({
 	onSubmit,
 	emailAddress,
 	onEmailAddressChange,

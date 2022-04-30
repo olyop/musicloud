@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import {
 	OrderByOptions,
@@ -17,9 +17,9 @@ import { useStateListStyle } from "../../redux"
 const bem =
 	createBEM("Artists")
 
-const Artists: VFC<ArtistsPropTypes> = ({
+const Artists: FC<ArtistsPropTypes> = ({
+	artists,
 	className,
-	artists = [],
 	orderBy = false,
 }) => {
 	const listStyle = useStateListStyle()
@@ -53,7 +53,7 @@ const Artists: VFC<ArtistsPropTypes> = ({
 
 export interface ArtistsPropTypes {
 	className?: string,
-	artists?: ArtistType[],
+	artists: ArtistType[],
 	orderBy?: OrderByOptions<SettingsOrderByArtists> | false,
 }
 

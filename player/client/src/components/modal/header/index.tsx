@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button/build"
-import { createElement, ReactNode, VFC } from "react"
+import { createElement, ReactNode, FC } from "react"
 
 import { Handler } from "../../../types"
 
@@ -12,7 +12,7 @@ const canShare =
 const bem =
 	createBEM("ModalHeader")
 
-const ModalHeader: VFC<ModalHeaderPropTypes> = ({
+const Header: FC<ModalHeaderPropTypes> = ({
 	text,
 	icon,
 	image,
@@ -26,6 +26,7 @@ const ModalHeader: VFC<ModalHeaderPropTypes> = ({
 				void navigator.share(shareData).then(onClose)
 			}
 		}
+
 	return (
 		<div className={bem("", "FlexRowGapHalfCenter ItemBorder PaddingLeftRightHalf")}>
 			{icon && (
@@ -73,4 +74,4 @@ export interface ModalHeaderPropTypes {
 	shareData?: ShareData,
 }
 
-export default ModalHeader
+export default Header

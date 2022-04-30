@@ -2,14 +2,14 @@ import noop from "lodash-es/noop"
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
 import { Metadata } from "@oly_op/react-metadata"
-import { useState, createElement, VFC, FormEventHandler, useEffect } from "react"
+import { useState, createElement, FC, FormEventHandler, useEffect } from "react"
 
 import LOG_IN from "./log-in.gql"
 import { useMutation } from "../../hooks"
 import { LogInArgs, LogInData } from "./types"
 import Input, { InputOnChange } from "../../components/input"
 
-const AuthorizationLogInForm: VFC<PropTypes> = ({
+const AuthorizationLogInForm: FC<PropTypes> = ({
 	onSubmit,
 	emailAddress,
 	onEmailAddressChange,

@@ -6,15 +6,17 @@ import {
 	createElement,
 } from "react"
 
+import uniqueID from "lodash-es/uniqueId"
 import { Waypoint } from "react-waypoint"
 import type { DocumentNode } from "graphql"
 import { QueryResult } from "@apollo/client"
-import { uniqueId as uniqueID } from "lodash-es"
 import { InterfaceWithInput, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 
+import QueryApi from "./query-api"
 import { addLoading, useDispatch, removeLoading } from "../../redux"
 
-import QueryApi from "./query-api"
+const queryID =
+	uniqueID()
 
 const isNotLastPage =
 	(objectsLength: number, page: number) =>
@@ -36,6 +38,16 @@ const Feed = <Data, Vars>({
 		page.current = 0
 	})
 
+	const handleAddLoading =
+		() => {
+			dispatch(addLoading(queryID))
+		}
+
+	const handleRemoveLoading =
+		() => {
+			dispatch(removeLoading(queryID))
+		}
+
 	return (
 		<QueryApi<Data, InputVars<Vars>>
 			query={query}
@@ -52,9 +64,8 @@ const Feed = <Data, Vars>({
 						<Waypoint
 							onEnter={() => {
 								if (isNotLastPage(dataToObjectsLength(result.data!), page.current)) {
-									const queryID = uniqueID()
 									page.current += 1
-									dispatch(addLoading(queryID))
+									handleAddLoading()
 									void result.fetchMore({
 										variables: {
 											...result.variables,
@@ -63,9 +74,7 @@ const Feed = <Data, Vars>({
 												page: page.current,
 											},
 										},
-									}).then(() => (
-										dispatch(removeLoading(queryID))
-									))
+									}).then(handleRemoveLoading)
 								}
 							}}
 						/>

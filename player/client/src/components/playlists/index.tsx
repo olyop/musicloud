@@ -1,18 +1,23 @@
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { isEmpty, isFunction } from "lodash-es"
 import { createBEM, BEMInput } from "@oly_op/bem"
 
+import {
+	OrderByOptions,
+	SettingsOrderByPlaylists,
+	Playlist as PlaylistType,
+} from "../../types"
+
 import Playlist from "../playlist"
 import SelectOrderBy from "../select-order-by"
-import { SettingsOrderByPlaylists, Playlist as TPlaylist, OrderByOptions } from "../../types"
 
 const bem =
 	createBEM("Playlists")
 
-const Playlists: VFC<PlaylistsPropTypes> = ({
+const Playlists: FC<PlaylistsPropTypes> = ({
 	className,
+	playlists,
 	isSelected,
-	playlists = [],
 	orderBy = false,
 	onPlaylistClick,
 	hideModal = false,
@@ -53,8 +58,8 @@ const Playlists: VFC<PlaylistsPropTypes> = ({
 export interface PlaylistsPropTypes {
 	className?: string,
 	hideModal?: boolean,
-	playlists?: TPlaylist[],
 	hideInLibrary?: boolean,
+	playlists: PlaylistType[],
 	playlistClassName?: BEMInput,
 	selectedClassName?: BEMInput,
 	onPlaylistClick?: (playlistID: string) => void,

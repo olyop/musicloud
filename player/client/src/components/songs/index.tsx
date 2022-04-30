@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import Song from "../song"
 import SelectOrderBy from "../select-order-by"
@@ -9,7 +9,7 @@ import { ClassNameBEMPropTypes, Handler, OrderByOptions, SettingsOrderBySongs, S
 const bem =
 	createBEM("Songs")
 
-const Songs: VFC<SongsPropTypes> = ({
+const Songs: FC<SongsPropTypes> = ({
 	onJump,
 	onRemove,
 	className,

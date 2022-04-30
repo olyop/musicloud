@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { Route, Routes } from "react-router-dom"
 import { uniqueId as uniqueID } from "lodash-es"
 
@@ -88,7 +88,7 @@ const routes: RouteType[] = [{
 const bem =
 	createBEM("Pages")
 
-const Pages: VFC = () => (
+const Pages: FC = () => (
 	<main className={bem("")}>
 		<Routes>
 			{routes.map(

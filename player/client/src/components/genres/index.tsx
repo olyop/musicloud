@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash-es"
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import Genre from "../genre"
 import SelectOrderBy from "../select-order-by"
@@ -9,9 +9,9 @@ import { ClassNameBEMPropTypes, Genre as GenreType, GenresOrderByField } from ".
 const bem =
 	createBEM("Genre")
 
-const Genres: VFC<PropTypes> = ({
+const Genres: FC<PropTypes> = ({
+	genres,
 	className,
-	genres = [],
 	orderBy = false,
 }) => (
 	<div className={bem(className, isEmpty(genres) || "Elevated")}>
@@ -36,7 +36,7 @@ const Genres: VFC<PropTypes> = ({
 
 interface PropTypes extends ClassNameBEMPropTypes {
 	orderBy?: boolean,
-	genres?: GenreType[],
+	genres: GenreType[],
 }
 
 export default Genres

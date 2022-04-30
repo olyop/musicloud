@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
-import { createElement, ReactNode, VFC } from "react"
+import { createElement, ReactNode, FC } from "react"
 
 import { ClassNamePropTypes, Route } from "../../types"
 
@@ -10,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("Navigation")
 
-const Navigation: VFC<PropTypes> = ({
+const Navigation: FC<PropTypes> = ({
 	right,
 	routes,
 	className,

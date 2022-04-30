@@ -1,4 +1,4 @@
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { Route, Routes, Navigate } from "react-router-dom"
 
 import GenreForm from "../genre-form"
@@ -7,7 +7,7 @@ import ArtistForm from "../artist-form"
 
 import "./index.scss"
 
-const Pages: VFC = () => (
+const Pages: FC = () => (
 	<div className="Padding BodyOne Pages">
 		<Routes>
 			<Route

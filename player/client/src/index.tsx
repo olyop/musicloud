@@ -1,10 +1,10 @@
 import { render } from "react-dom"
 import { Workbox } from "workbox-window"
 import { ApolloProvider } from "@apollo/client"
-import { TITLE } from "@oly_op/musicloud-common"
+import { createElement, FC, StrictMode } from "react"
 import { Provider as ReduxProvider } from "react-redux"
 import { MetadataProvider } from "@oly_op/react-metadata"
-import { createElement, FC, StrictMode, VFC } from "react"
+import { ChildrenProps, TITLE } from "@oly_op/musicloud-common"
 import { BrowserRouter as ReactRouter } from "react-router-dom"
 import { AudioPlayerProvider as AudioPlayer } from "react-use-audio-player"
 
@@ -18,25 +18,25 @@ import Sidebar from "./components/sidebar"
 import Authorization from "./pages/authorization"
 import ApplySettings from "./components/apply-settings"
 
-const Metadata: FC = ({ children }) => (
+const Metadata: FC<ChildrenProps> = ({ children }) => (
 	<MetadataProvider appTitle={TITLE}>
 		{children}
 	</MetadataProvider>
 )
 
-const ReactRedux: FC = ({ children }) => (
+const ReactRedux: FC<ChildrenProps> = ({ children }) => (
 	<ReduxProvider store={store}>
 		{children}
 	</ReduxProvider>
 )
 
-const ApolloClient: FC = ({ children }) => (
+const ApolloClient: FC<ChildrenProps> = ({ children }) => (
 	<ApolloProvider client={client}>
 		{children}
 	</ApolloProvider>
 )
 
-const Root: VFC = () => (
+const Root: FC = () => (
 	<StrictMode>
 		<ReactRedux>
 			<ReactRouter>

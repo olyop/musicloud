@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, CSSProperties, VFC } from "react"
+import { createElement, CSSProperties, FC } from "react"
 
 import {
 	useDispatch,
@@ -24,7 +24,7 @@ import "./index.scss"
 const bem =
 	createBEM("SelectOrderBy")
 
-const SelectOrderBy: VFC<PropTypes> = ({
+const SelectOrderBy: FC<PropTypes> = ({
 	orderBy,
 	className,
 	alwaysList = false,

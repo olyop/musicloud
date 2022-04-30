@@ -1,5 +1,5 @@
 import Button from "@oly_op/react-button"
-import { createElement, HTMLAttributes, VFC } from "react"
+import { createElement, HTMLAttributes, FC } from "react"
 
 import { OnClickPropTypes } from "../../types"
 
@@ -16,7 +16,7 @@ const determineIcon =
 		}
 	}
 
-const InLibraryButton: VFC<PropTypes> = ({
+const InLibraryButton: FC<PropTypes> = ({
 	isError,
 	onClick,
 	className,

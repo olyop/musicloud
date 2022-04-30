@@ -29,9 +29,9 @@
 		&-link {
 			height: 100%;
 			margin-right: var(--gap); } }
-	&__in-library {
-		@media (max-width: 700px) {
-			display: none; } }
+	// &__in-library {
+	// 	@media (max-width: 700px) {
+	// 		display: none; } }
 	&__info {
 		flex-grow: 1;
 		display: flex;

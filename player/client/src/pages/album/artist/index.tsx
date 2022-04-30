@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import {
@@ -15,7 +15,7 @@ import "./index.scss"
 const bem =
 	createBEM("AlbumArtist")
 
-const AlbumArtist: VFC<PropTypes> = ({ artist }) => (
+const AlbumArtist: FC<PropTypes> = ({ artist }) => (
 	<h2 className={bem("", "HeadingFive FlexRow")}>
 		<img
 			alt={artist.name}

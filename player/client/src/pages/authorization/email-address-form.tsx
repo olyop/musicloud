@@ -1,5 +1,5 @@
 import {
-	VFC,
+	FC,
 	useState,
 	useEffect,
 	createElement,
@@ -15,7 +15,7 @@ import isEmailAddress from "./is-email-address"
 import EMAIL_ADDRESS_EXISTS from "./email-address-exists.gql"
 import Input, { InputOnChange } from "../../components/input"
 
-const AuthorizationEmailAddressForm: VFC<PropTypes> = ({
+const AuthorizationEmailAddressForm: FC<PropTypes> = ({
 	emailAddress,
 	onEmailAddressChange,
 	onEmailAddressExists,

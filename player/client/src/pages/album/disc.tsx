@@ -1,9 +1,9 @@
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import Songs from "../../components/songs"
 import { Disc as DiscType } from "../../types"
 
-const Disc: VFC<PropTypes> = ({
+const Disc: FC<PropTypes> = ({
 	isSingle,
 	className,
 	disc: { songs, index, hideLabel },

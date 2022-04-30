@@ -1,3 +1,4 @@
+import { ChildrenProps } from "@oly_op/musicloud-common"
 import { createElement, useEffect, FC, Fragment } from "react"
 
 import {
@@ -10,7 +11,7 @@ import applyTheme from "./apply-theme"
 import applyTransitions from "./apply-transitions"
 import applyGridChildWidth from "./apply-grid-child-width"
 
-const ApplySettings: FC = ({ children }) => {
+const ApplySettings: FC<ChildrenProps> = ({ children }) => {
 	const theme = useStateTheme()
 	const transitions = useStateTransitions()
 	const gridChildWidth = useStateGridChildWidth()
@@ -30,7 +31,6 @@ const ApplySettings: FC = ({ children }) => {
 	useEffect(() => {
 		window.matchMedia("(prefers-color-scheme: dark)")
 			.addEventListener("change", () => {
-				console.log("!")
 				applyTheme(theme)
 			})
 

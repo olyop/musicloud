@@ -1,10 +1,10 @@
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 
 import { useStatePlay } from "../../redux"
 import { OnClickPropTypes } from "../../types"
 
-const PlayButton: VFC<PropTypes> = ({ isPlaying, onClick, className }) => {
+const PlayButton: FC<PropTypes> = ({ isPlaying, onClick, className }) => {
 	const play = useStatePlay()
 	return (
 		<Button

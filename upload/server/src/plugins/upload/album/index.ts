@@ -11,8 +11,8 @@ import {
 } from "@oly_op/musicloud-common"
 
 import { random, trim } from "lodash-es"
+import musicMetadata from "music-metadata"
 import { FastifyPluginCallback } from "fastify"
-import { parseBuffer } from "music-metadata/lib/core"
 import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import {
@@ -29,7 +29,6 @@ import getArtistID from "./get-artist-id"
 import { List, Route, Song } from "./types"
 import { BodyEntry, ImageInput } from "../../types"
 import checkRelationships from "./check-relationships"
-import { doesAlbumExist } from "./does-album-exist"
 
 const keyID =
 	"13e9c04a-a1e5-4405-870c-8520fbc2854f"
@@ -62,18 +61,19 @@ export const uploadAlbum: FastifyPluginCallback =
 			"/upload/album",
 			async (request, reply) => {
 				const { cover, released } = request.body
-				const albumTitle = trim(request.body.title)
-				const songs = JSON.parse(request.body.songs) as Song[]
-				const albumArtistsList = JSON.parse(request.body.artists) as List
+
+				const albumTitle =
+					trim(request.body.title)
+
+				const songs =
+					JSON.parse(request.body.songs) as Song[]
+
+				const albumArtistsList =
+					JSON.parse(request.body.artists) as List
 
 				await checkRelationships(fastify.pg.pool)(
 					albumArtistsList,
 					songs,
-				)
-
-				await doesAlbumExist(fastify.pg.pool)(
-					albumTitle,
-					albumArtistsList,
 				)
 
 				const { albumID } =
@@ -95,8 +95,10 @@ export const uploadAlbum: FastifyPluginCallback =
 					buffer: cover[0]!.data,
 				})
 
-				const album: AlbumIDTitleBase =
-					{ albumID, title: albumTitle }
+				const album: AlbumIDTitleBase = {
+					albumID,
+					title: albumTitle,
+				}
 
 				const albumCoverURL =
 					determineCatalogImageURL(albumID, images[2]!)
@@ -138,7 +140,7 @@ export const uploadAlbum: FastifyPluginCallback =
 						(request.body[`${song.trackNumber}-audio`] as BodyEntry[])[0]!.data
 
 					const duration =
-						(await parseBuffer(audio)).format.duration!
+						(await musicMetadata.parseBuffer(audio)).format.duration!
 
 					const { songID } =
 						await query(fastify.pg.pool)(INSERT_SONG)({

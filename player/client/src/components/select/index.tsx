@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import startCase from "lodash-es/startCase"
-import { createElement, VFC, ChangeEventHandler, SelectHTMLAttributes } from "react"
+import { createElement, FC, ChangeEventHandler, SelectHTMLAttributes } from "react"
 
 import { ClassNameBEMPropTypes } from "../../types"
 
@@ -9,7 +9,7 @@ import "./index.scss"
 const bem =
 	createBEM("Select")
 
-const Select: VFC<PropTypes> = ({
+const Select: FC<PropTypes> = ({
 	value,
 	options,
 	onChange,

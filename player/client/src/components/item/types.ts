@@ -2,7 +2,6 @@ import { ReactNode, CSSProperties } from "react"
 import { BEMInput } from "@oly_op/bem"
 
 import { Handler, OnClickPropTypes } from "../../types"
-import { ModalButtonPropTypes, ModalHeaderPropTypes } from "../modal"
 
 export interface ImageOptions {
 	url: string,
@@ -22,17 +21,11 @@ export interface InfoOptions {
 	rightRight?: ReactNode,
 }
 
-export interface InLibraryOptions {
-	onClick: Handler,
-	isError?: boolean,
-	inLibrary: boolean,
-}
-
-export interface ModalOptions {
-	content?: ReactNode,
-	header?: ModalHeaderPropTypes,
-	buttons?: ModalButtonPropTypes[],
-}
+// export interface InLibraryOptions {
+// 	onClick: Handler,
+// 	isError?: boolean,
+// 	inLibrary: boolean,
+// }
 
 interface ClassNames {
 	className?: string,
@@ -41,21 +34,24 @@ interface ClassNames {
 	rightClassName?: BEMInput,
 }
 
-export type ModalOptionsWithFunction =
-	((onClose: Handler) => ModalOptions) | ModalOptions
-
-export interface OptionsModal {
-	modalOptions?: ModalOptionsWithFunction,
-}
-
-interface Options extends OptionsModal {
+interface Options {
 	infoOptions: InfoOptions,
 	playOptions?: PlayOptions,
 	imageOptions?: ImageOptions,
-	inLibraryOptions?: InLibraryOptions,
+	// inLibraryOptions?: InLibraryOptions,
 }
 
+interface ModalOptions {
+	open: boolean,
+	onOpen: Handler,
+	onClose: Handler,
+}
+
+export type Modal =
+	(options: ModalOptions) => ReactNode
+
 interface Other {
+	modal?: Modal,
 	left?: ReactNode,
 	leftIcon?: string,
 	onRemove?: Handler,

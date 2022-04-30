@@ -1,6 +1,7 @@
 import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import { ChildrenProps } from "@oly_op/musicloud-common"
 import { FC, Fragment, createElement, useState } from "react"
 
 import LogInForm from "./log-in-form"
@@ -15,7 +16,7 @@ import "./index.scss"
 const bem =
 	createBEM("Authorization")
 
-const Authorization: FC = ({ children }) => {
+const Authorization: FC<ChildrenProps> = ({ children }) => {
 	const dispatch = useDispatch()
 	const accessToken = useStateAccessToken()
 

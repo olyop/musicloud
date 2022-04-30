@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { createElement, VFC } from "react"
+import { createElement, FC } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 import "./index.scss"
@@ -8,7 +8,7 @@ import "./index.scss"
 const bem =
 	createBEM("Header")
 
-const Header: VFC = () => {
+const Header: FC = () => {
 	const navigate = useNavigate()
 	const { pathname } = useLocation()
 
