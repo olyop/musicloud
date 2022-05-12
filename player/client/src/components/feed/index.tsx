@@ -1,42 +1,43 @@
-import {
-	useRef,
-	Fragment,
-	useEffect,
-	ReactNode,
-	createElement,
-} from "react"
-
 import uniqueID from "lodash-es/uniqueId"
-import { Waypoint } from "react-waypoint"
 import type { DocumentNode } from "graphql"
-import { QueryResult } from "@apollo/client"
+import InfiniteScroll from "react-infinite-scroller"
+import { QueryResult, useLazyQuery } from "@apollo/client"
+import { ComponentProps, ReactNode, createElement, useEffect } from "react"
 import { InterfaceWithInput, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 
-import QueryApi from "./query-api"
 import { addLoading, useDispatch, removeLoading } from "../../redux"
 
 const queryID =
 	uniqueID()
 
-const isNotLastPage =
+const isLastPage =
 	(objectsLength: number, page: number) =>
-		objectsLength === (
+		objectsLength !== (
 			(page * PAGINATION_PAGE_SIZE) +
 			PAGINATION_PAGE_SIZE
 		)
 
-const Feed = <Data, Vars>({
+const Feed = <Data, GenericVars>({
 	query,
 	render,
+	scrollElement,
 	dataToObjectsLength,
-	variables = {} as Vars,
-}: PropTypes<Data, Vars>) => {
-	const page = useRef(0)
+	variables: baseVariables = {} as GenericVars,
+}: PropTypes<Data, GenericVars>) => {
 	const dispatch = useDispatch()
 
-	useEffect(() => () => {
-		page.current = 0
-	})
+	type Vars =
+		InputVars<GenericVars>
+
+	const [ lazyQuery, result ] =
+		useLazyQuery<Data, Vars>(query, {
+			variables: {
+				input: {
+					...(baseVariables || {} as GenericVars),
+					page: 0,
+				},
+			},
+		})
 
 	const handleAddLoading =
 		() => {
@@ -48,55 +49,62 @@ const Feed = <Data, Vars>({
 			dispatch(removeLoading(queryID))
 		}
 
-	return (
-		<QueryApi<Data, InputVars<Vars>>
-			query={query}
-			variables={{
+	const handleLoadMore: HandleLoadMore =
+		page => {
+			console.log({ page })
+			if (result.data) {
+				handleAddLoading()
+				if (!isLastPage(dataToObjectsLength(result.data), page)) {
+					void result.fetchMore({
+						variables: {
+							input: {
+								...baseVariables,
+								page,
+							},
+						},
+					}).then(handleRemoveLoading)
+				}
+			}
+		}
+
+	useEffect(() => {
+		void lazyQuery({
+			variables: {
 				input: {
-					...variables,
-					page: page.current,
+					...(baseVariables || {} as GenericVars),
+					page: 0,
 				},
-			}}
-			children={result => (
-				<Fragment>
-					{render(result)}
-					{result.data && (
-						<Waypoint
-							onEnter={() => {
-								if (isNotLastPage(dataToObjectsLength(result.data!), page.current)) {
-									page.current += 1
-									handleAddLoading()
-									void result.fetchMore({
-										variables: {
-											...result.variables,
-											input: {
-												...result.variables!.input,
-												page: page.current,
-											},
-										},
-									}).then(handleRemoveLoading)
-								}
-							}}
-						/>
-					)}
-				</Fragment>
-			)}
+			},
+		}).then(handleRemoveLoading)
+	}, [])
+
+	return result.data ? (
+		<InfiniteScroll
+			hasMore
+			useWindow={false}
+			loadMore={handleLoadMore}
+			children={render(result)}
+			getScrollParent={() => scrollElement}
 		/>
-	)
+	) : null
 }
 
 export interface BaseVars {
 	page: number,
 }
 
-type InputVars<Vars> =
-	InterfaceWithInput<BaseVars & Vars>
+type InputVars<GenericVars> =
+	InterfaceWithInput<BaseVars & GenericVars>
 
-interface PropTypes<Data, Vars> {
-	variables?: Vars,
+type HandleLoadMore =
+	ComponentProps<typeof InfiniteScroll>["loadMore"]
+
+interface PropTypes<Data, GenericVars> {
 	query: DocumentNode,
+	variables?: GenericVars,
+	scrollElement: HTMLElement | null,
 	dataToObjectsLength: (data: Data) => number,
-	render: (result: QueryResult<Data, InputVars<Vars>>) => ReactNode,
+	render: (result: QueryResult<Data, InputVars<GenericVars>>) => ReactNode,
 }
 
 export default Feed

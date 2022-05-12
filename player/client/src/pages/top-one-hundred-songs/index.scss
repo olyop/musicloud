@@ -1,0 +1,10 @@
+.TopOneHundredSongsPage {
+	--navigation-height: calc(var(--button-dimension) + var(--space-half));
+	height: 100%;
+	&__navigation {
+		height: var(--navigation-height);
+		box-shadow: 0 15rem 10rem -15rem rgba(#212121, 0.2); }
+	&__content {
+		overflow-y: scroll;
+		padding: var(--space) 0;
+		height: calc(100% - var(--navigation-height)); } }

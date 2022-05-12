@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { useParams } from "react-router-dom"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { createElement, FC, Fragment } from "react"
 import { PlaylistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
@@ -89,7 +89,7 @@ const PlaylistPage: FC = () => {
 	return (
 		<div className="Content FlexColumnGap PaddingTopBottom">
 			{data && (
-				<Metadata title={data.getPlaylistByID.title}>
+				<Head pageTitle={data.getPlaylistByID.title}>
 					<div className="FlexColumnGapHalf">
 						<div className="FlexRowGapHalf">
 							<h1 className="HeadingFour">
@@ -171,7 +171,7 @@ const PlaylistPage: FC = () => {
 							</Buttons>
 						</div>
 					)}
-				</Metadata>
+				</Head>
 			)}
 		</div>
 	)

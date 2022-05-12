@@ -13,7 +13,10 @@ import {
 } from "./types"
 
 import PlayButton from "./play-button"
-// import InLibraryButton from "./in-library-button"
+
+import "@oly_op/css-utilities/index.css"
+import "@oly_op/react-button/build/index.css"
+import "../../index.scss"
 
 import "./index.scss"
 

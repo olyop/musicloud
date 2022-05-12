@@ -1,7 +1,7 @@
 import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
 import { useNavigate } from "react-router-dom"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 
 import {
 	ClearQueuesData,
@@ -97,7 +97,7 @@ const Queues: FC = () => {
 		queuesDisclosure.previous
 
 	return (
-		<Metadata title="Queue">
+		<Head pageTitle="Queue">
 			<div className="Content FlexColumnGap PaddingTopBottom">
 				<div className="FlexRowGapQuart">
 					<Button
@@ -150,7 +150,7 @@ const Queues: FC = () => {
 					/>
 				</Buttons>
 			</div>
-		</Metadata>
+		</Head>
 	)
 }
 

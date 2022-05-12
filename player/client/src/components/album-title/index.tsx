@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash-es"
+import isEmpty from "lodash-es/isEmpty"
 import { createElement, Fragment, FC } from "react"
 import { ArtistIDNameBase } from "@oly_op/musicloud-common"
 

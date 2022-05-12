@@ -1,27 +1,18 @@
-import { from } from "@apollo/client"
-import { head, isNull } from "lodash-es"
+import { from, ApolloLink } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
+import { createUploadLink } from "apollo-upload-client"
 import { setContext } from "@apollo/client/link/context"
-import createUploadLink from "apollo-upload-client/public/createUploadLink"
 
 import { store, dispatch, updateIsOnline, updateAccessToken } from "../redux"
 
-const uploadLink =
-	createUploadLink()
-
-const setAuthorizationLink =
+const withAuthorization =
 	setContext(
-		(request, { headers }: { headers: Record<string, unknown> }) => {
+		() => {
 			const { accessToken } = store.getState()
-			if (isNull(accessToken)) {
-				return { headers }
-			} else {
-				return {
-					headers: {
-						...headers,
-						Authorization: `Bearer ${accessToken}`,
-					},
-				}
+			return {
+				headers: {
+					Authorization: `Bearer ${accessToken!}`,
+				},
 			}
 		},
 	)
@@ -31,23 +22,36 @@ const checkAuthenticationLink =
 		({ forward, operation, networkError, graphQLErrors }) => {
 			if (networkError) {
 				dispatch(updateIsOnline(false))
-			} else if (graphQLErrors) {
-				const error = head(graphQLErrors)
-				if (error) {
-					const { code } = error.extensions
-					if (code === "UNAUTHENTICATED") {
-						dispatch(updateAccessToken(null))
-					}
+			}
+
+			if (graphQLErrors) {
+				if (graphQLErrors[0]?.extensions["code"] === "UNAUTHENTICATED") {
+					dispatch(updateAccessToken(null))
 				}
 			}
-			forward(operation)
+
+			return forward(operation)
 		},
 	)
 
+const isOnlineLink =
+	new ApolloLink(
+		(operation, forward) => (
+			forward(operation).map(data => {
+				dispatch(updateIsOnline(true))
+				return data
+			})
+		),
+	)
+
+const uploadLink =
+	createUploadLink()
+
 const link =
 	from([
-		setAuthorizationLink,
+		withAuthorization,
 		checkAuthenticationLink,
+		isOnlineLink,
 		uploadLink,
 	])
 

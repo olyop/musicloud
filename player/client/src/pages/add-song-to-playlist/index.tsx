@@ -5,7 +5,7 @@ import {
 	ImageDimensions,
 } from "@oly_op/musicloud-common"
 
-import { isEmpty } from "lodash-es"
+import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"

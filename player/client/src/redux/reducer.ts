@@ -14,6 +14,7 @@ import {
 	toggleSidebar,
 	updateIsOnline,
 	updateListStyle,
+	updatePageTitle,
 	toggleShowGenres,
 	updateTransitions,
 	updateAccessToken,
@@ -37,12 +38,12 @@ const play =
 	createReducer(initialState.play, builder =>
 		builder
 			.addCase(togglePlay, state => !state)
-			.addCase(updatePlay, (_state, { payload }) => payload))
+			.addCase(updatePlay, (state, { payload }) => payload))
 
 const isOnline =
 	createReducer(initialState.isOnline, builder =>
 		builder
-			.addCase(updateIsOnline, (_state, { payload }) => payload))
+			.addCase(updateIsOnline, (state, { payload }) => payload))
 
 const loading =
 	createReducer(initialState.loading, builder =>
@@ -52,10 +53,15 @@ const loading =
 				state.filter(x => x !== payload)
 			)))
 
+const pageTitle =
+	createReducer(initialState.pageTitle, builder =>
+		builder
+			.addCase(updatePageTitle, (state, { payload }) => payload))
+
 const accessToken =
 	createReducer(initialState.accessToken, builder =>
 		builder
-			.addCase(updateAccessToken, (_state, { payload }) => payload))
+			.addCase(updateAccessToken, (state, { payload }) => payload))
 
 const settings =
 	createReducer<Settings>(initialState.settings, builder =>
@@ -133,6 +139,7 @@ const reducer =
 		loading,
 		settings,
 		isOnline,
+		pageTitle,
 		accessToken,
 	})
 

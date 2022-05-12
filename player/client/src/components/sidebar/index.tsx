@@ -43,7 +43,7 @@ const Sidebar: FC = () => {
 							to="/"
 							title="Browse"
 							onClick={handleClose}
-							className={bem("route", "BorderTop PaddingTopHalf")}
+							className="BorderTop PaddingTopHalf"
 							children={
 								({ isActive }) => (
 									<Button
@@ -58,7 +58,6 @@ const Sidebar: FC = () => {
 						<NavLink
 							title="Top 100"
 							onClick={handleClose}
-							className={bem("route")}
 							to="/top-one-hundred-songs"
 							children={
 								({ isActive }) => (
@@ -75,7 +74,7 @@ const Sidebar: FC = () => {
 							to="/library"
 							title="Library"
 							onClick={handleClose}
-							className={bem("route", "BorderTop MarginTopHalf PaddingTopHalf")}
+							className="BorderTop MarginTopHalf PaddingTopHalf"
 							children={
 								({ isActive }) => (
 									<Button
@@ -91,7 +90,6 @@ const Sidebar: FC = () => {
 							to="/library/songs"
 							title="Library Songs"
 							onClick={handleClose}
-							className={bem("route")}
 							children={
 								({ isActive }) => (
 									<Button
@@ -107,7 +105,6 @@ const Sidebar: FC = () => {
 							to="/library/albums"
 							onClick={handleClose}
 							title="Library Albums"
-							className={bem("route")}
 							children={
 								({ isActive }) => (
 									<Button
@@ -123,7 +120,6 @@ const Sidebar: FC = () => {
 							to="/library/artists"
 							onClick={handleClose}
 							title="Library Artists"
-							className={bem("route")}
 							children={
 								({ isActive }) => (
 									<Button
@@ -139,7 +135,6 @@ const Sidebar: FC = () => {
 							onClick={handleClose}
 							to="/library/playlists"
 							title="Library Playlists"
-							className={bem("route")}
 							children={
 								({ isActive }) => (
 									<Button
@@ -155,7 +150,7 @@ const Sidebar: FC = () => {
 							onClick={handleClose}
 							to="/library/settings"
 							title="Library Settings"
-							className={bem("route", "BorderBottom PaddingBottomHalf")}
+							className="BorderBottom PaddingBottomHalf"
 							children={
 								({ isActive }) => (
 									<Button
@@ -173,21 +168,25 @@ const Sidebar: FC = () => {
 							rel="noreferrer"
 							onClick={handleClose}
 							href="https://olyop.com/projects"
-							className={bem("route", "BorderBottom PaddingTopBottomHalf")}
+							className="BorderBottom PaddingTopBottomHalf"
 							children={(
 								<Button
 									transparent
 									icon="info"
 									text="About"
+									rightIcon="open_in_new"
 									className={bem("route-button")}
+									rightIconClassName={bem("route-button-icon-right")}
 								/>
 							)}
 						/>
 						{process.env.NODE_ENV === "development" && (
 							<a
 								title="Upload"
+								target="_blank"
+								rel="noreferrer"
 								onClick={handleClose}
-								className={bem("route", "BorderBottom PaddingTopBottomHalf")}
+								className="BorderBottom PaddingTopBottomHalf"
 								// eslint-disable-next-line max-len
 								href={`http://${process.env.HOST === "0.0.0.0" ? "127.0.0.1" : process.env.HOST}:${process.env.UPLOAD_CLIENT_PORT}`}
 								children={(
@@ -195,7 +194,9 @@ const Sidebar: FC = () => {
 										transparent
 										icon="upload"
 										text="Upload"
+										rightIcon="open_in_new"
 										className={bem("route-button")}
+										rightIconClassName={bem("route-button-icon-right")}
 									/>
 								)}
 							/>

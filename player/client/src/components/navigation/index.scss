@@ -1,17 +1,4 @@
 .Navigation {
-	@media (max-width: 700px) {
-		gap: var(--space-half); }
-	&__links {
-		@media (max-width: 800px) {
-			justify-content: center; }
-		@media (max-width: 700px) {
-			gap: 0;
-			justify-content: center;
-			background-color: var(--grey-color-900);
-			border-top-left-radius: var(--border-radius);
-			border-top-right-radius: var(--border-radius); }
-		@media (max-width: 600px) {
-			justify-content: space-between; } }
 	&__link {
 		position: relative;
 		outline: none !important;
@@ -29,31 +16,12 @@
 				background-color: transparent !important; }
 			@media (min-width: 700px) {
 				padding-left: 0;
-				padding-right: 0; }
-			@media (max-width: 700px) {
-				--button-dimension: 45rem; }
-			&-icon {
-				@media (max-width: 700px) {
-					color: var(--primary-color-text) !important; } }
-			&-text {
-				@media (max-width: 700px) {
-					display: none; } } } }
+				padding-right: 0; } } }
 	&__active {
-		&-no-underline {
-			@media (min-width: 700px) {
-				border-radius: 100%;
-				background-color: var(--hover-color); }
-			@media (max-width: 700px) {
-				background-color: var(--black-color);
-				border-top-left-radius: var(--border-radius); } }
 		&::after {
+			bottom: 0;
 			width: 100%;
 			content: "";
 			height: 2rem;
-			bottom: -2rem;
 			position: absolute;
-			background-color: var(--text-color);
-			@media (max-width: 700px) {
-				height: 4rem;
-				bottom: -4rem;
-				background-color: var(--primary-color); } } } }
+			background-color: var(--text-color); } } }

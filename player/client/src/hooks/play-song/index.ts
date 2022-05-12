@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+
 import { useRef } from "react"
-import { MutationResult } from "@apollo/client"
+import { MutationResult, useApolloClient } from "@apollo/client"
 import { isNull, isUndefined } from "lodash-es"
 import { SongID } from "@oly_op/musicloud-common"
 
-import update from "./update"
 import { Song } from "../../types"
 import { useQuery } from "../query"
 import PLAY_SONG from "./play-song.gql"
 import { useMutation } from "../mutation"
+import { mutationUpdater, updateNowPlayingCache } from "./update"
 import { useResetPlayer } from "../reset-player"
 import { Input, QueryData, Data } from "./types"
 import { togglePlay, useDispatch } from "../../redux"
@@ -16,19 +17,24 @@ import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 const isSong =
 	(song: Input): song is Song =>
-		"__typeName" in song
+		"__typename" in song
 
 export const usePlaySong =
 	(song?: Input) => {
 		if (isUndefined(song)) {
-			return [ () => {}, false, {} as MutationResult<Data> ] as const
+			return [
+				() => {},
+				false,
+				{} as MutationResult<Data>,
+			] as const
 		}
 
 		const { songID } = song
 		const dispatch = useDispatch()
+		const client = useApolloClient()
+		const isOptimistic = useRef(false)
 		const resetPlayer = useResetPlayer()
 		const variables: SongID = { songID }
-		const isOptimistic = useRef(isSong(song))
 
 		const { data } =
 			useQuery<QueryData>(
@@ -44,15 +50,15 @@ export const usePlaySong =
 		const [ playSong, result ] =
 			useMutation<Data, SongID>(PLAY_SONG, {
 				variables,
-				update: update({
-					toggleIsOptimistic,
-					isOptimistic: isOptimistic.current,
-				}),
-				optimisticResponse: isSong(song) ? {
+				optimisticResponse: isSong(song) ? ({
 					playSong: {
 						nowPlaying: song,
 					},
-				} : undefined,
+				}) : undefined,
+				update: mutationUpdater({
+					toggleIsOptimistic,
+					isOptimistic: isOptimistic.current,
+				}),
 			})
 
 		const isPlaying = (
@@ -68,10 +74,16 @@ export const usePlaySong =
 						dispatch(togglePlay())
 					} else {
 						resetPlayer()
-						void playSong()
+						void playSong().catch(() => {
+							updateNowPlayingCache(client.cache)({ songID })
+						})
 					}
 				}
 			}
 
-		return [ handlePlaySong, isPlaying, result ] as const
+		return [
+			handlePlaySong,
+			isPlaying,
+			result,
+		] as const
 	}

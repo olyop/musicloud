@@ -46,6 +46,7 @@ const Authorization: FC<ChildrenProps> = ({ children }) => {
 			dispatch(updateAccessToken(value))
 			setEmailAddressExists(false)
 			setEmailAddressChecked(false)
+			setEmailAddress("")
 		}
 
 	if (isNull(accessToken)) {

@@ -1,10 +1,9 @@
-import isNull from "lodash-es/isNull"
 import { concatPagination } from "@apollo/client/utilities"
 import { FieldMergeFunction, InMemoryCache } from "@apollo/client"
 
 const replacePossibleNullArray: FieldMergeFunction<unknown[] | null> =
 	(existing, incoming) => {
-		if (isNull(incoming)) {
+		if (typeof incoming === null) {
 			return null
 		} else {
 			return incoming

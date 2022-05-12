@@ -1,5 +1,5 @@
 import Button from "@oly_op/react-button"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { Link, NavLink, Route, Routes, useParams } from "react-router-dom"
@@ -45,7 +45,7 @@ const UserPage: FC = () => {
 			(new Date(data.getUserByID.dateJoined)).toLocaleDateString()
 
 		return (
-			<Metadata title={name}>
+			<Head pageTitle={name}>
 				<Banner
 					title={(
 						<Link to="">
@@ -114,7 +114,7 @@ const UserPage: FC = () => {
 						/>
 					</Routes>
 				</div>
-			</Metadata>
+			</Head>
 		)
 	} else {
 		return null

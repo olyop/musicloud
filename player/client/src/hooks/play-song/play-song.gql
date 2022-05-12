@@ -5,7 +5,7 @@ mutation playSong($songID: UUID!) {
       title
       songID
       duration
-      playsTotal
+      inLibrary
       featuring {
         artistID
         name

@@ -48,11 +48,9 @@ const playerConfiguration: Configuration = {
 	module: {
 		rules: [{
 			test: /\.gql$/,
-			exclude: /node_modules/,
 			loader: "graphql-tag/loader",
 		},{
 			test: /\.tsx?$/,
-			exclude: /node_modules/,
 			use: [{
 				loader: "ts-loader",
 				options: createTSLoaderOptions({

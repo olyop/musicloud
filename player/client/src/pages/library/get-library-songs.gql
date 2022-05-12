@@ -1,6 +1,6 @@
-query getLibrarySongs($input: LibrarySongsInput!) {
+query getLibrarySongs {
 	getLibrary {
-		songsPaginated(input: $input) {
+		songs {
 			mix
 			title
 			songID

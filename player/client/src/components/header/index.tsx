@@ -7,10 +7,14 @@ import AccountButton from "./account-button"
 import DownloadsMenu from "./downloads-menu"
 
 import "./index.scss"
+import PageTitle from "./page-title"
 
 const Header: FC = () => (
 	<header className="Header Elevated FlexRowSpaceBetween">
-		<MenuButton/>
+		<div className="FlexRowGapHalf">
+			<MenuButton/>
+			<PageTitle/>
+		</div>
 		<div className="FlexRowGapQuart PaddingRightHalf">
 			<div className="FlexRow">
 				<SearchButton/>

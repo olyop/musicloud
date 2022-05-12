@@ -87,11 +87,15 @@ export interface Settings {
 	queuesDisclosure: SettingsQueuesDisclosure,
 }
 
+export type StatePageTitle =
+	string | null
+
 export interface State {
 	play: boolean,
 	sidebar: boolean,
 	loading: string[],
 	isOnline: boolean,
 	settings: Settings,
+	pageTitle: StatePageTitle,
 	accessToken: string | null,
 }

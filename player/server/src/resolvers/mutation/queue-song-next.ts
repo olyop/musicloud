@@ -5,7 +5,7 @@ import {
 	exists as pgHelpersExists,
 } from "@oly_op/pg-helpers"
 
-import { isEmpty } from "lodash-es"
+import isEmpty from "lodash-es/isEmpty"
 import { SongID } from "@oly_op/musicloud-common"
 import { UserInputError } from "apollo-server-fastify"
 

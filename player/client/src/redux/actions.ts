@@ -5,6 +5,7 @@ import {
 import {
 	OrderBy,
 	SettingsTheme,
+	StatePageTitle,
 	SettingsOrderBy,
 	SettingsListStyle,
 	SettingsTransitions,
@@ -65,7 +66,6 @@ export const updatePlay =
 		"UPDATE_PLAY",
 		withPayloadType<boolean>(),
 	)
-
 export const updateIsOnline =
 	createAction(
 		"UPDATE_IS_ONLINE",
@@ -76,6 +76,12 @@ export const updateGridChildWidth =
 	createAction(
 		"UPDATE_GRID_CHILD_WIDTH",
 		withPayloadType<number>(),
+	)
+
+export const updatePageTitle =
+	createAction(
+		"UPDATE_PAGE_TITLE",
+		withPayloadType<StatePageTitle>(),
 	)
 
 export const updateAccessToken =

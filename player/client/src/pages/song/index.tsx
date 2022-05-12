@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { useParams } from "react-router-dom"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { createElement, FC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common"
@@ -42,7 +42,7 @@ const SongPagePlayButton: FC<PropTypes> = ({ song }) => {
 }
 
 const SongPage: FC<PropTypes> = ({ song }) => (
-	<Metadata title={song.title}>
+	<Head pageTitle={song.title}>
 		<div className={bem("", "Content PaddingTopBottom")}>
 			<img
 				alt={song.album.title}
@@ -121,7 +121,7 @@ const SongPage: FC<PropTypes> = ({ song }) => (
 				</h4>
 			</div>
 		</div>
-	</Metadata>
+	</Head>
 )
 
 interface PropTypes {

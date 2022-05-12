@@ -31,6 +31,11 @@ export const useStateTheme =
 		({ settings: { theme } }) => theme,
 	)
 
+export const useStatePageTitle =
+	() => useSelector(
+		({ pageTitle }) => pageTitle,
+	)
+
 export const useStateListStyle =
 	() => useSelector(
 		({ settings: { listStyle } }) => listStyle,

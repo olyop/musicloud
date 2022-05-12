@@ -1,7 +1,7 @@
 import noop from "lodash-es/noop"
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { useState, createElement, FC, FormEventHandler, useEffect } from "react"
 
 import LOG_IN from "./log-in.gql"
@@ -43,7 +43,7 @@ const AuthorizationLogInForm: FC<PropTypes> = ({
 	})
 
 	return (
-		<Metadata title="Log In">
+		<Head pageTitle="Log In">
 			<form onSubmit={handleLogIn} className="FlexColumnGap">
 				<Input
 					name="Email"
@@ -78,7 +78,7 @@ const AuthorizationLogInForm: FC<PropTypes> = ({
 					disabled={loading || isEmpty(password)}
 				/>
 			</form>
-		</Metadata>
+		</Head>
 	)
 }
 

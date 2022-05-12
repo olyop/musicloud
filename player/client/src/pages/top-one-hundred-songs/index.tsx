@@ -1,15 +1,13 @@
-import { isUndefined } from "lodash-es"
 import Button from "@oly_op/react-button"
-import { createElement, Fragment, FC } from "react"
-import { Metadata } from "@oly_op/react-metadata"
+import { createElement, FC, Fragment } from "react"
 
+import Page from "../../components/page"
 import { Song, Queue } from "../../types"
 import Songs from "../../components/songs"
 import { useQuery, useMutation, useResetPlayer } from "../../hooks"
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
 import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
 import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql"
-import Window from "../../components/window"
 
 const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer()
@@ -36,45 +34,38 @@ const TopOneHundredSongsPage: FC = () => {
 		}
 
 	return (
-		<Metadata title="#100 Songs">
-			<div className="Content PaddingTopBottom">
-				<div className="FlexRowGapHalf MarginBottom">
-					<h1
-						children="#100 Songs"
-						className="HeadingFour"
-						style={{ marginTop: -3 }}
+		<Page
+			pageTitle="Top #100"
+			headerClassName="FlexRowGapHalf"
+			contentClassName="PaddingTopBottom"
+			header={(
+				<Fragment>
+					<Button
+						transparent
+						text="Play"
+						icon="play_arrow"
+						className="Border"
+						onClick={handlePlay}
 					/>
-					<Window>
-						{({ width }) => (
-							<Fragment>
-								<Button
-									transparent
-									icon="play_arrow"
-									className="Border"
-									onClick={handlePlay}
-									text={width <= 500 ? undefined : "Play"}
-								/>
-								<Button
-									transparent
-									icon="shuffle"
-									className="Border"
-									onClick={handleShuffle}
-									text={width <= 500 ? undefined : "Shuffle"}
-								/>
-							</Fragment>
-						)}
-					</Window>
-				</div>
-				{!isUndefined(data) && (
-					<Songs
-						hideDuration
-						orderBy={false}
-						hideTrackNumber
-						songs={data.getTopOneHundredSongs}
+					<Button
+						transparent
+						icon="shuffle"
+						text="Shuffle"
+						className="Border"
+						onClick={handleShuffle}
 					/>
-				)}
-			</div>
-		</Metadata>
+				</Fragment>
+			)}
+			content={data ? (
+				<Songs
+					hideDuration
+					orderBy={false}
+					hideTrackNumber
+					className="Content"
+					songs={data.getTopOneHundredSongs}
+				/>
+			) : undefined}
+		/>
 	)
 }
 

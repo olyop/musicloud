@@ -1,6 +1,6 @@
 import { isNull } from "lodash-es"
-import { createElement, FC } from "react"
-import { Metadata } from "@oly_op/react-metadata"
+import { createElement, FC, useContext } from "react"
+import { Head } from "@oly_op/react-head"
 
 import {
 	LibraryPlaylistsOrderBy,
@@ -12,15 +12,18 @@ import LibraryEmpty from "./empty"
 import Feed from "../../components/feed"
 import { useStateOrderBy } from "../../redux"
 import Playlists from "../../components/playlists"
+import ScrollElementContext from "../scroll-element-context"
 import GET_LIBRARY_PLAYLISTS from "./get-library-playlists.gql"
 
 const LibraryPlaylists: FC = () => {
+	const scrollElement = useContext(ScrollElementContext)
 	const orderBy = useStateOrderBy<LibraryPlaylistsOrderByField>("libraryPlaylists")
 	return (
-		<Metadata title="Library Playlists">
+		<Head pageTitle="Library Playlists">
 			<Feed<GetLibraryPlaylistsData, GetLibraryPlaylistsVars>
 				variables={{ orderBy }}
 				query={GET_LIBRARY_PLAYLISTS}
+				scrollElement={scrollElement}
 				dataToObjectsLength={
 					data => data.getLibrary.playlistsPaginated?.length || 0
 				}
@@ -51,7 +54,7 @@ const LibraryPlaylists: FC = () => {
 					}
 				}
 			/>
-		</Metadata>
+		</Head>
 	)
 }
 

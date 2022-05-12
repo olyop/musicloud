@@ -1,9 +1,9 @@
 import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 
 const CustomLibraryShufflePage: FC = () => (
-	<Metadata title="Custom Library Shuffle">
+	<Head pageTitle="Custom Library Shuffle">
 		<div className="Content PaddingTopBottom">
 			<div className="FlexRowGapHalf">
 				<Button
@@ -16,7 +16,7 @@ const CustomLibraryShufflePage: FC = () => (
 				/>
 			</div>
 		</div>
-	</Metadata>
+	</Head>
 )
 
 export default CustomLibraryShufflePage

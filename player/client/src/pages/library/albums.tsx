@@ -1,6 +1,6 @@
 import { isNull } from "lodash-es"
-import { createElement, FC } from "react"
-import { Metadata } from "@oly_op/react-metadata"
+import { createElement, FC, useContext } from "react"
+import { Head } from "@oly_op/react-head"
 
 import {
 	AlbumsOrderBy,
@@ -13,17 +13,20 @@ import LibraryEmpty from "./empty"
 import Feed from "../../components/feed"
 import Albums from "../../components/albums"
 import GET_LIBRARY_ALBUMS from "./get-library-albums.gql"
+import ScrollElementContext from "../scroll-element-context"
 import { useStateOrderBy, useStateListStyle } from "../../redux"
 
 const LibraryAlbums: FC = () => {
 	const listStyle = useStateListStyle()
 	const isList = listStyle === SettingsListStyle.LIST
+	const scrollElement = useContext(ScrollElementContext)
 	const orderBy = useStateOrderBy<AlbumsOrderByField>("albums")
 	return (
-		<Metadata title="Library Albums">
+		<Head pageTitle="Library Albums">
 			<Feed<GetLibraryAlbumsData, GetLibraryAlbumsVars>
 				variables={{ orderBy }}
 				query={GET_LIBRARY_ALBUMS}
+				scrollElement={scrollElement}
 				dataToObjectsLength={
 					data => data.getLibrary.albumsPaginated?.length || 0
 				}
@@ -51,7 +54,7 @@ const LibraryAlbums: FC = () => {
 					}
 				}
 			/>
-		</Metadata>
+		</Head>
 	)
 }
 

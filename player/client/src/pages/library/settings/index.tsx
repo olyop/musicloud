@@ -1,5 +1,5 @@
 import Button from "@oly_op/react-button"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { createElement, FC, Fragment, useState, useEffect } from "react"
 
 import Modal, {
@@ -37,7 +37,7 @@ const LibrarySettings: FC = () => {
 	}, [deleteLibraryData])
 
 	return (
-		<Metadata title="Library Settings">
+		<Head pageTitle="Library Settings">
 			<div className="PaddingBottom Content BodyTwo">
 				<h2 className="HeadingFive MarginBottomHalf">
 					Settings
@@ -71,7 +71,7 @@ const LibrarySettings: FC = () => {
 					/>
 				</ModalButtons>
 			</Modal>
-		</Metadata>
+		</Head>
 	)
 }
 

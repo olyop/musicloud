@@ -7,7 +7,7 @@ import {
 } from "react"
 
 import Button from "@oly_op/react-button"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 
 import SIGN_UP from "./sign-up.gql"
 import { useMutation } from "../../hooks"
@@ -63,7 +63,7 @@ const AuthorizationSignUpForm: FC<PropTypes> = ({
 	}, [data])
 
 	return (
-		<Metadata title="Sign Up">
+		<Head pageTitle="Sign Up">
 			<form onSubmit={handleSignUp} className="FlexColumnGap">
 				<Input
 					name="Email"
@@ -120,7 +120,7 @@ const AuthorizationSignUpForm: FC<PropTypes> = ({
 					disabled={loading || !isSignUpFormValid(input)}
 				/>
 			</form>
-		</Metadata>
+		</Head>
 	)
 }
 

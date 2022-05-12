@@ -1,0 +1,9 @@
+.Page {
+	--page-header-height: calc(var(--button-dimension) + var(--space-half));
+	height: 100%;
+	&__header {
+		height: var(--page-header-height);
+		box-shadow: 0 15rem 10rem -15rem rgba(#212121, 0.2); }
+	&__content {
+		overflow-y: scroll;
+		height: calc(100% - var(--page-header-height)); } }

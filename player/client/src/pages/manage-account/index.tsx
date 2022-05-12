@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { createElement, Fragment, useEffect, useState, FC } from "react"
 
 import Modal, {
@@ -55,7 +55,7 @@ const ManageAccount: FC = () => {
 	}, [data])
 
 	return (
-		<Metadata title="Manage Account">
+		<Head pageTitle="Manage Account">
 			<div className="Content PaddingTopBottom">
 				<h1 className="HeadingFour MarginBottom">
 					Manage
@@ -102,7 +102,7 @@ const ManageAccount: FC = () => {
 					/>
 				</ModalButtons>
 			</Modal>
-		</Metadata>
+		</Head>
 	)
 }
 

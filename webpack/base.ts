@@ -5,15 +5,15 @@ import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common"
 import DotenvPlugin from "dotenv-webpack"
 import ESLintPlugin from "eslint-webpack-plugin"
 import { Configuration, DefinePlugin } from "webpack"
+import { ProxyConfigArray } from "webpack-dev-server"
 import StylelintPlugin from "stylelint-webpack-plugin"
 import { Options as TSLoaderOptions } from "ts-loader"
-import { ProxyConfigArray } from "webpack-dev-server"
 import CompressionPlugin from "compression-webpack-plugin"
 import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin"
 
-import packageJSON from "../package.json"
+import packageConfig from "../package.json"
 
 export const IS_DEV =
 	process.env.NODE_ENV === "development"
@@ -74,13 +74,13 @@ export const createDevServerProxy =
 		],
 	}]
 
-const finalCSSLoader =
+const firstCSSLoader =
 	IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader
 
 const baseConfiguration: Configuration = {
+	devtool: false,
 	stats: "errors-only",
 	mode: process.env.NODE_ENV,
-	devtool: IS_DEV && process.env.SOURCE_MAPS && "inline-source-map",
 	devServer: {
 		static: false,
 		host: process.env.HOST,
@@ -102,13 +102,13 @@ const baseConfiguration: Configuration = {
 		rules: [{
 			test: /\.css$/,
 			use: [
-				finalCSSLoader,
+				firstCSSLoader,
 				"css-loader",
 			],
 		},{
 			test: /\.scss$/,
 			use: [
-				finalCSSLoader,
+				firstCSSLoader,
 				"css-loader",
 				"sass-loader",
 			],
@@ -116,13 +116,15 @@ const baseConfiguration: Configuration = {
 	},
 	plugins: [
 		new DefinePlugin({
-			VERSION: JSON.stringify(packageJSON.version),
+			VERSION: JSON.stringify(packageConfig.version),
 		}),
 		new DotenvPlugin(),
-		new ESLintPlugin({
-			extensions: ["ts", "tsx"],
-		}),
-		new StylelintPlugin(),
+		...(process.env.LINTING_IN_BUILD === "true" ? [] : [
+			new ESLintPlugin({
+				extensions: ["ts", "tsx"],
+			}),
+			new StylelintPlugin(),
+		]),
 		...(IS_DEV ? [] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),

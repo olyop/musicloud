@@ -1,14 +1,16 @@
 import { createElement, FC } from "react"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
+
+import "./index.scss"
 
 const LibraryHome: FC = () => (
-	<Metadata title="Library">
+	<Head pageTitle="Library">
 		<div className="Content FlexColumnGap">
 			<h2 className="BodyTwo">
 				W.I.P.
 			</h2>
 		</div>
-	</Metadata>
+	</Head>
 )
 
 export default LibraryHome

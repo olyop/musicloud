@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash-es"
+import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
 import { createElement, FC } from "react"
 

@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { createElement, FC, useRef } from "react"
 import { Route, Routes } from "react-router-dom"
 import { uniqueId as uniqueID } from "lodash-es"
 
@@ -18,6 +18,7 @@ import SettingsPage from "./settings"
 import PlaylistPage from "./playlist"
 import ManageAccount from "./manage-account"
 import AddSongToPlaylistPage from "./add-song-to-playlist"
+import ScrollElementContext from "./scroll-element-context"
 import AddAlbumToPlaylistPage from "./add-album-to-playlist"
 import TopOneHundredSongsPage from "./top-one-hundred-songs"
 
@@ -88,20 +89,25 @@ const routes: RouteType[] = [{
 const bem =
 	createBEM("Pages")
 
-const Pages: FC = () => (
-	<main className={bem("")}>
-		<Routes>
-			{routes.map(
-				({ routeID, path, element }) => (
-					<Route
-						path={path}
-						key={routeID}
-						element={element}
-					/>
-				),
-			)}
-		</Routes>
-	</main>
-)
+const Pages: FC = () => {
+	const pagesRef = useRef<HTMLElement | null>(null)
+	return (
+		<main className={bem("")} ref={pagesRef}>
+			<ScrollElementContext.Provider value={pagesRef.current}>
+				<Routes>
+					{routes.map(
+						({ routeID, path, element }) => (
+							<Route
+								path={path}
+								key={routeID}
+								element={element}
+							/>
+						),
+					)}
+				</Routes>
+			</ScrollElementContext.Provider>
+		</main>
+	)
+}
 
 export default Pages

@@ -1,4 +1,4 @@
-FROM --platform=linux/arm64/v8 node:alpine
+FROM node:alpine
 
 RUN apk update
 RUN apk upgrade
@@ -8,7 +8,9 @@ WORKDIR /usr/src/app
 COPY . .
 
 RUN npm i -g npm@latest
+RUN npm i -g node-gyp
 RUN npm i --legacy-peer-deps
+
 RUN npm run build-player
 
 EXPOSE 3000

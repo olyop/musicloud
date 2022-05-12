@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import toNumber from "lodash-es/toNumber"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { ChangeEventHandler, createElement, FC } from "react"
 
 import {
@@ -80,7 +80,7 @@ const SettingsPage: FC = () => {
 		}
 
 	return (
-		<Metadata title="Settings">
+		<Head pageTitle="Settings">
 			<div className={bem("", "Content PaddingTopBottom")}>
 				<h1 className="HeadingFour MarginBottom">
 					Settings
@@ -201,7 +201,7 @@ const SettingsPage: FC = () => {
 					</details>
 				</div>
 			</div>
-		</Metadata>
+		</Head>
 	)
 }
 

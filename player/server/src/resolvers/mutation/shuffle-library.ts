@@ -1,5 +1,5 @@
 import { pipe } from "rxjs"
-import { isEmpty } from "lodash-es"
+import isEmpty from "lodash-es/isEmpty"
 import { convertTableToCamelCase, join, query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"

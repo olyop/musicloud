@@ -9,7 +9,7 @@ import {
 
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { Metadata } from "@oly_op/react-metadata"
+import { Head } from "@oly_op/react-head"
 import { AlgoliaRecord } from "@oly_op/musicloud-common"
 import { isEmpty, uniqueId as uniqueID } from "lodash-es"
 import algoliasearch, { SearchIndex } from "algoliasearch/lite"
@@ -107,7 +107,7 @@ const SearchPage: FC = () => {
 	}, [input])
 
 	return (
-		<Metadata title="Search">
+		<Head pageTitle="Search">
 			<section className={bem("", "Content PaddingTopBottom")}>
 				<div className={bem("bar")}>
 					<Button
@@ -148,7 +148,7 @@ const SearchPage: FC = () => {
 					</div>
 				)}
 			</section>
-		</Metadata>
+		</Head>
 	)
 }
 

@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { Metadata } from "@oly_op/react-metadata"
 import { createElement, FC, Fragment } from "react"
 
 import { useQuery } from "../../hooks"
+import Page from "../../components/page"
 import Songs from "../../components/songs"
 import Albums from "../../components/albums"
 import Playlists from "../../components/playlists"
@@ -19,85 +19,88 @@ const bem =
 const BrowsePage: FC = () => {
 	const { data } = useQuery<GetBrowsePageData>(GET_BROWSE_PAGE)
 	return (
-		<Metadata>
-			<div className="Content FlexColumnGap PaddingTopBottom">
-				<div className={bem("")}>
+		<Page
+			pageTitle="Browse"
+			content={(
+				<div className="Content FlexColumnGap PaddingTopBottom">
+					<div className={bem("")}>
+						{data && (
+							<Fragment>
+								<div className={bem("trending", "FlexColumn")}>
+									<div className="FlexColumnGapHalf">
+										<h2 className="HeadingFive">
+											Trending Albums
+										</h2>
+										<Albums
+											hideModal
+											alwaysList
+											hideInLibrary
+											orderBy={false}
+											albums={data.getTrendingAlbums}
+										/>
+										{/* <Button
+											transparent
+											text="View All"
+											icon="arrow_forward"
+											style={{ alignSelf: "flex-start" }}
+										/> */}
+									</div>
+									<div className="FlexColumnGapHalf">
+										<h2 className="HeadingFive">
+											Trending Playlists
+										</h2>
+										<Playlists
+											hideModal
+											hideInLibrary
+											orderBy={false}
+											playlists={data.getTrendingPlaylists}
+										/>
+										{/* <Button
+											transparent
+											text="View All"
+											icon="arrow_forward"
+											style={{ alignSelf: "flex-start" }}
+										/> */}
+									</div>
+								</div>
+								<div>
+									<h2 className="HeadingFive MarginBottomHalf">
+										Top Ten Songs
+									</h2>
+									<Songs
+										hideCover
+										hideIndex
+										hideDuration
+										hideInLibrary
+										hideTrackNumber
+										orderBy={false}
+										songs={data.getTopTenSongs}
+										className="MarginBottomHalf"
+									/>
+									<Link to="/top-one-hundred-songs">
+										<Button
+											transparent
+											text="View All"
+											icon="arrow_forward"
+										/>
+									</Link>
+								</div>
+							</Fragment>
+						)}
+					</div>
 					{data && (
-						<Fragment>
-							<div className={bem("trending", "FlexColumn")}>
-								<div className="FlexColumnGapHalf">
-									<h2 className="HeadingFive">
-										Trending Albums
-									</h2>
-									<Albums
-										hideModal
-										alwaysList
-										hideInLibrary
-										orderBy={false}
-										albums={data.getTrendingAlbums}
-									/>
-									{/* <Button
-										transparent
-										text="View All"
-										icon="arrow_forward"
-										style={{ alignSelf: "flex-start" }}
-									/> */}
-								</div>
-								<div className="FlexColumnGapHalf">
-									<h2 className="HeadingFive">
-										Trending Playlists
-									</h2>
-									<Playlists
-										hideModal
-										hideInLibrary
-										orderBy={false}
-										playlists={data.getTrendingPlaylists}
-									/>
-									{/* <Button
-										transparent
-										text="View All"
-										icon="arrow_forward"
-										style={{ alignSelf: "flex-start" }}
-									/> */}
-								</div>
-							</div>
-							<div>
-								<h2 className="HeadingFive MarginBottomHalf">
-									Top Ten Songs
-								</h2>
-								<Songs
-									hideCover
-									hideIndex
-									hideDuration
-									hideInLibrary
-									hideTrackNumber
-									orderBy={false}
-									songs={data.getTopTenSongs}
-									className="MarginBottomHalf"
-								/>
-								<Link to="/top-one-hundred-songs">
-									<Button
-										transparent
-										text="View All"
-										icon="arrow_forward"
-									/>
-								</Link>
-							</div>
-						</Fragment>
+						<div>
+							<h2 className="HeadingFive MarginBottomHalf">
+								Your Recommendations
+							</h2>
+							<p className="BodyTwo">
+								WIP
+							</p>
+						</div>
 					)}
 				</div>
-				{data && (
-					<div>
-						<h2 className="HeadingFive MarginBottomHalf">
-							Your Recommendations
-						</h2>
-						<p className="BodyTwo">
-							WIP
-						</p>
-					</div>
-				)}
-			</div>
-		</Metadata>
+			)}
+		/>
 	)
 }
 
