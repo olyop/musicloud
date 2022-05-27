@@ -15,4 +15,7 @@ type Library {
 	genresPaginated(input: LibraryGenresInput!): [Genre!]
 	artistsPaginated(input: LibraryArtistsInput!): [Artist!]
 	playlistsPaginated(input: LibraryPlaylistsInput!): [Playlist!]
+
+	songAtIndex(input: LibrarySongAtIndexInput!): Song
+	playlistAtIndex(input: LibraryPlaylistAtIndexInput!): Song
 }

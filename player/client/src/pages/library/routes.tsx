@@ -5,11 +5,11 @@ import { Route } from "../../types"
 
 import LibraryHome from "./home"
 import LibrarySongs from "./songs"
-import LibraryGenres from "./genres"
-import LibraryAlbums from "./albums"
-import LibraryArtists from "./artists"
+// import LibraryGenres from "./genres"
+// import LibraryAlbums from "./albums"
+// import LibraryArtists from "./artists"
 import LibrarySettings from "./settings"
-import LibraryPlaylists from "./playlists"
+// import LibraryPlaylists from "./playlists"
 
 const routes: Route[] = [{
 	path: "",
@@ -28,7 +28,7 @@ const routes: Route[] = [{
 	name: "Artists",
 	path: "artists",
 	routeID: uniqueID(),
-	element: <LibraryArtists/>,
+	// element: <LibraryArtists/>,
 },{
 	ignore: true,
 	name: "Settings",
@@ -40,19 +40,19 @@ const routes: Route[] = [{
 	path: "playlists",
 	icon: "queue_music",
 	routeID: uniqueID(),
-	element: <LibraryPlaylists/>,
+	// element: <LibraryPlaylists/>,
 },{
 	icon: "list",
 	name: "Genres",
 	path: "genres",
 	routeID: uniqueID(),
-	element: <LibraryGenres/>,
+	// element: <LibraryGenres/>,
 },{
 	icon: "album",
 	name: "Albums",
 	path: "albums",
 	routeID: uniqueID(),
-	element: <LibraryAlbums/>,
+	// element: <LibraryAlbums/>,
 }]
 
 export default routes

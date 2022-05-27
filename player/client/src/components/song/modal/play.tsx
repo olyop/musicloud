@@ -9,7 +9,7 @@ const PlayButton: FC<PropTypes> = ({ song, hidePlay, onClose }) => {
 	const play = useStatePlay()
 
 	const [ playSong, isPlaying ] =
-		usePlaySong(hidePlay ? undefined : song)
+		usePlaySong(hidePlay ? null : song)
 
 	const playing =
 		play && isPlaying

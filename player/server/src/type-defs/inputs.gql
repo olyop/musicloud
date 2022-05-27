@@ -81,6 +81,16 @@ input LibrarySongsInput {
 	orderBy: LibrarySongsOrderByInput
 }
 
+input LibrarySongAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: LibrarySongsOrderByInput
+}
+
+input LibraryPlaylistAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: LibrarySongsOrderByInput
+}
+
 input LibraryArtistsInput {
 	page: NonNegativeInt!
 	orderBy: LibraryArtistsOrderByInput

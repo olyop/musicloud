@@ -10,8 +10,9 @@ const createDiscs =
 			const numberOfDiscs =
 				songs[songs.length - 1]!.discNumber || 1
 
-			const discsEmpty =
-				[ ...Array<Disc>(numberOfDiscs) ]
+			const discsEmpty = [
+				...Array<Disc>(numberOfDiscs),
+			]
 
 			const discs =
 				discsEmpty.map(

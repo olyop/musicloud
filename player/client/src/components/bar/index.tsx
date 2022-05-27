@@ -24,7 +24,7 @@ const Bar: FC = () => {
 	const [ expand, setExpand ] =
 		useState(false)
 
-	const { data, loading } =
+	const { data } =
 		useQuery<Data>(GET_QUEUE_NOW_PLAYING)
 
 	const songAudio =
@@ -41,79 +41,78 @@ const Bar: FC = () => {
 		!isNull(data.getQueue.nowPlaying)
 
 	return (
-		<footer className={bem("", "Elevated")}>
-			{loading || (
-				<Fragment>
-					<Controls
-						ready={songAudio.ready}
-						isNowPlaying={isNowPlaying}
-						className={bem("controls")}
-						buttonClassName={bem("controls-button")}
-						buttonIconClassName={bem("controls-button-icon")}
-					/>
-					<div className={bem("main", "PaddingHalf")}>
-						<div className={bem("main-content-wrapper")}>
-							<div className={bem("main-content")}>
-								{data?.getQueue.nowPlaying ? (
-									<Fragment>
-										<Song
-											hidePlay
-											hidePlays
-											hideDuration
-											hideTrackNumber
-											song={data.getQueue.nowPlaying}
+		<footer className={bem("", "BorderTop")}>
+			<Fragment>
+				<Controls
+					ready={songAudio.ready}
+					isNowPlaying={isNowPlaying}
+					className={bem("controls")}
+					buttonClassName={bem("controls-button")}
+					buttonIconClassName={bem("controls-button-icon")}
+				/>
+				<div className={bem("main", "PaddingHalf")}>
+					<div className={bem("main-content-wrapper")}>
+						<div className={bem("main-content")}>
+							{data?.getQueue.nowPlaying ? (
+								<Fragment>
+									<Song
+										hidePlay
+										hidePlays
+										hideDuration
+										hideTrackNumber
+										className={null}
+										song={data.getQueue.nowPlaying}
+									/>
+									<div className="FlexRowRight">
+										<NavLink to="/queues">
+											{({ isActive }) => (
+												<Button
+													title="Queue"
+													icon="queue_music"
+													transparent={!isActive}
+												/>
+											)}
+										</NavLink>
+										<Volume/>
+										<Button
+											transparent
+											title="Player"
+											icon="unfold_more"
+											onClick={handleExpandOpen}
+											className={bem("main-content-expand")}
 										/>
-										<div className="FlexRowRight">
-											<NavLink to="/queues">
-												{({ isActive }) => (
-													<Button
-														title="Queue"
-														icon="queue_music"
-														transparent={!isActive}
-													/>
-												)}
-											</NavLink>
-											<Volume/>
-											<Button
-												transparent
-												title="Player"
-												icon="unfold_more"
-												onClick={handleExpandOpen}
-												className={bem("main-content-expand")}
-											/>
-										</div>
-									</Fragment>
-								) : (
-									<Fragment>
-										<div/>
-										<div/>
-									</Fragment>
-								)}
-							</div>
+									</div>
+								</Fragment>
+							) : (
+								<Fragment>
+									<div/>
+									<div/>
+								</Fragment>
+							)}
 						</div>
-						<Progress
-							ready={songAudio.ready}
-							isNowPlaying={isNowPlaying}
-						/>
 					</div>
-					{data?.getQueue.nowPlaying && (
-						<Button
-							transparent
-							title="Player"
-							icon="unfold_more"
-							className={bem("expand")}
-							onClick={handleExpandOpen}
-						/>
-					)}
-					<Fullscreen
-						open={expand}
+					<Progress
 						ready={songAudio.ready}
 						isNowPlaying={isNowPlaying}
-						onClose={handleExpandClose}
-						song={data?.getQueue.nowPlaying}
 					/>
-				</Fragment>
-			)}
+				</div>
+				{data?.getQueue.nowPlaying && (
+					<Button
+						transparent
+						title="Player"
+						icon="unfold_more"
+						className={bem("expand")}
+						onClick={handleExpandOpen}
+					/>
+				)}
+				<Fullscreen
+					open={expand}
+					ready={songAudio.ready}
+					isNowPlaying={isNowPlaying}
+					onClose={handleExpandClose}
+					song={data?.getQueue.nowPlaying}
+				/>
+			</Fragment>
 		</footer>
 	)
 }

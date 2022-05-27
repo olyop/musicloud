@@ -4,6 +4,7 @@ import {
 	PoolOrClient,
 	getResultRowCountOrNull,
 	convertTableToCamelCaseOrNull,
+	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
 import { UserID, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
@@ -11,8 +12,8 @@ import { UserID, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
 import { determineSongsSQLOrderByField } from "../helpers"
-import { SELECT_LIBRARY_SONGS, SELECT_LIBRARY_SONGS_PAGINATED } from "../../sql"
-import { Song, GetObjectsOptions, LibraryObjectsPaginatedArgs } from "../../types"
+import { Song, GetObjectsOptions, LibraryObjectsPaginatedArgs, LibraryObjectAtIndexArgs } from "../../types"
+import { SELECT_LIBRARY_SONGS, SELECT_LIBRARY_SONGS_PAGINATED, SELECT_LIBRARY_SONG_AT_INDEX } from "../../sql"
 
 interface GetLibrarySongsInput<T>
 	extends UserID, GetObjectsOptions<T> {}
@@ -44,8 +45,8 @@ export const songsTotal =
 		({ context }) => (
 			getLibrarySongs(context.pg)({
 				parse: getResultRowCountOrNull,
-				columnNames: COLUMN_NAMES.SONG[0],
 				userID: context.authorization!.userID,
+				columnNames: `songs.${COLUMN_NAMES.SONG[0]}`,
 			})
 		),
 	)
@@ -59,6 +60,22 @@ export const songsPaginated =
 					page: args.input.page,
 					userID: context.authorization!.userID,
 					paginationPageSize: PAGINATION_PAGE_SIZE,
+					columnNames: join(COLUMN_NAMES.SONG, "songs"),
+					orderByDirection: args.input.orderBy.direction,
+					orderByField: determineSongsSQLOrderByField(args.input.orderBy.field),
+				},
+			})
+		),
+	)
+
+export const songAtIndex =
+	resolver<Song | null, LibraryObjectAtIndexArgs>(
+		({ args, context }) => (
+			query(context.pg)(SELECT_LIBRARY_SONG_AT_INDEX)({
+				parse: convertFirstRowToCamelCaseOrNull(),
+				variables: {
+					atIndex: args.input.atIndex,
+					userID: context.authorization!.userID,
 					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 					orderByDirection: args.input.orderBy.direction,
 					orderByField: determineSongsSQLOrderByField(args.input.orderBy.field),

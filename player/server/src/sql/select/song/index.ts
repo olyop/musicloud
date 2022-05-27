@@ -3,6 +3,7 @@ import importSQL from "../../import-sql"
 const importFile =
 	importSQL("select")("song")
 
+export const SELECT_SONGS = importFile("all")
 export const SELECT_SONGS_IN = importFile("in")
 export const SELECT_SONG_BY_ID = importFile("by-id")
 export const SELECT_SONG_PLAYS = importFile("plays")

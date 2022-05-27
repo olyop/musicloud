@@ -18,6 +18,9 @@ import packageConfig from "../package.json"
 export const IS_DEV =
 	process.env.NODE_ENV === "development"
 
+export const LINITING =
+	process.env.LINTING_IN_BUILD === "true"
+
 export const BASE_ROOT_PATH =
 	process.cwd()
 
@@ -75,7 +78,9 @@ export const createDevServerProxy =
 	}]
 
 const firstCSSLoader =
-	IS_DEV ? "style-loader" : MiniCSSExtractPlugin.loader
+	IS_DEV ?
+		"style-loader" :
+		MiniCSSExtractPlugin.loader
 
 const baseConfiguration: Configuration = {
 	devtool: false,
@@ -119,12 +124,12 @@ const baseConfiguration: Configuration = {
 			VERSION: JSON.stringify(packageConfig.version),
 		}),
 		new DotenvPlugin(),
-		...(process.env.LINTING_IN_BUILD === "true" ? [] : [
+		...(LINITING ? [
 			new ESLintPlugin({
 				extensions: ["ts", "tsx"],
 			}),
 			new StylelintPlugin(),
-		]),
+		] : []),
 		...(IS_DEV ? [] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),

@@ -9,6 +9,9 @@
 			},
 			"parserOptions": {
 				"project": "./player/server/tsconfig.json"
+			},
+			"rules": {
+				"@typescript-eslint/no-invalid-void-type": "off"
 			}
 		},
 		{
@@ -21,6 +24,7 @@
 			"rules": {
 				"@graphql-eslint/input-name": "off",
 				"@graphql-eslint/alphabetize": "off",
+				"@graphql-eslint/naming-convention": "off",
 				"@graphql-eslint/strict-id-in-types": "off",
 				"@graphql-eslint/no-typename-prefix": "off",
 				"@graphql-eslint/require-description": "off",

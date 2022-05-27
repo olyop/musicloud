@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
 import { useRef } from "react"
-import { MutationResult, useApolloClient } from "@apollo/client"
+import { useApolloClient } from "@apollo/client"
 import { isNull, isUndefined } from "lodash-es"
 import { SongID } from "@oly_op/musicloud-common"
 
@@ -17,24 +17,14 @@ import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
 
 const isSong =
 	(song: Input): song is Song =>
-		"__typename" in song
+		!isNull(song) && "__typename" in song
 
 export const usePlaySong =
-	(song?: Input) => {
-		if (isUndefined(song)) {
-			return [
-				() => {},
-				false,
-				{} as MutationResult<Data>,
-			] as const
-		}
-
-		const { songID } = song
+	(song: Input) => {
 		const dispatch = useDispatch()
 		const client = useApolloClient()
 		const isOptimistic = useRef(false)
 		const resetPlayer = useResetPlayer()
-		const variables: SongID = { songID }
 
 		const { data } =
 			useQuery<QueryData>(
@@ -49,7 +39,6 @@ export const usePlaySong =
 
 		const [ playSong, result ] =
 			useMutation<Data, SongID>(PLAY_SONG, {
-				variables,
 				optimisticResponse: isSong(song) ? ({
 					playSong: {
 						nowPlaying: song,
@@ -62,9 +51,10 @@ export const usePlaySong =
 			})
 
 		const isPlaying = (
+			!isNull(song) &&
 			!isUndefined(data) &&
 			!isNull(data.getQueue.nowPlaying) &&
-			data.getQueue.nowPlaying.songID === songID
+			data.getQueue.nowPlaying.songID === song.songID
 		)
 
 		const handlePlaySong =
@@ -73,10 +63,18 @@ export const usePlaySong =
 					if (isPlaying) {
 						dispatch(togglePlay())
 					} else {
-						resetPlayer()
-						void playSong().catch(() => {
-							updateNowPlayingCache(client.cache)({ songID })
-						})
+						if (song) {
+							resetPlayer()
+							void playSong({
+								variables: {
+									songID: song.songID,
+								},
+							}).catch(() => {
+								updateNowPlayingCache(client.cache)({
+									songID: song.songID,
+								})
+							})
+						}
 					}
 				}
 			}

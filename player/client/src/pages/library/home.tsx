@@ -1,12 +1,10 @@
-import { createElement, FC } from "react"
 import { Head } from "@oly_op/react-head"
-
-import "./index.scss"
+import { createElement, FC } from "react"
 
 const LibraryHome: FC = () => (
 	<Head pageTitle="Library">
-		<div className="Content FlexColumnGap">
-			<h2 className="BodyTwo">
+		<div className="Content">
+			<h2 className="BodyOne">
 				W.I.P.
 			</h2>
 		</div>

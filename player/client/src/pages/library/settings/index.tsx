@@ -9,7 +9,9 @@ import Modal, {
 } from "../../../components/modal"
 
 import { useMutation } from "../../../hooks"
+
 import DELETE_LIBRARY from "./delete-library.gql"
+import ADD_CATALOG_TO_LIBRARY from "./add-catalog-to-library.gql"
 
 const LibrarySettings: FC = () => {
 	const [ deleteLibraryModal, setDeleteLibraryModal ] =
@@ -17,6 +19,9 @@ const LibrarySettings: FC = () => {
 
 	const [ deleteLibrary, { data: deleteLibraryData } ] =
 		useMutation(DELETE_LIBRARY)
+
+	const [ addCatalogToLibrary ] =
+		useMutation(ADD_CATALOG_TO_LIBRARY)
 
 	const handleDeleteLibraryModalOpen =
 		() => setDeleteLibraryModal(true)
@@ -28,6 +33,11 @@ const LibrarySettings: FC = () => {
 		() => {
 			handleDeleteLibraryModalClose()
 			void deleteLibrary()
+		}
+
+	const handleCatalogToLibrary =
+		() => {
+			void addCatalogToLibrary()
 		}
 
 	useEffect(() => {
@@ -46,6 +56,11 @@ const LibrarySettings: FC = () => {
 					icon="delete"
 					text="Delete Library"
 					onClick={handleDeleteLibraryModalOpen}
+				/>
+				<Button
+					icon="add"
+					text="Add Catalog to Library"
+					onClick={handleCatalogToLibrary}
 				/>
 			</div>
 			<Modal open={deleteLibraryModal} onClose={handleDeleteLibraryModalClose}>

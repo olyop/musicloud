@@ -1,4 +1,5 @@
 .SearchPage {
+	padding-top: var(--space-half);
 	&__bar {
 		position: relative;
 		&-input {
@@ -7,8 +8,11 @@
 			outline: none;
 			font-size: 20rem;
 			background-color: transparent;
+			transition: var(--transition-duration) border-bottom;
 			padding-left: calc(var(--space-quart) + var(--button-dimesnion));
 			border-bottom: calc(var(--border-width) * 2) solid var(--border-color);
+			&:focus {
+				border-bottom-color: var(--grey-color-500); }
 			&-search {
 				left: 0;
 				top: 50%;

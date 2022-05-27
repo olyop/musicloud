@@ -17,6 +17,7 @@ import { useSearchParams, useNavigate } from "react-router-dom"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
+import Page from "../../components/page"
 import AlgoliaLogo from "./algolia-logo"
 import { useHasMounted, useJWTPayload } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
@@ -108,46 +109,48 @@ const SearchPage: FC = () => {
 
 	return (
 		<Head pageTitle="Search">
-			<section className={bem("", "Content PaddingTopBottom")}>
-				<div className={bem("bar")}>
-					<Button
-						transparent
-						icon="search"
-						className={bem("bar-input-search")}
-					/>
-					<input
-						// eslint-disable-next-line jsx-a11y/no-autofocus
-						autoFocus
-						value={input}
-						onChange={handleInput}
-						placeholder="Search..."
-						className={bem("bar-input", "PaddingHalf")}
-					/>
-					<div className={bem("bar-input-right", "FlexRowGapQuartCenter")}>
-						{isEmpty(input) || (
-							<Button
-								transparent
-								icon="close"
-								onClick={handleClear}
-								className={bem("bar-input-right-close")}
-							/>
-						)}
-						<AlgoliaLogo/>
-					</div>
-				</div>
-				{!isEmpty(input) && !isEmpty(hits) && (
-					<div className="Elevated">
-						{hits.map(
-							hit => (
-								<SearchHit
-									hit={hit}
-									key={hit.objectID}
+			<Page childrenClassName={bem("", "PaddingBottom")}>
+				<div className="Content">
+					<div className={bem("bar")}>
+						<Button
+							transparent
+							icon="search"
+							className={bem("bar-input-search")}
+						/>
+						<input
+							// eslint-disable-next-line jsx-a11y/no-autofocus
+							autoFocus
+							value={input}
+							onChange={handleInput}
+							placeholder="Search..."
+							className={bem("bar-input", "PaddingHalf")}
+						/>
+						<div className={bem("bar-input-right", "FlexRowGapQuartCenter")}>
+							{isEmpty(input) || (
+								<Button
+									transparent
+									icon="close"
+									onClick={handleClear}
+									className={bem("bar-input-right-close")}
 								/>
-							),
-						)}
+							)}
+							<AlgoliaLogo/>
+						</div>
 					</div>
-				)}
-			</section>
+					{!isEmpty(input) && !isEmpty(hits) && (
+						<div className="Elevated MarginTop">
+							{hits.map(
+								hit => (
+									<SearchHit
+										hit={hit}
+										key={hit.objectID}
+									/>
+								),
+							)}
+						</div>
+					)}
+				</div>
+			</Page>
 		</Head>
 	)
 }

@@ -6,6 +6,7 @@ import {
 
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import { Head } from "@oly_op/react-head"
 import { Link, useParams } from "react-router-dom"
 import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
@@ -24,6 +25,7 @@ import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
 import { createObjectPath, createCatalogImageURL, determinePlural } from "../../helpers"
 
 import "./index.scss"
+import Content from "../../components/content"
 
 const bem =
 	createBEM("AlbumPage")
@@ -41,40 +43,48 @@ const AlbumPage: FC = () => {
 	const [ shuffleAlbum ] =
 		useShuffleAlbum({ albumID })
 
-	const [ toggleAlbumInLibrary, inLibrary ] =
+	const [ toggleInLibrary, inLibrary ] =
 		useToggleAlbumInLibrary({ albumID })
 
 	if (error) {
 		return (
-			<h2 className="Content BodyOne PaddingTopBottom">
-				{error.message === "Failed to fetch" ?
-					error.message :
-					"Album does not exist."}
-			</h2>
+			<Head pageTitle={null}>
+				<Page>
+					<Content>
+						<h2 className="BodyOne">
+							{error.message === "Failed to fetch" ?
+								error.message :
+								"Album does not exist."}
+						</h2>
+					</Content>
+				</Page>
+			</Head>
 		)
 	} else if (data) {
+		const album = data.getAlbumByID
+		const { title, songs, duration, artists, genres, released } = album
+
 		const discs =
-			createDiscs(data.getAlbumByID.songs)
+			createDiscs(songs)
 
 		const handleShare =
 			() => {
 				void navigator.share({
-					title: data.getAlbumByID.title,
+					title,
 					url: createObjectPath("album", albumID),
 				})
 			}
 
 		return (
-			<Page
-				pageTitle={data.getAlbumByID.title}
-				content={(
-					<div className={bem("", "Content PaddingTopBottom")}>
+			<Head pageTitle={title}>
+				<Page>
+					<Content className={bem("")}>
 						<img
+							alt={title}
 							crossOrigin="anonymous"
-							alt={data.getAlbumByID.title}
 							className={bem("cover", "content", "Elevated")}
 							src={createCatalogImageURL(
-								data.getAlbumByID.albumID,
+								albumID,
 								"cover",
 								ImageSizes.FULL,
 								ImageDimensions.SQUARE,
@@ -86,7 +96,7 @@ const AlbumPage: FC = () => {
 									<h1 className="HeadingFour">
 										<AlbumTitle
 											hideReleased
-											album={data.getAlbumByID}
+											album={album}
 										/>
 									</h1>
 									<AlbumPlayButton
@@ -94,7 +104,7 @@ const AlbumPage: FC = () => {
 									/>
 								</div>
 								<div className="FlexRowGapHalf MarginBottomThreeQuart">
-									{data.getAlbumByID.artists.map(
+									{artists.map(
 										artist => (
 											<AlbumArtist
 												artist={artist}
@@ -104,11 +114,11 @@ const AlbumPage: FC = () => {
 									)}
 								</div>
 								<h3 className="BodyOne LightColor MarginBottomHalf LightWeight">
-									{data.getAlbumByID.released}
+									{released}
 								</h3>
 								<h3 className="BodyTwo LightColor LightWeight">
 									<ObjectLinks
-										links={data.getAlbumByID.genres.map(({ genreID, name }) => ({
+										links={genres.map(({ genreID, name }) => ({
 											text: name,
 											path: createObjectPath("genre", genreID),
 										}))}
@@ -131,7 +141,7 @@ const AlbumPage: FC = () => {
 									onClick={shuffleAlbum}
 								/>
 								<Button
-									onClick={toggleAlbumInLibrary}
+									onClick={toggleInLibrary}
 									icon={inLibrary ? "done" : "add"}
 									text={inLibrary ? "Remove" : "Add"}
 								/>
@@ -158,19 +168,19 @@ const AlbumPage: FC = () => {
 										<Fragment> discs, </Fragment>
 									</Fragment>
 								)}
-								{data.getAlbumByID.songs.length}
+								{songs.length}
 								<Fragment> song</Fragment>
-								{determinePlural(data.getAlbumByID.songs.length)}
+								{determinePlural(songs.length)}
 								<Fragment>, </Fragment>
-								{Math.floor(data.getAlbumByID.duration / 60)}
+								{Math.floor(duration / 60)}
 								<Fragment> minutes, </Fragment>
-								{Math.floor(data.getAlbumByID.duration % 60)}
+								{Math.floor(duration % 60)}
 								<Fragment> seconds</Fragment>
 							</p>
 						</div>
-					</div>
-				)}
-			/>
+					</Content>
+				</Page>
+			</Head>
 		)
 	} else {
 		return null

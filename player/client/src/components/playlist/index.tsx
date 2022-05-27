@@ -33,8 +33,8 @@ const Playlist: FC<PropTypes> = ({
 	return (
 		<Item
 			onClick={onClick}
-			className={bem(className)}
 			leftIcon={showIcon ? "queue_music" : undefined}
+			className={bem(className, "ItemBorder PaddingHalf")}
 			infoOptions={{
 				upperLeft: onClick ? playlist.title : (
 					<ObjectLink

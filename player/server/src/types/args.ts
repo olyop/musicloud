@@ -15,3 +15,11 @@ interface LibraryObjectsPaginatedInput
 
 export type LibraryObjectsPaginatedArgs =
 	InterfaceWithInput<LibraryObjectsPaginatedInput>
+
+interface LibraryObjectAtIndexInput
+	extends LibraryObjectsPaginatedInput {
+	atIndex: number,
+}
+
+export type LibraryObjectAtIndexArgs =
+	InterfaceWithInput<LibraryObjectAtIndexInput>

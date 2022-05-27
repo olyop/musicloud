@@ -1,3 +1,5 @@
 .Queues {
 	&:empty {
-		display: none; } }
+		display: none; }
+	&__navigation {
+		justify-content: space-between; } }

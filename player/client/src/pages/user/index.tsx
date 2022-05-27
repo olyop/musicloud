@@ -7,10 +7,13 @@ import { ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common"
 
 import { User } from "../../types"
 import UserFollowers from "./followers"
+import Page from "../../components/page"
 import Banner from "../../components/banner"
-import GET_USER_PAGE from "./get-user-page.gql"
+import Content from "../../components/content"
 import { createCatalogImageURL } from "../../helpers"
 import { useQuery, useToggleUserFollowing } from "../../hooks"
+
+import GET_USER_PAGE from "./get-user-page.gql"
 
 const UserPageHome: FC = () => (
 	<p className="BodyOne">
@@ -38,22 +41,24 @@ const UserPage: FC = () => {
 					"User does not exist."}
 			</h2>
 		)
-	} else if (data) {
-		const { name, isFollower } = data.getUserByID
+	}
 
-		const dateJoined =
-			(new Date(data.getUserByID.dateJoined)).toLocaleDateString()
+	const dateJoined =
+		data ?
+			new Date(data.getUserByID.dateJoined).toLocaleDateString() :
+			""
 
-		return (
-			<Head pageTitle={name}>
+	return (
+		<Head pageTitle={data?.getUserByID.name ?? "User"}>
+			<Page>
 				<Banner
 					title={(
 						<Link to="">
-							{name}
+							{data?.getUserByID.name ?? "User"}
 						</Link>
 					)}
 					subTitle={(
-						!isUser && isFollower ?
+						!isUser && data?.getUserByID.isFollower ?
 							`${dateJoined} - Follows you` :
 							`${dateJoined}`
 					)}
@@ -100,7 +105,7 @@ const UserPage: FC = () => {
 						ImageDimensions.SQUARE,
 					)}
 				/>
-				<div className="Content PaddingTopBottom">
+				<Content>
 					<Routes>
 						<Route
 							path=""
@@ -113,12 +118,10 @@ const UserPage: FC = () => {
 							element={<UserFollowers/>}
 						/>
 					</Routes>
-				</div>
-			</Head>
-		)
-	} else {
-		return null
-	}
+				</Content>
+			</Page>
+		</Head>
+	)
 }
 
 interface GetUserPageData {

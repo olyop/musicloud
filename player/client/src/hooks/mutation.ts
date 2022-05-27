@@ -1,11 +1,11 @@
 import {
+	DocumentNode,
 	MutationHookOptions,
 	useMutation as useBaseMutation,
 } from "@apollo/client"
 
 import { useRef, useEffect } from "react"
 import uniqueID from "lodash-es/uniqueId"
-import type { DocumentNode } from "graphql"
 
 import { addLoading, useDispatch, removeLoading, updateAccessToken } from "../redux"
 

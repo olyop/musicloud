@@ -4,7 +4,9 @@ import { ArtistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 
 import { useQuery } from "../../hooks"
+import Song from "../../components/song"
 import Songs from "../../components/songs"
+import Content from "../../components/content"
 import { ArtistTopTenSongs } from "../../types"
 import GET_ARTIST_PAGE_HOME from "./get-artist-page-home.gql"
 
@@ -19,18 +21,24 @@ const ArtistPageHome: FC = () => {
 		)
 
 	return (
-		<div className="PaddingTopBottom">
-			<h1 className="HeadingFive PaddingBottomHalf Content">
+		<Content>
+			<h1 className="HeadingFive PaddingBottomHalf">
 				Most Played
 			</h1>
-			<Songs
-				hideIndex
-				orderBy={false}
-				hideTrackNumber
-				className="Content"
-				songs={data?.getArtistByID.topTenSongs}
-			/>
-		</div>
+			<Songs songs={data?.getArtistByID.topTenSongs}>
+				{songs => (
+					songs.map(
+						song => (
+							<Song
+								song={song}
+								hideTrackNumber
+								key={song.songID}
+							/>
+						),
+					)
+				)}
+			</Songs>
+		</Content>
 	)
 }
 

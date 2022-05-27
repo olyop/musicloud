@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { useParams } from "react-router-dom"
 import { Head } from "@oly_op/react-head"
+import { useParams } from "react-router-dom"
 import { createElement, FC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common"
@@ -14,6 +14,7 @@ import {
 } from "../../helpers"
 
 import { Song } from "../../types"
+import Page from "../../components/page"
 import { useStatePlay } from "../../redux"
 import GET_SONG_PAGE from "./get-song-page.gql"
 import { useQuery, usePlaySong } from "../../hooks"
@@ -28,7 +29,10 @@ const bem =
 
 const SongPagePlayButton: FC<PropTypes> = ({ song }) => {
 	const play = useStatePlay()
-	const [ playSong, isPlaying ] = usePlaySong(song)
+
+	const [ playSong, isPlaying ] =
+		usePlaySong(song)
+
 	return (
 		<Button
 			transparent
@@ -43,84 +47,86 @@ const SongPagePlayButton: FC<PropTypes> = ({ song }) => {
 
 const SongPage: FC<PropTypes> = ({ song }) => (
 	<Head pageTitle={song.title}>
-		<div className={bem("", "Content PaddingTopBottom")}>
-			<img
-				alt={song.album.title}
-				crossOrigin="anonymous"
-				className={bem("img", "Elevated")}
-				src={createCatalogImageURL(
-					song.album.albumID,
-					"cover",
-					ImageSizes.FULL,
-					ImageDimensions.SQUARE,
-				)}
-			/>
-			<div>
-				<div className="FlexRowGapHalf MarginBottomHalf">
-					<h1 className="HeadingFour">
-						{song.title}
-					</h1>
-					<SongPagePlayButton
-						song={song}
-					/>
-				</div>
-				<h2 className="HeadingFive MarginBottomHalf">
-					<FeaturingArtists
-						song={song}
-					/>
-				</h2>
-				<h3 className="BodyTwo MarginBottomHalf">
-					<ObjectLink
-						link={{
-							text: song.album.title,
-							path: createObjectPath("album", song.album.albumID),
-						}}
-					/>
-				</h3>
-				<h3 className="BodyOne MarginBottom LightColor LightWeight">
-					<ObjectLinks
-						links={song.genres.map(({ genreID, name }) => ({
-							text: name,
-							path: createObjectPath("genre", genreID),
-						}))}
-					/>
-				</h3>
-				<h4 className="BodyTwo MarginBottomQuart">
-					Released:
-					<Fragment> </Fragment>
-					{song.album.released}
-				</h4>
-				<h4 className="BodyTwo MarginBottomQuart">
-					Duration:
-					<Fragment> </Fragment>
-					{deserializeDuration(song.duration)}
-				</h4>
-				{song.playsTotal && (
+		<Page childrenClassName="PaddingTopBottom">
+			<div className={bem("", "Content")}>
+				<img
+					alt={song.album.title}
+					crossOrigin="anonymous"
+					className={bem("img", "Elevated")}
+					src={createCatalogImageURL(
+						song.album.albumID,
+						"cover",
+						ImageSizes.FULL,
+						ImageDimensions.SQUARE,
+					)}
+				/>
+				<div>
+					<div className="FlexRowGapHalf MarginBottomHalf">
+						<h1 className="HeadingFour">
+							{song.title}
+						</h1>
+						<SongPagePlayButton
+							song={song}
+						/>
+					</div>
+					<h2 className="HeadingFive MarginBottomHalf">
+						<FeaturingArtists
+							song={song}
+						/>
+					</h2>
+					<h3 className="BodyTwo MarginBottomHalf">
+						<ObjectLink
+							link={{
+								text: song.album.title,
+								path: createObjectPath("album", song.album.albumID),
+							}}
+						/>
+					</h3>
+					<h3 className="BodyOne MarginBottom LightColor LightWeight">
+						<ObjectLinks
+							links={song.genres.map(({ genreID, name }) => ({
+								text: name,
+								path: createObjectPath("genre", genreID),
+							}))}
+						/>
+					</h3>
 					<h4 className="BodyTwo MarginBottomQuart">
-						Plays:
+						Released:
 						<Fragment> </Fragment>
-						{numberWithCommas(song.playsTotal)}
+						{song.album.released}
 					</h4>
-				)}
-				<h4 className="BodyTwo MarginBottomQuart">
-					Size:
-					<Fragment> </Fragment>
-					{(song.size * 1e-6).toFixed(2)}
-					<Fragment> MB</Fragment>
-				</h4>
-				<h4 className="BodyTwo MarginBottomQuart">
-					BPM:
-					<Fragment> </Fragment>
-					{song.bpm}
-					<Fragment> BPM</Fragment>
-				</h4>
-				<h4 className="BodyTwo">
-					Key:
-					<Fragment> </Fragment>
-					{song.key.sharp}
-				</h4>
+					<h4 className="BodyTwo MarginBottomQuart">
+						Duration:
+						<Fragment> </Fragment>
+						{deserializeDuration(song.duration)}
+					</h4>
+					{song.playsTotal && (
+						<h4 className="BodyTwo MarginBottomQuart">
+							Plays:
+							<Fragment> </Fragment>
+							{numberWithCommas(song.playsTotal)}
+						</h4>
+					)}
+					<h4 className="BodyTwo MarginBottomQuart">
+						Size:
+						<Fragment> </Fragment>
+						{(song.size * 1e-6).toFixed(2)}
+						<Fragment> MB</Fragment>
+					</h4>
+					<h4 className="BodyTwo MarginBottomQuart">
+						BPM:
+						<Fragment> </Fragment>
+						{song.bpm}
+						<Fragment> BPM</Fragment>
+					</h4>
+					<h4 className="BodyTwo">
+						Key:
+						<Fragment> </Fragment>
+						{song.key.sharp}
+					</h4>
+				</div>
 			</div>
-		</div>
+		</Page>
 	</Head>
 )
 

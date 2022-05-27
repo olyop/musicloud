@@ -1,110 +1,92 @@
-import uniqueID from "lodash-es/uniqueId"
-import type { DocumentNode } from "graphql"
-import InfiniteScroll from "react-infinite-scroller"
-import { QueryResult, useLazyQuery } from "@apollo/client"
-import { ComponentProps, ReactNode, createElement, useEffect } from "react"
-import { InterfaceWithInput, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
+/* eslint-disable react/no-array-index-key */
 
-import { addLoading, useDispatch, removeLoading } from "../../redux"
+import {
+	FC,
+	Ref,
+	Fragment,
+	useState,
+	ReactNode,
+	useEffect,
+	useCallback,
+	createElement,
+} from "react"
 
-const queryID =
-	uniqueID()
+import { DocumentNode } from "@apollo/client"
 
-const isLastPage =
-	(objectsLength: number, page: number) =>
-		objectsLength !== (
-			(page * PAGINATION_PAGE_SIZE) +
-			PAGINATION_PAGE_SIZE
+import FeedItem from "./item"
+import { SettingsOrderBy } from "../../types"
+import { useApolloClient } from "../../apollo"
+
+const Feed = <ItemsTotalData, Item, ItemData, OrderBy>(
+	propTypes: PropTypes<ItemsTotalData, Item, ItemData>,
+): ReturnType<FC> => {
+	const {
+		itemQuery,
+		renderItem,
+		settingsOrderBy,
+		itemsTotalQuery,
+		itemDataToValue,
+		itemsTotalDataToValue,
+	} = propTypes
+
+	const client =
+		useApolloClient()
+
+	const [ itemsTotal, setItemsTotal ] =
+		useState<Total>(null)
+
+	const getAndSetItemsTotal =
+		useCallback(
+			async () => {
+				const { data } =
+					await client.query<ItemsTotalData>({
+						query: itemsTotalQuery,
+					})
+
+				if (itemsTotalDataToValue(data)) {
+					setItemsTotal(itemsTotalDataToValue(data))
+				}
+			},
+			[],
 		)
 
-const Feed = <Data, GenericVars>({
-	query,
-	render,
-	scrollElement,
-	dataToObjectsLength,
-	variables: baseVariables = {} as GenericVars,
-}: PropTypes<Data, GenericVars>) => {
-	const dispatch = useDispatch()
-
-	type Vars =
-		InputVars<GenericVars>
-
-	const [ lazyQuery, result ] =
-		useLazyQuery<Data, Vars>(query, {
-			variables: {
-				input: {
-					...(baseVariables || {} as GenericVars),
-					page: 0,
-				},
-			},
-		})
-
-	const handleAddLoading =
-		() => {
-			dispatch(addLoading(queryID))
-		}
-
-	const handleRemoveLoading =
-		() => {
-			dispatch(removeLoading(queryID))
-		}
-
-	const handleLoadMore: HandleLoadMore =
-		page => {
-			console.log({ page })
-			if (result.data) {
-				handleAddLoading()
-				if (!isLastPage(dataToObjectsLength(result.data), page)) {
-					void result.fetchMore({
-						variables: {
-							input: {
-								...baseVariables,
-								page,
-							},
-						},
-					}).then(handleRemoveLoading)
-				}
-			}
-		}
-
 	useEffect(() => {
-		void lazyQuery({
-			variables: {
-				input: {
-					...(baseVariables || {} as GenericVars),
-					page: 0,
-				},
-			},
-		}).then(handleRemoveLoading)
+		void getAndSetItemsTotal()
 	}, [])
 
-	return result.data ? (
-		<InfiniteScroll
-			hasMore
-			useWindow={false}
-			loadMore={handleLoadMore}
-			children={render(result)}
-			getScrollParent={() => scrollElement}
-		/>
-	) : null
+	if (itemsTotal) {
+		const nullArray = new Array<null>(itemsTotal).fill(null)
+		return (
+			<Fragment>
+				{nullArray.map(
+					(song, index) => (
+						<FeedItem<Item, ItemData, OrderBy>
+							key={index}
+							index={index}
+							itemQuery={itemQuery}
+							renderItem={renderItem}
+							itemDataToValue={itemDataToValue}
+							settingsOrderBy={settingsOrderBy}
+						/>
+					),
+				)}
+			</Fragment>
+		)
+	} else {
+		return null
+	}
 }
 
-export interface BaseVars {
-	page: number,
-}
+type Total =
+	number | null
 
-type InputVars<GenericVars> =
-	InterfaceWithInput<BaseVars & GenericVars>
-
-type HandleLoadMore =
-	ComponentProps<typeof InfiniteScroll>["loadMore"]
-
-interface PropTypes<Data, GenericVars> {
-	query: DocumentNode,
-	variables?: GenericVars,
-	scrollElement: HTMLElement | null,
-	dataToObjectsLength: (data: Data) => number,
-	render: (result: QueryResult<Data, InputVars<GenericVars>>) => ReactNode,
+interface PropTypes<ItemsTotalData, Item, ItemData> {
+	itemQuery: DocumentNode,
+	itemsTotalQuery: DocumentNode,
+	settingsOrderBy: keyof SettingsOrderBy,
+	itemDataToValue: (data: ItemData) => Item | null,
+	itemsTotalDataToValue: (data: ItemsTotalData) => Total,
+	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => ReactNode,
 }
 
 export default Feed

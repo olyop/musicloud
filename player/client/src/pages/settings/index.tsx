@@ -1,13 +1,7 @@
 import { createBEM } from "@oly_op/bem"
-import toNumber from "lodash-es/toNumber"
 import { Head } from "@oly_op/react-head"
+import toNumber from "lodash-es/toNumber"
 import { ChangeEventHandler, createElement, FC } from "react"
-
-import {
-	SettingsTheme,
-	SettingsListStyle,
-	SettingsTransitions,
-} from "../../types"
 
 import {
 	useDispatch,
@@ -27,7 +21,10 @@ import {
 	useStateGridChildWidth,
 } from "../../redux"
 
+import Page from "../../components/page"
 import Select from "../../components/select"
+import Content from "../../components/content"
+import { SettingsTheme, SettingsListStyle, SettingsTransitions } from "../../types"
 
 import "./index.scss"
 
@@ -81,11 +78,8 @@ const SettingsPage: FC = () => {
 
 	return (
 		<Head pageTitle="Settings">
-			<div className={bem("", "Content PaddingTopBottom")}>
-				<h1 className="HeadingFour MarginBottom">
-					Settings
-				</h1>
-				<div className="FlexColumnGap">
+			<Page>
+				<Content className={bem("", "FlexColumnGap")}>
 					<details open className={bem("details")}>
 						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
 							Appearance
@@ -199,8 +193,8 @@ const SettingsPage: FC = () => {
 							</div>
 						</div>
 					</details>
-				</div>
-			</div>
+				</Content>
+			</Page>
 		</Head>
 	)
 }

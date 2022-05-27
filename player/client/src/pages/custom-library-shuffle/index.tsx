@@ -2,9 +2,11 @@ import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
 import { Head } from "@oly_op/react-head"
 
+import Content from "../../components/content"
+
 const CustomLibraryShufflePage: FC = () => (
 	<Head pageTitle="Custom Library Shuffle">
-		<div className="Content PaddingTopBottom">
+		<Content>
 			<div className="FlexRowGapHalf">
 				<Button
 					icon="add"
@@ -15,7 +17,7 @@ const CustomLibraryShufflePage: FC = () => (
 					text="Artist"
 				/>
 			</div>
-		</div>
+		</Content>
 	</Head>
 )
 

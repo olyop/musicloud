@@ -1,10 +1,10 @@
 query getArtistPageAlbums(
 	$artistID: UUID!
-	$albumsOrderBy: AlbumsOrderByInput!
+	$orderBy: AlbumsOrderByInput!
 ) {
 	getArtistByID(artistID: $artistID) {
 		artistID
-		albums(orderBy: $albumsOrderBy) {
+		albums(orderBy: $orderBy) {
 			title
 			albumID
 			released

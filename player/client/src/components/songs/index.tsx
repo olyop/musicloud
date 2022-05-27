@@ -1,34 +1,28 @@
 import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { isUndefined } from "lodash-es"
+import isFunction from "lodash-es/isFunction"
+import { createElement, FC, ReactNode } from "react"
 
-import Song from "../song"
 import SelectOrderBy from "../select-order-by"
-import { ClassNameBEMPropTypes, Handler, OrderByOptions, SettingsOrderBySongs, Song as SongType } from "../../types"
+import { ClassNameBEMPropTypes, OrderByOptions, SettingsOrderBySongs, Song } from "../../types"
 
 const bem =
 	createBEM("Songs")
 
-const Songs: FC<SongsPropTypes> = ({
-	onJump,
-	onRemove,
+const Songs: FC<PropTypes> = ({
+	songs,
+	orderBy,
+	children,
 	className,
-	songs = [],
-	orderBy = false,
-	hidePlay = false,
-	hidePlays = false,
-	hideIndex = false,
-	hideModal = false,
-	hideCover = false,
-	hideDuration = false,
 	hideElevated = false,
-	hideInLibrary = false,
-	hideTrackNumber = false,
 }) => (
 	<div
 		className={bem(
 			className,
-			(isEmpty(songs) || hideElevated) || "Elevated",
+			!hideElevated &&
+			!isEmpty(songs) &&
+			"Elevated",
 		)}
 	>
 		{orderBy && (
@@ -38,47 +32,20 @@ const Songs: FC<SongsPropTypes> = ({
 				className="PaddingHalf ItemBorder FlexRowRight"
 			/>
 		)}
-		{songs.map(
-			(song, index) => (
-				<Song
-					song={song}
-					hidePlay={hidePlay}
-					hidePlays={hidePlays}
-					hideCover={hideCover}
-					hideModal={hideModal}
-					hideDuration={hideDuration}
-					hideInLibrary={hideInLibrary}
-					hideTrackNumber={hideTrackNumber}
-					className="ItemBorder PaddingHalf"
-					key={song.songID + index.toString()}
-					index={hideIndex ? undefined : index + 1}
-					onJump={onJump && onJump({ index, song })}
-					onRemove={onRemove && onRemove({ index, song })}
-				/>
-			),
+		{(isFunction(children) ?
+			(isUndefined(songs) ?
+				songs :
+				children(songs)) :
+			children
 		)}
 	</div>
 )
 
-export interface SongChangeOptions {
-	index: number,
-	song: SongType,
-}
-
-export interface SongsPropTypes extends ClassNameBEMPropTypes {
-	songs?: SongType[],
-	hidePlay?: boolean,
-	hideCover?: boolean,
-	hidePlays?: boolean,
-	hideIndex?: boolean,
-	hideModal?: boolean,
-	hideDuration?: boolean,
+export interface PropTypes extends ClassNameBEMPropTypes {
+	songs?: Song[],
 	hideElevated?: boolean,
-	hideInLibrary?: boolean,
-	hideTrackNumber?: boolean,
-	onJump?: (options: SongChangeOptions) => Handler,
-	onRemove?: (options: SongChangeOptions) => Handler,
-	orderBy?: OrderByOptions<SettingsOrderBySongs> | false,
+	orderBy?: OrderByOptions<SettingsOrderBySongs>,
+	children: ((songs: Song[]) => ReactNode) | ReactNode,
 }
 
 export default Songs

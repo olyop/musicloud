@@ -3,7 +3,6 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	height: var(--button-dimension);
 	@media (max-width: 800px) {
 		--gap: calc(var(--space) * 0.3); }
 	&:hover &__in-lib {
@@ -29,9 +28,6 @@
 		&-link {
 			height: 100%;
 			margin-right: var(--gap); } }
-	// &__in-library {
-	// 	@media (max-width: 700px) {
-	// 		display: none; } }
 	&__info {
 		flex-grow: 1;
 		display: flex;
@@ -40,6 +36,7 @@
 		align-self: stretch;
 		align-items: stretch;
 		justify-content: space-between;
+		height: var(--button-dimension);
 		&-left {
 			display: flex;
 			flex-direction: column;

@@ -19,9 +19,10 @@
 	--primary-color-dark: #c41c00;
 	--primary-color-light: #ff8a50;
 
+	--bar-height-base: calc(var(--border-width) + var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height));
 	--bar-height: var(--bar-height-base);
-	--header-height: calc(var(--button-dimesnion) + var(--space));
-	--bar-height-base: calc(var(--button-dimesnion) + var(--space-one-quart) + var(--progress-height));
+
+	--header-height: calc(var(--button-dimesnion) + var(--space) + var(--border-width));
 
 	@media (max-width: 900px) {
 		--content-image-width: 275rem; }

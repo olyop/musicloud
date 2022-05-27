@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
-import { useParams } from "react-router-dom"
 import { Head } from "@oly_op/react-head"
+import { useParams } from "react-router-dom"
 import { createElement, FC, Fragment } from "react"
 import { PlaylistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
@@ -14,16 +14,19 @@ import {
 	useShufflePlaylist,
 } from "../../hooks"
 
-import { Playlist } from "../../types"
+import Song from "../../components/song"
+import Page from "../../components/page"
 import DeleteButton from "./delete-button"
 import RenameButton from "./rename-button"
+import Songs from "../../components/songs"
 import { useStatePlay } from "../../redux"
 import PrivacyButton from "./privacy-button"
 import Buttons from "../../components/buttons"
+import Content from "../../components/content"
 import InLibraryButton from "./in-library-button"
 import ObjectLink from "../../components/object-link"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
-import Songs, { SongChangeOptions } from "../../components/songs"
+import { Playlist, SongPlaylistIndex } from "../../types"
 import { determinePlural, createObjectPath } from "../../helpers"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
@@ -57,13 +60,13 @@ const PlaylistPage: FC = () => {
 		data?.getPlaylistByID.user.userID === userID
 
 	const handleRemoveSongFromPlaylist =
-		({ song }: SongChangeOptions) =>
+		({ playlistIndex }: SongPlaylistIndex) =>
 			() => {
-				if (!isNull(song.playlistIndex)) {
+				if (!isNull(playlistIndex)) {
 					void removeSongFromPlaylist({
 						variables: {
 							playlistID,
-							index: song.playlistIndex,
+							index: playlistIndex,
 						},
 					})
 				}
@@ -86,95 +89,108 @@ const PlaylistPage: FC = () => {
 			</p>
 		)
 	}
-	return (
-		<div className="Content FlexColumnGap PaddingTopBottom">
-			{data && (
-				<Head pageTitle={data.getPlaylistByID.title}>
-					<div className="FlexColumnGapHalf">
-						<div className="FlexRowGapHalf">
-							<h1 className="HeadingFour">
-								{data.getPlaylistByID.title}
-							</h1>
-							<Button
-								text="Play"
-								transparent
-								className="Border"
-								onClick={playPlaylist}
-								icon={play && isPlaying ? "pause" : "play_arrow"}
-							/>
-						</div>
-						<h2 className="BodyOne">
-							<ObjectLink
-								link={{
-									text: data.getPlaylistByID.user.name,
-									path: createObjectPath("user", data.getPlaylistByID.user.userID),
-								}}
-							/>
-							<Fragment> - </Fragment>
-							{startCase(toLower(data.getPlaylistByID.privacy))}
-						</h2>
-						<p className="BodyOne LightColor">
-							{(new Date(data.getPlaylistByID.dateCreated)).toLocaleDateString()}
-						</p>
-					</div>
-					{isEmpty(data.getPlaylistByID.songs) ? (
-						<p className="BodyOneBold">
-							No songs.
-						</p>
-					) : (
-						<Songs
-							orderBy={false}
-							songs={data.getPlaylistByID.songs}
-							onRemove={isUsers ? handleRemoveSongFromPlaylist : undefined}
-						/>
-					)}
-					{data.getPlaylistByID.songsTotal && (
-						<p className="BodyTwoBold">
-							{data.getPlaylistByID.songsTotal}
-							{" "}
-							song
-							{determinePlural(data.getPlaylistByID.songsTotal)}
-						</p>
-					)}
-					<Buttons>
-						<Button
-							icon="shuffle"
-							text="Shuffle"
-							onClick={shufflePlaylist}
-						/>
-						{isUsers || (
-							<InLibraryButton
-								playlist={data.getPlaylistByID}
-							/>
-						)}
-						<Button
-							icon="share"
-							text="Share"
-							onClick={handleShare}
-						/>
-					</Buttons>
-					{isUsers && (
+
+	if (data) {
+		const playlist = data.getPlaylistByID
+		const { title, user, dateCreated, privacy, songs, songsTotal } = playlist
+		return (
+			<Head pageTitle={title}>
+				<Page>
+					<Content className="FlexColumnGap">
 						<div className="FlexColumnGapHalf">
-							<p className="BodyOneBold">
-								Actions
+							<div className="FlexRowGapHalf">
+								<h1 className="HeadingFour">
+									{title}
+								</h1>
+								<Button
+									text="Play"
+									transparent
+									className="Border"
+									onClick={playPlaylist}
+									icon={play && isPlaying ? "pause" : "play_arrow"}
+								/>
+							</div>
+							<h2 className="BodyOne">
+								<ObjectLink
+									link={{
+										text: user.name,
+										path: createObjectPath("user", user.userID),
+									}}
+								/>
+								<Fragment> - </Fragment>
+								{startCase(toLower(privacy))}
+							</h2>
+							<p className="BodyOne LightColor">
+								{(new Date(dateCreated)).toLocaleDateString()}
 							</p>
-							<Buttons>
-								<PrivacyButton
-									playlist={data.getPlaylistByID}
-								/>
-								<RenameButton
-									playlist={data.getPlaylistByID}
-								/>
-								<DeleteButton
-									playlistID={playlistID}
-								/>
-							</Buttons>
 						</div>
-					)}
-				</Head>
-			)}
-		</div>
-	)
+						{isEmpty(songs) ? (
+							<p className="BodyOneBold">
+								No songs.
+							</p>
+						) : (
+							<Songs>
+								{songs.map(
+									song => (
+										<Song
+											song={song}
+											key={song.songID}
+											onRemove={isUsers ? handleRemoveSongFromPlaylist(song) : undefined}
+										/>
+									),
+								)}
+							</Songs>
+						)}
+						{songsTotal && (
+							<p className="BodyTwoBold">
+								{songsTotal}
+								{" "}
+								song
+								{determinePlural(songsTotal)}
+							</p>
+						)}
+						<Buttons>
+							<Button
+								icon="shuffle"
+								text="Shuffle"
+								onClick={shufflePlaylist}
+							/>
+							{isUsers || (
+								<InLibraryButton
+									playlist={playlist}
+								/>
+							)}
+							<Button
+								icon="share"
+								text="Share"
+								onClick={handleShare}
+							/>
+						</Buttons>
+						{isUsers && (
+							<div className="FlexColumnGapHalf">
+								<p className="BodyOneBold">
+									Actions
+								</p>
+								<Buttons>
+									<PrivacyButton
+										playlist={playlist}
+									/>
+									<RenameButton
+										playlist={playlist}
+									/>
+									<DeleteButton
+										playlistID={playlistID}
+									/>
+								</Buttons>
+							</div>
+						)}
+					</Content>
+				</Page>
+			</Head>
+		)
+	} else {
+		return null
+	}
 }
 
 interface GetPlaylistPageData {

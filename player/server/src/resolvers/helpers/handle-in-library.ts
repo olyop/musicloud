@@ -25,14 +25,14 @@ export interface HandleInLibraryOptionsBase
 export interface HandleInLibraryOptions
 	extends HandleInLibraryOptionsBase, TableNameOptions, ColumnNameOptions {
 	columnKey: string,
-	returnQuery: string,
+	returnQuery?: string,
 	libraryTableName: string,
 	columnNames: readonly string[],
 }
 
 export const handleInLibrary =
 	(pool: Pool) =>
-		async <T>(options: HandleInLibraryOptions) => {
+		async <T = void>(options: HandleInLibraryOptions) => {
 			const {
 				userID,
 				objectID,
@@ -94,14 +94,16 @@ export const handleInLibrary =
 					})
 				}
 
-				returnResult =
-					await query(returnQuery)({
-						parse: convertFirstRowToCamelCase<T>(),
-						variables: {
-							[columnKey]: objectID,
-							columnNames: join(columnNames),
-						},
-					})
+				if (returnQuery) {
+					returnResult =
+						await query(returnQuery)({
+							parse: convertFirstRowToCamelCase<T>(),
+							variables: {
+								[columnKey]: objectID,
+								columnNames: join(columnNames),
+							},
+						})
+				}
 
 				await query("COMMIT")()
 			} catch (error) {
@@ -111,5 +113,6 @@ export const handleInLibrary =
 				client.release()
 			}
 
+			// @ts-ignore
 			return returnResult
 		}

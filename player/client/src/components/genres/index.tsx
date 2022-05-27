@@ -1,16 +1,16 @@
 import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
+import { createElement, FC, ReactNode } from "react"
 
-import Genre from "../genre"
 import SelectOrderBy from "../select-order-by"
-import { ClassNameBEMPropTypes, Genre as GenreType, GenresOrderByField } from "../../types"
+import { ClassNameBEMPropTypes, Genre, GenresOrderByField } from "../../types"
 
 const bem =
-	createBEM("Genre")
+	createBEM("")
 
 const Genres: FC<PropTypes> = ({
 	genres,
+	children,
 	className,
 	orderBy = false,
 }) => (
@@ -19,24 +19,20 @@ const Genres: FC<PropTypes> = ({
 			<SelectOrderBy
 				alwaysList
 				className="PaddingHalf ItemBorder FlexRowRight"
-				orderBy={{ key: "genres", fields: Object.keys(GenresOrderByField) }}
+				orderBy={{
+					key: "genres",
+					fields: Object.keys(GenresOrderByField),
+				}}
 			/>
 		)}
-		{genres.map(
-			genre => (
-				<Genre
-					genre={genre}
-					key={genre.genreID}
-					className="ItemBorder PaddingHalf"
-				/>
-			),
-		)}
+		{children(genres)}
 	</div>
 )
 
 interface PropTypes extends ClassNameBEMPropTypes {
+	genres: Genre[],
 	orderBy?: boolean,
-	genres: GenreType[],
+	children: (genres: Genre[]) => ReactNode,
 }
 
 export default Genres

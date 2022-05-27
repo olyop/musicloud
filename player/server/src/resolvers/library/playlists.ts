@@ -4,14 +4,20 @@ import {
 	PoolOrClient,
 	getResultRowCountOrNull,
 	convertTableToCamelCaseOrNull,
+	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
 import { UserID, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 
+import {
+	SELECT_LIBRARY_PLAYLISTS,
+	SELECT_LIBRARY_PLAYLISTS_PAGINATED,
+	SELECT_LIBRARY_PLAYLIST_AT_INDEX,
+} from "../../sql"
+
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
-import { Playlist, GetObjectsOptions, LibraryObjectsPaginatedArgs } from "../../types"
-import { SELECT_LIBRARY_PLAYLISTS, SELECT_LIBRARY_PLAYLISTS_PAGINATED } from "../../sql"
+import { Playlist, GetObjectsOptions, LibraryObjectsPaginatedArgs, LibraryObjectAtIndexArgs } from "../../types"
 
 interface GetLibraryPlaylistsOptions<T>
 	extends UserID, GetObjectsOptions<T> {}
@@ -64,6 +70,22 @@ export const playlistsPaginated =
 					orderByTableName:
 						args.input.orderBy.field === "DATE_ADDED" ?
 							"library_playlists" : "playlists",
+				},
+			})
+		),
+	)
+
+export const playlistAtIndex =
+	resolver<Playlist | null, LibraryObjectAtIndexArgs>(
+		({ args, context }) => (
+			query(context.pg)(SELECT_LIBRARY_PLAYLIST_AT_INDEX)({
+				parse: convertFirstRowToCamelCaseOrNull(),
+				variables: {
+					atIndex: args.input.atIndex,
+					userID: context.authorization!.userID,
+					orderByDirection: args.input.orderBy.direction,
+					columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
+					orderByField: `playlists.${args.input.orderBy.field}`,
 				},
 			})
 		),

@@ -35,6 +35,7 @@ type Mutation {
 
   # library
   deleteLibrary: Void
+  addCatalogToLibrary: Void!
   addSongToLibrary(songID: UUID!): Song!
   addAlbumToLibrary(albumID: UUID!): Album!
   addArtistToLibrary(artistID: UUID!): Artist!

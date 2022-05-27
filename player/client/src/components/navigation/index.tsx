@@ -10,59 +10,52 @@ import "./index.scss"
 const bem =
 	createBEM("Navigation")
 
-const Navigation: FC<PropTypes> = ({
-	right,
-	routes,
-	className,
-	innerClassName,
-}) => (
-	<nav className={bem(className, "")}>
-		<div className={bem(innerClassName, "FlexRowSpaceBetween")}>
-			<div className={bem("links", "FlexRowGapHalf")}>
-				{routes.map(({
-					icon,
-					path,
-					name,
-					ignore,
-					routeID,
-					underline = true,
-				}) => (
-					ignore || (
-						<NavLink
-							to={path}
-							key={routeID}
-							className={
-								({ isActive }) => (
-									bem(
-										isActive && (
-											underline ?
-												"active" : "active-no-underline"
-										),
-										"link",
-									)
+const Navigation: FC<PropTypes> = ({ right, routes, className }) => (
+	<nav className={bem(className, "", "FlexRowSpaceBetween")}>
+		<div className={bem("links", "FlexRowGapHalf")}>
+			{routes.map(({
+				icon,
+				path,
+				name,
+				ignore,
+				routeID,
+				underline = true,
+			}) => (
+				ignore || (
+					<NavLink
+						to={path}
+						key={routeID}
+						className={
+							({ isActive }) => (
+								bem(
+									isActive && (
+										underline ?
+											"active" : "active-no-underline"
+									),
+									"link",
 								)
-							}
-							children={(
-								<Button
-									icon={icon}
-									text={name}
-									transparent
-									className={bem("link-button")}
-									iconClassName={bem("link-button-icon")}
-									textClassName={bem("link-button-text")}
-								/>
-							)}
-						/>
-					)
-				))}
-			</div>
-			{right && (
-				<div
-					children={right}
-					className="FlexRowGapHalf"
-				/>
-			)}
+							)
+						}
+						children={(
+							<Button
+								icon={icon}
+								text={name}
+								transparent
+								className={bem("link-button")}
+								iconClassName={bem("link-button-icon")}
+								textClassName={bem("link-button-text")}
+							/>
+						)}
+					/>
+				)
+			))}
 		</div>
+		{right && (
+			<div
+				children={right}
+				className="FlexRowGapHalf"
+			/>
+		)}
 	</nav>
 )
 

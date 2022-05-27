@@ -1,6 +1,6 @@
 import isNull from "lodash-es/isNull"
 import { BEMInput } from "@oly_op/bem"
-import { createElement, FC, Fragment } from "react"
+import { createElement, forwardRef, Fragment, Ref } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import {
@@ -17,27 +17,30 @@ import ObjectLinks from "../object-links"
 import { usePlaySong } from "../../hooks"
 import FeaturingArtists from "../featuring-artists"
 import { useStateShowGenres, useStateShowDuration } from "../../redux"
-import { Song as SongType, Handler, ObjectShowIcon } from "../../types"
+import { Song as SongType, Handler, ObjectShowIcon, ClassNameBEMPropTypes } from "../../types"
 
-const Song: FC<PropTypes> = ({
-	song,
-	index,
-	onJump,
-	onRemove,
-	className,
-	iconClassName,
-	showIcon = false,
-	hidePlay = false,
-	hideCover = false,
-	hidePlays = false,
-	hideModal = false,
-	shareIcon = false,
-	hideDuration = false,
-	hideInLibrary = false,
-	leftIcon = "audiotrack",
-	hideTrackNumber = false,
-}) => {
-	const { album, genres, duration, playsTotal, trackNumber } = song
+const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
+	const {
+		song,
+		index,
+		onJump,
+		onRemove,
+		iconClassName,
+		showIcon = false,
+		hidePlay = false,
+		hideCover = false,
+		hidePlays = false,
+		hideModal = false,
+		shareIcon = false,
+		hideDuration = false,
+		hideInLibrary = false,
+		leftIcon = "audiotrack",
+		hideTrackNumber = false,
+		className = "ItemBorder PaddingHalf",
+	} = propTypes
+
+	const isSongNull =
+		isNull(song)
 
 	const showGenres =
 		useStateShowGenres()
@@ -46,110 +49,132 @@ const Song: FC<PropTypes> = ({
 		useStateShowDuration()
 
 	const [ playSong, isPlaying ] =
-		usePlaySong(hidePlay ? undefined : song)
+		usePlaySong(hidePlay ? null : song)
 
 	return (
 		<Item
+			ref={ref}
 			onRemove={onRemove}
 			shareIcon={shareIcon}
 			className={className}
 			iconClassName={iconClassName}
-			leftIcon={showIcon ? leftIcon : undefined}
-			left={index || (hideTrackNumber ? null : trackNumber)}
-			imageOptions={
-				hideCover ? undefined : {
-					title: album.title,
+			leftIcon={(
+				showIcon ?
+					leftIcon :
+					undefined
+			)}
+			left={(
+				isSongNull ?
+					null : (
+						index || (
+							hideTrackNumber ?
+								null :
+								song.trackNumber
+						)
+					)
+			)}
+			imageOptions={(
+				isSongNull || hideCover ? undefined : {
+					title: song.album.title,
 					path: createObjectPath(
 						"album",
-						album.albumID,
+						song.album.albumID,
 					),
 					url: createCatalogImageURL(
-						album.albumID,
+						song.album.albumID,
 						"cover",
 						ImageSizes.HALF,
 						ImageDimensions.SQUARE,
 					),
 				}
-			}
-			playOptions={
-				onJump ? {
-					onClick: onJump,
-					isPlaying: false,
-				} : (
-					hidePlay ? undefined : {
-						isPlaying,
-						onClick: playSong,
-					}
+			)}
+			playOptions={(
+				isSongNull ? undefined : (
+					onJump ? {
+						onClick: onJump,
+						isPlaying: false,
+					} : (
+						hidePlay ? undefined : {
+							isPlaying,
+							onClick: playSong,
+						}
+					)
 				)
-			}
-			infoOptions={{
-				upperLeft: (
-					<SongTitle
-						song={song}
-						onClick={playSong}
-					/>
-				),
-				lowerLeft: (
-					<Fragment>
-						<FeaturingArtists
+			)}
+			infoOptions={(
+				isSongNull ? undefined : {
+					upperLeft: (
+						<SongTitle
 							song={song}
+							onClick={playSong}
 						/>
-						{showGenres && (
-							<Fragment>
-								<Fragment> &#8226; </Fragment>
-								<ObjectLinks
-									ampersand
-									links={genres.map(
-										({ genreID, name }) => ({
-											text: name,
-											path: createObjectPath("genre", genreID),
-										}),
-									)}
-								/>
-							</Fragment>
-						)}
-					</Fragment>
-				),
-				rightRight: (
-					showDuration ?
-						(hideDuration ?
-							null : deserializeDuration(duration)) :
-						null
-				),
-				rightLeft: (
-					hidePlays || isNull(playsTotal) ?
-						null : numberWithCommas(playsTotal)
-				),
-			}}
-			modal={hideModal ? undefined : ({ open, onClose }) => (
-				<Modal
-					open={open}
-					song={song}
-					onClose={onClose}
-					hidePlay={hidePlay}
-					onRemove={onRemove}
-					hideInLibrary={hideInLibrary}
-				/>
+					),
+					lowerLeft: (
+						<Fragment>
+							<FeaturingArtists
+								song={song}
+							/>
+							{showGenres && (
+								<Fragment>
+									<Fragment> &#8226; </Fragment>
+									<ObjectLinks
+										ampersand
+										links={song.genres.map(
+											({ genreID, name }) => ({
+												text: name,
+												path: createObjectPath("genre", genreID),
+											}),
+										)}
+									/>
+								</Fragment>
+							)}
+						</Fragment>
+					),
+					rightRight: (
+						showDuration ?
+							(hideDuration ?
+								null : deserializeDuration(song.duration)) :
+							null
+					),
+					rightLeft: (
+						hidePlays || isNull(song.playsTotal) ?
+							null : numberWithCommas(song.playsTotal)
+					),
+				}
+			)}
+			modal={(
+				hideModal || isSongNull ? undefined : (
+					({ open, onClose }) => (
+						<Modal
+							open={open}
+							song={song}
+							onClose={onClose}
+							hidePlay={hidePlay}
+							onRemove={onRemove}
+							hideInLibrary={hideInLibrary}
+						/>
+					)
+				)
 			)}
 		/>
 	)
-}
+})
 
-interface PropTypes extends ObjectShowIcon {
-	song: SongType,
+interface PropTypes extends ObjectShowIcon, ClassNameBEMPropTypes {
 	index?: number,
 	onJump?: Handler,
 	leftIcon?: string,
 	onRemove?: Handler,
 	hidePlay?: boolean,
-	className?: string,
 	shareIcon?: boolean,
 	hideCover?: boolean,
 	hidePlays?: boolean,
 	hideModal?: boolean,
+	song: SongType | null,
 	hideDuration?: boolean,
 	hideInLibrary?: boolean,
 	iconClassName?: BEMInput,
+	ref?: Ref<HTMLDivElement>,
 	hideTrackNumber?: boolean,
 }
 

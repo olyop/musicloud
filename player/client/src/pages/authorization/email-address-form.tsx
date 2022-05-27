@@ -12,8 +12,9 @@ import { UserEmailAddressBase } from "@oly_op/musicloud-common"
 
 import { useMutation } from "../../hooks"
 import isEmailAddress from "./is-email-address"
-import EMAIL_ADDRESS_EXISTS from "./email-address-exists.gql"
 import Input, { InputOnChange } from "../../components/input"
+
+import EMAIL_ADDRESS_EXISTS from "./email-address-exists.gql"
 
 const AuthorizationEmailAddressForm: FC<PropTypes> = ({
 	emailAddress,

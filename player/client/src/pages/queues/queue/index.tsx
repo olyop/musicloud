@@ -1,7 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
-import { isEmpty, orderBy } from "lodash-es"
+import { isEmpty, isNull } from "lodash-es"
 
 import {
 	IndexVars,
@@ -10,15 +10,12 @@ import {
 	RemoveLaterData,
 } from "../types"
 
-import {
-	useDispatch,
-	toggleQueueDisclosure,
-	useStateQueuesDisclosure,
-} from "../../../redux"
-
-import Songs, { SongChangeOptions } from "../../../components/songs"
+import Song from "../../../components/song"
+import Songs from "../../../components/songs"
 import { useQuery, useMutation, useJWTPayload } from "../../../hooks"
-import { Queue as QueueType, Song as SongType } from "../../../types"
+import { Queue as QueueType, Song as SongType, SongQueueIndex } from "../../../types"
+import { useDispatch, toggleQueueDisclosure, useStateQueuesDisclosure } from "../../../redux"
+
 import JUMP_TO_SONG_IN_QUEUE_NEXT from "./jump-to-song-in-queue-next.gql"
 import JUMP_TO_SONG_IN_QUEUE_LATER from "./jump-to-song-in-queue-later.gql"
 import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
@@ -63,77 +60,89 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 		}
 
 	const handleRemove =
-		({ index }: SongChangeOptions) =>
-			async () => {
-				if (queueKey === "next") {
-					await removeNext({
-						variables: { index },
-						update: cache => {
-							cache.modify({
-								id: cache.identify({ userID, __typename: "User" }),
-								fields: {
-									queueNext:
-										(exisiting: SongType[] = []) =>
-											exisiting.filter(song => song.queueIndex !== index),
-								},
-							})
-						},
-					})
-				} else if (queueKey === "later") {
-					await removeLater({
-						variables: { index },
-						update: cache => {
-							cache.modify({
-								id: cache.identify({ userID, __typename: "User" }),
-								fields: {
-									queueLaters:
-										(exisiting: SongType[] = []) =>
-											exisiting.filter(song => song.queueIndex !== index),
-								},
-							})
-						},
-					})
+		({ queueIndex }: SongQueueIndex) =>
+			() => {
+				if (!isNull(queueIndex)) {
+					if (queueKey === "next") {
+						void removeNext({
+							variables: { index: queueIndex },
+							update: cache => {
+								cache.modify({
+									id: cache.identify({ userID, __typename: "User" }),
+									fields: {
+										queueNext:
+											(exisiting: SongType[] = []) =>
+												exisiting.filter(song => song.queueIndex !== queueIndex),
+									},
+								})
+							},
+						})
+					} else if (queueKey === "later") {
+						void removeLater({
+							variables: { index: queueIndex },
+							update: cache => {
+								cache.modify({
+									id: cache.identify({ userID, __typename: "User" }),
+									fields: {
+										queueLaters:
+											(exisiting: SongType[] = []) =>
+												exisiting.filter(song => song.queueIndex !== queueIndex),
+									},
+								})
+							},
+						})
+					}
 				}
 			}
 
 	const handleJump =
-		({ index }: SongChangeOptions) =>
-			async () => {
-				if (queueKey === "next") {
-					await jumpNext({
-						variables: { index },
-					})
-				} else if (queueKey === "later") {
-					await jumpLater({
-						variables: { index },
-					})
+		({ queueIndex }: SongQueueIndex) =>
+			() => {
+				if (!isNull(queueIndex)) {
+					if (queueKey === "next") {
+						void jumpNext({
+							variables: { index: queueIndex },
+						})
+					} else if (queueKey === "later") {
+						void jumpLater({
+							variables: { index: queueIndex },
+						})
+					}
 				}
 			}
 
-	return data && !isEmpty(data.getQueue[queueKey]) ? (
-		<div className={bem(className, "FlexColumn ItemBorder")}>
-			<Button
-				text={name}
-				transparent
-				className={bem("expand")}
-				onClick={handleUpdateDisclosure}
-				icon={queuesDisclosure[queueKey] ? "expand_more" : "chevron_right"}
-			/>
-			{queuesDisclosure[queueKey] && (
-				<Songs
-					hidePlay
-					hidePlays
-					hideIndex
-					hideElevated
-					orderBy={false}
-					onJump={handleJump}
-					onRemove={handleRemove}
-					className={bem("section")}
-					songs={orderBy(data.getQueue[queueKey], "queueIndex")}
+	if (data && !isEmpty(data.getQueue[queueKey])) {
+		const songs = data.getQueue[queueKey]
+		return (
+			<div className={bem(className, "FlexColumn ItemBorder")}>
+				<Button
+					text={name}
+					transparent
+					className={bem("expand")}
+					onClick={handleUpdateDisclosure}
+					icon={queuesDisclosure[queueKey] ? "expand_more" : "chevron_right"}
 				/>
-			)}
-		</div>
-	) : null
+				{queuesDisclosure[queueKey] && (
+					<Songs hideElevated className={bem("section")}>
+						{songs.map(
+							song => (
+								<Song
+									hidePlay
+									hidePlays
+									song={song}
+									key={song.queueIndex}
+									onJump={handleJump(song)}
+									onRemove={handleRemove(song)}
+								/>
+							),
+						)}
+					</Songs>
+				)}
+			</div>
+		)
+	} else {
+		return null
+	}
 }
 
 interface Data {

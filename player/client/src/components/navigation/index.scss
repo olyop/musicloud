@@ -19,9 +19,9 @@
 				padding-right: 0; } } }
 	&__active {
 		&::after {
-			bottom: 0;
 			width: 100%;
 			content: "";
-			height: 2rem;
+			height: 3rem;
+			bottom: -11rem;
 			position: absolute;
 			background-color: var(--text-color); } } }

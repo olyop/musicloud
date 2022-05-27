@@ -12,11 +12,17 @@
 			},
 			"env": {
 				"browser": true
+			},
+			"rules": {
+				"react/jsx-key": "error"
 			}
 		},
 		{
 			"files": ["*.gql"],
-			"extends": "plugin:@graphql-eslint/operations-recommended",
+			"extends": [
+				"plugin:@graphql-eslint/schema-recommended",
+				"plugin:@graphql-eslint/operations-recommended"
+			],
 			"parserOptions": {
 				"operations": "./player/client/src/**/*.gql",
 				"schema": "./player/server/src/type-defs/*.gql"

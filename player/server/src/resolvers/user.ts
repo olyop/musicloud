@@ -149,7 +149,7 @@ export const playlistsFilteredByAlbum =
 	resolver<Playlist[], AlbumID>(
 		() => {
 			throw new ApolloError("Not implemented yet.")
-		}
+		},
 		// ({ context }) => (
 		// 	query(context.pg)("SE")({
 		// 		parse: convertTableToCamelCase(),

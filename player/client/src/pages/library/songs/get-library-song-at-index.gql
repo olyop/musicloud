@@ -1,0 +1,37 @@
+query getLibrarySongAtIndex($input: LibrarySongAtIndexInput!) {
+	getLibrary {
+		songAtIndex(input: $input) {
+			mix
+			title
+			songID
+			duration
+			inLibrary
+			playsTotal
+			dateAddedToLibrary
+			featuring {
+				artistID
+				name
+			}
+			remixers {
+				artistID
+				name
+			}
+			artists {
+				artistID
+				name
+			}
+			genres {
+				genreID
+				name
+			}
+			album {
+				title
+				albumID
+			}
+			userPlays {
+				playID
+				dateCreated
+			}
+		}
+	}
+}

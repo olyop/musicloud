@@ -1,7 +1,7 @@
 import path from "node:path"
+import { fileURLToPath } from "node:url"
 import { loadSchema } from "@graphql-tools/load"
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
-import { fileURLToPath } from "node:url"
 
 const directoryName =
 	path.dirname(fileURLToPath(import.meta.url))

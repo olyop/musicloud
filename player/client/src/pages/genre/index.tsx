@@ -1,15 +1,31 @@
-import { isUndefined } from "lodash-es"
+import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
 import { useParams } from "react-router-dom"
+import isUndefined from "lodash-es/isUndefined"
 import { GenreID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 
+import {
+	Genre,
+	SongsOrderBy,
+	OrderByOptions,
+	SongsOrderByField,
+	SettingsOrderBySongs,
+} from "../../types"
+
 import { useQuery } from "../../hooks"
 import Page from "../../components/page"
+import Song from "../../components/song"
 import Songs from "../../components/songs"
 import { useStateOrderBy } from "../../redux"
+import Content from "../../components/content"
+
 import GET_GENRE_PAGE from "./get-genre-page.gql"
-import { Genre, SongsOrderBy, SongsOrderByField } from "../../types"
+
+const orderBy: OrderByOptions<SettingsOrderBySongs> = {
+	key: "songs",
+	fields: Object.keys(SongsOrderByField),
+}
 
 const GenrePage: FC = () => {
 	const params = useParams<keyof GenreID>()
@@ -24,26 +40,31 @@ const GenrePage: FC = () => {
 
 	if (!isUndefined(error)) {
 		return (
-			<h2 className="Content BodyOne PaddingTopBottom">
-				{error.message === "Failed to fetch" ?
-					error.message :
-					"Genre does not exist."}
-			</h2>
+			<Content>
+				<h2 className="BodyOne">
+					{error.message === "Failed to fetch" ?
+						error.message :
+						"Genre does not exist."}
+				</h2>
+			</Content>
 		)
 	} else if (!isUndefined(data)) {
+		const { songs } = data.getGenreByID
 		return (
-			<Page
-				pageTitle={data.getGenreByID.name}
-				contentClassName="PaddingTopBottom"
-				content={(
-					<Songs
-						hideIndex
-						songs={data.getGenreByID.songs}
-						className="Content "
-						orderBy={{ key: "songs", fields: Object.keys(SongsOrderByField) }}
-					/>
-				)}
-			/>
+			<Head pageTitle={data.getGenreByID.name}>
+				<Page>
+					<Songs orderBy={orderBy} className="Content">
+						{songs.map(
+							song => (
+								<Song
+									song={song}
+									key={song.songID}
+								/>
+							),
+						)}
+					</Songs>
+				</Page>
+			</Head>
 		)
 	} else {
 		return null

@@ -13,6 +13,8 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useState, createElement, FC, useEffect } from "react"
 
 import { Album, User } from "../../types"
+import Content from "../../components/content"
+import Playlist from "../../components/playlist"
 import GET_ALBUM_DATA from "./get-album-data.gql"
 import Playlists from "../../components/playlists"
 import { useQuery, useMutation } from "../../hooks"
@@ -51,7 +53,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 			ADD_ALBUM_TO_PLAYLIST,
 		)
 
-	const onClose =
+	const handleClose =
 		() => navigate(-1)
 
 	const handleAdd =
@@ -63,16 +65,16 @@ const AddAlbumToPlaylistPage: FC = () => {
 
 	const handlePlaylistSelect =
 		(value: string) =>
-			setPlaylistID(value === playlistID ? null : value)
+			() => setPlaylistID(value === playlistID ? null : value)
 
 	useEffect(() => {
 		if (data) {
-			onClose()
+			handleClose()
 		}
 	}, [data])
 
-	return albumData ? (
-		<div className={bem("", "Content PaddingTopBottom")}>
+	return albumData && playlistsData ? (
+		<Content className={bem("")}>
 			<img
 				crossOrigin="anonymous"
 				alt={albumData.getAlbumByID.title}
@@ -95,28 +97,31 @@ const AddAlbumToPlaylistPage: FC = () => {
 					}}
 				/>
 			</h1>
-			{playlistsData && !isEmpty(playlistsData.getUser.playlists) ? (
-				<Playlists
-					hideModal
-					hideInLibrary
-					orderBy={false}
-					className={bem("playlists")}
-					selectedClassName={bem("selected")}
-					playlistClassName={bem("playlist")}
-					onPlaylistClick={handlePlaylistSelect}
-					isSelected={value => value === playlistID}
-					playlists={playlistsData.getUser.playlists}
-				/>
-			) : (
+			{isEmpty(playlistsData.getUser.playlists) ? (
 				<p className="BodyTwo">
 					No playlists to add to.
 				</p>
+			) : (
+				<Playlists className={bem("playlists")} playlists={playlistsData.getUser.playlists}>
+					{playlistsData.getUser.playlists.map(
+						playlist => (
+							<Playlist
+								hideModal
+								hideInLibrary
+								playlist={playlist}
+								key={playlist.playlistID}
+								onClick={handlePlaylistSelect(playlist.playlistID)}
+								className={bem("playlist", playlist.playlistID === playlistID && "selected")}
+							/>
+						),
+					)}
+				</Playlists>
 			)}
 			<div className="FlexRowGapHalf">
 				<Button
 					text="Back"
 					icon="arrow_back"
-					onClick={onClose}
+					onClick={handleClose}
 				/>
 				<Button
 					icon="add"
@@ -124,7 +129,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 					onClick={handleAdd}
 				/>
 			</div>
-		</div>
+		</Content>
 	) : null
 }
 

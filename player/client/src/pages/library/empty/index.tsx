@@ -2,19 +2,21 @@ import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import { createElement, FC, Fragment, ReactNode } from "react"
 
+import Content from "../../../components/content"
+
 import "./index.scss"
 
 const bem =
 	createBEM("LibraryEmpty")
 
 const LibraryEmpty: FC<PropTypes> = ({ name, content }) => (
-	<div className="Content PaddingBottom FlexColumnGapHalf">
-		<h2 className={bem("heading")}>
+	<Content className="FlexColumnGapHalf">
+		<h2 className="HeadingTwo">
 			<Fragment>No </Fragment>
 			{name}
 			<Fragment>.</Fragment>
 		</h2>
-		<h3 className={bem("text")}>
+		<h3 className="BodyOne">
 			<Link
 				to="/"
 				children="Browse"
@@ -29,7 +31,7 @@ const LibraryEmpty: FC<PropTypes> = ({ name, content }) => (
 			<Fragment> to add music.</Fragment>
 		</h3>
 		{content}
-	</div>
+	</Content>
 )
 
 interface PropTypes {

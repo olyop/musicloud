@@ -86,7 +86,11 @@ export interface ArtistTopTenSongs {
 }
 
 export interface Artist
-	extends ArtistBase, ArtistSongs, ArtistTopTenSongs, InLibraryObject<"Artist"> {
+	extends
+	ArtistBase,
+	ArtistSongs,
+	ArtistTopTenSongs,
+	InLibraryObject<"Artist"> {
 		since: string,
 		albums: Album[],
 		songsTotal: number,
@@ -95,8 +99,20 @@ export interface Artist
 		country: string | null,
 	}
 
+export interface SongQueueIndex {
+	queueIndex: number | null,
+}
+
+export interface SongPlaylistIndex {
+	playlistIndex: number | null,
+}
+
 export interface Song
-	extends SongBase, InLibraryObject<"Song"> {
+	extends
+	SongBase,
+	SongQueueIndex,
+	SongPlaylistIndex,
+	InLibraryObject<"Song"> {
 		key: Key,
 		size: number,
 		album: Album,
@@ -105,8 +121,6 @@ export interface Song
 		remixers: Artist[],
 		featuring: Artist[],
 		isInPlaylist: boolean,
-		queueIndex: number | null,
-		playlistIndex: number | null,
 		dateAddedToPlaylist: number | null,
 	}
 

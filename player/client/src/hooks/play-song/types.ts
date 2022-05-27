@@ -8,7 +8,7 @@ import {
 import { QueueNowPlaying, Song } from "../../types"
 
 export type Input =
-	Song | SongID
+	Song | SongID | null
 
 export type ToggleIsOptimistic =
 	(value: boolean) => void

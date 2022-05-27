@@ -52,37 +52,39 @@ const Apollo: FC<ChildrenProps> = ({ children }) => (
 )
 
 const Root: FC = () => (
-	<StrictMode>
-		<Redux>
-			<Router>
-				<Apollo>
-					<Audio>
-						<Loading>
-							<Head>
-								<ApplySettings>
-									<Authorization>
-										<Sidebar/>
-										<Header/>
-										<Pages/>
-										<Bar/>
-									</Authorization>
-								</ApplySettings>
-							</Head>
-						</Loading>
-					</Audio>
-				</Apollo>
-			</Router>
-		</Redux>
-	</StrictMode>
+	<Redux>
+		<Router>
+			<Apollo>
+				<Audio>
+					<Loading>
+						<Head>
+							<ApplySettings>
+								<Authorization>
+									<Sidebar/>
+									<Header/>
+									<Pages/>
+									<Bar/>
+								</Authorization>
+							</ApplySettings>
+						</Head>
+					</Loading>
+				</Audio>
+			</Apollo>
+		</Router>
+	</Redux>
 )
 
 const rootElement =
 	document.getElementById("Root")!
 
 const root =
-	createRoot(rootElement)
+	createRoot(rootElement)!
 
-root.render(<Root/>)
+root.render((
+	<StrictMode>
+		<Root/>
+	</StrictMode>
+))
 
 if (process.env.SERVICE_WORKER === "true") {
 	const workbox = new Workbox("/service-worker.js")

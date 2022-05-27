@@ -12,13 +12,15 @@ import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, createElement, FC, Fragment, useEffect } from "react"
 
+import Content from "../../components/content"
 import GET_SONG_DATA from "./get-song-data.gql"
+import Playlist from "../../components/playlist"
 import Playlists from "../../components/playlists"
-import { User, Song, Playlist } from "../../types"
 import SongTitle from "../../components/song-title"
 import { useQuery, useMutation } from "../../hooks"
 import { createCatalogImageURL } from "../../helpers"
 import ADD_SONG_TO_PLAYLIST from "./add-song-to-playlist.gql"
+import { User, Song, Playlist as PlaylistType } from "../../types"
 import GET_USER_PLAYLISTS from "./get-user-playlists-filtered-by-song.gql"
 
 import "./index.scss"
@@ -63,7 +65,7 @@ const AddSongToPlaylistPage: FC = () => {
 
 	const handlePlaylistSelect =
 		(value: string) =>
-			setPlaylistID(value === playlistID ? null : value)
+			() => setPlaylistID(value === playlistID ? null : value)
 
 	useEffect(() => {
 		if (data) {
@@ -72,7 +74,7 @@ const AddSongToPlaylistPage: FC = () => {
 	}, [data])
 
 	return (
-		<div className={bem("", "Content PaddingTopBottom")}>
+		<Content className={bem("")}>
 			{songData && playlistsData && (
 				<Fragment>
 					<img
@@ -92,22 +94,25 @@ const AddSongToPlaylistPage: FC = () => {
 							song={songData.getSongByID}
 						/>
 					</h1>
-					{!isEmpty(playlistsData.getUser.playlistsFilteredBySong) ? (
-						<Playlists
-							hideModal
-							hideInLibrary
-							orderBy={false}
-							className={bem("playlists")}
-							selectedClassName={bem("selected")}
-							playlistClassName={bem("playlist")}
-							onPlaylistClick={handlePlaylistSelect}
-							isSelected={value => value === playlistID}
-							playlists={playlistsData.getUser.playlistsFilteredBySong}
-						/>
-					) : (
+					{isEmpty(playlistsData.getUser.playlists) ? (
 						<p className="BodyTwo">
 							No playlists to add to.
 						</p>
+					) : (
+						<Playlists className={bem("playlists")} playlists={playlistsData.getUser.playlists}>
+							{playlistsData.getUser.playlists.map(
+								playlist => (
+									<Playlist
+										hideModal
+										hideInLibrary
+										key={playlist.playlistID}
+										playlist={playlist}
+										onClick={handlePlaylistSelect(playlist.playlistID)}
+										className={bem("playlist", playlist.playlistID === playlistID && "selected")}
+									/>
+								),
+							)}
+						</Playlists>
 					)}
 					<div className="FlexRowGapHalf">
 						<Button
@@ -123,7 +128,7 @@ const AddSongToPlaylistPage: FC = () => {
 					</div>
 				</Fragment>
 			)}
-		</div>
+		</Content>
 	)
 }
 
@@ -137,7 +142,7 @@ interface GetUserPlaylistsData {
 
 type AddSongToPlaylistDataPick =
 	Pick<
-		Playlist,
+		PlaylistType,
 		"__typename" | "playlistID" | "songs"
 	>
 

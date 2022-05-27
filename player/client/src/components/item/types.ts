@@ -1,7 +1,7 @@
-import { ReactNode, CSSProperties } from "react"
 import { BEMInput } from "@oly_op/bem"
+import { ReactNode, CSSProperties } from "react"
 
-import { Handler, OnClickPropTypes } from "../../types"
+import { ClassNameBEMPropTypes, Handler, OnClickPropTypes } from "../../types"
 
 export interface ImageOptions {
 	url: string,
@@ -21,24 +21,16 @@ export interface InfoOptions {
 	rightRight?: ReactNode,
 }
 
-// export interface InLibraryOptions {
-// 	onClick: Handler,
-// 	isError?: boolean,
-// 	inLibrary: boolean,
-// }
-
-interface ClassNames {
-	className?: string,
+interface ClassNames extends ClassNameBEMPropTypes {
 	infoClassName?: BEMInput,
 	iconClassName?: BEMInput,
 	rightClassName?: BEMInput,
 }
 
 interface Options {
-	infoOptions: InfoOptions,
+	infoOptions?: InfoOptions,
 	playOptions?: PlayOptions,
 	imageOptions?: ImageOptions,
-	// inLibraryOptions?: InLibraryOptions,
 }
 
 interface ModalOptions {

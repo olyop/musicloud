@@ -1,6 +1,8 @@
 .Header {
 	z-index: 2;
+	box-shadow: none;
 	padding-top: env(safe-area-inset-top);
+	background-color: var(--elevated-color);
 	height: calc(var(--header-height) + env(safe-area-inset-top));
 	&__left {
 		@media (min-width: 700px) {
