@@ -21,6 +21,7 @@ const Disc: FC<PropTypes> = ({
 				<Song
 					hideCover
 					song={song}
+					key={song.songID}
 					hideTrackNumber={isSingle}
 					className="PaddingHalf ItemBorder"
 				/>

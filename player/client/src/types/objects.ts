@@ -129,6 +129,7 @@ export interface Playlist
 		user: User,
 		songs: Song[],
 		songsTotal: number | null,
+		playlistIndex: number | null,
 	}
 
 export interface QueueNext {

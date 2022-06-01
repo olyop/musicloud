@@ -82,6 +82,10 @@ const FeedItem = <Item, ItemData, OrderBy>(propTypes: PropTypes<Item, ItemData>)
 		}
 	}, [orderBy.field, orderBy.direction])
 
+	if (index === 40) {
+		console.log("FeedItem")
+	}
+
 	return (
 		<Fragment>
 			{renderItem(ref, item)}

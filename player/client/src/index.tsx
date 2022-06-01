@@ -1,3 +1,10 @@
+import {
+	HeadProvider,
+	HeadConfiguration,
+	HeadOnPageTitleChange,
+	defaultParseTitleFunction,
+} from "@oly_op/react-head"
+
 import { Workbox } from "workbox-window"
 import { createRoot } from "react-dom/client"
 import { ApolloProvider } from "@apollo/client"
@@ -6,7 +13,6 @@ import { Provider as ReduxProvider } from "react-redux"
 import { BrowserRouter as Router } from "react-router-dom"
 import { ChildrenProps, TITLE } from "@oly_op/musicloud-common"
 import { AudioPlayerProvider as Audio } from "react-use-audio-player"
-import { defaultParseTitleFunction, HeadProvider, HeadOnPageTitleChange } from "@oly_op/react-head"
 
 import Pages from "./pages"
 import client from "./apollo"
@@ -26,16 +32,17 @@ const Head: FC<ChildrenProps> = ({ children }) => {
 			dispatch(updatePageTitle(pageTitle))
 		}
 
+	const configuration: HeadConfiguration = {
+		title: TITLE,
+		description: TITLE,
+		parseTitle: defaultParseTitleFunction,
+		onPageTitleChange: handlePageTitleChange,
+	}
+
 	return (
-		<HeadProvider
-			children={children}
-			configuration={{
-				title: TITLE,
-				description: TITLE,
-				parseTitle: defaultParseTitleFunction,
-				onPageTitleChange: handlePageTitleChange,
-			}}
-		/>
+		<HeadProvider configuration={configuration}>
+			{children}
+		</HeadProvider>
 	)
 }
 

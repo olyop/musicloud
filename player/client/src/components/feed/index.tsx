@@ -7,7 +7,6 @@ import {
 	useState,
 	ReactNode,
 	useEffect,
-	useCallback,
 	createElement,
 } from "react"
 
@@ -36,19 +35,16 @@ const Feed = <ItemsTotalData, Item, ItemData, OrderBy>(
 		useState<Total>(null)
 
 	const getAndSetItemsTotal =
-		useCallback(
-			async () => {
-				const { data } =
-					await client.query<ItemsTotalData>({
-						query: itemsTotalQuery,
-					})
+		async () => {
+			const { data } =
+				await client.query<ItemsTotalData>({
+					query: itemsTotalQuery,
+				})
 
-				if (itemsTotalDataToValue(data)) {
-					setItemsTotal(itemsTotalDataToValue(data))
-				}
-			},
-			[],
-		)
+			if (itemsTotalDataToValue(data)) {
+				setItemsTotal(itemsTotalDataToValue(data))
+			}
+		}
 
 	useEffect(() => {
 		void getAndSetItemsTotal()

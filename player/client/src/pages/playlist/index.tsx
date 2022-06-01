@@ -36,8 +36,7 @@ const PlaylistPage: FC = () => {
 	const params = useParams<keyof PlaylistID>()
 	const playlistID = addDashesToUUID(params.playlistID!)
 
-	const variables: PlaylistID =
-		{ playlistID }
+	const variables: PlaylistID = { playlistID }
 
 	const [ playPlaylist, isPlaying ] =
 		usePlayPlaylist(variables)
@@ -129,12 +128,13 @@ const PlaylistPage: FC = () => {
 								No songs.
 							</p>
 						) : (
-							<Songs>
+							<Songs songs={songs}>
 								{songs.map(
 									song => (
 										<Song
 											song={song}
 											key={song.songID}
+											index={playlist.playlistIndex!}
 											onRemove={isUsers ? handleRemoveSongFromPlaylist(song) : undefined}
 										/>
 									),
@@ -144,8 +144,7 @@ const PlaylistPage: FC = () => {
 						{songsTotal && (
 							<p className="BodyTwoBold">
 								{songsTotal}
-								{" "}
-								song
+								<Fragment> song</Fragment>
 								{determinePlural(songsTotal)}
 							</p>
 						)}

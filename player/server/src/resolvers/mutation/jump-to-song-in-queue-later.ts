@@ -70,6 +70,7 @@ export const jumpToSongInQueueLater =
 						userID,
 						value: find(laterSongs, { index: args.index })!.songID,
 					})
+
 					await Promise.all(
 						laterSongs.slice(0, args.index).map(
 							queueSong => (
@@ -83,6 +84,7 @@ export const jumpToSongInQueueLater =
 							),
 						),
 					)
+
 					await query(DELETE_QUEUE_SONG)({
 						variables: {
 							userID,
@@ -90,6 +92,7 @@ export const jumpToSongInQueueLater =
 							tableName: "queue_laters",
 						},
 					})
+
 					await Promise.all(
 						laterSongs.slice(args.index + 1).map(
 							({ index }, newIndex) => (

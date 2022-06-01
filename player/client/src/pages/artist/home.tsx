@@ -26,16 +26,14 @@ const ArtistPageHome: FC = () => {
 				Most Played
 			</h1>
 			<Songs songs={data?.getArtistByID.topTenSongs}>
-				{songs => (
-					songs.map(
-						song => (
-							<Song
-								song={song}
-								hideTrackNumber
-								key={song.songID}
-							/>
-						),
-					)
+				{songs => songs.map(
+					song => (
+						<Song
+							song={song}
+							hideTrackNumber
+							key={song.songID}
+						/>
+					),
 				)}
 			</Songs>
 		</Content>

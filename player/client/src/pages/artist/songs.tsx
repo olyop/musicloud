@@ -43,6 +43,7 @@ const ArtistPageSongs: FC = () => {
 							hidePlays
 							song={song}
 							hideTrackNumber
+							key={song.songID}
 						/>
 					),
 				)}

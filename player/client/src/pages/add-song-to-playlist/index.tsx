@@ -100,13 +100,13 @@ const AddSongToPlaylistPage: FC = () => {
 						</p>
 					) : (
 						<Playlists className={bem("playlists")} playlists={playlistsData.getUser.playlists}>
-							{playlistsData.getUser.playlists.map(
+							{playlists => playlists.map(
 								playlist => (
 									<Playlist
 										hideModal
 										hideInLibrary
-										key={playlist.playlistID}
 										playlist={playlist}
+										key={playlist.playlistID}
 										onClick={handlePlaylistSelect(playlist.playlistID)}
 										className={bem("playlist", playlist.playlistID === playlistID && "selected")}
 									/>

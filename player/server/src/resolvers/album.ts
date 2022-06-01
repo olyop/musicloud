@@ -181,12 +181,15 @@ export const userPlaysTotal =
 export const inLibrary =
 	resolver(
 		async ({ parent, context }) => {
+			const { albumID } = parent
+
 			const albumSongs =
 				await getAlbumSongs(context.pg)({
-					albumID: parent.albumID,
+					albumID,
 					columnNames: COLUMN_NAMES.SONG[0],
 					parse: convertTableToCamelCase<Song>(),
 				})
+
 			const songsInLibrary =
 				await Promise.all(
 					albumSongs.map(
@@ -200,6 +203,7 @@ export const inLibrary =
 						),
 					),
 				)
+
 			return songsInLibrary.every(Boolean)
 		},
 	)

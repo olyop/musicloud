@@ -9,35 +9,37 @@ interface ObserverInstance {
 const observerMap =
 	new Map<string, ObserverInstance>()
 
-const RootIds: WeakMap<Element | Document, string> =
+const RootIDs: WeakMap<Element | Document, string> =
 	new WeakMap()
 
 let rootId = 0
 let unsupportedValue: boolean | undefined
 
-export function defaultFallbackInView(inView: boolean | undefined) {
-	unsupportedValue = inView
-}
+export const defaultFallbackInView =
+	(inView: boolean | undefined) => {
+		unsupportedValue = inView
+	}
 
 const getRootID =
 	(root: IntersectionObserverInit["root"]) => {
 		if (!root) return "0"
-		if (RootIds.has(root)) return RootIds.get(root)
+		if (RootIDs.has(root)) return RootIDs.get(root)!
 		rootId += 1
-		RootIds.set(root, rootId.toString())
-		return RootIds.get(root)
+		RootIDs.set(root, rootId.toString())
+		return RootIDs.get(root) as string
 	}
 
 export const optionsToID =
-	(options: IntersectionObserverInit) =>
-		Object.keys(options)
-					.sort()
-					// @ts-ignore
-					.filter(key => options[key] !== undefined)
-					// @ts-ignore
-					// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-					.map(key => `${key}_${key === "root" ? getRootID(options.root) : options[key]}`)
-					.toString()
+	(options: IntersectionObserverInit) => {
+		const keysTyped = Object.keys(options) as Array<keyof typeof options>
+		return (
+			keysTyped
+				.sort()
+				.filter(key => options[key] !== undefined)
+				.map(key => `${key}_${key === "root" ? getRootID(options.root) : options[key] as string}`)
+				.toString()
+		)
+	}
 
 const createObserver =
 	(options: IntersectionObserverInit) => {
@@ -46,27 +48,33 @@ const createObserver =
 
 		if (!instance) {
 			const elements = new Map<Element, Array<ObserverInstanceCallback>>()
+
 			let thresholds: number[] | readonly number[]
 
 			const observer =
-				new IntersectionObserver((entries) => {
-					entries.forEach((entry) => {
-						const inView =
-							entry.isIntersecting &&
-							thresholds.some((threshold) => entry.intersectionRatio >= threshold)
+				new IntersectionObserver(
+					entries => {
+						entries.forEach(
+							entry => {
+								const inView =
+									entry.isIntersecting &&
+									thresholds.some(threshold => entry.intersectionRatio >= threshold)
 
-						// @ts-ignore
-						if (options.trackVisibility && typeof entry.isVisible === "undefined") {
-							// @ts-ignore
-							// eslint-disable-next-line no-param-reassign
-							entry.isVisible = inView
-						}
+								// @ts-ignore
+								if (options.trackVisibility && typeof entry.isVisible === "undefined") {
+									// @ts-ignore
+									// eslint-disable-next-line no-param-reassign
+									entry.isVisible = inView
+								}
 
-						elements.get(entry.target)?.forEach((callback) => {
-							callback(inView, entry)
-						})
-					})
-				}, options)
+								elements.get(entry.target)?.forEach(callback => {
+									callback(inView, entry)
+								})
+							},
+						)
+					},
+					options,
+				)
 
 			thresholds =
 				observer.thresholds ||

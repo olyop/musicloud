@@ -38,18 +38,20 @@ export const shuffleArtist =
 					value: nowPlaying!.songID,
 				})
 
-				await Promise.all(shuffled.map(
-					({ songID }, index) => (
-						query(INSERT_QUEUE_SONG)({
-							variables: {
-								index,
-								songID,
-								userID,
-								tableName: "queue_laters",
-							},
-						})
+				await Promise.all(
+					shuffled.map(
+						({ songID }, index) => (
+							query(INSERT_QUEUE_SONG)({
+								variables: {
+									index,
+									songID,
+									userID,
+									tableName: "queue_laters",
+								},
+							})
+						),
 					),
-				))
+				)
 
 				await query("COMMIT")()
 			} catch (error) {

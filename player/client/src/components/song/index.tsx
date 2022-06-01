@@ -1,5 +1,6 @@
 import isNull from "lodash-es/isNull"
 import { BEMInput } from "@oly_op/bem"
+import isUndefined from "lodash-es/isUndefined"
 import { createElement, forwardRef, Fragment, Ref } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
@@ -65,12 +66,12 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 			)}
 			left={(
 				isSongNull ?
-					null : (
-						index || (
+					undefined : (
+						isUndefined(index) ? (
 							hideTrackNumber ?
-								null :
+								undefined :
 								song.trackNumber
-						)
+						) : index
 					)
 			)}
 			imageOptions={(

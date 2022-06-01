@@ -64,8 +64,7 @@ export const nextQueueSong =
 						}),
 						...queueToBeEdited
 							.filter(
-								({ index }) =>
-									index !== 0,
+								({ index }) => index !== 0,
 							)
 							.map(
 								queueSong => (

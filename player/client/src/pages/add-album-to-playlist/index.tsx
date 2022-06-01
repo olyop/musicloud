@@ -103,7 +103,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 				</p>
 			) : (
 				<Playlists className={bem("playlists")} playlists={playlistsData.getUser.playlists}>
-					{playlistsData.getUser.playlists.map(
+					{playlists => playlists.map(
 						playlist => (
 							<Playlist
 								hideModal

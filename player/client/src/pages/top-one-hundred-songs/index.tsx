@@ -62,14 +62,17 @@ const TopOneHundredSongsPage: FC = () => {
 				children={(
 					<Content>
 						<Songs songs={data?.getTopOneHundredSongs}>
-							{songs => songs.map(song => (
-								<Song
-									song={song}
-									hideDuration
-									hideTrackNumber
-									key={song.songID}
-								/>
-							))}
+							{songs => songs.map(
+								(song, index) => (
+									<Song
+										song={song}
+										hideDuration
+										hideTrackNumber
+										index={index + 1}
+										key={song.songID}
+									/>
+								),
+							)}
 						</Songs>
 					</Content>
 				)}

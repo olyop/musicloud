@@ -2,6 +2,7 @@
 import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
+import isUndefined from "lodash-es/isUndefined"
 import { useState, createElement, Fragment, forwardRef } from "react"
 
 import {
@@ -66,7 +67,7 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					className={bem("left-icon", "icon")}
 				/>
 			)}
-			{left && (
+			{!isUndefined(left) && !isUndefined(left) && (
 				<p
 					children={left}
 					className={bem("left", "BodyOne")}
