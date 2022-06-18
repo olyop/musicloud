@@ -1,0 +1,5 @@
+query getLibraryPlaylistsTotal {
+	getLibrary {
+		playlistsTotal
+	}
+}

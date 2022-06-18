@@ -13,7 +13,7 @@ import {
 	PlaylistID,
 } from "@oly_op/musicloud-common"
 
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 
 import {
 	SELECT_SONG_BY_ID,

@@ -1,4 +1,4 @@
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 import { PlaylistID, SongID } from "@oly_op/musicloud-common"
 import { query, getResultExists, PoolOrClient } from "@oly_op/pg-helpers"
 

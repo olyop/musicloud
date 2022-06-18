@@ -17,29 +17,23 @@ const orderBy: OrderByOptions<SettingsOrderBySongs> = {
 
 const LibrarySongs: FC = () => (
 	<Head pageTitle="Library Songs">
-		<Songs
-			orderBy={orderBy}
-			className="Content Elevated"
-			children={(
-				<Feed<GetSongsTotalData, SongType, GetSongAtIndexData, LibrarySongsOrderByField>
-					settingsOrderBy="librarySongs"
-					itemQuery={GET_LIBRARY_SONG_AT_INDEX}
-					itemsTotalQuery={GET_LIBRARY_SONGS_TOTAL}
-					itemDataToValue={({ getLibrary }) => getLibrary.songAtIndex}
-					itemsTotalDataToValue={({ getLibrary }) => getLibrary.songsTotal}
-					renderItem={(
-						(ref, song) => (
-							<Song
-								hidePlays
-								ref={ref}
-								song={song}
-								className="LibrarySong PaddingHalf ItemBorder"
-							/>
-						)
-					)}
-				/>
-			)}
-		/>
+		<Songs orderBy={orderBy} className="Content Elevated">
+			<Feed<GetSongsTotalData, SongType, GetSongAtIndexData>
+				settingsOrderBy="librarySongs"
+				itemQuery={GET_LIBRARY_SONG_AT_INDEX}
+				itemsTotalQuery={GET_LIBRARY_SONGS_TOTAL}
+				itemDataToValue={({ getLibrary }) => getLibrary.songAtIndex}
+				itemsTotalDataToValue={({ getLibrary }) => getLibrary.songsTotal}
+				renderItem={(ref, song) => (
+					<Song
+						hidePlays
+						ref={ref}
+						song={song}
+						className="LibrarySong PaddingHalf ItemBorder"
+					/>
+				)}
+			/>
+		</Songs>
 	</Head>
 )
 

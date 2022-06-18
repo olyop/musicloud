@@ -9,7 +9,7 @@ import LibrarySongs from "./songs"
 // import LibraryAlbums from "./albums"
 // import LibraryArtists from "./artists"
 import LibrarySettings from "./settings"
-// import LibraryPlaylists from "./playlists"
+import LibraryPlaylists from "./playlists"
 
 const routes: Route[] = [{
 	path: "",
@@ -40,7 +40,7 @@ const routes: Route[] = [{
 	path: "playlists",
 	icon: "queue_music",
 	routeID: uniqueID(),
-	// element: <LibraryPlaylists/>,
+	element: <LibraryPlaylists/>,
 },{
 	icon: "list",
 	name: "Genres",

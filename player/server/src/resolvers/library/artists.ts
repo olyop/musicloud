@@ -1,66 +1,39 @@
 import {
 	join,
 	query,
-	PoolOrClient,
 	getResultRowCountOrNull,
-	convertTableToCamelCaseOrNull,
+	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
-
-import { UserID, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
-import { Artist, GetObjectsOptions, LibraryObjectsPaginatedArgs } from "../../types"
-import { SELECT_LIBRARY_ARTISTS, SELECT_LIBRARY_ARTISTS_PAGINATED } from "../../sql"
-
-interface GetLibraryArtistsOptions<T>
-	extends UserID, GetObjectsOptions<T> {}
-
-const getLibraryArtists =
-	(client: PoolOrClient) =>
-		<T>({ userID, columnNames, parse }: GetLibraryArtistsOptions<T>) =>
-			query(client)(SELECT_LIBRARY_ARTISTS)({
-				parse,
-				variables: {
-					userID,
-					columnNames,
-				},
-			})
-
-export const artists =
-	resolver(
-		({ context }) => (
-			getLibraryArtists(context.pg)({
-				userID: context.authorization!.userID,
-				parse: convertTableToCamelCaseOrNull<Artist>(),
-				columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
-			})
-		),
-	)
+import { Artist, LibraryObjectAtIndexArgs } from "../../types"
+import { SELECT_LIBRARY_ARTISTS, SELECT_LIBRARY_ARTIST_AT_INDEX } from "../../sql"
 
 export const artistsTotal =
 	resolver(
 		({ context }) => (
-			getLibraryArtists(context.pg)({
+			query(context.pg)(SELECT_LIBRARY_ARTISTS)({
 				parse: getResultRowCountOrNull,
-				userID: context.authorization!.userID,
-				columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
+				variables: {
+					userID: context.authorization!.userID,
+					columnNames: `artists.${COLUMN_NAMES.ARTIST[0]}`,
+				},
 			})
 		),
 	)
 
-export const artistsPaginated =
-	resolver<Artist[] | null, LibraryObjectsPaginatedArgs>(
+export const artistAtIndex =
+	resolver<Artist | null, LibraryObjectAtIndexArgs>(
 		({ args, context }) => (
-			query(context.pg)(SELECT_LIBRARY_ARTISTS_PAGINATED)({
-				parse: convertTableToCamelCaseOrNull(),
+			query(context.pg)(SELECT_LIBRARY_ARTIST_AT_INDEX)({
+				parse: convertFirstRowToCamelCaseOrNull(),
 				variables: {
-					page: args.input.page,
+					atIndex: args.input.atIndex,
 					userID: context.authorization!.userID,
-					paginationPageSize: PAGINATION_PAGE_SIZE,
+					orderByField: args.input.orderBy.field,
+					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 					orderByDirection: args.input.orderBy.direction,
-					columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
-					orderByField: args.input.orderBy.field.toLowerCase(),
 					orderByTableName:
 						args.input.orderBy.field === "DATE_ADDED" ?
 							"library_artists" : "artists",

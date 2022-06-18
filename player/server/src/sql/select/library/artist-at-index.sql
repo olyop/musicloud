@@ -7,10 +7,10 @@ JOIN
 		ON library_artists.artist_id = artists.artist_id
 WHERE
 	in_library = true AND
-	user_id = '{{ userID }}'
+	library_artists.user_id = '{{ userID }}'
 ORDER BY
 	{{ orderByTableName }}.{{ orderByField }} {{ orderByDirection }}
 LIMIT
-	{{ paginationPageSize }}
+	1
 OFFSET
-	{{ page }} * {{ paginationPageSize }};
+	{{ atIndex }};

@@ -1,4 +1,4 @@
-import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { ForbiddenError, UserInputError } from "apollo-server-errors"
 import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common"
 import { convertFirstRowToCamelCase, exists, join, query } from "@oly_op/pg-helpers"
 

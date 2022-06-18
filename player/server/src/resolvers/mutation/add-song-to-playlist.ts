@@ -1,6 +1,6 @@
 import { last } from "lodash-es"
 import { PlaylistID, SongID } from "@oly_op/musicloud-common"
-import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { ForbiddenError, UserInputError } from "apollo-server-errors"
 import { convertTableToCamelCase, exists, join, query } from "@oly_op/pg-helpers"
 
 import {

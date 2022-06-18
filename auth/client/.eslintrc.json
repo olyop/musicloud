@@ -1,0 +1,16 @@
+{
+	"extends": [
+		"@oly_op/eslint-config-react",
+		"../../.eslintrc.json"
+	],
+	"env": {
+		"browser": true
+	},
+	"parserOptions": {
+		"project": "./auth/client/tsconfig.json"
+	},
+	"rules": {
+		"jsx-a11y/autocomplete-valid": "off",
+		"jsx-a11y/label-has-associated-control": "off"
+	}
+}

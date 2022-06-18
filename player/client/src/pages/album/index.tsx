@@ -18,14 +18,15 @@ import Page from "../../components/page"
 import createDiscs from "./create-discs"
 import AlbumPlayButton from "./play-button"
 import Buttons from "../../components/buttons"
-import GET_ALBUM_PAGE from "./get-album-page.gql"
+import Content from "../../components/content"
 import AlbumTitle from "../../components/album-title"
 import ObjectLinks from "../../components/object-links"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
 import { createObjectPath, createCatalogImageURL, determinePlural } from "../../helpers"
 
+import GET_ALBUM_PAGE from "./get-album-page.gql"
+
 import "./index.scss"
-import Content from "../../components/content"
 
 const bem =
 	createBEM("AlbumPage")
@@ -183,7 +184,7 @@ const AlbumPage: FC = () => {
 			</Head>
 		)
 	} else {
-		return null
+		return <Page/>
 	}
 }
 

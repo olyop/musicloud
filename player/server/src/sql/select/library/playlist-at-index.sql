@@ -4,10 +4,10 @@ FROM
 	library_playlists
 JOIN
 	playlists
-		ON library_playlists.playlist_id = songs.playlist_id
+		ON library_playlists.playlist_id = playlists.playlist_id
 WHERE
 	in_library = true AND
-	user_id = '{{ userID }}'
+	library_playlists.user_id = '{{ userID }}'
 ORDER BY
 	{{ orderByField }} {{ orderByDirection }}
 LIMIT

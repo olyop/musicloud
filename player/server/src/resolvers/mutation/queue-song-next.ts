@@ -7,7 +7,7 @@ import {
 
 import isEmpty from "lodash-es/isEmpty"
 import { SongID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 
 import {
 	SELECT_QUEUE,

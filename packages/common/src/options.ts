@@ -14,10 +14,10 @@ export const PG_POOL_OPTIONS: PoolConfig = {
 	parseInputDatesAsUTC: true,
 	idleTimeoutMillis: 30 * 1000,
 	connectionTimeoutMillis: 5 * 1000,
-	user: process.env.AWS_RDS_USERNAME,
-	host: process.env.AWS_RDS_ENDPOINT,
-	password: process.env.AWS_RDS_PASSWORD,
-	database: process.env.AWS_RDS_DATABASE,
+	host: process.env.POSTGRESQL_HOSTNAME,
+	user: process.env.POSTGRESQL_USERNAME,
+	password: process.env.POSTGRESQL_PASSWORD,
+	database: process.env.POSTGRESQL_DATABASE,
 }
 
 type HelmetOptions =

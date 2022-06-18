@@ -18,7 +18,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { isNull } from "lodash-es"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 
 import {
 	Key,

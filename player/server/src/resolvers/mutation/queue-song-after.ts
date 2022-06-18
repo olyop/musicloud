@@ -5,7 +5,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { SongID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"

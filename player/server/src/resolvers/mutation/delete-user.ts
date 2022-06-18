@@ -1,5 +1,5 @@
 import { NAME } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { exists, query as pgHelpersQuery } from "@oly_op/pg-helpers"

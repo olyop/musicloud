@@ -1,7 +1,6 @@
-import { createRootResolver } from "@oly_op/graphql-create-resolver"
-
 import { isNull, isUndefined } from "lodash-es"
-import { AuthenticationError } from "apollo-server-fastify"
+import { AuthenticationError } from "apollo-server-errors"
+import { createRootResolver } from "@oly_op/graphql-create-resolver"
 
 import { Context } from "../types"
 

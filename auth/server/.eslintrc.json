@@ -1,0 +1,9 @@
+{
+	"extends": "../../.eslintrc.json",
+	"env": {
+		"node": true
+	},
+	"parserOptions": {
+		"project": "./auth/server/tsconfig.json"
+	}
+}

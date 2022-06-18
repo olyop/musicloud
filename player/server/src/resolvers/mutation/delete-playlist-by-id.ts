@@ -1,7 +1,6 @@
-import { query as pgHelpersQuery, exists as pgHelpersExists } from "@oly_op/pg-helpers"
-
 import { PlaylistID } from "@oly_op/musicloud-common"
-import { ForbiddenError, UserInputError } from "apollo-server-fastify"
+import { ForbiddenError, UserInputError } from "apollo-server-errors"
+import { query as pgHelpersQuery, exists as pgHelpersExists } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"

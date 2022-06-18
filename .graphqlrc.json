@@ -1,0 +1,4 @@
+{
+	"documents": "player/client/src/**/*.gql",
+	"schema": "player/server/src/type-defs/*.gql"
+}

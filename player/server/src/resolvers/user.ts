@@ -9,7 +9,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { SongID, AlbumID, UserID } from "@oly_op/musicloud-common"
-import { ApolloError, ForbiddenError } from "apollo-server-fastify"
+import { ApolloError, ForbiddenError } from "apollo-server-errors"
 
 import {
 	SELECT_USER_PLAYS,

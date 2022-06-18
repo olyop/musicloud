@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
-import { isEmpty, isFunction } from "lodash-es"
 import { createElement, FC, ReactNode } from "react"
+import { isEmpty, isFunction, isUndefined } from "lodash-es"
 
 import {
 	Playlist,
@@ -23,7 +23,9 @@ const Playlists: FC<PropTypes> = ({
 	<div
 		className={bem(
 			className,
-			isEmpty(playlists) || "Elevated",
+			isUndefined(playlists) ?
+				"Elevated" :
+				!isEmpty(playlists) && "Elevated",
 		)}
 	>
 		{orderBy && (
@@ -33,11 +35,9 @@ const Playlists: FC<PropTypes> = ({
 				className="PaddingHalf ItemBorder FlexRowRight"
 			/>
 		)}
-		{playlists ? (
-			isFunction(children) ?
-				children(playlists) :
-				children
-		) : null}
+		{isUndefined(playlists) ?
+			(isFunction(children) ? null : children) :
+			(isFunction(children) ? children(playlists) : null)}
 	</div>
 )
 

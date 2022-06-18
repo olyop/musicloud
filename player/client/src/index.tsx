@@ -58,38 +58,34 @@ const Apollo: FC<ChildrenProps> = ({ children }) => (
 	</ApolloProvider>
 )
 
-const Root: FC = () => (
-	<Redux>
-		<Router>
-			<Apollo>
-				<Audio>
-					<Loading>
-						<Head>
-							<ApplySettings>
-								<Authorization>
-									<Sidebar/>
-									<Header/>
-									<Pages/>
-									<Bar/>
-								</Authorization>
-							</ApplySettings>
-						</Head>
-					</Loading>
-				</Audio>
-			</Apollo>
-		</Router>
-	</Redux>
-)
-
 const rootElement =
 	document.getElementById("Root")!
 
 const root =
-	createRoot(rootElement)!
+	createRoot(rootElement)
 
 root.render((
 	<StrictMode>
-		<Root/>
+		<Redux>
+			<Router>
+				<Apollo>
+					<Audio>
+						<Loading>
+							<Head>
+								<ApplySettings>
+									<Authorization>
+										<Sidebar/>
+										<Header/>
+										<Pages/>
+										<Bar/>
+									</Authorization>
+								</ApplySettings>
+							</Head>
+						</Loading>
+					</Audio>
+				</Apollo>
+			</Router>
+		</Redux>
 	</StrictMode>
 ))
 

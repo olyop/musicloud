@@ -188,7 +188,7 @@ const PlaylistPage: FC = () => {
 			</Head>
 		)
 	} else {
-		return null
+		return <Page/>
 	}
 }
 

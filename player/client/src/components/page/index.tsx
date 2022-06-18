@@ -20,15 +20,17 @@ const Page: FC<PropTypes> = ({ header, children, headerClassName, childrenClassN
 					{header}
 				</div>
 			)}
-			<div className={bem(childrenClassName, "content")}>
-				{children}
-			</div>
+			{children && (
+				<div className={bem(childrenClassName, "content")}>
+					{children}
+				</div>
+			)}
 		</main>
 	)
 }
 
 interface PropTypes {
-	children: ReactNode,
+	children?: ReactNode,
 	header?: ReactElement,
 	headerClassName?: BEMInput,
 	childrenClassName?: BEMInput,

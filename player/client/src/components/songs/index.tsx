@@ -21,6 +21,7 @@ const Songs: FC<PropTypes> = ({
 		className={bem(
 			className,
 			!hideElevated &&
+			!isUndefined(songs) &&
 			!isEmpty(songs) &&
 			"Elevated",
 		)}

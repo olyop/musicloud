@@ -1,5 +1,5 @@
 import { pipe } from "rxjs"
-import { AuthenticationError } from "apollo-server-fastify"
+import { AuthenticationError } from "apollo-server-errors"
 import { query, convertFirstRowToCamelCase, join, PoolOrClient } from "@oly_op/pg-helpers"
 import { InterfaceWithInput, UserEmailAddressBase, UserID, UserPasswordBase } from "@oly_op/musicloud-common"
 

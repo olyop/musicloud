@@ -59,22 +59,20 @@ export const usePlaySong =
 
 		const handlePlaySong =
 			() => {
-				if (!result.loading) {
+				if (song && !result.loading) {
 					if (isPlaying) {
 						dispatch(togglePlay())
 					} else {
-						if (song) {
-							resetPlayer()
-							void playSong({
-								variables: {
-									songID: song.songID,
-								},
-							}).catch(() => {
-								updateNowPlayingCache(client.cache)({
-									songID: song.songID,
-								})
+						resetPlayer()
+						void playSong({
+							variables: {
+								songID: song.songID,
+							},
+						}).catch(() => {
+							updateNowPlayingCache(client.cache)({
+								songID: song.songID,
 							})
-						}
+						})
 					}
 				}
 			}

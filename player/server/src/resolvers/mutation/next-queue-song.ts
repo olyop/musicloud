@@ -5,7 +5,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { head, isNull } from "lodash-es"
-import { ApolloError } from "apollo-server-fastify"
+import { ApolloError } from "apollo-server-errors"
 
 import {
 	INSERT_QUEUE_SONG,

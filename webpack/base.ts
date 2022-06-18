@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 import path from "path"
 import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common"
 
@@ -62,10 +61,14 @@ export const createTSLoaderOptions =
 
 export const createDevServerProxy =
 	(port: string, proxy: string[]): ProxyConfigArray => [{
+		secure: false,
+		timeout: 120000,
 		logLevel: "silent",
 		context: "/logo/**",
 		target: `http://${process.env.HOST}:${port}`,
 	},{
+		secure: false,
+		timeout: 120000,
 		logLevel: "silent",
 		target: `http://${process.env.HOST}:${port}`,
 		context: [
@@ -102,6 +105,9 @@ const baseConfiguration: Configuration = {
 	},
 	watchOptions: {
 		ignored: "/node_modules/",
+	},
+	experiments: {
+		topLevelAwait: true,
 	},
 	module: {
 		rules: [{

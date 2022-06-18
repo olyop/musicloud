@@ -6,8 +6,8 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { Pool } from "pg"
-import { UserInputError } from "apollo-server-fastify"
 import { UserID } from "@oly_op/musicloud-common"
+import { UserInputError } from "apollo-server-errors"
 
 import {
 	SELECT_QUEUE,

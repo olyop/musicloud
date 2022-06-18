@@ -1,6 +1,6 @@
-query getLibraryPlaylists {
+query getLibraryPlaylistAtIndex($input: LibraryPlaylistAtIndexInput!) {
 	getLibrary {
-		playlists {
+		playlistAtIndex(input: $input) {
 			title
 			inLibrary
 			playlistID

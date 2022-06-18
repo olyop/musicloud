@@ -32,81 +32,83 @@ const BrowsePage: FC = () => {
 	return (
 		<Head pageTitle="Browse">
 			<Page>
-				<Content className={bem("")}>
-					<div className={bem("trending", "FlexColumn")}>
-						<div className="FlexColumnGapHalf">
-							<h2 className="HeadingFive">
-								Trending Albums
-							</h2>
-							<Albums alwaysList hideOrderBy albums={data?.getTrendingAlbums}>
-								{albums => albums.map(
-									album => (
-										<Album
-											hideModal
-											album={album}
-											hideInLibrary
-											key={album.albumID}
-										/>
-									),
-								)}
-							</Albums>
-							{/* <Button
-								transparent
-								text="View All"
-								icon="arrow_forward"
-								style={{ alignSelf: "flex-start" }}
-							/> */}
+				{data && (
+					<Content className={bem("")}>
+						<div className={bem("trending", "FlexColumn")}>
+							<div className="FlexColumnGapHalf">
+								<h2 className="HeadingFive">
+									Trending Albums
+								</h2>
+								<Albums alwaysList hideOrderBy albums={data.getTrendingAlbums}>
+									{albums => albums.map(
+										album => (
+											<Album
+												hideModal
+												album={album}
+												hideInLibrary
+												key={album.albumID}
+											/>
+										),
+									)}
+								</Albums>
+								{/* <Button
+									transparent
+									text="View All"
+									icon="arrow_forward"
+									style={{ alignSelf: "flex-start" }}
+								/> */}
+							</div>
+							<div className="FlexColumnGapHalf">
+								<h2 className="HeadingFive">
+									Trending Playlists
+								</h2>
+								<Playlists playlists={data.getTrendingPlaylists}>
+									{playlists => playlists.map(
+										playlist => (
+											<Playlist
+												hideModal
+												hideInLibrary
+												playlist={playlist}
+												key={playlist.playlistID}
+											/>
+										),
+									)}
+								</Playlists>
+								{/* <Button
+									transparent
+									text="View All"
+									icon="arrow_forward"
+									style={{ alignSelf: "flex-start" }}
+								/> */}
+							</div>
 						</div>
 						<div className="FlexColumnGapHalf">
 							<h2 className="HeadingFive">
-								Trending Playlists
+								Top Ten Songs
 							</h2>
-							<Playlists playlists={data?.getTrendingPlaylists}>
-								{playlists => playlists.map(
-									playlist => (
-										<Playlist
-											hideModal
+							<Songs songs={data.getTopTenSongs}>
+								{songs => songs.map(
+									song => (
+										<Song
+											song={song}
+											hideDuration
 											hideInLibrary
-											playlist={playlist}
-											key={playlist.playlistID}
+											hideTrackNumber
+											key={song.songID}
 										/>
 									),
 								)}
-							</Playlists>
-							{/* <Button
-								transparent
-								text="View All"
-								icon="arrow_forward"
-								style={{ alignSelf: "flex-start" }}
-							/> */}
+							</Songs>
+							<Link to="/top-one-hundred-songs">
+								<Button
+									transparent
+									text="View All"
+									icon="arrow_forward"
+								/>
+							</Link>
 						</div>
-					</div>
-					<div className="FlexColumnGapHalf">
-						<h2 className="HeadingFive">
-							Top Ten Songs
-						</h2>
-						<Songs songs={data?.getTopTenSongs}>
-							{songs => songs.map(
-								song => (
-									<Song
-										song={song}
-										hideDuration
-										hideInLibrary
-										hideTrackNumber
-										key={song.songID}
-									/>
-								),
-							)}
-						</Songs>
-						<Link to="/top-one-hundred-songs">
-							<Button
-								transparent
-								text="View All"
-								icon="arrow_forward"
-							/>
-						</Link>
-					</div>
-				</Content>
+					</Content>
+				)}
 			</Page>
 		</Head>
 	)

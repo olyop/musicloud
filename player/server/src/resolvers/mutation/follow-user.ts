@@ -1,5 +1,5 @@
 import { UserID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 import { exists, getResultExists, query } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"

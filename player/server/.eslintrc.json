@@ -11,6 +11,7 @@
 				"project": "./player/server/tsconfig.json"
 			},
 			"rules": {
+				"import/extensions": "off",
 				"@typescript-eslint/no-invalid-void-type": "off"
 			}
 		},

@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { AlbumID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 
 import resolver from "./resolver"
 import { Song } from "../../types"

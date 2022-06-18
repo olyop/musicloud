@@ -34,12 +34,15 @@ const UserPage: FC = () => {
 		useToggleUserFollowing({ userID })
 
 	if (error) {
+		console.log({ error })
 		return (
-			<h2 className="Content BodyOne PaddingTopBottom">
-				{error.message === "Failed to fetch" ?
-					error.message :
-					"User does not exist."}
-			</h2>
+			<Page>
+				<h2 className="Content BodyOne PaddingTopBottom">
+					{error.message === "Failed to fetch" ?
+						error.message :
+						"User does not exist."}
+				</h2>
+			</Page>
 		)
 	}
 
@@ -48,80 +51,84 @@ const UserPage: FC = () => {
 			new Date(data.getUserByID.dateJoined).toLocaleDateString() :
 			""
 
-	return (
-		<Head pageTitle={data?.getUserByID.name ?? "User"}>
-			<Page>
-				<Banner
-					title={(
-						<Link to="">
-							{data?.getUserByID.name ?? "User"}
-						</Link>
-					)}
-					subTitle={(
-						!isUser && data?.getUserByID.isFollower ?
-							`${dateJoined} - Follows you` :
-							`${dateJoined}`
-					)}
-					buttons={(
-						<Fragment>
-							{isUser ? (
-								<Link to="/manage-account">
+	if (data) {
+		return (
+			<Head pageTitle={data.getUserByID.name}>
+				<Page>
+					<Banner
+						title={(
+							<Link to="">
+								{data.getUserByID.name}
+							</Link>
+						)}
+						subTitle={(
+							!isUser && data.getUserByID.isFollower ?
+								`${dateJoined} - Follows you` :
+								`${dateJoined}`
+						)}
+						buttons={(
+							<Fragment>
+								{isUser ? (
+									<Link to="/manage-account">
+										<Button
+											text="Manage"
+											title="Manage Account"
+											icon="manage_accounts"
+										/>
+									</Link>
+								) : (
 									<Button
-										text="Manage"
-										title="Manage Account"
-										icon="manage_accounts"
-									/>
-								</Link>
-							) : (
-								<Button
-									onClick={toggleUserFollowing}
-									icon={isFollowing ? "done" : "person_add"}
-									text={isFollowing ? "Following" : "Follow"}
-								/>
-							)}
-							<NavLink to="followers">
-								{({ isActive }) => (
-									<Button
-										icon="person"
-										text="Followers"
-										style={isActive ? {
-											backgroundColor: "var(--primary-color-dark)",
-										} : undefined}
+										onClick={toggleUserFollowing}
+										icon={isFollowing ? "done" : "person_add"}
+										text={isFollowing ? "Following" : "Follow"}
 									/>
 								)}
-							</NavLink>
-						</Fragment>
-					)}
-					coverURL={createCatalogImageURL(
-						userID,
-						"cover",
-						ImageSizes.FULL,
-						ImageDimensions.LANDSCAPE,
-					)}
-					profileURL={createCatalogImageURL(
-						userID,
-						"profile",
-						ImageSizes.HALF,
-						ImageDimensions.SQUARE,
-					)}
-				/>
-				<Content>
-					<Routes>
-						<Route
-							path=""
-							key="home"
-							element={<UserPageHome/>}
-						/>
-						<Route
-							key="followers"
-							path="followers"
-							element={<UserFollowers/>}
-						/>
-					</Routes>
-				</Content>
-			</Page>
-		</Head>
-	)
+								<NavLink to="followers">
+									{({ isActive }) => (
+										<Button
+											icon="person"
+											text="Followers"
+											style={isActive ? {
+												backgroundColor: "var(--primary-color-dark)",
+											} : undefined}
+										/>
+									)}
+								</NavLink>
+							</Fragment>
+						)}
+						coverURL={createCatalogImageURL(
+							userID,
+							"cover",
+							ImageSizes.FULL,
+							ImageDimensions.LANDSCAPE,
+						)}
+						profileURL={createCatalogImageURL(
+							userID,
+							"profile",
+							ImageSizes.HALF,
+							ImageDimensions.SQUARE,
+						)}
+					/>
+					<Content>
+						<Routes>
+							<Route
+								path=""
+								key="home"
+								element={<UserPageHome/>}
+							/>
+							<Route
+								key="followers"
+								path="followers"
+								element={<UserFollowers/>}
+							/>
+						</Routes>
+					</Content>
+				</Page>
+			</Head>
+		)
+	} else {
+		return <Page/>
+	}
 }
 
 interface GetUserPageData {

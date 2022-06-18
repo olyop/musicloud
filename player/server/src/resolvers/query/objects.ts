@@ -9,7 +9,7 @@ import {
 	PlaylistPrivacy,
 } from "@oly_op/musicloud-common"
 
-import { ForbiddenError } from "apollo-server-fastify"
+import { ForbiddenError } from "apollo-server-errors"
 
 import {
 	User,

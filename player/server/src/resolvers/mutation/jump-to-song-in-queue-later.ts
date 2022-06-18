@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { find, isEmpty } from "lodash-es"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 
 import {
 	SELECT_QUEUE,

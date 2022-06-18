@@ -2,17 +2,17 @@ import { Pool } from "pg"
 import algolia from "algoliasearch"
 import { S3 } from "@aws-sdk/client-s3"
 import { isUndefined } from "lodash-es"
-import { FastifyRequest } from "fastify"
 import { IncomingHttpHeaders } from "http"
 import { exists } from "@oly_op/pg-helpers"
 import { createVerifier, TokenError } from "fast-jwt"
 import { JWTPayload, ALGOLIA_OPTIONS } from "@oly_op/musicloud-common"
 
 import { COLUMN_NAMES } from "./globals"
+import { ApolloFastifyContext } from "./apollo-server-fastify"
 import { Context, ContextAuthorization } from "./types"
 
 type ContextFunction =
-	(input: { request: FastifyRequest }) => Promise<Context>
+	(input: ApolloFastifyContext) => Promise<Context>
 
 const verifyAccessToken =
 	createVerifier({

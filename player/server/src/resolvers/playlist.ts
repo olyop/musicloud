@@ -8,7 +8,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { ForbiddenError } from "apollo-server-fastify"
+import { ForbiddenError } from "apollo-server-errors"
 import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/musicloud-common"
 
 import {

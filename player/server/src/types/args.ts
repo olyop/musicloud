@@ -10,14 +10,8 @@ export interface OrderByArgs {
 	orderBy: OrderBy,
 }
 
-interface LibraryObjectsPaginatedInput
-	extends PageArgs, OrderByArgs {}
-
-export type LibraryObjectsPaginatedArgs =
-	InterfaceWithInput<LibraryObjectsPaginatedInput>
-
 interface LibraryObjectAtIndexInput
-	extends LibraryObjectsPaginatedInput {
+	extends OrderByArgs {
 	atIndex: number,
 }
 

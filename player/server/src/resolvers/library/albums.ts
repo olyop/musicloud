@@ -1,66 +1,39 @@
 import {
 	join,
 	query,
-	PoolOrClient,
 	getResultRowCountOrNull,
-	convertTableToCamelCaseOrNull,
+	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { UserID, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
-
 import resolver from "./resolver"
+import { Album, LibraryObjectAtIndexArgs } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
-import { SELECT_LIBRARY_ALBUMS, SELECT_LIBRARY_ALBUMS_PAGINATED } from "../../sql"
-import { Album, GetObjectsOptions, LibraryObjectsPaginatedArgs } from "../../types"
-
-interface GetLibraryAlbumsOptions<T>
-	extends UserID, GetObjectsOptions<T> {}
-
-const getLibraryAlbums =
-	(client: PoolOrClient) =>
-		<T>({ userID, columnNames, parse }: GetLibraryAlbumsOptions<T>) =>
-			query(client)(SELECT_LIBRARY_ALBUMS)({
-				parse,
-				variables: {
-					userID,
-					columnNames,
-				},
-			})
-
-export const albums =
-	resolver(
-		({ context }) => (
-			getLibraryAlbums(context.pg)({
-				userID: context.authorization!.userID,
-				parse: convertTableToCamelCaseOrNull<Album>(),
-				columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
-			})
-		),
-	)
+import { SELECT_LIBRARY_ALBUMS, SELECT_LIBRARY_ALBUM_AT_INDEX } from "../../sql"
 
 export const albumsTotal =
 	resolver(
 		({ context }) => (
-			getLibraryAlbums(context.pg)({
+			query(context.pg)(SELECT_LIBRARY_ALBUMS)({
 				parse: getResultRowCountOrNull,
-				userID: context.authorization!.userID,
-				columnNames: `albums.${COLUMN_NAMES.ALBUM[0]}`,
+				variables: {
+					userID: context.authorization!.userID,
+					columnNames: `albums.${COLUMN_NAMES.ALBUM[0]}`,
+				},
 			})
 		),
 	)
 
-export const albumsPaginated =
-	resolver<Album[] | null, LibraryObjectsPaginatedArgs>(
+export const albumAtIndex =
+	resolver<Album | null, LibraryObjectAtIndexArgs>(
 		({ args, context }) => (
-			query(context.pg)(SELECT_LIBRARY_ALBUMS_PAGINATED)({
-				parse: convertTableToCamelCaseOrNull(),
+			query(context.pg)(SELECT_LIBRARY_ALBUM_AT_INDEX)({
+				parse: convertFirstRowToCamelCaseOrNull(),
 				variables: {
-					page: args.input.page,
+					atIndex: args.input.atIndex,
 					userID: context.authorization!.userID,
-					paginationPageSize: PAGINATION_PAGE_SIZE,
+					orderByField: args.input.orderBy.field,
 					orderByDirection: args.input.orderBy.direction,
 					columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
-					orderByField: args.input.orderBy.field.toLowerCase(),
 				},
 			})
 		),

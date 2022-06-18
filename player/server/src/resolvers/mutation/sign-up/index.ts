@@ -1,7 +1,7 @@
 import trim from "lodash-es/trim"
 // eslint-disable-next-line node/no-missing-import
 import { setTimeout } from "timers/promises"
-import { UserInputError } from "apollo-server-fastify"
+import { UserInputError } from "apollo-server-errors"
 import { convertFirstRowToCamelCase, join, query } from "@oly_op/pg-helpers"
 
 import { Args } from "./types"

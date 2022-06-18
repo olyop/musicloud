@@ -1,4 +1,4 @@
-import { ApolloServer } from "apollo-server-fastify"
+import { ApolloServer } from "./apollo-server-fastify"
 
 import typeDefs from "./type-defs"
 import resolvers from "./resolvers"

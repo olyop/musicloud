@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/comma-dangle */
 import isNull from "lodash-es/isNull"
+import uniqueID from "lodash-es/uniqueId"
 import { DocumentNode, useApolloClient } from "@apollo/client"
-import { PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
+import { InterfaceWithInput, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 import { createElement, Fragment, ReactNode, Ref, useCallback, useEffect, useRef, useState } from "react"
 
-import { useStateOrderBy } from "../../redux"
-import { SettingsOrderBy } from "../../types"
+import { OrderBy, SettingsOrderBy } from "../../types"
+import { addLoading, removeLoading, useDispatch, useStateOrderBy } from "../../redux"
 import { useHasMounted, useInView, UseInViewOptionsOnChange } from "../../hooks"
 
-const FeedItem = <Item, ItemData, OrderBy>(propTypes: PropTypes<Item, ItemData>) => {
+const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const {
 		index,
 		itemQuery,
@@ -17,11 +18,13 @@ const FeedItem = <Item, ItemData, OrderBy>(propTypes: PropTypes<Item, ItemData>)
 		settingsOrderBy,
 	} = propTypes
 
+	const dispatch = useDispatch()
 	const client = useApolloClient()
 	const hasMounted = useHasMounted()
+	const loadingID = useRef(uniqueID())
 
 	const orderBy =
-		useStateOrderBy<OrderBy>(settingsOrderBy)
+		useStateOrderBy(settingsOrderBy)
 
 	const cachedItem =
 		useRef<Item | null>(null)
@@ -32,8 +35,10 @@ const FeedItem = <Item, ItemData, OrderBy>(propTypes: PropTypes<Item, ItemData>)
 	const getAndSetItemAtIndex =
 		useCallback(
 			async (atIndex: number) => {
+				dispatch(addLoading(loadingID.current))
+
 				const { data } =
-					await client.query<ItemData>({
+					await client.query<ItemData, Vars>({
 						query: itemQuery,
 						variables: {
 							input: {
@@ -50,6 +55,8 @@ const FeedItem = <Item, ItemData, OrderBy>(propTypes: PropTypes<Item, ItemData>)
 					cachedItem.current = tempItem
 					setItem(tempItem)
 				}
+
+				dispatch(removeLoading(loadingID.current))
 			},
 			[orderBy.field, orderBy.direction],
 		)
@@ -82,16 +89,18 @@ const FeedItem = <Item, ItemData, OrderBy>(propTypes: PropTypes<Item, ItemData>)
 		}
 	}, [orderBy.field, orderBy.direction])
 
-	if (index === 40) {
-		console.log("FeedItem")
-	}
-
 	return (
 		<Fragment>
 			{renderItem(ref, item)}
 		</Fragment>
 	)
 }
+
+type Vars =
+	InterfaceWithInput<{
+		atIndex: number,
+		orderBy: OrderBy,
+	}>
 
 interface PropTypes<Item, ItemData> {
 	index: number,

@@ -1,3 +1,4 @@
+# Auth
 input LogInInput {
 	password: NonEmptyString!
 	emailAddress: EmailAddress!
@@ -11,6 +12,7 @@ input SignUpInput {
 	emailAddress: EmailAddress!
 }
 
+# Create/Update
 input CreatePlaylistInput {
 	title: NonEmptyString!
 	privacy: PlaylistPrivacy!
@@ -36,6 +38,7 @@ input GetSearchResultsInput {
 	length: NonNegativeInt!
 }
 
+# OrderBy Inputs
 input SongsOrderByInput {
 	field: SongsOrderByField!
 	direction: OrderByDirection!
@@ -66,37 +69,28 @@ input LibraryPlaylistsOrderByInput {
 	field: LibraryPlaylistsOrderByField!
 }
 
-input LibraryAlbumsInput {
-	page: NonNegativeInt!
-	orderBy: AlbumsOrderByInput
-}
-
-input LibraryGenresInput {
-	page: NonNegativeInt!
-	orderBy: GenresOrderByInput
-}
-
-input LibrarySongsInput {
-	page: NonNegativeInt!
-	orderBy: LibrarySongsOrderByInput
-}
-
+# Library
 input LibrarySongAtIndexInput {
 	atIndex: NonNegativeInt!
-	orderBy: LibrarySongsOrderByInput
+	orderBy: LibrarySongsOrderByInput!
+}
+
+input LibraryAlbumAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: AlbumsOrderByInput!
+}
+
+input LibraryGenreAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: GenresOrderByInput!
+}
+
+input LibraryArtistAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: LibraryArtistsOrderByInput!
 }
 
 input LibraryPlaylistAtIndexInput {
 	atIndex: NonNegativeInt!
-	orderBy: LibrarySongsOrderByInput
-}
-
-input LibraryArtistsInput {
-	page: NonNegativeInt!
-	orderBy: LibraryArtistsOrderByInput
-}
-
-input LibraryPlaylistsInput {
-	page: NonNegativeInt!
-	orderBy: LibraryPlaylistsOrderByInput
+	orderBy: LibraryPlaylistsOrderByInput!
 }

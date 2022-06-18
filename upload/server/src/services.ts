@@ -6,4 +6,5 @@ export const s3 =
 	new S3Client({})
 
 export const ag =
-	algolia(...ALGOLIA_OPTIONS).initIndex(process.env.ALGOLIA_INDEX_NAME)
+	algolia(...ALGOLIA_OPTIONS)
+		.initIndex(process.env.ALGOLIA_INDEX_NAME)

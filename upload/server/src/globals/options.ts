@@ -1,6 +1,6 @@
-import { FastifyServerOptions } from "fastify"
-import { FastifyStaticOptions } from "fastify-static"
-import { FastifyMultipartOptions } from "fastify-multipart"
+import { FastifyInstance, FastifyServerOptions } from "fastify"
+import { FastifyStaticOptions } from "@fastify/static"
+import { FastifyMultipartOptions } from "@fastify/multipart"
 
 import { PUBLIC_PATH } from "./paths"
 
@@ -21,3 +21,8 @@ export const ALGOLIA_OPTIONS = [
 	process.env.ALGOLIA_APPLICATION_ID,
 	process.env.ALGOLIA_ADMIN_API_KEY,
 ] as const
+
+export const FASTIFY_LISTEN_OPTIONS: Parameters<FastifyInstance["listen"]>[0] = {
+	host: process.env.HOST,
+	port: parseInt(process.env.UPLOAD_SERVER_PORT),
+}

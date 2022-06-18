@@ -8,15 +8,19 @@ import {
 	ReactNode,
 	useEffect,
 	createElement,
+	useRef,
+	useCallback,
 } from "react"
 
+import uniqueID from "lodash-es/uniqueId"
 import { DocumentNode } from "@apollo/client"
 
 import FeedItem from "./item"
 import { SettingsOrderBy } from "../../types"
 import { useApolloClient } from "../../apollo"
+import { useDispatch, addLoading, removeLoading } from "../../redux"
 
-const Feed = <ItemsTotalData, Item, ItemData, OrderBy>(
+const Feed = <ItemsTotalData, Item, ItemData>(
 	propTypes: PropTypes<ItemsTotalData, Item, ItemData>,
 ): ReturnType<FC> => {
 	const {
@@ -28,23 +32,31 @@ const Feed = <ItemsTotalData, Item, ItemData, OrderBy>(
 		itemsTotalDataToValue,
 	} = propTypes
 
-	const client =
-		useApolloClient()
+	const dispatch = useDispatch()
+	const client = useApolloClient()
+	const loadingID = useRef(uniqueID())
 
 	const [ itemsTotal, setItemsTotal ] =
 		useState<Total>(null)
 
 	const getAndSetItemsTotal =
-		async () => {
-			const { data } =
-				await client.query<ItemsTotalData>({
-					query: itemsTotalQuery,
-				})
+		useCallback(
+			async () => {
+				dispatch(addLoading(loadingID.current))
 
-			if (itemsTotalDataToValue(data)) {
-				setItemsTotal(itemsTotalDataToValue(data))
-			}
-		}
+				const { data } =
+					await client.query<ItemsTotalData>({
+						query: itemsTotalQuery,
+					})
+
+				if (itemsTotalDataToValue(data)) {
+					setItemsTotal(itemsTotalDataToValue(data))
+				}
+
+				dispatch(removeLoading(loadingID.current))
+			},
+			[],
+		)
 
 	useEffect(() => {
 		void getAndSetItemsTotal()
@@ -56,7 +68,7 @@ const Feed = <ItemsTotalData, Item, ItemData, OrderBy>(
 			<Fragment>
 				{nullArray.map(
 					(song, index) => (
-						<FeedItem<Item, ItemData, OrderBy>
+						<FeedItem<Item, ItemData>
 							key={index}
 							index={index}
 							itemQuery={itemQuery}

@@ -4,6 +4,9 @@
 		"project": "./tsconfig.json"
 	},
 	"rules": {
+		"padded-blocks": ["error", {
+			"classes": "always"
+		}],
 		"@typescript-eslint/no-non-null-assertion": "off"
 	}
 }

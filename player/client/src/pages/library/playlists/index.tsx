@@ -1,12 +1,18 @@
 import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
 
-import Feed from "../../../components/feeed"
+import {
+	OrderByOptions,
+	PlaylistsOrderByField,
+	Playlist as PlaylistType,
+	SettingsOrderByPlaylists,
+} from "../../../types"
+
+import Feed from "../../../components/feed"
 import Playlist from "../../../components/playlist"
 import Playlists from "../../../components/playlists"
-import GET_LIBRARY_PLAYLISTS_TOTAL from "./get-library-songs-total.gql"
-import GET_LIBRARY_SONG_AT_INDEX from "./get-library-song-at-index.gql"
-import { Playlist as PlaylistType, PlaylistsOrderByField, OrderByOptions, SettingsOrderByPlaylists } from "../../../types"
+import GET_LIBRARY_PLAYLISTS_TOTAL from "./get-library-playlists-total.gql"
+import GET_LIBRARY_PLAYLIST_AT_INDEX from "./get-library-playlist-at-index.gql"
 
 import "./index.scss"
 
@@ -18,21 +24,18 @@ const orderBy: OrderByOptions<SettingsOrderByPlaylists> = {
 const LibraryPlaylists: FC = () => (
 	<Head pageTitle="Library Songs">
 		<Playlists orderBy={orderBy} className="Content">
-			<Feed<GetPlaylistsTotalData, PlaylistType, GetPlaylistAtIndexData, PlaylistsOrderByField>
-				settingsOrderBy="librarySongs"
-				itemQuery={GET_LIBRARY_SONG_AT_INDEX}
+			<Feed<GetPlaylistsTotalData, PlaylistType, GetPlaylistAtIndexData>
+				settingsOrderBy="libraryPlaylists"
+				itemQuery={GET_LIBRARY_PLAYLIST_AT_INDEX}
 				itemsTotalQuery={GET_LIBRARY_PLAYLISTS_TOTAL}
-				itemDataToValue={({ getLibrary }) => getLibrary.songAtIndex}
-				itemsTotalDataToValue={({ getLibrary }) => getLibrary.songsTotal}
-				renderItem={(
-					(ref, playlist) => (
-						<Playlist
-							hidePlays
-							ref={ref}
-							playlist={playlist}
-							className="LibrarySong PaddingHalf ItemBorder"
-						/>
-					)
+				itemDataToValue={({ getLibrary }) => getLibrary.playlistAtIndex}
+				itemsTotalDataToValue={({ getLibrary }) => getLibrary.playlistsTotal}
+				renderItem={(ref, playlist) => (
+					<Playlist
+						ref={ref}
+						playlist={playlist}
+						className="LibraryPlaylist"
+					/>
 				)}
 			/>
 		</Playlists>
@@ -47,7 +50,7 @@ interface GetPlaylistsTotalData {
 
 interface GetPlaylistAtIndexData {
 	getLibrary: {
-		playlistsAtIndex: PlaylistType | null,
+		playlistAtIndex: PlaylistType | null,
 	},
 }
 

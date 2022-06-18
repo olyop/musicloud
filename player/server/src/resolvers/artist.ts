@@ -10,8 +10,9 @@ import {
 
 import { pipe } from "rxjs"
 import { head, random } from "lodash-es"
-import { ApolloError } from "apollo-server-fastify"
+import { ApolloError } from "apollo-server-errors"
 import { ArtistID, UserID } from "@oly_op/musicloud-common"
+
 
 import {
 	Song,
@@ -50,7 +51,7 @@ export const city =
 			Promise.resolve(
 				parent.city,
 			)
-		)
+		),
 	)
 
 export const country =
@@ -59,7 +60,7 @@ export const country =
 			Promise.resolve(
 				parent.country,
 			)
-		)
+		),
 	)
 
 export const playsTotal =

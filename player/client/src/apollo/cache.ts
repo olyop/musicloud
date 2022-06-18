@@ -1,9 +1,12 @@
+import { isNull } from "lodash-es"
+// import localForage from "localforage"
 import { concatPagination } from "@apollo/client/utilities"
 import { FieldMergeFunction, InMemoryCache } from "@apollo/client"
+// import { persistCache, LocalForageWrapper } from "apollo3-cache-persist"
 
 const replacePossibleNullArray: FieldMergeFunction<unknown[] | null> =
 	(existing, incoming) => {
-		if (typeof incoming === null) {
+		if (isNull(incoming)) {
 			return null
 		} else {
 			return incoming
@@ -68,5 +71,10 @@ const cache =
 			},
 		},
 	})
+
+// await persistCache({
+// 	cache,
+// 	storage: new LocalForageWrapper(localForage),
+// })
 
 export default cache
