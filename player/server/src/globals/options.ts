@@ -33,4 +33,5 @@ export const FASTIFY_CORS_OPTIONS: FastifyCorsOptions = {
 
 export const APOLLO_PLUGIN_OPTIONS: ApolloFastifyPluginOptions = {
 	cors: false,
+	disableHealthCheck: true,
 }

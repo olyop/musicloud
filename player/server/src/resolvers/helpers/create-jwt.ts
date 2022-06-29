@@ -12,8 +12,8 @@ const createAlgoliaAPIKey =
 
 const signer =
 	createSigner({
-		algorithm: "HS256",
 		expiresIn: 1000 * 60 * 60 * 24,
+		algorithm: process.env.JWT_ALGORITHM,
 		key: () => Promise.resolve(process.env.JWT_TOKEN_SECRET),
 	})
 

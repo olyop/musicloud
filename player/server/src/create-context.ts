@@ -8,15 +8,15 @@ import { createVerifier, TokenError } from "fast-jwt"
 import { JWTPayload, ALGOLIA_OPTIONS } from "@oly_op/musicloud-common"
 
 import { COLUMN_NAMES } from "./globals"
-import { ApolloFastifyContext } from "./apollo-server-fastify"
 import { Context, ContextAuthorization } from "./types"
+import { ApolloFastifyContext } from "./apollo-server-fastify"
 
 type ContextFunction =
 	(input: ApolloFastifyContext) => Promise<Context>
 
 const verifyAccessToken =
 	createVerifier({
-		algorithms: ["HS256"],
+		algorithms: [process.env.JWT_ALGORITHM],
 		key: () => Promise.resolve(process.env.JWT_TOKEN_SECRET),
 	})
 
