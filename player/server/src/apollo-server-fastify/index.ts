@@ -1,14 +1,36 @@
+/* eslint-disable eol-last */
+/* eslint-disable @typescript-eslint/semi */
+/* eslint-disable @typescript-eslint/quotes */
 export {
-  ApolloServer,
-} from "./apollo-server"
+	GraphQLOptions,
+	Config,
+	gql,
+	Context,
+	ContextFunction,
+	PluginDefinition,
+	CSRFPreventionOptions,
+	// Errors
+	ApolloError,
+	toApolloError,
+	SyntaxError,
+	ValidationError,
+	AuthenticationError,
+	ForbiddenError,
+	UserInputError,
+} from 'apollo-server-core';
 
 export {
-  ApolloFastifyConfig,
-  ApolloFastifyContext,
-  ApolloFastifyPluginOptions,
+	ApolloServer,
+	ApolloFastifyConfig,
+	ApolloFastifyContext,
+	ApolloFastifyPluginOptions,
 
-  // Deprecated types
-  FastifyContext,
-  ServerRegistration,
-  ApolloServerFastifyConfig,
-} from "./types"
+	// Deprecated types
+	FastifyContext,
+	ServerRegistration,
+	ApolloServerFastifyConfig,
+} from './ApolloServer';
+
+export {
+	FastifyCorsOptions,
+} from '@fastify/cors';

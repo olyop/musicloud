@@ -22,7 +22,7 @@ const apollo =
 		typeDefs,
 		resolvers,
 		cache: "bounded",
-		csrfPrevention: true,
+		csrfPrevention: false,
 		context: createContext(),
 		plugins: [ApolloServerPluginDrainHttpServer({ httpServer: fastify.server })],
 	})
