@@ -1,0 +1,5 @@
+query getLibraryAlbumsTotal {
+	getLibrary {
+		albumsTotal
+	}
+}

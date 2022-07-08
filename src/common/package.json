@@ -1,0 +1,28 @@
+{
+	"license": "MIT",
+	"version": "1.1.7",
+	"main": "./build/index.js",
+	"types": "./build/index.d.ts",
+	"description": "musicloud-common",
+	"name": "@oly_op/musicloud-common",
+	"bugs": "https://github.com/olyop/musicloud/issues",
+	"homepage": "https://github.com/olyop/musicloud/blob/master/README.md",
+	"author": {
+		"name": "Oliver Plummer",
+		"email": "oliver.plummer@outlook.com"
+	},
+	"repository": {
+		"type": "git",
+		"directory": "packages/common",
+		"url": "https://github.com/olyop/musicloud.git"
+	},
+	"files": [
+		"build"
+	],
+	"peerDependencies": {
+		"pg": "*",
+		"react": "*",
+		"fastify": "*",
+		"@fastify/helmet": "*"
+	}
+}

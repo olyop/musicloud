@@ -1,0 +1,8 @@
+query getLibraryGenreAtIndex($input: LibraryGenreAtIndexInput!) {
+	getLibrary {
+		genreAtIndex(input: $input) {
+			name
+			genreID
+		}
+	}
+}

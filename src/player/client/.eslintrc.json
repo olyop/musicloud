@@ -1,0 +1,30 @@
+{
+	"root": true,
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx"],
+			"extends": [
+				"@oly_op/eslint-config-react",
+				"../../../.eslintrc.json"
+			],
+			"parserOptions": {
+				"project": "src/player/client/tsconfig.json"
+			},
+			"env": {
+				"browser": true
+			}
+		},
+		{
+			"files": ["*.gql"],
+			"extends": "plugin:@graphql-eslint/operations-all",
+			"parserOptions": {
+				"operations": "src/player/client/src/**/*.gql",
+				"schema": "src/player/server/src/type-defs/*.gql"
+			},
+			"rules": {
+				"@graphql-eslint/alphabetize": "off",
+				"@graphql-eslint/naming-convention": "off"
+			}
+		}
+	]
+}

@@ -1,4 +1,4 @@
-import path from "path"
+import path from "node:path"
 import { merge } from "webpack-merge"
 import { Configuration } from "webpack"
 import { TITLE } from "@oly_op/musicloud-common"
@@ -6,7 +6,7 @@ import HTMLWebpackPlugin from "html-webpack-plugin"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 import baseConfiguration, {
-	BASE_ROOT_PATH,
+	BASE_SRC_PATH,
 	BASE_BUILD_PATH,
 	createDevServerProxy,
 	createTSLoaderOptions,
@@ -14,7 +14,7 @@ import baseConfiguration, {
 } from "../base"
 
 const ROOT_PATH =
-	path.join(BASE_ROOT_PATH, "player", "client")
+	path.join(BASE_SRC_PATH, "player", "client")
 
 const SRC_PATH =
 	path.join(ROOT_PATH, "src")

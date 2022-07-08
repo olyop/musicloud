@@ -1,3 +1,0 @@
-mutation emailAddressExists($emailAddress: EmailAddress!) {
-	emailAddressExists(emailAddress: $emailAddress)
-}

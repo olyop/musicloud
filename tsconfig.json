@@ -2,7 +2,7 @@
 	"extends": "@oly_op/tsconfig/tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": "./",
-		"paths": { "*": ["types/*"] }
+		"paths": { "*": ["src/types/*"] }
 	},
 	"ts-node": {
 		"files": true,
@@ -10,7 +10,7 @@
 			"target": "ES6",
 			"baseUrl": "./",
 			"module": "CommonJS",
-			"paths": { "*": ["types/*"] }
+			"paths": { "*": ["src/types/*"] }
 		},
 		"moduleTypes": {
 			"webpack/**": "cjs",

@@ -1,10 +1,15 @@
 region: au
+version: "2"
 tunnels:
   player:
     addr: 3001
     proto: http
-    host-header: 127.0.0.1:3001
-  upload:
+    host_header: http://localhost:3001
+  uploader:
     addr: 3003
     proto: http
-    host-header: 127.0.0.1:3003
+    host_header: http://localhost:3003
+  authenticator:
+    addr: 3005
+    proto: http
+    host_header: http://localhost:3005

@@ -1,0 +1,12 @@
+{
+	"extends": "../../../tsconfig.json",
+	"compilerOptions": {
+		"jsx": "react",
+		"lib": ["DOM", "ESNext"],
+		"jsxFactory": "createElement"
+	},
+	"include": [
+		"src",
+		"../../types"
+	]
+}

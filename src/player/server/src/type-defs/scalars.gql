@@ -1,0 +1,8 @@
+scalar Void
+scalar Date
+scalar UUID
+scalar TimeStamp
+scalar PositiveInt
+scalar EmailAddress
+scalar NonNegativeInt
+scalar NonEmptyString

@@ -2,13 +2,13 @@ import path from "path"
 import { Configuration } from "webpack"
 
 import {
-	BASE_ROOT_PATH,
+	BASE_SRC_PATH,
 	BASE_BUILD_PATH,
 	createTSLoaderOptions,
 } from "../base"
 
 const ROOT_PATH =
-	path.join(BASE_ROOT_PATH, "player", "service-worker")
+	path.join(BASE_SRC_PATH, "player", "service-worker")
 
 const SRC_PATH =
 	path.join(ROOT_PATH, "src")

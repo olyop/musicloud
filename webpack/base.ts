@@ -12,7 +12,7 @@ import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin"
 
-import packageConfig from "../package.json"
+import packageDotJSON from "../package.json"
 
 export const IS_DEV =
 	process.env.NODE_ENV === "development"
@@ -22,6 +22,9 @@ export const LINITING =
 
 export const BASE_ROOT_PATH =
 	process.cwd()
+
+export const BASE_SRC_PATH =
+	path.join(BASE_ROOT_PATH, "src")
 
 export const BASE_BUILD_PATH =
 	path.join(BASE_ROOT_PATH, "build")
@@ -127,7 +130,7 @@ const baseConfiguration: Configuration = {
 	},
 	plugins: [
 		new DefinePlugin({
-			VERSION: JSON.stringify(packageConfig.version),
+			VERSION: JSON.stringify(packageDotJSON.version),
 		}),
 		new DotenvPlugin(),
 		...(LINITING ? [

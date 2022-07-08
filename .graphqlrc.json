@@ -1,4 +1,4 @@
 {
-	"documents": "player/client/src/**/*.gql",
-	"schema": "player/server/src/type-defs/*.gql"
+	"documents": "src/player/client/src/**/*.gql",
+	"schema": "src/player/server/src/type-defs/*.gql"
 }

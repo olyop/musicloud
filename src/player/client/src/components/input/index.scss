@@ -1,0 +1,54 @@
+.Input {
+	--image-width: 283rem;
+	padding: 0;
+	position: relative;
+	&__label {
+		top: -8rem;
+		z-index: 10;
+		left: 12rem;
+		padding: 3rem;
+		font-size: 12rem;
+		font-weight: 600;
+		position: absolute;
+		border-radius: 5rem;
+		text-transform: uppercase;
+		background-color: var(--elevated-color);
+		transition: var(--transition-duration) color; }
+	&__image {
+		left: 50%;
+		top: 18rem;
+		position: absolute;
+		width: var(--image-width);
+		transform: translateX(-50%);
+		&-portrait {
+			height: var(--image-width);
+			aspect-ratio: 1; }
+		&-landscape {
+			height: auto;
+			aspect-ratio: 16 / 9; } }
+	&__input {
+		width: 100%;
+		outline: none;
+		font-size: 16rem;
+		padding: 18rem 14rem;
+		letter-spacing: 0.15rem;
+		border: 2rem solid var(--border-color);
+		background-color: var(--elevated-color);
+		transition: var(--transition-duration) border-color, border-radius;
+		&::placeholder {
+			transition: var(--transition-duration) opacity; }
+		&:hover,
+		&:focus {
+			border-radius: 10rem;
+			border-color: var(--primary-color); }
+		&-image {
+			padding-bottom: 14rem;
+			padding-top: calc(var(--image-width) + 29rem);
+			&-landscape {
+				padding-top: calc(var(--image-width) + -94rem); } } }
+	&:hover &__label,
+	&__input:focus &__label {
+		color: var(--primary-color); }
+	&:hover &__outline,
+	&:hover &__input::placeholder {
+		opacity: 1; } }

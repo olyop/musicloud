@@ -1,0 +1,18 @@
+query getLibraryAlbumAtIndex($input: LibraryAlbumAtIndexInput!) {
+	getLibrary {
+		albumAtIndex(input: $input) {
+			title
+			albumID
+			released
+			inLibrary
+			artists {
+				artistID
+				name
+			}
+			remixers {
+				artistID
+				name
+			}
+		}
+	}
+}

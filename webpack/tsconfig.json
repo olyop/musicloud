@@ -1,12 +1,13 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["ESNext"]
+		"lib": ["ESNext", "DOM"]
 	},
 	"include": [
-		"player",
-		"upload",
 		"base.ts",
-		"../types"
+		"player",
+		"uploader",
+		"authenticator",
+		"../src/types",
 	]
 }

@@ -1,0 +1,82 @@
+# Create/Update
+input CreatePlaylistInput {
+	title: NonEmptyString!
+	privacy: PlaylistPrivacy!
+}
+
+input UpdatePlaylistTitleInput {
+	playlistID: UUID!
+	title: NonEmptyString!
+}
+
+input ShuffleLibraryCustomInput {
+	genres: [UUID!]
+	artists: [UUID!]
+}
+
+input UpdatePlaylistPrivacyInput {
+	playlistID: UUID!
+	privacy: PlaylistPrivacy!
+}
+
+input GetSearchResultsInput {
+	value: NonEmptyString!
+	length: NonNegativeInt!
+}
+
+# OrderBy Inputs
+input SongsOrderByInput {
+	field: SongsOrderByField!
+	direction: OrderByDirection!
+}
+
+input AlbumsOrderByInput {
+	field: AlbumsOrderByField!
+	direction: OrderByDirection!
+}
+
+input GenresOrderByInput {
+	field: GenresOrderByField!
+	direction: OrderByDirection!
+}
+
+input LibrarySongsOrderByInput {
+	direction: OrderByDirection!
+	field: LibrarySongsOrderByField!
+}
+
+input LibraryArtistsOrderByInput {
+	direction: OrderByDirection!
+	field: LibraryArtistsOrderByField!
+}
+
+input LibraryPlaylistsOrderByInput {
+	direction: OrderByDirection!
+	field: LibraryPlaylistsOrderByField!
+}
+
+# Library
+input LibrarySongAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: LibrarySongsOrderByInput!
+}
+
+input LibraryAlbumAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: AlbumsOrderByInput!
+}
+
+input LibraryGenreAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: GenresOrderByInput!
+}
+
+input LibraryArtistAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: LibraryArtistsOrderByInput!
+}
+
+input LibraryPlaylistAtIndexInput {
+	atIndex: NonNegativeInt!
+	orderBy: LibraryPlaylistsOrderByInput!
+}
