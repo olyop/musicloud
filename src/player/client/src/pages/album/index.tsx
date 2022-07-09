@@ -70,7 +70,7 @@ const AlbumPage: FC = () => {
 
 		const handleShare =
 			() => {
-				if (navigator.canShare()) {
+				if ("share" in navigator) {
 					void navigator.share({
 						title,
 						url: createObjectPath("album", albumID),

@@ -11,3 +11,8 @@ export const SERVE_STATIC_OPTIONS: FastifyStaticOptions = {
 	index: false,
 	root: PUBLIC_PATH,
 }
+
+export const FASTIFY_LISTEN_OPTIONS = {
+	host: process.env.HOST,
+	port: parseInt(process.env.AUTHENTICATOR_SERVER_PORT),
+}

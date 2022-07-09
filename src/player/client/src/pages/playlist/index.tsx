@@ -73,13 +73,11 @@ const PlaylistPage: FC = () => {
 
 	const handleShare =
 		() => {
-			if (data) {
-				if (navigator.canShare()) {
-					void navigator.share({
-						title: data.getPlaylistByID.title,
-						url: createObjectPath("playlist", data.getPlaylistByID.playlistID),
-					})
-				}
+			if ("share" in navigator && data) {
+				void navigator.share({
+					title: data.getPlaylistByID.title,
+					url: createObjectPath("playlist", data.getPlaylistByID.playlistID),
+				})
 			}
 		}
 

@@ -1,6 +1,7 @@
 import path from "path"
 import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common"
 
+import { readFileSync } from "node:fs"
 import DotenvPlugin from "dotenv-webpack"
 import ESLintPlugin from "eslint-webpack-plugin"
 import { Configuration, DefinePlugin } from "webpack"
@@ -67,13 +68,15 @@ export const createDevServerProxy =
 		secure: false,
 		timeout: 120000,
 		logLevel: "silent",
+		changeOrigin: true,
 		context: "/logo/**",
-		target: `http://${process.env.HOST}:${port}`,
+		target: `${process.env.USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
 	},{
 		secure: false,
 		timeout: 120000,
 		logLevel: "silent",
-		target: `http://${process.env.HOST}:${port}`,
+		changeOrigin: true,
+		target: `${process.env.USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
 		context: [
 			"/icon.png",
 			"/robots.txt",
@@ -97,6 +100,13 @@ const baseConfiguration: Configuration = {
 		host: process.env.HOST,
 		historyApiFallback: true,
 		client: { logging: "error" },
+		server: process.env.USE_HTTPS ? {
+			type: "https",
+			options: {
+				cert: readFileSync(process.env.TLS_CERTIFICATE_PATH),
+				key: readFileSync(process.env.TLS_CERTIFICATE_KEY_PATH),
+			},
+		} : undefined,
 	},
 	output: {
 		publicPath: "/",
@@ -129,10 +139,10 @@ const baseConfiguration: Configuration = {
 		}],
 	},
 	plugins: [
+		new DotenvPlugin(),
 		new DefinePlugin({
 			VERSION: JSON.stringify(packageDotJSON.version),
 		}),
-		new DotenvPlugin(),
 		...(LINITING ? [
 			new ESLintPlugin({
 				extensions: ["ts", "tsx"],

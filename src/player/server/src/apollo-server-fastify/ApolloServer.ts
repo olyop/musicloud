@@ -1,11 +1,11 @@
-/* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable padded-blocks */
-/* eslint-disable @typescript-eslint/indent */
-/* eslint-disable eol-last */
 /* eslint-disable @typescript-eslint/member-delimiter-style */
+/* eslint-disable eol-last */
 /* eslint-disable @typescript-eslint/semi */
-/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/quotes */
 /* eslint-disable prefer-arrow-functions/prefer-arrow-functions */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/indent */
 import {
   ApolloServerBase,
   Config,
@@ -20,7 +20,7 @@ import fastifyAccepts from '@fastify/accepts';
 import fastifyCors, { FastifyCorsOptions } from '@fastify/cors';
 import fp, { PluginOptions } from 'fastify-plugin';
 
-export interface ApolloFastifyPluginOptions {
+export interface FastifyPluginOptions {
   path?: string;
   cors?: FastifyCorsOptions | boolean;
   onHealthCheck?: (request: FastifyRequest) => Promise<unknown>;
@@ -44,34 +44,43 @@ export class ApolloServer<
 > extends ApolloServerBase<ContextFunctionParams> {
 
   public plugin =
-    fp<ApolloFastifyPluginOptions>(
+    fp<FastifyPluginOptions>(
       // Unbound this error if passed directly
-      (fastify, options) => this.#sharedHandler(fastify, options),
+      (fastify, options) => this.sharedHandler(fastify, options),
       pluginOptions,
     );
 
-  async #createGraphQLServerOptions(
+  /**
+   * @deprecated please use {@link plugin}
+   * */
+  public createHandler(options?: FastifyPluginOptions) {
+    return (fastify: FastifyInstance) => (
+      this.sharedHandler(fastify, options)
+    );
+  }
+
+  private async createGraphQLServerOptions(
     request: FastifyRequest,
     reply: FastifyReply,
   ): Promise<GraphQLOptions> {
     const contextParams: FastifyContext = { request, reply };
-    return super.graphQLServerOptions(contextParams)
+    return this.graphQLServerOptions(contextParams)
   }
 
-  async #fastifyRequestToCoreQuery({ request, reply }: FastifyContext): Promise<HttpQueryRequest> {
+  private async fastifyRequestToCoreQuery({ request, reply }: FastifyContext): Promise<HttpQueryRequest> {
     return {
       method: request.method || 'POST',
       request: convertNodeHttpToRequest(request.raw),
-      options: await this.#createGraphQLServerOptions(request, reply),
+      options: await this.createGraphQLServerOptions(request, reply),
       query: (
         request.method === 'POST' ? request.body : request.query
       ) as Record<string, unknown>,
     };
   }
 
-  async #sharedHandler(
+  private async sharedHandler(
     fastify: FastifyInstance,
-    options: ApolloFastifyPluginOptions = {},
+    options: FastifyPluginOptions = {},
   ) {
     const {
       cors = true,
@@ -142,7 +151,7 @@ export class ApolloServer<
               const { graphqlResponse, responseInit } =
                 await runHttpQuery(
                   [],
-                  await this.#fastifyRequestToCoreQuery({ request, reply }),
+                  await this.fastifyRequestToCoreQuery({ request, reply }),
                   this.csrfPreventionRequestHeaders,
                 );
 
@@ -172,18 +181,9 @@ export class ApolloServer<
       { prefix: this.graphqlPath },
     )
   }
-
-  /**
-   * @deprecated please use {@link plugin}
-   * */
-  public createHandler(options?: ApolloFastifyPluginOptions) {
-    return (fastify: FastifyInstance) => (
-      this.#sharedHandler(fastify, options)
-    );
-  }
 }
 
-function prefersHtml(request: FastifyRequest) {
+function prefersHtml(request: FastifyRequest): boolean {
   if (request.method !== 'GET') {
     return false;
   } else {
@@ -199,6 +199,6 @@ function prefersHtml(request: FastifyRequest) {
 }
 
 /**
-* @deprecated please use {@link ApolloFastifyPluginOptions}
+* @deprecated please use {@link FastifyPluginOptions}
 * */
-export type ServerRegistration = ApolloFastifyPluginOptions;
+export type ServerRegistration = FastifyPluginOptions;

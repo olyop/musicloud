@@ -56,12 +56,10 @@ const ArtistPage: FC = () => {
 
 		const handleShare =
 			() => {
-				if (navigator.canShare()) {
-					void navigator.share({
-						title: name,
-						url: createObjectPath("artist", artistID),
-					})
-				}
+				void navigator.share({
+					title: name,
+					url: createObjectPath("artist", artistID),
+				})
 			}
 
 		return (

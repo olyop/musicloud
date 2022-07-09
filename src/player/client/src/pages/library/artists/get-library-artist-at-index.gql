@@ -1,6 +1,6 @@
-query getLibraryArtists($input: LibraryArtistsInput!) {
+query getLibraryArtistAtIndex($input: LibraryArtistAtIndexInput!) {
 	getLibrary {
-		artistsPaginated(input: $input) {
+		artistAtIndex(input: $input) {
 			name
 			artistID
 			inLibrary

@@ -32,8 +32,8 @@ export const artistAtIndex =
 					atIndex: args.input.atIndex,
 					userID: context.authorization!.userID,
 					orderByField: args.input.orderBy.field,
-					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 					orderByDirection: args.input.orderBy.direction,
+					columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
 					orderByTableName:
 						args.input.orderBy.field === "DATE_ADDED" ?
 							"library_artists" : "artists",

@@ -18,7 +18,7 @@
 	],
 	"engines": {
 		"npm": "8.13.2",
-		"node": "18.4.0"
+		"node": "18.5.0"
 	},
 	"scripts": {
 		"start": "npm-run-all init init:* -p dev:**",
@@ -95,7 +95,7 @@
 		"@oly_op/bem": "5.0.8",
 		"@oly_op/css-utilities": "2.0.68",
 		"@oly_op/graphql-create-resolver": "2.0.1",
-		"@oly_op/musicloud-common": "1.1.7",
+		"@oly_op/musicloud-common": "1.1.10",
 		"@oly_op/pg-helpers": "6.2.13",
 		"@oly_op/react-button": "5.2.0",
 		"@oly_op/react-head": "1.0.9",
@@ -166,7 +166,7 @@
 		"css-minimizer-webpack-plugin": "4.0.0",
 		"del-cli": "4.0.1",
 		"dotenv": "16.0.1",
-		"dotenv-webpack": "7.1.1",
+		"dotenv-webpack": "8.0.0",
 		"eslint": "8.19.0",
 		"eslint-config-airbnb": "19.0.4",
 		"eslint-config-airbnb-base": "15.0.0",

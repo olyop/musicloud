@@ -4,7 +4,7 @@ import { FastifyCorsOptions } from "@fastify/cors"
 import { FastifyStaticOptions } from "@fastify/static"
 
 import { PUBLIC_PATH } from "./paths"
-import { ApolloFastifyPluginOptions } from "../apollo-server-fastify"
+import { FastifyPluginOptions } from "../apollo-server-fastify"
 
 export const SERVE_STATIC_OPTIONS: FastifyStaticOptions = {
 	root: PUBLIC_PATH,
@@ -28,7 +28,7 @@ export const FASTIFY_CORS_OPTIONS: FastifyCorsOptions = {
 			"*" : "https://musicloud-app.com",
 }
 
-export const APOLLO_PLUGIN_OPTIONS: ApolloFastifyPluginOptions = {
+export const APOLLO_PLUGIN_OPTIONS: FastifyPluginOptions = {
 	cors: false,
 	disableHealthCheck: true,
 }

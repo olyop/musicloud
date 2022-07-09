@@ -26,10 +26,7 @@ const apollo =
 		cache: "bounded",
 		csrfPrevention: true,
 		context: createContext(),
-		plugins:
-			process.env.USE_HTTPS ?
-				undefined :
-				[ApolloServerPluginDrainHttpServer({ httpServer: fastify.server })],
+		plugins: [ApolloServerPluginDrainHttpServer({ httpServer: fastify.server })],
 	})
 
 await apollo.start()

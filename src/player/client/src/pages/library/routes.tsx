@@ -7,7 +7,7 @@ import LibraryHome from "./home"
 import LibrarySongs from "./songs"
 import LibraryGenres from "./genres"
 import LibraryAlbums from "./albums"
-// import LibraryArtists from "./artists"
+import LibraryArtists from "./artists"
 import LibrarySettings from "./settings"
 import LibraryPlaylists from "./playlists"
 
@@ -28,7 +28,7 @@ const routes: Route[] = [{
 	name: "Artists",
 	path: "artists",
 	routeID: uniqueID(),
-	// element: <LibraryArtists/>,
+	element: <LibraryArtists/>,
 },{
 	ignore: true,
 	name: "Settings",

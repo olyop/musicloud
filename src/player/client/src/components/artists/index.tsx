@@ -1,4 +1,6 @@
 import { createBEM } from "@oly_op/bem"
+import isFunction from "lodash-es/isFunction"
+import isUndefined from "lodash-es/isUndefined"
 import { createElement, FC, ReactNode } from "react"
 
 import {
@@ -20,11 +22,12 @@ const Artists: FC<ArtistsPropTypes> = ({
 	children,
 	className,
 	orderBy = false,
+	alwaysList = false,
 }) => {
 	const listStyle = useStateListStyle()
-	const isList = listStyle === SettingsListStyle.LIST
+	const isList = alwaysList || (listStyle === SettingsListStyle.LIST)
 	return (
-		<div className={bem(className, isList && artists && "Elevated")}>
+		<div className={bem(className, isList && "Elevated")}>
 			{orderBy && (
 				<SelectOrderBy
 					orderBy={orderBy}
@@ -35,8 +38,13 @@ const Artists: FC<ArtistsPropTypes> = ({
 					)}
 				/>
 			)}
-			<List>
-				{children(artists)}
+			<List alwaysList={alwaysList}>
+				{(isFunction(children) ?
+					(isUndefined(artists) ?
+						artists :
+						children(artists)) :
+					children
+				)}
 			</List>
 		</div>
 	)
@@ -45,8 +53,9 @@ const Artists: FC<ArtistsPropTypes> = ({
 export interface ArtistsPropTypes {
 	artists?: Artist[],
 	className?: string,
-	children: (artists?: Artist[]) => ReactNode,
+	alwaysList?: boolean,
 	orderBy?: OrderByOptions<SettingsOrderByArtists> | false,
+	children: ((artists: Artist[]) => ReactNode) | ReactNode,
 }
 
 export default Artists

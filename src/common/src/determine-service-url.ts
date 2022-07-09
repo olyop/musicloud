@@ -18,8 +18,16 @@ const determineDevelopmentPort =
 
 export const determineServiceURL =
 	({ accessToken, service }: DetermineServiceURLOptions) => {
-		const protocol = IS_DEVELOPMENT ? "http" : "https"
-		const domain = IS_DEVELOPMENT ? process.env.HOST : "musicloud-app.com"
+		const protocol =
+			IS_DEVELOPMENT ?
+				(process.env.USE_HTTPS ? "https" : "http") :
+				"https"
+
+		const domain =
+			IS_DEVELOPMENT ?
+				process.env.HOST :
+				"musicloud-app.com"
+
 		if (IS_DEVELOPMENT) {
 			const port = determineDevelopmentPort({ service })
 			if (accessToken) {

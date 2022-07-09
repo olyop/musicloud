@@ -1,8 +1,0 @@
-query getLibraryGenres($input: LibraryGenresInput!) {
-	getLibrary {
-		genresPaginated(input: $input) {
-			name
-			genreID
-		}
-	}
-}

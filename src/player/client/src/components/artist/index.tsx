@@ -1,6 +1,7 @@
+import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
-import { createElement, Fragment, FC } from "react"
+import { createElement, Fragment, forwardRef } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
 
 import {
@@ -9,61 +10,61 @@ import {
 	Artist as ArtistType,
 } from "../../types"
 
-import {
-	createObjectPath,
-	createArtistLower,
-	createCatalogImageURL,
-} from "../../helpers"
-
 import Modal from "./modal"
 import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
 import Item, { ItemModal, InfoOptions, ImageOptions } from "../item"
+import { createObjectPath, createArtistLower, createCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Artist")
 
-const Artist: FC<PropTypes> = ({
-	artist,
-	className,
-	showIcon = false,
-	hideModal = false,
-	alwaysList = false,
-	hideInLibrary = false,
-	hideArtistLower = false,
-}) => {
+const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
+	const {
+		artist,
+		className,
+		showIcon = false,
+		hideModal = false,
+		alwaysList = false,
+		hideInLibrary = false,
+		hideArtistLower = false,
+	} = propTypes
+
+	const isArtistNull = isNull(artist)
 	const listStyle = useStateListStyle()
 
-	const info: InfoOptions = {
-		lowerLeft: hideArtistLower ? undefined : createArtistLower(artist),
-		upperLeft: (
-			<ObjectLink
-				link={{
-					text: artist.name,
-					path: createObjectPath("artist", artist.artistID),
-				}}
-			/>
-		),
-	}
+	const info: InfoOptions | undefined =
+		isArtistNull ? undefined : {
+			lowerLeft: hideArtistLower ? undefined : createArtistLower(artist),
+			upperLeft: (
+				<ObjectLink
+					link={{
+						text: artist.name,
+						path: createObjectPath("artist", artist.artistID),
+					}}
+				/>
+			),
+		}
 
-	const imageOptions: ImageOptions = {
-		title: artist.name,
-		path: createObjectPath(
-			"artist",
-			artist.artistID,
-		),
-		url: createCatalogImageURL(
-			artist.artistID,
-			"profile",
-			ImageSizes.MINI,
-			ImageDimensions.SQUARE,
-		),
-	}
+	const imageOptions: ImageOptions | undefined =
+		isArtistNull ? undefined : {
+			title: artist.name,
+			path: createObjectPath(
+				"artist",
+				artist.artistID,
+			),
+			url: createCatalogImageURL(
+				artist.artistID,
+				"profile",
+				ImageSizes.MINI,
+				ImageDimensions.SQUARE,
+			),
+		}
 
 	const modal: ItemModal | undefined =
-		hideModal ? undefined : ({ open, onClose }) => (
+		(hideModal || isArtistNull) ? undefined : ({ open, onClose }) => (
 			<Modal
 				open={open}
 				artist={artist}
@@ -74,6 +75,7 @@ const Artist: FC<PropTypes> = ({
 
 	return listStyle === SettingsListStyle.LIST || alwaysList ? (
 		<Item
+			ref={ref}
 			modal={modal}
 			infoOptions={info}
 			imageOptions={imageOptions}
@@ -83,20 +85,20 @@ const Artist: FC<PropTypes> = ({
 	) : (
 		<div className={bem(className, "Card Elevated")}>
 			<NavLink
-				title={artist.name}
+				title={artist!.name}
 				className={bem("cover")}
-				to={createObjectPath("artist", artist.artistID)}
+				to={createObjectPath("artist", artist!.artistID)}
 				children={(
 					<Fragment>
 						<div
 							className={bem("cover-black", "FullWidthAndHeight")}
 						/>
 						<img
-							alt={artist.name}
+							alt={artist!.name}
 							crossOrigin="anonymous"
 							className={bem("cover-image", "FullWidthAndHeight")}
 							src={createCatalogImageURL(
-								artist.artistID,
+								artist!.artistID,
 								"cover",
 								ImageSizes.HALF,
 								ImageDimensions.LANDSCAPE,
@@ -112,14 +114,14 @@ const Artist: FC<PropTypes> = ({
 			/>
 		</div>
 	)
-}
+})
 
 interface PropTypes extends ObjectShowIcon {
-	artist: ArtistType,
 	className?: string,
 	hideModal?: boolean,
 	alwaysList?: boolean,
 	hideInLibrary?: boolean,
+	artist: ArtistType | null,
 	hideArtistLower?: boolean,
 }
 
