@@ -14,14 +14,6 @@ import { FastifyPluginAsync } from "fastify"
 import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import {
-	uploadFileToS3,
-	addRecordToSearchIndex,
-	determineCatalogImageURL,
-	determineCatalogAudioPath,
-	normalizeImageAndUploadToS3,
-} from "../helpers"
-
-import {
 	INSERT_SONG,
 	INSERT_ALBUM,
 	INSERT_SONG_GENRE,
@@ -30,6 +22,14 @@ import {
 	INSERT_SONG_REMIXER,
 	INSERT_ALBUM_ARTIST,
 } from "./sql"
+
+import {
+	uploadFileToS3,
+	addRecordToSearchIndex,
+	determineCatalogImageURL,
+	determineCatalogAudioPath,
+	normalizeImageAndUploadToS3,
+} from "../helpers"
 
 import { BodyEntry } from "../../types"
 import getGenreID from "./get-genre-id"
@@ -42,7 +42,7 @@ export const uploadAlbum: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
 	async fastify => {
 		fastify.post<Route>(
-			"/api/upload/album",
+			"/album",
 			async (request, reply) => {
 				const { cover, released } = request.body
 
@@ -74,7 +74,7 @@ export const uploadAlbum: FastifyPluginAsync =
 						}],
 					})
 
-				await normalizeImageAndUploadToS3({
+				await normalizeImageAndUploadToS3(fastify.s3)({
 					objectID: albumID,
 					images: coverInputs,
 					buffer: cover[0]!.data,
@@ -108,7 +108,7 @@ export const uploadAlbum: FastifyPluginAsync =
 					albumArtists.push({ artistID, name })
 				}
 
-				await addRecordToSearchIndex<AlgoliaRecordAlbum>({
+				await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordAlbum>({
 					plays: 0,
 					title: albumTitle,
 					typeName: "Album",
@@ -241,12 +241,12 @@ export const uploadAlbum: FastifyPluginAsync =
 						songFeaturing.push({ artistID, name })
 					}
 
-					await uploadFileToS3(
+					await uploadFileToS3(fastify.s3)(
 						determineCatalogAudioPath(songID),
 						audio,
 					)
 
-					await addRecordToSearchIndex<AlgoliaRecordSong>({
+					await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordSong>({
 						mix,
 						album,
 						plays: 0,
@@ -261,7 +261,11 @@ export const uploadAlbum: FastifyPluginAsync =
 					})
 				}
 
-				return reply.send()
+				await reply.code(201)
+
+				return {
+					albumID,
+				}
 			},
 		)
 	}

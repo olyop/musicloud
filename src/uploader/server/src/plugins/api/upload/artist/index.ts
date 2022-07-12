@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
-
 import { trim } from "lodash-es"
 import { FastifyPluginAsync } from "fastify"
 import { ArtistID, AlgoliaRecordArtist } from "@oly_op/musicloud-common"
@@ -11,10 +9,11 @@ import { coverImageInputs, profileImageInputs } from "./images-inputs"
 import { addRecordToSearchIndex, determineCatalogImageURL, normalizeImageAndUploadToS3 } from "../helpers"
 
 export const uploadArtist: FastifyPluginAsync =
+	// eslint-disable-next-line @typescript-eslint/require-await
 	async fastify => {
 		fastify.post<Route>(
 			"/api/upload/artist",
-			async request => {
+			async (request, reply) => {
 				const { body } = request
 				const name = trim(body.name)
 				const cover = body.cover[0]!.data
@@ -51,19 +50,19 @@ export const uploadArtist: FastifyPluginAsync =
 						}],
 					})
 
-				await normalizeImageAndUploadToS3({
+				await normalizeImageAndUploadToS3(fastify.s3)({
 					buffer: cover,
 					objectID: artistID,
 					images: coverImageInputs,
 				})
 
-				await normalizeImageAndUploadToS3({
+				await normalizeImageAndUploadToS3(fastify.s3)({
 					buffer: profile,
 					objectID: artistID,
 					images: profileImageInputs,
 				})
 
-				await addRecordToSearchIndex<AlgoliaRecordArtist>({
+				await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordArtist>({
 					name,
 					plays: 0,
 					typeName: "Artist",
@@ -71,6 +70,8 @@ export const uploadArtist: FastifyPluginAsync =
 					image: determineCatalogImageURL(artistID, profileImageInputs[2]!),
 					...(city && country ? { city, country } : {}),
 				})
+
+				await reply.code(201)
 
 				return {
 					artistID,

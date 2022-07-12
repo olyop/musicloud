@@ -15,11 +15,13 @@ import { useMutation, useResetPlayer } from "../../hooks"
 import SHUFFLE_LIBRARY from "./shuffle-library.gql"
 
 import "./index.scss"
+import { updatePlay, useDispatch } from "../../redux"
 
 const bem =
 	createBEM("Library")
 
 const Library: FC = () => {
+	const dispatch = useDispatch()
 	const resetPlayer = useResetPlayer()
 
 	const [ createPlaylistModal, setCreatePlaylistModal ] =
@@ -38,6 +40,7 @@ const Library: FC = () => {
 		() => {
 			resetPlayer()
 			void libraryShuffle()
+			dispatch(updatePlay(true))
 		}
 
 	return (

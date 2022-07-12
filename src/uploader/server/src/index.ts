@@ -1,40 +1,20 @@
-import {
-	HELMET_OPTIONS,
-	PG_POOL_OPTIONS,
-} from "@oly_op/musicloud-common"
-
-import createFastify from "fastify"
+import cors from "@fastify/cors"
 import helmet from "@fastify/helmet"
-import postgres from "@fastify/postgres"
 import compress from "@fastify/compress"
 import serveStatic from "@fastify/static"
-import multiPart from "@fastify/multipart"
+import rateLimit from "@fastify/rate-limit"
+import { createFastifyCORSOptions, HELMET_OPTIONS } from "@oly_op/musicloud-common"
 
-import {
-	serveClient,
-	uploadGenre,
-	uploadAlbum,
-	uploadArtist,
-	audioMetadata,
-} from "./plugins"
+import fastify from "./fastify"
+import { api, services } from "./plugins"
+import { FASTIFY_STATIC_OPTIONS, FASTIFY_LISTEN_OPTIONS } from "./globals"
 
-import { MULTIPART_OPTIONS, SERVE_STATIC_OPTIONS, FASTIFY_SERVER_OPTIONS } from "./globals"
-
-const fastify =
-	createFastify(FASTIFY_SERVER_OPTIONS)
-
+await fastify.register(rateLimit)
 await fastify.register(helmet, HELMET_OPTIONS)
 await fastify.register(compress)
-await fastify.register(multiPart, MULTIPART_OPTIONS)
-await fastify.register(postgres, PG_POOL_OPTIONS)
-await fastify.register(serveStatic, SERVE_STATIC_OPTIONS)
-await fastify.register(audioMetadata)
-await fastify.register(uploadAlbum)
-await fastify.register(uploadGenre)
-await fastify.register(uploadArtist)
-await fastify.register(serveClient)
+await fastify.register(cors, createFastifyCORSOptions({ service: "uploader" }))
+await fastify.register(serveStatic, FASTIFY_STATIC_OPTIONS)
+await fastify.register(services)
+await fastify.register(api)
 
-await fastify.listen({
-	host: process.env.HOST,
-	port: parseInt(process.env.UPLOADER_SERVER_PORT),
-})
+await fastify.listen(FASTIFY_LISTEN_OPTIONS)

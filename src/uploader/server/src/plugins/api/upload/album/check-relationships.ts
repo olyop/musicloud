@@ -1,11 +1,10 @@
-import { Pool } from "pg"
 import { trim } from "lodash-es"
-import { exists } from "@oly_op/pg-helpers"
+import { exists, PoolOrClient } from "@oly_op/pg-helpers"
 
 import { List, Song } from "./types"
 
 const checkRelationships =
-	(pg: Pool) =>
+	(pg: PoolOrClient) =>
 		async (albumArtists: List, songs: Song[]) => {
 			for (const albumArtist of albumArtists) {
 				const artistExists =

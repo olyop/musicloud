@@ -30,7 +30,7 @@ const ROOT_TSCONFIG_PATH =
 const BUILD_PATH =
 	path.join(BASE_BUILD_PATH, "authenticator", "public")
 
-const uploadConfiguration: Configuration = {
+const configuration: Configuration = {
 	entry: SRC_ENTRY_PATH,
 	output: {
 		path: BUILD_PATH,
@@ -65,7 +65,4 @@ const uploadConfiguration: Configuration = {
 	],
 }
 
-const configuration =
-	merge(baseConfiguration, uploadConfiguration)
-
-export default configuration
+export default merge(baseConfiguration, configuration)

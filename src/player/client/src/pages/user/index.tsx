@@ -34,7 +34,6 @@ const UserPage: FC = () => {
 		useToggleUserFollowing({ userID })
 
 	if (error) {
-		console.log({ error })
 		return (
 			<Page>
 				<h2 className="Content BodyOne PaddingTopBottom">

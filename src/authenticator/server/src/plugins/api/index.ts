@@ -4,7 +4,7 @@ import { logIn } from "./log-in"
 import { signUp } from "./sign-up"
 import { checkEmailAddressExists } from "./check-email-address-exists"
 
-const api: FastifyPluginAsync =
+export const api: FastifyPluginAsync =
 	async fastify => {
 		await fastify.register(
 			async instance => {
@@ -17,5 +17,3 @@ const api: FastifyPluginAsync =
 			},
 		)
 	}
-
-export default api

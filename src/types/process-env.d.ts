@@ -8,6 +8,8 @@ declare namespace NodeJS {
 	interface ProcessEnv {
 		NODE_ENV: NodeENV,
 
+		TESTING: TrueFalse,
+
 		HOST: string,
 
 		PLAYER_SERVER_PORT: string,

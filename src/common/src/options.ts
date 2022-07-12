@@ -1,11 +1,21 @@
-import { PoolConfig } from "pg"
-import { FastifyServerOptions } from "fastify"
-import { fastifyHelmet } from "@fastify/helmet"
+import type { PoolConfig } from "pg"
+import type { PrettyOptions } from "pino-pretty"
+import type { FastifyServerOptions } from "fastify"
+import type { fastifyHelmet } from "@fastify/helmet"
+
+const PINO_PRETTY_OPTIONS: PrettyOptions = {
+	singleLine: true,
+	ignore: "pid,hostname",
+	translateTime: "HH:MM:ss Z",
+}
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	connectionTimeout: 5 * 1000,
-	logger: process.env.NODE_ENV === "production" && {
-		prettyPrint: true,
+	logger: process.env.NODE_ENV === "development" ? undefined : {
+		transport: {
+			target: "pino-pretty",
+			options: PINO_PRETTY_OPTIONS,
+		},
 	},
 }
 

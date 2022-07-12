@@ -13,7 +13,7 @@ export const audioMetadata: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
 	async fastify => {
 		fastify.get<Route>(
-			"/api/audio-metadata",
+			"/audio-metadata",
 			async (request, reply) => {
 				const audio =
 					request.body.audio[0]!.data

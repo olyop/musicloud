@@ -11,15 +11,13 @@ import { Options as TSLoaderOptions } from "ts-loader"
 import CompressionPlugin from "compression-webpack-plugin"
 import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin"
 
 import packageDotJSON from "../package.json"
 
 export const IS_DEV =
 	process.env.NODE_ENV === "development"
-
-export const LINITING =
-	process.env.LINTING_IN_BUILD === "true"
 
 export const BASE_ROOT_PATH =
 	process.cwd()
@@ -65,17 +63,15 @@ export const createTSLoaderOptions =
 
 export const createDevServerProxy =
 	(port: string, proxy: string[]): ProxyConfigArray => [{
-		secure: false,
 		timeout: 120000,
 		logLevel: "silent",
-		changeOrigin: true,
 		context: "/logo/**",
+		secure: process.env.USE_HTTPS ? false : undefined,
 		target: `${process.env.USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
 	},{
-		secure: false,
 		timeout: 120000,
 		logLevel: "silent",
-		changeOrigin: true,
+		secure: process.env.USE_HTTPS ? false : undefined,
 		target: `${process.env.USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
 		context: [
 			"/icon.png",
@@ -100,7 +96,7 @@ const baseConfiguration: Configuration = {
 		host: process.env.HOST,
 		historyApiFallback: true,
 		client: { logging: "error" },
-		server: process.env.USE_HTTPS ? {
+		server: process.env.USE_HTTPS === "true" ? {
 			type: "https",
 			options: {
 				cert: readFileSync(process.env.TLS_CERTIFICATE_PATH),
@@ -143,11 +139,13 @@ const baseConfiguration: Configuration = {
 		new DefinePlugin({
 			VERSION: JSON.stringify(packageDotJSON.version),
 		}),
-		...(LINITING ? [
+		...(process.env.LINTING_IN_BUILD === "true" ? [
+			new StylelintPlugin({
+				extensions: ["scss"],
+			}),
 			new ESLintPlugin({
 				extensions: ["ts", "tsx"],
 			}),
-			new StylelintPlugin(),
 		] : []),
 		...(IS_DEV ? [] : [
 			new CompressionPlugin(),
@@ -156,6 +154,14 @@ const baseConfiguration: Configuration = {
 				filename: "index-[fullhash].css",
 			}),
 		]),
+		...(process.env.ANALYZE_BUNDLE === "true" ? [
+			new BundleAnalyzerPlugin({
+				logLevel: "silent",
+				openAnalyzer: true,
+				defaultSizes: "gzip",
+				analyzerMode: "static",
+			}),
+		] : []),
 	],
 }
 

@@ -1,6 +1,7 @@
 {
 	"extends": "@oly_op/stylelint-config",
-	"rules": {
-		"scss/double-slash-comment-empty-line-before": null
-	}
+	"ignoreFiles": [
+		"build",
+		"node_modules"
+	]
 }

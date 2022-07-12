@@ -3,7 +3,6 @@ import { merge } from "webpack-merge"
 import { Configuration } from "webpack"
 import { TITLE } from "@oly_op/musicloud-common"
 import HTMLWebpackPlugin from "html-webpack-plugin"
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 import baseConfiguration, {
 	BASE_SRC_PATH,
@@ -31,7 +30,7 @@ const ROOT_TSCONFIG_PATH =
 const BUILD_PATH =
 	path.join(BASE_BUILD_PATH, "player", "public")
 
-const playerConfiguration: Configuration = {
+const configuration: Configuration = {
 	entry: SRC_ENTRY_PATH,
 	output: {
 		path: BUILD_PATH,
@@ -66,17 +65,7 @@ const playerConfiguration: Configuration = {
 				template: SRC_INDEX_PATH,
 			}),
 		),
-		...(process.env.ANALYZE_BUNDLE === "true" ? [
-			new BundleAnalyzerPlugin({
-				openAnalyzer: true,
-				defaultSizes: "gzip",
-				analyzerMode: "static",
-			}),
-		] : []),
 	],
 }
 
-const configuration =
-	merge(baseConfiguration, playerConfiguration)
-
-export default configuration
+export default merge(baseConfiguration, configuration)

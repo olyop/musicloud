@@ -1,6 +1,6 @@
 import { trim } from "lodash-es"
 import { readFile } from "node:fs/promises"
-import { FastifyPluginCallback } from "fastify"
+import { FastifyPluginAsync } from "fastify"
 import { GenreBase, GenreID } from "@oly_op/musicloud-common"
 import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
@@ -13,10 +13,11 @@ interface Route {
 const INSERT_GENRE =
 	(await readFile(new URL("./insert.sql", import.meta.url))).toString()
 
-export const uploadGenre: FastifyPluginCallback =
-	(fastify, _, done) => {
+export const uploadGenre: FastifyPluginAsync =
+	// eslint-disable-next-line @typescript-eslint/require-await
+	async fastify => {
 		fastify.post<Route>(
-			"/api/upload/genre",
+			"/genre",
 			async (request, reply) => {
 				const name = trim(request.body.name)
 
@@ -41,15 +42,18 @@ export const uploadGenre: FastifyPluginCallback =
 						}],
 					})
 
-				await addRecordToSearchIndex({
+				await addRecordToSearchIndex(fastify.ag.index)({
 					name,
 					plays: 0,
 					typeName: "Genre",
 					objectID: genreID,
 				})
 
-				return reply.send()
+				await reply.code(201)
+
+				return {
+					genreID,
+				}
 			},
 		)
-		done()
 	}

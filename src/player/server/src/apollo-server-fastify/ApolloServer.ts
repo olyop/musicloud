@@ -20,6 +20,13 @@ import fastifyAccepts from '@fastify/accepts';
 import fastifyCors, { FastifyCorsOptions } from '@fastify/cors';
 import fp, { PluginOptions } from 'fastify-plugin';
 
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+fastifyCors[Symbol.for('plugin-meta')].fastify = '3.x - 4.x'
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+fastifyAccepts[Symbol.for('plugin-meta')].fastify = '3.x - 4.x'
+
 export interface FastifyPluginOptions {
   path?: string;
   cors?: FastifyCorsOptions | boolean;
@@ -35,7 +42,7 @@ export interface FastifyContext {
 export type ApolloServerFastifyConfig = Config<FastifyContext>;
 
 const pluginOptions: PluginOptions = {
-  fastify: '3 - 4',
+  fastify: '3.x - 4.x',
   name: 'apollo-server-fastify',
 };
 

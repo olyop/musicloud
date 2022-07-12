@@ -1,3 +1,4 @@
+import { S3 } from "@aws-sdk/client-s3"
 import sharp, { ResizeOptions } from "sharp"
 import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/musicloud-common"
 
@@ -38,11 +39,12 @@ const determineDimesnions =
 	}
 
 const uploadToS3 =
-	({ objectID, buffer, image }: UploadInput) =>
-		uploadFileToS3(
-			determineCatalogImagePath(objectID, image),
-			buffer,
-		)
+	(s3: S3) =>
+		({ objectID, buffer, image }: UploadInput) =>
+			uploadFileToS3(s3)(
+				determineCatalogImagePath(objectID, image),
+				buffer,
+			)
 
 const normalize =
 	(image: ImageInput, buffer: Buffer) =>
@@ -52,12 +54,13 @@ const normalize =
 			.toBuffer()
 
 export const normalizeImageAndUploadToS3 =
-	async ({ objectID, buffer, images }: Input) => {
-		for (const image of images) {
-			await uploadToS3({
-				image,
-				objectID,
-				buffer: await normalize(image, buffer),
-			})
+	(s3: S3) =>
+		async ({ objectID, buffer, images }: Input) => {
+			for (const image of images) {
+				await uploadToS3(s3)({
+					image,
+					objectID,
+					buffer: await normalize(image, buffer),
+				})
+			}
 		}
-	}

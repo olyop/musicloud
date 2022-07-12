@@ -7,8 +7,7 @@ export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
 	bodyLimit: 2e+7,
 }
 
-export const SERVE_STATIC_OPTIONS: FastifyStaticOptions = {
-	index: false,
+export const FASTIFY_STATIC_OPTIONS: FastifyStaticOptions = {
 	root: PUBLIC_PATH,
 }
 
