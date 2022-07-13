@@ -1,4 +1,3 @@
-import { QUEUE_PAGE_SIZE } from "@oly_op/musicloud-common"
 import { join, query, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers"
 
 import { Song } from "../types"
@@ -6,6 +5,8 @@ import { COLUMN_NAMES } from "../globals"
 import { getQueueSongs } from "./helpers"
 import { SELECT_QUEUE_NOW_PLAYING_SONG } from "../sql"
 import createParentResolver from "./create-parent-resolver"
+
+const QUEUE_PAGE_SIZE = 15
 
 const resolver =
 	createParentResolver()

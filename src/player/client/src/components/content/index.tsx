@@ -1,17 +1,16 @@
-import { createElement, FC } from "react"
 import { BEMInput, createBEM } from "@oly_op/bem"
-import { ChildrenProps } from "@oly_op/musicloud-common"
+import { createElement, FC, PropsWithChildren } from "react"
 
 const bem =
 	createBEM("")
 
-const Content: FC<PropTypes> = ({ children, className }) => (
+const Content: FC<PropsWithChildren<PropTypes>> = ({ children, className }) => (
 	<div className={bem(className, "Content PaddingTopBottom")}>
 		{children}
 	</div>
 )
 
-interface PropTypes extends ChildrenProps {
+interface PropTypes {
 	className?: BEMInput,
 }
 

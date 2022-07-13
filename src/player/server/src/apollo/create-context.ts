@@ -5,14 +5,11 @@ import { isUndefined } from "lodash-es"
 import { IncomingHttpHeaders } from "http"
 import { exists } from "@oly_op/pg-helpers"
 import { createVerifier, TokenError } from "fast-jwt"
-import { JWTPayload, ALGOLIA_OPTIONS } from "@oly_op/musicloud-common"
+import { JWTPayload, ALGOLIA_OPTIONS, AWS_S3_OPTIONS } from "@oly_op/musicloud-common"
 
-import { COLUMN_NAMES } from "./globals"
-import { Context, ContextAuthorization } from "./types"
-import { FastifyContext } from "./apollo-server-fastify"
-
-type ContextFunction =
-	(input: FastifyContext) => Promise<Context>
+import { COLUMN_NAMES } from "../globals"
+import { Context, ContextAuthorization } from "../types"
+import { FastifyContext, ContextFunction } from "./apollo-server-fastify"
 
 const verifyAccessToken =
 	createVerifier({
@@ -60,7 +57,7 @@ const determineAuthorization: DetermineAuthorization =
 	}
 
 const createContext =
-	(): ContextFunction => {
+	(): ContextFunction<FastifyContext, Context> => {
 		const agClient =
 			algolia(...ALGOLIA_OPTIONS)
 
@@ -68,13 +65,7 @@ const createContext =
 			agClient.initIndex(process.env.ALGOLIA_SEARCH_INDEX_NAME)
 
 		const s3 =
-			new S3({
-				region: process.env.AWS_REGION,
-				credentials: {
-					accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-					secretAccessKey: process.env.AWS_ACCESS_KEY_SECRET,
-				},
-			})
+			new S3(AWS_S3_OPTIONS)
 
 		return async ({ request }) => ({
 			s3,

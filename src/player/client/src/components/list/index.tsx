@@ -1,6 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
-import { ChildrenProps } from "@oly_op/musicloud-common"
+import { createElement, FC, PropsWithChildren } from "react"
 
 import { useStateListStyle } from "../../redux"
 import { ClassNameBEMPropTypes, SettingsListStyle } from "../../types"
@@ -10,7 +9,7 @@ import "./index.scss"
 const bem =
 	createBEM("List")
 
-const List: FC<PropTypes> = ({
+const List: FC<PropsWithChildren<PropTypes>> = ({
 	children,
 	className,
 	alwaysList = false,
@@ -24,10 +23,7 @@ const List: FC<PropTypes> = ({
 	)
 }
 
-interface PropTypes
-	extends
-	ChildrenProps,
-	ClassNameBEMPropTypes {
+interface PropTypes extends ClassNameBEMPropTypes {
 	alwaysList?: boolean,
 }
 

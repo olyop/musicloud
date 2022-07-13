@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom"
-import { ChildrenProps, determineServiceURL } from "@oly_op/musicloud-common"
-import { createElement, FC, Fragment, useEffect } from "react"
+import { determineServiceURL } from "@oly_op/musicloud-common"
+import { createElement, FC, Fragment, useEffect, PropsWithChildren } from "react"
 
 import { useDispatch, updateAccessToken, useStateAccessToken } from "../../redux"
 
-const Authentication: FC<ChildrenProps> = ({ children }) => {
+const Authentication: FC<PropsWithChildren> = ({ children }) => {
 	const dispatch = useDispatch()
 	const accessToken = useStateAccessToken()
 

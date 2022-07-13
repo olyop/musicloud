@@ -80,7 +80,7 @@
 	},
 	"dependencies": {
 		"@apollo/client": "3.6.9",
-		"@aws-sdk/client-s3": "3.127.0",
+		"@aws-sdk/client-s3": "3.128.0",
 		"@fastify/accepts": "4.0.0",
 		"@fastify/compress": "6.1.0",
 		"@fastify/cors": "8.0.0",
@@ -92,7 +92,7 @@
 		"@oly_op/bem": "5.0.8",
 		"@oly_op/css-utilities": "2.0.68",
 		"@oly_op/graphql-create-resolver": "2.0.1",
-		"@oly_op/musicloud-common": "1.1.19",
+		"@oly_op/musicloud-common": "1.1.28",
 		"@oly_op/pg-helpers": "6.2.17",
 		"@oly_op/react-button": "5.2.0",
 		"@oly_op/react-head": "1.0.9",

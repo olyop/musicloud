@@ -1,13 +1,12 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
-import { ChildrenProps } from "@oly_op/musicloud-common"
+import { createElement, FC, PropsWithChildren } from "react"
 
 import "./index.scss"
 
 const bem =
 	createBEM("AlbumSongs")
 
-const AlbumSongs: FC<PropTypes> = ({ onAddSong, children }) => (
+const AlbumSongs: FC<PropsWithChildren<PropTypes>> = ({ onAddSong, children }) => (
 	<div className="FlexColumnGapQuart">
 		<p className={bem("label")}>
 			Songs
@@ -30,7 +29,7 @@ const AlbumSongs: FC<PropTypes> = ({ onAddSong, children }) => (
 export type OnAddSong =
 	(files: File[]) => Promise<void>
 
-interface PropTypes extends ChildrenProps {
+interface PropTypes {
 	onAddSong: OnAddSong,
 }
 

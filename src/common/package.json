@@ -1,6 +1,6 @@
 {
 	"license": "MIT",
-	"version": "1.1.19",
+	"version": "1.1.28",
 	"main": "./build/index.js",
 	"types": "./build/index.d.ts",
 	"description": "musicloud-common",
@@ -21,11 +21,11 @@
 	],
 	"peerDependencies": {
 		"pg": "*",
-		"react": "*",
 		"fastify": "*",
 		"pino-pretty": "*",
 		"@fastify/cors": "*",
 		"@fastify/static": "*",
-		"@fastify/helmet": "*"
+		"@fastify/helmet": "*",
+		"@aws-sdk/client-s3": "*"
 	}
 }

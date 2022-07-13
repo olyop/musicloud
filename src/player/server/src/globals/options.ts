@@ -1,12 +1,6 @@
 import { SearchIndex } from "algoliasearch"
-import { FastifyStaticOptions } from "@fastify/static"
 
-import { PUBLIC_PATH } from "./paths"
-import { FastifyPluginOptions } from "../apollo-server-fastify"
-
-export const FASTIFY_STATIC_OPTIONS: FastifyStaticOptions = {
-	root: PUBLIC_PATH,
-}
+import { FastifyPluginOptions } from "../apollo/apollo-server-fastify"
 
 export const ALGOLIA_SEARCH_OPTIONS: Parameters<SearchIndex["setSettings"]>[0] = {
 	customRanking: ["asc(text)"],

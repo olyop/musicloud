@@ -4,43 +4,28 @@ import postgres from "@fastify/postgres"
 import compress from "@fastify/compress"
 import serveStatic from "@fastify/static"
 import rateLimit from "@fastify/rate-limit"
-import { ApolloServerPluginDrainHttpServer } from "apollo-server-core"
-import { createFastifyCORSOptions, HELMET_OPTIONS, PG_POOL_OPTIONS } from "@oly_op/musicloud-common"
 
 import {
-	FASTIFY_STATIC_OPTIONS,
-	APOLLO_PLUGIN_OPTIONS,
-	FASTIFY_LISTEN_OPTIONS,
-} from "./globals"
+	PG_POOL_OPTIONS,
+	FASTIFY_HELMET_OPTIONS,
+	createFastifyCORSOptions,
+	createFastifyStaticOptions,
+} from "@oly_op/musicloud-common"
 
+import apollo from "./apollo"
 import fastify from "./fastify"
-import typeDefs from "./type-defs"
-import resolvers from "./resolvers"
-import createContext from "./create-context"
-import { ApolloServer } from "./apollo-server-fastify"
-
-const apollo =
-	new ApolloServer({
-		typeDefs,
-		resolvers,
-		cache: "bounded",
-		csrfPrevention: true,
-		context: createContext(),
-		plugins: [
-			ApolloServerPluginDrainHttpServer({
-				httpServer: fastify.server,
-			}),
-		],
-	})
+import serveClient from "./serve-client"
+import { PUBLIC_PATH, APOLLO_PLUGIN_OPTIONS, FASTIFY_LISTEN_OPTIONS } from "./globals"
 
 await apollo.start()
 
 await fastify.register(rateLimit)
-await fastify.register(helmet, HELMET_OPTIONS)
+await fastify.register(helmet, FASTIFY_HELMET_OPTIONS)
 await fastify.register(postgres, PG_POOL_OPTIONS)
 await fastify.register(cors, createFastifyCORSOptions({ service: "player" }))
 await fastify.register(compress)
-await fastify.register(serveStatic, FASTIFY_STATIC_OPTIONS)
+await fastify.register(serveStatic, createFastifyStaticOptions(PUBLIC_PATH))
 await fastify.register(apollo.plugin, APOLLO_PLUGIN_OPTIONS)
+await fastify.register(serveClient)
 
 await fastify.listen(FASTIFY_LISTEN_OPTIONS)

@@ -73,7 +73,12 @@ const Application: FC = () => {
 						{emailAddressChecked || (
 							<p className="BodyTwo">
 								<Fragment>Created by </Fragment>
-								{packageDotJSON.author.name}
+								<a
+									target="_blank"
+									rel="noreferrer"
+									href="https://olyop.com"
+									children={packageDotJSON.author.name}
+								/>
 							</p>
 						)}
 					</div>

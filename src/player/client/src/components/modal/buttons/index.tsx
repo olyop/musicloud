@@ -1,12 +1,12 @@
 import { createBEM } from "@oly_op/bem"
-import { createElement, FC } from "react"
-import { ChildrenProps } from "@oly_op/musicloud-common"
+import { createElement, FC, PropsWithChildren } from "react"
+
 import "./index.scss"
 
 const bem =
 	createBEM("ModalButtons")
 
-const Buttons: FC<ChildrenProps> = ({ children }) => (
+const Buttons: FC<PropsWithChildren> = ({ children }) => (
 	<div className={bem("")}>
 		{children}
 	</div>

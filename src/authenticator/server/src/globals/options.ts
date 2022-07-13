@@ -1,14 +1,9 @@
 import { FastifyServerOptions } from "fastify"
-import { FastifyStaticOptions } from "@fastify/static"
-
-import { PUBLIC_PATH } from "./paths"
+import { FASTIFY_SERVER_OPTIONS as FASTIFY_SERVER_BASE_OPTIONS } from "@oly_op/musicloud-common"
 
 export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
+	...FASTIFY_SERVER_BASE_OPTIONS,
 	bodyLimit: 2e+7,
-}
-
-export const FASTIFY_STATIC_OPTIONS: FastifyStaticOptions = {
-	root: PUBLIC_PATH,
 }
 
 export const FASTIFY_LISTEN_OPTIONS = {

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/comma-dangle */
 import isNull from "lodash-es/isNull"
 import uniqueID from "lodash-es/uniqueId"
+import { InterfaceWithInput } from "@oly_op/musicloud-common"
 import { DocumentNode, useApolloClient } from "@apollo/client"
-import { InterfaceWithInput, PAGINATION_PAGE_SIZE } from "@oly_op/musicloud-common"
 import { createElement, Fragment, ReactNode, Ref, useCallback, useEffect, useRef, useState } from "react"
 
 import { OrderBy, SettingsOrderBy } from "../../types"
@@ -80,7 +80,6 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const [ ref, inView ] =
 		useInView({
 			onChange: handleInViewChange,
-			initialInView: index < PAGINATION_PAGE_SIZE,
 		})
 
 	useEffect(() => {

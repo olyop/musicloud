@@ -1,5 +1,4 @@
-import { ChildrenProps } from "@oly_op/musicloud-common"
-import { createElement, useEffect, FC, Fragment } from "react"
+import { createElement, useEffect, FC, Fragment, PropsWithChildren } from "react"
 
 import {
 	useStateTheme,
@@ -11,7 +10,7 @@ import applyTheme from "./apply-theme"
 import applyTransitions from "./apply-transitions"
 import applyGridChildWidth from "./apply-grid-child-width"
 
-const ApplySettings: FC<ChildrenProps> = ({ children }) => {
+const ApplySettings: FC<PropsWithChildren> = ({ children }) => {
 	const theme = useStateTheme()
 	const transitions = useStateTransitions()
 	const gridChildWidth = useStateGridChildWidth()
