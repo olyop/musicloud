@@ -3,13 +3,12 @@ import { Head } from "@oly_op/react-head"
 import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { Link, NavLink, Route, Routes, useParams } from "react-router-dom"
-import { ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common/build/types"
 
 import { User } from "../../types"
+import Page from "../../layouts/page"
 import UserFollowers from "./followers"
-import Page from "../../components/page"
-import Banner from "../../components/banner"
-import Content from "../../components/content"
+import Banner from "../../layouts/banner"
 import { createCatalogImageURL } from "../../helpers"
 import { useQuery, useToggleUserFollowing } from "../../hooks"
 
@@ -108,7 +107,7 @@ const UserPage: FC = () => {
 							ImageDimensions.SQUARE,
 						)}
 					/>
-					<Content>
+					<div className="ContentPaddingTopBottom">
 						<Routes>
 							<Route
 								path=""
@@ -121,7 +120,7 @@ const UserPage: FC = () => {
 								element={<UserFollowers/>}
 							/>
 						</Routes>
-					</Content>
+					</div>
 				</Page>
 			</Head>
 		)

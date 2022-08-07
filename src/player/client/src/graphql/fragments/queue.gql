@@ -1,0 +1,11 @@
+#import "./queue-next.gql";
+#import "./queue-later.gql";
+#import "./queue-previous.gql";
+#import "./queue-now-playing.gql";
+
+fragment QueueFragment on Queue {
+	...QueuePreviousFragment
+	...QueueNowPlayingFragment
+	...QueueNextFragment
+	...QueueLaterFragment
+}

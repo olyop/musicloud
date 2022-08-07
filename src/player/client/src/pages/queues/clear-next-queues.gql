@@ -1,59 +1,9 @@
+#import "../../graphql/fragments/queue-next.gql";
+#import "../../graphql/fragments/queue-later.gql";
+
 mutation clearNextQueues {
 	clearNextQueues {
-    next {
-      mix
-      title
-      songID
-      duration
-      inLibrary
-      queueIndex
-      featuring {
-        artistID
-        name
-      }
-      remixers {
-        artistID
-        name
-      }
-      artists {
-        artistID
-        name
-      }
-      genres {
-        genreID
-        name
-      }
-      album {
-        albumID
-        title
-      }
-    }
-    later {
-      mix
-      title
-      songID
-      duration
-      inLibrary
-      featuring {
-        artistID
-        name
-      }
-      remixers {
-        artistID
-        name
-      }
-      artists {
-        artistID
-        name
-      }
-      genres {
-        genreID
-        name
-      }
-      album {
-        albumID
-        title
-      }
-    }
-  }
+		...QueueNextFragment
+		...QueueLaterFragment
+	}
 }

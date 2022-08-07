@@ -1,53 +1,41 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import { useRef } from "react"
-import { useApolloClient } from "@apollo/client"
-import { isNull, isUndefined } from "lodash-es"
-import { SongID } from "@oly_op/musicloud-common"
+import isNull from "lodash-es/isNull"
+import isUndefined from "lodash-es/isUndefined"
+import { SongID } from "@oly_op/musicloud-common/build/types"
 
 import { Song } from "../../types"
 import { useQuery } from "../query"
+import { updater } from "./updater"
 import PLAY_SONG from "./play-song.gql"
 import { useMutation } from "../mutation"
-import { mutationUpdater, updateNowPlayingCache } from "./update"
 import { useResetPlayer } from "../reset-player"
-import { Input, QueryData, Data } from "./types"
 import { togglePlay, useDispatch } from "../../redux"
-import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
+import { Input, QueryData, MutationData, UpdateIsOptimistic } from "./types"
+import GET_QUEUE_NOW_PLAYING_SONG_ID from "./get-queue-now-playing-song-id.gql"
 
 const isSong =
 	(song: Input): song is Song =>
-		!isNull(song) && "__typename" in song
+		(isNull(song) ? false : "__typename" in song)
 
 export const usePlaySong =
 	(song: Input) => {
 		const dispatch = useDispatch()
-		const client = useApolloClient()
-		const isOptimistic = useRef(false)
+		const isOptimistic = useRef(true)
 		const resetPlayer = useResetPlayer()
 
 		const { data } =
-			useQuery<QueryData>(
-				GET_QUEUE_NOW_PLAYING,
-				{ fetchPolicy: "cache-first" },
-			)
-
-		const toggleIsOptimistic =
-			(value: boolean) => {
-				isOptimistic.current = value
-			}
+			useQuery<QueryData>(GET_QUEUE_NOW_PLAYING_SONG_ID, {
+				fetchPolicy: "cache-first",
+			})
 
 		const [ playSong, result ] =
-			useMutation<Data, SongID>(PLAY_SONG, {
+			useMutation<MutationData, SongID>(PLAY_SONG, {
 				optimisticResponse: isSong(song) ? ({
 					playSong: {
+						__typename: "Queue",
 						nowPlaying: song,
 					},
 				}) : undefined,
-				update: mutationUpdater({
-					toggleIsOptimistic,
-					isOptimistic: isOptimistic.current,
-				}),
 			})
 
 		const isPlaying = (
@@ -57,7 +45,12 @@ export const usePlaySong =
 			data.getQueue.nowPlaying.songID === song.songID
 		)
 
-		const handlePlaySong =
+		const updateIsOptimistic: UpdateIsOptimistic =
+			value => {
+				isOptimistic.current = value
+			}
+
+		const handler =
 			() => {
 				if (song && !result.loading) {
 					if (isPlaying) {
@@ -65,21 +58,12 @@ export const usePlaySong =
 					} else {
 						resetPlayer()
 						void playSong({
-							variables: {
-								songID: song.songID,
-							},
-						}).catch(() => {
-							updateNowPlayingCache(client.cache)({
-								songID: song.songID,
-							})
+							variables: { songID: song.songID },
+							update: updater(isOptimistic.current, updateIsOptimistic),
 						})
 					}
 				}
 			}
 
-		return [
-			handlePlaySong,
-			isPlaying,
-			result,
-		] as const
+		return [ handler,	isPlaying, result	] as const
 	}

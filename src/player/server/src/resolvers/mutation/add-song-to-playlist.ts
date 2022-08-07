@@ -1,6 +1,5 @@
 import { last } from "lodash-es"
-import { PlaylistID, SongID } from "@oly_op/musicloud-common"
-import { ForbiddenError, UserInputError } from "apollo-server-errors"
+import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types"
 import { convertTableToCamelCase, exists, join, query } from "@oly_op/pg-helpers"
 
 import {
@@ -21,7 +20,7 @@ export const addSongToPlaylist =
 	resolver<Playlist, Args>(
 		async ({ args, context }) => {
 			const { songID, playlistID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const playlistExists =
 				await exists(context.pg)({
@@ -31,11 +30,11 @@ export const addSongToPlaylist =
 				})
 
 			if (!playlistExists) {
-				throw new UserInputError("Playlist does not exist")
+				throw new Error("Playlist does not exist")
 			}
 
 			if (await isNotUsersPlaylist(context.pg)({ userID, playlistID })) {
-				throw new ForbiddenError("Unauthorized to add to playlist")
+				throw new Error("Unauthorized to add to playlist")
 			}
 
 			const songExists =
@@ -46,7 +45,7 @@ export const addSongToPlaylist =
 				})
 
 			if (!songExists) {
-				throw new UserInputError("Song does not exist")
+				throw new Error("Song does not exist")
 			}
 
 			const playlistSongs =

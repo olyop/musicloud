@@ -4,17 +4,17 @@ import {
 	SongBase,
 	GenreBase,
 	AlbumBase,
-	TypeNames,
 	ArtistBase,
 	PlaylistBase,
 	UserIDNameBase,
+	ObjectTypeNames,
 	GenreIDNameBase,
 	AlbumIDTitleBase,
 	ArtistIDNameBase,
 } from "./objects"
 
 export type AlgoliaRecordTypeName =
-	Exclude<TypeNames, "Key" | "Play">
+	Exclude<ObjectTypeNames, "Key" | "Play">
 
 export interface AlgoliaRecordBase<T extends AlgoliaRecordTypeName>
 	extends ObjectID {

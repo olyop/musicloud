@@ -10,10 +10,10 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { random } from "lodash-es"
 import { GetObjectCommand } from "@aws-sdk/client-s3"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { PlaylistID, SongID, UserID, NAME } from "@oly_op/musicloud-common"
+import { NAME } from "@oly_op/musicloud-common/build/metadata"
+import { PlaylistID, SongID, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	Song,
@@ -129,10 +129,7 @@ export const playsTotal =
 	resolver(
 		({ parent, context }) => (
 			query(context.pg)(SELECT_SONG_PLAYS)({
-				parse: pipe(
-					getResultRowCountOrNull,
-					plays => plays && plays * 10000 + random(0, 10000),
-				),
+				parse: getResultRowCountOrNull,
 				variables: {
 					songID: parent.songID,
 					columnNames: join(COLUMN_NAMES.PLAY),
@@ -162,7 +159,7 @@ export const userPlays =
 			getUserSongPlays(context.pg)({
 				songID: parent.songID,
 				columnNames: join(COLUMN_NAMES.PLAY),
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
 		),
@@ -175,7 +172,7 @@ export const userPlaysTotal =
 				songID: parent.songID,
 				parse: getResultRowCountOrNull,
 				columnNames: COLUMN_NAMES.PLAY[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -187,7 +184,7 @@ export const dateAddedToLibrary =
 				objectID: parent.songID,
 				tableName: "library_songs",
 				columnName: COLUMN_NAMES.SONG[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -199,7 +196,7 @@ export const inLibrary =
 				objectID: parent.songID,
 				tableName: "library_songs",
 				columnName: COLUMN_NAMES.SONG[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)

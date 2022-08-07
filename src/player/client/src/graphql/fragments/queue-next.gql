@@ -1,0 +1,7 @@
+#import "./song-queue.gql";
+
+fragment QueueNextFragment on Queue {
+	next {
+		...SongQueueFragment
+	}
+}

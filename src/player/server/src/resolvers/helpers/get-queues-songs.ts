@@ -2,24 +2,25 @@ import {
 	join,
 	query,
 	PoolOrClient,
-	convertTableToCamelCase,
+	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { UserID } from "@oly_op/musicloud-common"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import { COLUMN_NAMES } from "../../globals"
 import { SELECT_QUEUE_SONGS } from "../../sql"
 import { Song, TableNameOptions } from "../../types"
 
 export const addQueueIndexToSongs =
-	(songs: Song[]) =>
-		songs.map<Song>(
+	(songs: Song[] | null) => (
+		songs && songs.map<Song>(
 			(song, queueIndex) => ({
 				...song,
 				queueIndex,
 			}),
 		)
+	)
 
 export interface GetQueueSongsOptions
 	extends UserID, TableNameOptions {
@@ -27,11 +28,11 @@ export interface GetQueueSongsOptions
 }
 
 export const getQueueSongs =
-	(client: PoolOrClient) =>
+	(pg: PoolOrClient) =>
 		({ limit, userID, tableName }: GetQueueSongsOptions) =>
-			query(client)(SELECT_QUEUE_SONGS)({
+			query(pg)(SELECT_QUEUE_SONGS)({
 				parse: pipe(
-					convertTableToCamelCase<Song>(),
+					convertTableToCamelCaseOrNull<Song>(),
 					addQueueIndexToSongs,
 				),
 				variables: {

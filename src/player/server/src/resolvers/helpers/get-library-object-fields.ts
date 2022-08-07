@@ -6,7 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { ObjectID, UserID } from "@oly_op/musicloud-common"
+import { ObjectID, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	EXISTS_OBJECT_IN_LIBRARY,

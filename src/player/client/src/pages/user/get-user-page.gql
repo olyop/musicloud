@@ -1,7 +1,8 @@
+#import "../../graphql/fragments/user-core.gql";
+
 query getUserPage($userID: UUID!) {
 	getUserByID(userID: $userID) {
-		name
-		userID
+		...UserCoreFragment
 		isFollower
 		dateJoined
 	}

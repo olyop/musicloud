@@ -1,0 +1,4 @@
+fragment GenreCoreFragment on Genre {
+	genreID
+	name
+}

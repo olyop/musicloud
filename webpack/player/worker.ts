@@ -4,7 +4,7 @@ import { Configuration } from "webpack"
 import {
 	BASE_SRC_PATH,
 	BASE_BUILD_PATH,
-	createTSLoaderOptions,
+	createTSLoaderRule,
 } from "../base"
 
 const ROOT_PATH =
@@ -36,15 +36,11 @@ const configuration: Configuration = {
 		extensions: [".js", ".ts"],
 	},
 	module: {
-		rules: [{
-			test: /\.ts$/,
-			use: [{
-				loader: "ts-loader",
-				options: createTSLoaderOptions({
-					configFile: ROOT_TSCONFIG_PATH,
-				}),
-			}],
-		}],
+		rules: [
+			createTSLoaderRule({
+				configFile: ROOT_TSCONFIG_PATH,
+			}),
+		],
 	},
 }
 

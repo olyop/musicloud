@@ -1,11 +1,11 @@
-import { isNull } from "lodash-es"
+import isNull from "lodash-es/isNull"
 import { Reference } from "@apollo/client"
-import { PlaylistID } from "@oly_op/musicloud-common"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
-import { DeletePlaylistUpdate } from "./types"
+import { Update } from "./types"
 
 const update =
-	({ playlistID }: PlaylistID): DeletePlaylistUpdate =>
+	({ playlistID }: PlaylistID): Update =>
 		cache => {
 			cache.modify({
 				id: cache.identify({ __typename: "Library" }),

@@ -22,7 +22,7 @@ const Header: FC<ModalHeaderPropTypes> = ({
 }) => {
 	const handleShare =
 		() => {
-			if ("share" in navigator && onClose) {
+			if (!hideShare && onClose && "share" in navigator) {
 				void navigator.share(shareData)
 				onClose()
 			}

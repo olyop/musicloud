@@ -6,7 +6,7 @@ import {
 
 import { isNull } from "lodash-es"
 import { SearchIndex } from "algoliasearch"
-import { UserID } from "@oly_op/musicloud-common"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	INSERT_PLAY,

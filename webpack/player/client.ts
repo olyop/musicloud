@@ -1,14 +1,14 @@
 import path from "node:path"
 import { merge } from "webpack-merge"
 import { Configuration } from "webpack"
-import { TITLE } from "@oly_op/musicloud-common"
 import HTMLWebpackPlugin from "html-webpack-plugin"
+import { TITLE } from "@oly_op/musicloud-common/build/metadata"
 
 import baseConfiguration, {
 	BASE_SRC_PATH,
 	BASE_BUILD_PATH,
+	createTSLoaderRule,
 	createDevServerProxy,
-	createTSLoaderOptions,
 	createHTMLPluginOptions,
 } from "../base"
 
@@ -37,31 +37,38 @@ const configuration: Configuration = {
 	},
 	devServer: {
 		port: parseInt(process.env.PLAYER_CLIENT_PORT),
-		proxy: createDevServerProxy(process.env.PLAYER_SERVER_PORT, [
-			"/graphql",
-			"/ping.txt",
-			"/service-worker.js",
-			"/manifest.webmanifest",
-		]),
+		proxy: [
+			createDevServerProxy(process.env.PLAYER_SERVER_PORT, [
+				"/graphql",
+				"/ping.txt",
+				"/service-worker.js",
+				"/manifest.webmanifest",
+			]),
+			{
+				timeout: 120000,
+				logLevel: "silent",
+				context: "/logo/**",
+				secure: process.env.USE_HTTPS ? false : undefined,
+				target: `${process.env.USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${process.env.PLAYER_SERVER_PORT}`,
+			},
+		],
 	},
 	module: {
-		rules: [{
-			test: /\.gql$/,
-			loader: "graphql-tag/loader",
-		},{
-			test: /\.tsx?$/,
-			use: [{
-				loader: "ts-loader",
-				options: createTSLoaderOptions({
-					configFile: ROOT_TSCONFIG_PATH,
-				}),
-			}],
-		}],
+		rules: [
+			createTSLoaderRule({
+				configFile: ROOT_TSCONFIG_PATH,
+			}),
+			{
+				test: /\.gql$/,
+				exclude: /node_modules/,
+				loader: "graphql-mini-transforms/webpack-loader",
+			},
+		],
 	},
 	plugins: [
 		new HTMLWebpackPlugin(
 			createHTMLPluginOptions({
-				title: TITLE,
+				title: `${TITLE} Player`,
 				template: SRC_INDEX_PATH,
 			}),
 		),

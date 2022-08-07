@@ -1,7 +1,7 @@
 import { pipe } from "rxjs"
 import { compare } from "bcrypt"
 import { FastifyPluginAsync } from "fastify"
-import { UserID, UserPasswordBase } from "@oly_op/musicloud-common"
+import { UserID, UserPasswordBase } from "@oly_op/musicloud-common/build/types"
 import { query, convertFirstRowToCamelCase, PoolOrClient } from "@oly_op/pg-helpers"
 
 import options from "./options"

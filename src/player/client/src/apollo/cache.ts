@@ -1,10 +1,9 @@
-import { isNull } from "lodash-es"
-import localForage from "localforage"
-import { concatPagination } from "@apollo/client/utilities"
+import isNull from "lodash-es/isNull"
+// import localForage from "localforage"
 import { FieldMergeFunction, InMemoryCache } from "@apollo/client"
-import { persistCache, LocalForageWrapper } from "apollo3-cache-persist"
+// import { persistCache, LocalForageWrapper } from "apollo3-cache-persist"
 
-const replacePossibleNullArray: FieldMergeFunction<unknown[] | null> =
+const mergePossibleNullValue: FieldMergeFunction<unknown | null> =
 	(existing, incoming) => {
 		if (isNull(incoming)) {
 			return null
@@ -12,6 +11,12 @@ const replacePossibleNullArray: FieldMergeFunction<unknown[] | null> =
 			return incoming
 		}
 	}
+
+const mergeObjects: FieldMergeFunction<Record<string, unknown>> =
+	(existing, incoming) => ({
+		...existing,
+		...incoming,
+	})
 
 const cache =
 	new InMemoryCache({
@@ -41,40 +46,38 @@ const cache =
 				keyFields: ["playlistID"],
 				fields: {
 					songs: {
-						merge: replacePossibleNullArray,
-					},
-				},
-			},
-			Queue: {
-				keyFields: [],
-				fields: {
-					next: {
-						merge: replacePossibleNullArray,
-					},
-					later: {
-						merge: replacePossibleNullArray,
-					},
-					previous: {
-						merge: replacePossibleNullArray,
+						merge: mergePossibleNullValue,
 					},
 				},
 			},
 			Library: {
-				keyFields: [],
+				keyFields: false,
+				merge: mergeObjects,
+			},
+			Queue: {
+				keyFields: false,
+				merge: mergeObjects,
 				fields: {
-					songsPaginated: concatPagination(["input", ["orderBy"]]),
-					albumsPaginated: concatPagination(["input", ["orderBy"]]),
-					genresPaginated: concatPagination(["input", ["orderBy"]]),
-					artistsPaginated: concatPagination(["input", ["orderBy"]]),
-					playlistsPaginated: concatPagination(["input", ["orderBy"]]),
+					next: {
+						merge: mergePossibleNullValue,
+					},
+					later: {
+						merge: mergePossibleNullValue,
+					},
+					previous: {
+						merge: mergePossibleNullValue,
+					},
+					nowPlaying: {
+						merge: mergePossibleNullValue,
+					},
 				},
 			},
 		},
 	})
 
-await persistCache({
-	cache,
-	storage: new LocalForageWrapper(localForage),
-})
+// await persistCache({
+// 	cache,
+// 	storage: new LocalForageWrapper(localForage),
+// })
 
 export default cache

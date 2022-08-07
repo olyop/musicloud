@@ -1,5 +1,5 @@
 import { createElement, FC } from "react"
-import { AlbumID } from "@oly_op/musicloud-common"
+import { AlbumID } from "@oly_op/musicloud-common/build/types"
 
 import { useStatePlay } from "../../../redux"
 import { usePlayAlbum } from "../../../hooks"

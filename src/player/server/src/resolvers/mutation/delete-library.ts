@@ -12,7 +12,7 @@ export const deleteLibrary =
 	resolver(
 		async ({ context }) => {
 			const query = pgHelpersQuery(context.pg)
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const variables = { userID }
 

@@ -45,5 +45,5 @@ export const getTrendingPlaylists =
 					columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
 				},
 			})
-		)
+		),
 	)

@@ -1,5 +1,4 @@
-import { UserID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 import { getResultExists, query } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
@@ -11,10 +10,10 @@ export const unFollowUser =
 	resolver<User, UserID>(
 		async ({ args, context }) => {
 			const { userID } = args
-			const followerUserID = context.authorization!.userID
+			const followerUserID = context.getAuthorizationJWTPayload(context.authorization).userID
 
 			if (userID === followerUserID) {
-				throw new UserInputError("Cannot unfollow yourself")
+				throw new Error("Cannot unfollow yourself")
 			}
 
 			const isFollowing =

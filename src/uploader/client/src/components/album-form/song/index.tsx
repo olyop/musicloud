@@ -1,12 +1,11 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { SongBase } from "@oly_op/musicloud-common"
 import { createElement, FC, ChangeEventHandler } from "react"
 
-import { Item } from "../../../types"
 import AlbumFormSongList from "./list"
 
 import "./index.scss"
+import { Song, SongLists } from "../types"
 
 const bem =
 	createBEM("AlbumFormSong")
@@ -101,23 +100,6 @@ const AlbumFormSong: FC<PropTypes> = ({
 		</div>
 	)
 }
-
-interface SongAudio {
-	audio?: File,
-}
-
-export interface SongLists {
-	genres: Item[],
-	artists: Item[],
-	remixers: Item[],
-	featuring: Item[],
-}
-
-export interface Song
-	extends
-	SongAudio,
-	SongLists,
-	Omit<SongBase, "bpm" | "songID" | "duration"> {}
 
 interface PropTypes {
 	song: Song,

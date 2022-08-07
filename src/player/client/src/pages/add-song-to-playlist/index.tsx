@@ -3,7 +3,7 @@ import {
 	ImageSizes,
 	PlaylistID,
 	ImageDimensions,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
@@ -12,8 +12,7 @@ import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, createElement, FC, Fragment, useEffect } from "react"
 
-import Page from "../../components/page"
-import Content from "../../components/content"
+import Page from "../../layouts/page"
 import GET_SONG_DATA from "./get-song-data.gql"
 import Playlist from "../../components/playlist"
 import Playlists from "../../components/playlists"
@@ -80,7 +79,7 @@ const AddSongToPlaylistPage: FC = () => {
 
 	return (
 		<Page>
-			<Content className={bem("")}>
+			<div className={bem("", "ContentPaddingTopBottom")}>
 				{songData && playlistsData && (
 					<Fragment>
 						<img
@@ -137,7 +136,7 @@ const AddSongToPlaylistPage: FC = () => {
 						</div>
 					</Fragment>
 				)}
-			</Content>
+			</div>
 		</Page>
 	)
 }

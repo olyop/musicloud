@@ -2,7 +2,7 @@ import isNull from "lodash-es/isNull"
 import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import { createElement, forwardRef, Fragment } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import AlbumModal from "./modal"
 import AlbumTitle from "../album-title"

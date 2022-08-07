@@ -5,7 +5,7 @@ import {
 	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { UserID } from "@oly_op/musicloud-common"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import { NowPlaying } from "../../types"
 import { COLUMN_NAMES } from "../../globals"

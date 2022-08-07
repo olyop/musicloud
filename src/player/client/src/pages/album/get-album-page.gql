@@ -1,51 +1,20 @@
-query AlbumPage($albumID: UUID!) {
+#import "../../graphql/fragments/song-core.gql";
+#import "../../graphql/fragments/album-core.gql";
+
+query getAlbumPage($albumID: UUID!) {
 	getAlbumByID(albumID: $albumID) {
-		albumID
-		title
+		...AlbumCoreFragment
 		duration
-		released
-		inLibrary
+		songsTotal
 		genres {
-			name
 			genreID
-		}
-		artists {
 			name
-			artistID
-		}
-		remixers {
-			name
-			artistID
 		}
 		songs {
-			mix
-			title
-			songID
-			duration
-			inLibrary
+			...SongCoreFragment
 			playsTotal
 			discNumber
 			trackNumber
-			featuring {
-				artistID
-				name
-			}
-			remixers {
-				artistID
-				name
-			}
-			artists {
-				artistID
-				name
-			}
-			genres {
-				genreID
-				name
-			}
-			album {
-				albumID
-				title
-			}
 		}
 	}
 }

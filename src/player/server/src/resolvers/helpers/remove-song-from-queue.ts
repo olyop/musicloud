@@ -6,8 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { Pool } from "pg"
-import { UserID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	SELECT_QUEUE,
@@ -41,7 +40,7 @@ export const removeSongFromQueue =
 				})
 
 			if (!queueSongExists) {
-				throw new UserInputError("Queue song does not exist")
+				throw new Error("Queue song does not exist")
 			}
 
 			try {

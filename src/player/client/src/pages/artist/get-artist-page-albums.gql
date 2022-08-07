@@ -1,3 +1,5 @@
+#import "../../graphql/fragments/album-core.gql";
+
 query getArtistPageAlbums(
 	$artistID: UUID!
 	$orderBy: AlbumsOrderByInput!
@@ -5,14 +7,7 @@ query getArtistPageAlbums(
 	getArtistByID(artistID: $artistID) {
 		artistID
 		albums(orderBy: $orderBy) {
-			title
-			albumID
-			released
-			inLibrary
-			artists {
-				artistID
-				name
-			}
+			...AlbumCoreFragment
 		}
 	}
 }

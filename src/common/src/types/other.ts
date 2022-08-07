@@ -22,3 +22,9 @@ export interface JWTPayload
 export interface AccessToken {
 	accessToken: string,
 }
+
+export enum ServicesNames {
+	PLAYER = "player",
+	UPLOADER = "uploader",
+	AUTHENTICATOR = "authenticator",
+}

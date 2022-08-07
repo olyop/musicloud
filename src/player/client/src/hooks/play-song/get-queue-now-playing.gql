@@ -1,7 +1,0 @@
-query getQueueNowPlaying {
-	getQueue {
-		nowPlaying {
-      songID
-    }
-	}
-}

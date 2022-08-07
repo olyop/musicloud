@@ -1,5 +1,5 @@
-import { UserPasswordBase } from "@oly_op/musicloud-common"
 import { query } from "@oly_op/pg-helpers"
+import { UserPasswordBase } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { hashPassword } from "../helpers"
@@ -11,7 +11,7 @@ export const changePassword =
 			await query(context.pg)(UPDATE_USER_PASSWORD)({
 				variables: [{
 					key: "userID",
-					value: context.authorization!.userID,
+					value: context.getAuthorizationJWTPayload(context.authorization).userID,
 				},{
 					key: "password",
 					parameterized: true,

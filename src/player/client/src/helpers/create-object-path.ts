@@ -1,6 +1,6 @@
-import { TypeNames } from "@oly_op/musicloud-common"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
+import { ObjectTypeNames } from "@oly_op/musicloud-common/build/types"
 
 export const createObjectPath =
-	(typeName: Lowercase<TypeNames>, objectID: string) =>
+	(typeName: Lowercase<ObjectTypeNames>, objectID: string) =>
 		`/${typeName}/${removeDashesFromUUID(objectID)}`

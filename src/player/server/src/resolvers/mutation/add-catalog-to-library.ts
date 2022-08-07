@@ -9,7 +9,7 @@ import { COLUMN_NAMES } from "../../globals"
 export const addCatalogToLibrary =
 	resolver(
 		async ({ context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const songs =
 				await query(context.pg)(SELECT_SONGS)({

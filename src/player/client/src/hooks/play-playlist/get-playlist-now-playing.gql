@@ -1,0 +1,8 @@
+query getPlaylistNowPlaying($playlistID: UUID!) {
+	getQueue {
+		nowPlaying {
+			songID
+			isInPlaylist(playlistID: $playlistID)
+		}
+	}
+}

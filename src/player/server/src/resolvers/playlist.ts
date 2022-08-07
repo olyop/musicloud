@@ -8,8 +8,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { ForbiddenError } from "apollo-server-errors"
-import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/musicloud-common"
+import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	getUser,
@@ -28,8 +27,8 @@ const resolver =
 	createParentResolver<Playlist>(
 		({ parent, context }) => {
 			if (parent.privacy === PlaylistPrivacy.PRIVATE) {
-				if (parent.userID !== context.authorization!.userID) {
-					throw new ForbiddenError("Unauthorized access to this playlist")
+				if (parent.userID !== context.getAuthorizationJWTPayload(context.authorization).userID) {
+					throw new Error("Unauthorized access to this playlist")
 				}
 			}
 		},
@@ -131,7 +130,7 @@ export const userPlays =
 			getUserPlaylistPlays(context.pg)({
 				playlistID: parent.playlistID,
 				columnNames: join(COLUMN_NAMES.PLAY),
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
 		),
@@ -144,7 +143,7 @@ export const userPlaysTotal =
 				playlistID: parent.playlistID,
 				parse: getResultRowCountOrNull,
 				columnNames: COLUMN_NAMES.PLAY[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -156,7 +155,7 @@ export const dateAddedToLibrary =
 				objectID: parent.playlistID,
 				tableName: "library_playlists",
 				columnName: COLUMN_NAMES.PLAYLIST[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -168,7 +167,7 @@ export const inLibrary =
 				objectID: parent.playlistID,
 				tableName: "library_playlists",
 				columnName: COLUMN_NAMES.PLAYLIST[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)

@@ -9,9 +9,8 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
-import { head, random } from "lodash-es"
-import { ApolloError } from "apollo-server-errors"
-import { ArtistID, UserID } from "@oly_op/musicloud-common"
+import { head } from "lodash-es"
+import { ArtistID, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	Song,
@@ -66,10 +65,7 @@ export const playsTotal =
 	resolver(
 		({ parent, context }) => (
 			query(context.pg)(SELECT_ARTIST_PLAYS)({
-				parse: pipe(
-					getResultRowCountOrNull,
-					plays => plays && plays * 10000 + random(0, 10000),
-				),
+				parse: getResultRowCountOrNull,
 				variables: {
 					artistID: parent.artistID,
 				},
@@ -144,7 +140,7 @@ export const since =
 						if (firstAlbum) {
 							return firstAlbum.released
 						} else {
-							throw new ApolloError("Artist has no songs.")
+							throw new Error("Artist has no songs.")
 						}
 					},
 				),
@@ -179,7 +175,7 @@ export const userPlays =
 			getUserArtistPlays(context.pg)({
 				artistID: parent.artistID,
 				columnNames: join(COLUMN_NAMES.PLAY),
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
 		),
@@ -192,7 +188,7 @@ export const userPlaysTotal =
 				artistID: parent.artistID,
 				parse: getResultRowCountOrNull,
 				columnNames: COLUMN_NAMES.PLAY[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -204,7 +200,7 @@ export const dateAddedToLibrary =
 				objectID: parent.artistID,
 				tableName: "library_artists",
 				columnName: COLUMN_NAMES.ARTIST[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -216,7 +212,7 @@ export const inLibrary =
 				objectID: parent.artistID,
 				tableName: "library_artists",
 				columnName: COLUMN_NAMES.ARTIST[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)

@@ -1,6 +1,6 @@
 import { pipe } from "rxjs"
 import { trim } from "lodash-es"
-import { ArtistID } from "@oly_op/musicloud-common"
+import { ArtistID } from "@oly_op/musicloud-common/build/types"
 import { query, PoolOrClient, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import { SELECT_ARTIST } from "./sql"

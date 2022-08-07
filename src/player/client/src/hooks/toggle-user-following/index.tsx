@@ -1,5 +1,5 @@
 import isUndefined from "lodash-es/isUndefined"
-import { UserID } from "@oly_op/musicloud-common"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import { User } from "../../types"
 import { useQuery } from "../query"
@@ -11,8 +11,7 @@ import GET_USER_FOLLOWING from "./get-user-following.gql"
 
 export const useToggleUserFollowing =
 	({ userID }: UserID) => {
-		const { userID: ownUserID } =
-			useJWTPayload()
+		const { userID: ownUserID } = useJWTPayload()
 
 		const { data } =
 			useQuery<GetUserFollowingData, UserID>(GET_USER_FOLLOWING, {

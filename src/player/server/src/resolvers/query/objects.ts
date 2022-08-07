@@ -7,9 +7,7 @@ import {
 	ArtistID,
 	PlaylistID,
 	PlaylistPrivacy,
-} from "@oly_op/musicloud-common"
-
-import { ForbiddenError } from "apollo-server-errors"
+} from "@oly_op/musicloud-common/build/types"
 
 import {
 	User,
@@ -43,7 +41,7 @@ export const getUser =
 	resolver(
 		({ context }) => (
 			getUserHelper(context.pg)({
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -96,10 +94,10 @@ export const getPlaylistByID =
 			const playlist =
 				await getPlaylist(context.pg)(args)
 			if (playlist.privacy.toUpperCase() === PlaylistPrivacy.PRIVATE) {
-				if (playlist.userID === context.authorization!.userID) {
+				if (playlist.userID === context.getAuthorizationJWTPayload(context.authorization).userID) {
 					return playlist
 				} else {
-					throw new ForbiddenError("Unauthorized access to this playlist")
+					throw new Error("Unauthorized access to this playlist")
 				}
 			} else {
 				return playlist

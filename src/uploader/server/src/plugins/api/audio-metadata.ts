@@ -12,9 +12,9 @@ interface Route {
 export const audioMetadata: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
 	async fastify => {
-		fastify.get<Route>(
+		fastify.put<Route>(
 			"/audio-metadata",
-			async (request, reply) => {
+			async request => {
 				const audio =
 					request.body.audio[0]!.data
 
@@ -22,21 +22,22 @@ export const audioMetadata: FastifyPluginAsync =
 					await musicMetadata.parseBuffer(audio)
 
 				const {
+					disk,
 					title,
 					genre,
-					disk,
 					track,
+					album,
+					artist,
 				} = metadata.common
 
-				const genres =
-					genre![0]
-
-				return reply.send({
+				return {
 					title,
-					genres,
+					album,
+					artist,
+					genres: genre![0],
 					discNumber: disk.no || 1,
 					trackNumber: track.no || 1,
-				})
+				}
 			},
 		)
 	}

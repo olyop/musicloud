@@ -14,7 +14,7 @@ import SettingsPage from "./settings"
 import PlaylistPage from "./playlist"
 import ManageAccount from "./manage-account"
 import AddSongToPlaylistPage from "./add-song-to-playlist"
-import AddAlbumToPlaylistPage from "./add-album-to-playlist"
+// import AddAlbumToPlaylistPage from "./add-album-to-playlist"
 import TopOneHundredSongsPage from "./top-one-hundred-songs"
 
 const routes: RouteObject[] = [{
@@ -60,7 +60,7 @@ const routes: RouteObject[] = [{
 	element: <AddSongToPlaylistPage/>,
 	path: "add-song-to-playlist/:songID",
 },{
-	element: <AddAlbumToPlaylistPage/>,
+	// element: <AddAlbumToPlaylistPage/>,
 	path: "add-album-to-playlist/:albumID",
 }]
 

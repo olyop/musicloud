@@ -1,6 +1,6 @@
 query getAlbumData($albumID: UUID!) {
 	getAlbumByID(albumID: $albumID) {
-		title
 		albumID
+		title
 	}
 }

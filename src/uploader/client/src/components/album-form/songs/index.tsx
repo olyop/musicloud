@@ -1,19 +1,26 @@
+import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
 import { createElement, FC, PropsWithChildren } from "react"
+
+import { Song } from "../types"
 
 import "./index.scss"
 
 const bem =
 	createBEM("AlbumSongs")
 
-const AlbumSongs: FC<PropsWithChildren<PropTypes>> = ({ onAddSong, children }) => (
-	<div className="FlexColumnGapQuart">
-		<p className={bem("label")}>
+const AlbumSongs: FC<PropsWithChildren<PropTypes>> = ({ onAddSong, songs, children }) => (
+	<div className={bem("", "FlexColumnGapQuart")}>
+		<p className="TextField__label">
 			Songs
 		</p>
-		<div className="Border Rounded PaddingHalf">
+		<div className={bem("content", "Border Rounded FlexColumn")}>
 			<div>
-				{children}
+				{isEmpty(songs) ? (
+					<p className={bem("no-songs", "BodyOne")}>
+						No songs...
+					</p>
+				) : children}
 			</div>
 			<input
 				multiple
@@ -30,6 +37,7 @@ export type OnAddSong =
 	(files: File[]) => Promise<void>
 
 interface PropTypes {
+	songs: Song[],
 	onAddSong: OnAddSong,
 }
 

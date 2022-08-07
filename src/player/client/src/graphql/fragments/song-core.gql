@@ -1,0 +1,26 @@
+fragment SongCoreFragment on Song {
+	songID
+	mix
+	title
+	duration
+	album {
+		albumID
+		title
+	}
+	artists {
+		artistID
+		name
+	}
+	genres {
+		genreID
+		name
+	}
+	featuring {
+		artistID
+		name
+	}
+	remixers {
+		artistID
+		name
+	}
+}

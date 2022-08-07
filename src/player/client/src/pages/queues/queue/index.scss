@@ -6,4 +6,6 @@
 		gap: calc(var(--space-three-quart) - 4rem);
 		padding-left: calc(var(--space-three-quart) + 1rem); }
 	&__section {
-		margin-top: calc((var(--space-quart) + 3rem) * -1); } }
+		margin-bottom: var(--space);
+		margin-top: calc((var(--space-quart) + 3rem) * -1);
+		border-bottom: var(--border-width) var(--border-style) var(--border-color); } }

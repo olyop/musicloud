@@ -6,8 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import isEmpty from "lodash-es/isEmpty"
-import { SongID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { SongID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	SELECT_QUEUE,
@@ -23,7 +22,7 @@ export const queueSongNext =
 	resolver<Record<string, never>, SongID>(
 		async ({ args, context }) => {
 			const { songID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
@@ -37,7 +36,7 @@ export const queueSongNext =
 				})
 
 			if (!songExists) {
-				throw new UserInputError("Song does not exist")
+				throw new Error("Song does not exist")
 			}
 
 			try {

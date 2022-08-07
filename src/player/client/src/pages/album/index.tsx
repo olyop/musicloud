@@ -2,7 +2,7 @@ import {
 	AlbumID,
 	ImageSizes,
 	ImageDimensions,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
@@ -14,11 +14,10 @@ import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import Disc from "./disc"
 import AlbumArtist from "./artist"
 import { Album } from "../../types"
-import Page from "../../components/page"
+import Page from "../../layouts/page"
 import createDiscs from "./create-discs"
 import AlbumPlayButton from "./play-button"
 import Buttons from "../../components/buttons"
-import Content from "../../components/content"
 import AlbumTitle from "../../components/album-title"
 import ObjectLinks from "../../components/object-links"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
@@ -27,6 +26,7 @@ import { createObjectPath, createCatalogImageURL, determinePlural } from "../../
 import GET_ALBUM_PAGE from "./get-album-page.gql"
 
 import "./index.scss"
+import ShareButton from "./share-button"
 
 const bem =
 	createBEM("AlbumPage")
@@ -51,37 +51,24 @@ const AlbumPage: FC = () => {
 		return (
 			<Head pageTitle={null}>
 				<Page>
-					<Content>
+					<div className="ContentPaddingTopBottom">
 						<h2 className="BodyOne">
 							{error.message === "Failed to fetch" ?
 								error.message :
 								"Album does not exist."}
 						</h2>
-					</Content>
+					</div>
 				</Page>
 			</Head>
 		)
 	} else if (data) {
 		const album = data.getAlbumByID
-		const { title, songs, duration, artists, genres, released } = album
-
-		const discs =
-			createDiscs(songs)
-
-		const handleShare =
-			() => {
-				if ("share" in navigator) {
-					void navigator.share({
-						title,
-						url: createObjectPath("album", albumID),
-					})
-				}
-			}
-
+		const { title, songs, duration, artists, genres, released, songsTotal } = album
+		const discs =	createDiscs(songs)
 		return (
 			<Head pageTitle={title}>
 				<Page>
-					<Content className={bem("")}>
+					<div className={bem("", "ContentPaddingTopBottom")}>
 						<img
 							alt={title}
 							crossOrigin="anonymous"
@@ -158,10 +145,8 @@ const AlbumPage: FC = () => {
 										className={bem("buttons-link-button")}
 									/>
 								</Link>
-								<Button
-									icon="share"
-									text="Share"
-									onClick={handleShare}
+								<ShareButton
+									album={album}
 								/>
 							</Buttons>
 							<p className="BodyTwo LightColor">
@@ -173,7 +158,7 @@ const AlbumPage: FC = () => {
 								)}
 								{songs.length}
 								<Fragment> song</Fragment>
-								{determinePlural(songs.length)}
+								{determinePlural(songsTotal)}
 								<Fragment>, </Fragment>
 								{Math.floor(duration / 60)}
 								<Fragment> minutes, </Fragment>
@@ -181,7 +166,7 @@ const AlbumPage: FC = () => {
 								<Fragment> seconds</Fragment>
 							</p>
 						</div>
-					</Content>
+					</div>
 				</Page>
 			</Head>
 		)

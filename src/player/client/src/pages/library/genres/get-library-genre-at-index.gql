@@ -1,8 +1,9 @@
+#import "../../../graphql/fragments/genre-core.gql";
+
 query getLibraryGenreAtIndex($input: LibraryGenreAtIndexInput!) {
 	getLibrary {
 		genreAtIndex(input: $input) {
-			name
-			genreID
+			...GenreCoreFragment
 		}
 	}
 }

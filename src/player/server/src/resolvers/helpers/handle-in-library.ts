@@ -8,8 +8,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { Pool } from "pg"
-import { UserInputError } from "apollo-server-errors"
-import { UserID, ObjectID } from "@oly_op/musicloud-common"
+import { UserID, ObjectID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	INSERT_LIBRARY_OBJECT,
@@ -32,6 +31,7 @@ export interface HandleInLibraryOptions
 
 export const handleInLibrary =
 	(pool: Pool) =>
+		// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 		async <T = void>(options: HandleInLibraryOptions) => {
 			const {
 				userID,
@@ -57,7 +57,7 @@ export const handleInLibrary =
 				})
 
 			if (!doesObjectExist) {
-				throw new UserInputError("Object does not exist")
+				throw new Error("Object does not exist")
 			}
 
 			let returnResult: T

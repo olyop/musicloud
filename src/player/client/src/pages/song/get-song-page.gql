@@ -1,40 +1,15 @@
+#import "../../graphql/fragments/song-core.gql";
+
 query getSongPage($songID: UUID!) {
   getSongByID(songID: $songID) {
-    mix
+    ...SongCoreFragment
     bpm
-    size
-    title
-    songID
-    duration
-    inLibrary
-    playsTotal
     userPlaysTotal
     key {
       flat
       keyID
       sharp
       camelot
-    }
-    featuring {
-      name
-      artistID
-    }
-    remixers {
-      name
-      artistID
-    }
-    artists {
-      name
-      artistID
-    }
-    genres {
-      name
-      genreID
-    }
-    album {
-      title
-      albumID
-      released
     }
   }
 }

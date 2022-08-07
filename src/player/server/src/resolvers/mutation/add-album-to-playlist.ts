@@ -6,8 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { last } from "lodash-es"
-import { AlbumID, PlaylistID } from "@oly_op/musicloud-common"
-import { ForbiddenError, UserInputError } from "apollo-server-errors"
+import { AlbumID, PlaylistID } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
@@ -24,7 +23,7 @@ export const addAlbumToPlaylist =
 			const query = pgHelpersQuery(context.pg)
 			const exists = pgHelpersExists(context.pg)
 			const { albumID, playlistID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const albumExists =
 				await exists({
@@ -34,7 +33,7 @@ export const addAlbumToPlaylist =
 				})
 
 			if (!albumExists) {
-				throw new UserInputError("Album does not exist")
+				throw new Error("Album does not exist")
 			}
 
 			const playlistExists =
@@ -45,11 +44,11 @@ export const addAlbumToPlaylist =
 				})
 
 			if (!playlistExists) {
-				throw new UserInputError("Playlist does not exist")
+				throw new Error("Playlist does not exist")
 			}
 
 			if (await isNotUsersPlaylist(context.pg)({ userID, playlistID })) {
-				throw new ForbiddenError("Unauthorized to add to playlist")
+				throw new Error("Unauthorized to add to playlist")
 			}
 
 			const songs =

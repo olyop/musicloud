@@ -1,4 +1,4 @@
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 export interface BodyEntry {
 	data: Buffer,

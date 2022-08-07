@@ -1,0 +1,9 @@
+fragment PlaylistCoreFragment on Playlist {
+	playlistID
+	title
+	songsTotal
+	user {
+		userID
+		name
+	}
+}

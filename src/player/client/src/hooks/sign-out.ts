@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useApolloClient } from "@apollo/client"
-import { determineServiceURL } from "@oly_op/musicloud-common"
+import { ServicesNames } from "@oly_op/musicloud-common/build/types"
+import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url"
 
 import { updateAccessToken, useDispatch } from "../redux"
 
@@ -27,7 +28,8 @@ export const useSignOut =
 
 					window.location.href =
 						determineServiceURL({
-							service: "authenticator",
+							redirect: ServicesNames.PLAYER,
+							service: ServicesNames.AUTHENTICATOR,
 						})
 				})()
 			}

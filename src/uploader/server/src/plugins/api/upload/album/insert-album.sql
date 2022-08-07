@@ -3,6 +3,6 @@ INSERT INTO albums (
 	released
 ) VALUES (
 	{{ title }},
-	'{{ released }}'
+	{{ released }}
 ) RETURNING
 	album_id;

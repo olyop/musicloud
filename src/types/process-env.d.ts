@@ -14,8 +14,10 @@ declare namespace NodeJS {
 
 		PLAYER_SERVER_PORT: string,
 		PLAYER_CLIENT_PORT: string,
+
 		UPLOADER_SERVER_PORT: string,
 		UPLOADER_CLIENT_PORT: string,
+
 		AUTHENTICATOR_SERVER_PORT: string,
 		AUTHENTICATOR_CLIENT_PORT: string,
 
@@ -41,7 +43,8 @@ declare namespace NodeJS {
 		ALGOLIA_ADMIN_API_KEY: string,
 		ALGOLIA_SEARCH_API_KEY: string,
 
-		JWT_ALGORITHM: "ES512",
 		JWT_TOKEN_SECRET: string,
+
+		RANDOM_ORG_API_KEY: string,
 	}
 }

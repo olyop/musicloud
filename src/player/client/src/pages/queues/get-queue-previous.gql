@@ -1,32 +1,7 @@
+#import "../../graphql/fragments/queue-previous.gql";
+
 query getQueuePrevious {
-  getQueue {
-    later {
-      mix
-      title
-      songID
-      duration
-      inLibrary
-      queueIndex
-      featuring {
-        artistID
-        name
-      }
-      remixers {
-        artistID
-        name
-      }
-      artists {
-        artistID
-        name
-      }
-      genres {
-        genreID
-        name
-      }
-      album {
-        albumID
-        title
-      }
-    }
-  }
+	getQueue {
+		...QueuePreviousFragment
+	}
 }

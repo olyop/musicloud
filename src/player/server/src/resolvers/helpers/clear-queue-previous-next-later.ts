@@ -1,5 +1,5 @@
-import { UserID } from "@oly_op/musicloud-common"
 import { PoolOrClient } from "@oly_op/pg-helpers"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import { clearQueueNext } from "./clear-queue-next"
 import { clearQueueLater } from "./clear-queue-later"

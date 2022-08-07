@@ -1,5 +1,4 @@
-import { UserID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 import { exists, getResultExists, query } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
@@ -12,10 +11,10 @@ export const followUser =
 	resolver<User, UserID>(
 		async ({ args, context }) => {
 			const { userID } = args
-			const followerUserID = context.authorization!.userID
+			const followerUserID = context.getAuthorizationJWTPayload(context.authorization).userID
 
 			if (userID === followerUserID) {
-				throw new UserInputError("Cannot follow yourself")
+				throw new Error("Cannot follow yourself")
 			}
 
 			const userExists =
@@ -26,7 +25,7 @@ export const followUser =
 				})
 
 			if (!userExists) {
-				throw new UserInputError("User does not exist")
+				throw new Error("User does not exist")
 			}
 
 			const isFollowing =
@@ -36,7 +35,7 @@ export const followUser =
 				})
 
 			if (isFollowing) {
-				throw new UserInputError("Already following this user")
+				throw new Error("Already following this user")
 			}
 
 			await query(context.pg)(INSERT_USER_FOLLOWER)({

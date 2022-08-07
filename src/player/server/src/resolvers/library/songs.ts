@@ -17,7 +17,7 @@ export const songsTotal =
 			query(context.pg)(SELECT_LIBRARY_SONGS_TOTAL)({
 				parse: getResultCountOrNull,
 				variables: {
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				},
 			})
 		),
@@ -30,7 +30,7 @@ export const songAtIndex =
 				parse: convertFirstRowToCamelCaseOrNull(),
 				variables: {
 					atIndex: args.input.atIndex,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 					orderByDirection: args.input.orderBy.direction,
 					orderByField: determineSongsSQLOrderByField(args.input.orderBy.field),

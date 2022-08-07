@@ -1,58 +1,63 @@
-import { from, ApolloLink } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
-import { createUploadLink } from "apollo-upload-client"
 import { setContext } from "@apollo/client/link/context"
+import { from, ApolloLink, HttpLink } from "@apollo/client"
 
 import { store, dispatch, updateIsOnline, updateAccessToken } from "../redux"
 
 const withAuthorization =
-	setContext(
-		() => {
-			const { accessToken } = store.getState()
+	setContext(request => {
+		const { accessToken } = store.getState()
+		if (accessToken) {
 			return {
 				headers: {
-					Authorization: `Bearer ${accessToken!}`,
+					Authorization: `Bearer ${accessToken}`,
 				},
 			}
-		},
-	)
+		} else {
+			return request
+		}
+	})
 
-const checkAuthenticationLink =
-	onError(
-		({ forward, operation, networkError, graphQLErrors }) => {
-			if (networkError) {
-				dispatch(updateIsOnline(false))
+const checkNetworkError =
+	onError(({ forward, operation, networkError }) => {
+		if (networkError) {
+			dispatch(updateIsOnline(false))
+		}
+
+		return forward(operation)
+	})
+
+const checkExpiredToken =
+	onError(({ forward, operation, graphQLErrors }) => {
+		if (graphQLErrors) {
+			if (graphQLErrors[0]?.message === "Access Token Expired") {
+				dispatch(updateAccessToken(null))
 			}
+		}
 
-			if (graphQLErrors) {
-				if (graphQLErrors[0]?.extensions["code"] === "UNAUTHENTICATED") {
-					dispatch(updateAccessToken(null))
-				}
-			}
+		return forward(operation)
+	})
 
-			return forward(operation)
-		},
-	)
+const isOnline =
+	new ApolloLink((operation, forward) => (
+		forward(operation).map(result => {
+			dispatch(updateIsOnline(true))
+			return result
+		})
+	))
 
-const isOnlineLink =
-	new ApolloLink(
-		(operation, forward) => (
-			forward(operation).map(data => {
-				dispatch(updateIsOnline(true))
-				return data
-			})
-		),
-	)
-
-const uploadLink =
-	createUploadLink()
+const http =
+	new HttpLink({
+		useGETForQueries: true,
+	})
 
 const link =
 	from([
 		withAuthorization,
-		checkAuthenticationLink,
-		isOnlineLink,
-		uploadLink,
+		checkNetworkError,
+		checkExpiredToken,
+		isOnline,
+		http,
 	])
 
 export default link

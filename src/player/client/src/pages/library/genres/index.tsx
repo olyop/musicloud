@@ -12,7 +12,7 @@ import GET_LIBRARY_GENRE_AT_INDEX from "./get-library-genre-at-index.gql"
 import "./index.scss"
 
 const LibraryGenres: FC = () => (
-	<Head pageTitle="Library Genres">
+	<Head pageTitle="Genres">
 		<Genres orderBy className="Content Elevated">
 			<Feed<GetGenresTotalData, GenreType, GetGenreAtIndexData>
 				settingsOrderBy="genres"

@@ -1,5 +1,5 @@
 import Button from "@oly_op/react-button"
-import { PlaylistPrivacy } from "@oly_op/musicloud-common"
+import { PlaylistPrivacy } from "@oly_op/musicloud-common/build/types"
 import { createElement, Fragment, useState, FC } from "react"
 
 import { Playlist } from "../../types"
@@ -76,7 +76,7 @@ const PlaylistPagePrivacyButton: FC<PropTypes> = ({ playlist }) => {
 }
 
 interface PropTypes {
-	playlist: Playlist,
+	playlist: Pick<Playlist, "__typename" | "playlistID" | "privacy">,
 }
 
 export default PlaylistPagePrivacyButton

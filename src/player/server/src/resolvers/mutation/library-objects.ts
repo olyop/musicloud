@@ -11,9 +11,7 @@ import {
 	AlbumID,
 	ArtistID,
 	PlaylistID,
-} from "@oly_op/musicloud-common"
-
-import { UserInputError } from "apollo-server-errors"
+} from "@oly_op/musicloud-common/build/types"
 
 import {
 	SELECT_SONG_BY_ID,
@@ -83,7 +81,7 @@ export const addSongToLibrary =
 				createSongConfig({
 					inLibrary: true,
 					objectID: args.songID,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				}),
 			)
 		),
@@ -96,7 +94,7 @@ export const removeSongFromLibrary =
 				createSongConfig({
 					inLibrary: false,
 					objectID: args.songID,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				}),
 			)
 		),
@@ -109,7 +107,7 @@ export const addArtistToLibrary =
 				createArtistConfig({
 					inLibrary: true,
 					objectID: args.artistID,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				}),
 			)
 		),
@@ -122,7 +120,7 @@ export const removeArtistFromLibrary =
 				createArtistConfig({
 					inLibrary: false,
 					objectID: args.artistID,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				}),
 			)
 		),
@@ -136,15 +134,15 @@ export const addPlaylistToLibrary =
 			const playlist =
 				await getPlaylist(context.pg)({ playlistID })
 
-			if (context.authorization!.userID === playlist.userID) {
-				throw new UserInputError("Users own playlist is always followed")
+			if (context.getAuthorizationJWTPayload(context.authorization).userID === playlist.userID) {
+				throw new Error("Users own playlist is always followed")
 			}
 
 			return handleInLibrary(context.pg)(
 				createPlaylistConfig({
 					inLibrary: true,
 					objectID: args.playlistID,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				}),
 			)
 		},
@@ -158,15 +156,15 @@ export const removePlaylistFromLibrary =
 			const playlist =
 				await getPlaylist(context.pg)({ playlistID })
 
-			if (context.authorization!.userID === playlist.userID) {
-				throw new UserInputError("Users own playlist is always followed")
+			if (context.getAuthorizationJWTPayload(context.authorization).userID === playlist.userID) {
+				throw new Error("Users own playlist is always followed")
 			}
 
 			return handleInLibrary(context.pg)(
 				createPlaylistConfig({
 					inLibrary: false,
 					objectID: args.playlistID,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				}),
 			)
 		},
@@ -185,7 +183,7 @@ export const addAlbumToLibrary =
 				})
 
 			if (!albumExists) {
-				throw new UserInputError("Album does not exist")
+				throw new Error("Album does not exist")
 			}
 
 			const songs =
@@ -202,7 +200,7 @@ export const addAlbumToLibrary =
 					createSongConfig({
 						inLibrary: true,
 						objectID: song.songID,
-						userID: context.authorization!.userID,
+						userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					}),
 				)
 			}
@@ -230,7 +228,7 @@ export const removeAlbumFromLibrary =
 				})
 
 			if (!albumExists) {
-				throw new UserInputError("Album does not exist")
+				throw new Error("Album does not exist")
 			}
 
 			const songs =
@@ -247,7 +245,7 @@ export const removeAlbumFromLibrary =
 					createSongConfig({
 						inLibrary: false,
 						objectID: song.songID,
-						userID: context.authorization!.userID,
+						userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					}),
 				)
 			}

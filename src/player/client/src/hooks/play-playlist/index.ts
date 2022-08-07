@@ -1,14 +1,15 @@
 import { useEffect } from "react"
+import isNull from "lodash-es/isNull"
 import { useLazyQuery } from "@apollo/client"
-import { isNull, isUndefined } from "lodash-es"
-import { PlaylistID } from "@oly_op/musicloud-common"
+import isUndefined from "lodash-es/isUndefined"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
 import { useMutation } from "../mutation"
 import { QueueNowPlaying } from "../../types"
 import PLAY_PLAYLIST from "./play-playlist.gql"
 import { useResetPlayer } from "../reset-player"
 import { useDispatch, togglePlay } from "../../redux"
-import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
+import GET_PLAYLIST_NOW_PLAYING from "./get-playlist-now-playing.gql"
 
 export const usePlayPlaylist =
 	(playlist: PlaylistID | null) => {
@@ -16,10 +17,10 @@ export const usePlayPlaylist =
 		const resetPlayer = useResetPlayer()
 
 		const [ playPlaylist, result ] =
-			useMutation<Data, PlaylistID>(PLAY_PLAYLIST)
+			useMutation<MutationData, PlaylistID>(PLAY_PLAYLIST)
 
 		const [ getQueueNowPlaying, { data, called } ] =
-			useLazyQuery<QueryData, PlaylistID>(GET_QUEUE_NOW_PLAYING, {
+			useLazyQuery<QueryData, PlaylistID>(GET_PLAYLIST_NOW_PLAYING, {
 				fetchPolicy: "cache-first",
 			})
 
@@ -59,7 +60,7 @@ export const usePlayPlaylist =
 		return [ handlePlayPlaylist, isNowPlaying, result ] as const
 	}
 
-interface Data {
+interface MutationData {
 	playPlaylist: QueueNowPlaying,
 }
 

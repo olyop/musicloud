@@ -1,4 +1,3 @@
-import { pipe } from "rxjs"
 import isEmpty from "lodash-es/isEmpty"
 import { convertTableToCamelCase, join, query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
@@ -11,7 +10,7 @@ import { shuffle, clearQueue, updateQueueNowPlaying } from "../helpers"
 export const shuffleLibrary =
 	resolver<Record<string, never>>(
 		async ({ context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
@@ -22,19 +21,19 @@ export const shuffleLibrary =
 
 				const librarySongs =
 					await query(SELECT_LIBRARY_SONGS)({
+						parse: convertTableToCamelCase<Song>(),
 						variables: {
 							userID,
 							columnNames: join(COLUMN_NAMES.SONG, "songs"),
 						},
-						parse: pipe(
-							convertTableToCamelCase<Song>(),
-							shuffle(),
-						),
 					})
 
-				if (!isEmpty(librarySongs)) {
+				const librarySongsShuffled =
+					await shuffle(context.randomDotOrg)(librarySongs)
+
+				if (!isEmpty(librarySongsShuffled)) {
 					const [ nowPlaying, ...shuffled ] =
-						librarySongs
+						librarySongsShuffled
 
 					await updateQueueNowPlaying(client, context.ag.index)({
 						userID,

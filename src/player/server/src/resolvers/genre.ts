@@ -1,4 +1,4 @@
-import { GenreID, UserID } from "@oly_op/musicloud-common"
+import { GenreID, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	join,
@@ -79,7 +79,7 @@ export const userPlays =
 		({ parent, context }) => (
 			getUserGenrePlays(context.pg)({
 				genreID: parent.genreID,
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				columnNames: join(COLUMN_NAMES.GENRE),
 				parse: convertTableToCamelCaseOrNull<Play>(),
 			})
@@ -92,7 +92,7 @@ export const userPlaysTotal =
 			getUserGenrePlays(context.pg)({
 				genreID: parent.genreID,
 				parse: getResultRowCountOrNull,
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				columnNames: join(COLUMN_NAMES.GENRE),
 			})
 		),

@@ -1,4 +1,5 @@
 export * from "./lodash"
+export * from "./shuffle"
 export * from "./get-queue"
 export * from "./get-objects"
 export * from "./clear-queue"

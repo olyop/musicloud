@@ -7,17 +7,18 @@ import {
 	ChangeEventHandler,
 } from "react"
 
+import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
+import uniqueID from "lodash-es/uniqueId"
 import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
-import { AlgoliaRecord } from "@oly_op/musicloud-common"
-import { isEmpty, uniqueId as uniqueID } from "lodash-es"
 import algoliasearch, { SearchIndex } from "algoliasearch/lite"
 import { useSearchParams, useNavigate } from "react-router-dom"
+import { AlgoliaRecord } from "@oly_op/musicloud-common/build/types"
 
 import { Hit } from "./types"
 import SearchHit from "./hit"
-import Page from "../../components/page"
+import Page from "../../layouts/page"
 import AlgoliaLogo from "./algolia-logo"
 import { useHasMounted, useJWTPayload } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"

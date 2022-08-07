@@ -10,7 +10,7 @@ import {
 
 import { pipe } from "rxjs"
 import { sum } from "lodash-es"
-import { UserID, AlbumID } from "@oly_op/musicloud-common"
+import { UserID, AlbumID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	Song,
@@ -160,8 +160,8 @@ export const userPlays =
 			getUserAlbumPlays(context.pg)({
 				albumID: parent.albumID,
 				columnNames: join(COLUMN_NAMES.PLAY),
-				userID: context.authorization!.userID,
 				parse: convertTableToCamelCaseOrNull<Play>(),
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -173,7 +173,7 @@ export const userPlaysTotal =
 				albumID: parent.albumID,
 				parse: getResultRowCountOrNull,
 				columnNames: COLUMN_NAMES.PLAY[0],
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -198,7 +198,7 @@ export const inLibrary =
 								objectID: songID,
 								tableName: "library_songs",
 								columnName: COLUMN_NAMES.SONG[0],
-								userID: context.authorization!.userID,
+								userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 							})
 						),
 					),

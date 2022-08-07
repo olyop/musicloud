@@ -1,12 +1,9 @@
+#import "../../../graphql/fragments/artist-core.gql";
+
 query getLibraryArtistAtIndex($input: LibraryArtistAtIndexInput!) {
 	getLibrary {
 		artistAtIndex(input: $input) {
-			name
-			artistID
-			inLibrary
-			songsTotal
-			albumsTotal
-			dateAddedToLibrary
+			...ArtistCoreFragment
 		}
 	}
 }

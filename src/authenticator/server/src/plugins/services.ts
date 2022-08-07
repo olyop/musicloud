@@ -1,6 +1,6 @@
 import fp from "fastify-plugin"
 import postgres from "@fastify/postgres"
-import { ALGOLIA_OPTIONS, AWS_S3_OPTIONS, PG_POOL_OPTIONS } from "@oly_op/musicloud-common"
+import { ALGOLIA_OPTIONS, AWS_S3_OPTIONS, PG_POOL_OPTIONS } from "@oly_op/musicloud-common/build/server-options"
 
 import algolia from "algoliasearch"
 import { S3 } from "@aws-sdk/client-s3"

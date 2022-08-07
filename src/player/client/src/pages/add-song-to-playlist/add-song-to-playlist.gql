@@ -1,3 +1,5 @@
+#import "../../graphql/fragments/song-core.gql";
+
 mutation addSongToPlaylist(
 	$songID: UUID!
 	$playlistID: UUID!
@@ -9,35 +11,8 @@ mutation addSongToPlaylist(
 		playlistID
 		songsTotal
 		songs {
-			mix
-			title
-			songID
-			duration
-			inLibrary
-			playsTotal
-			discNumber
-			trackNumber
+			...SongCoreFragment
 			playlistIndex(playlistID: $playlistID)
-			featuring {
-				name
-				artistID
-			}
-			remixers {
-				name
-				artistID
-			}
-			artists {
-				name
-				artistID
-			}
-			genres {
-				name
-				genreID
-			}
-			album {
-				title
-				albumID
-			}
 		}
 	}
 }

@@ -1,14 +1,14 @@
 import path from "path"
 import { merge } from "webpack-merge"
 import { Configuration } from "webpack"
-import { TITLE } from "@oly_op/musicloud-common"
 import HTMLWebpackPlugin from "html-webpack-plugin"
+import { TITLE } from "@oly_op/musicloud-common/build/metadata"
 
 import baseConfiguration, {
 	BASE_SRC_PATH,
 	BASE_BUILD_PATH,
+	createTSLoaderRule,
 	createDevServerProxy,
-	createTSLoaderOptions,
 	createHTMLPluginOptions,
 } from "../base"
 
@@ -36,16 +36,11 @@ const configuration: Configuration = {
 		path: BUILD_PATH,
 	},
 	module: {
-		rules: [{
-			test: /\.tsx?$/,
-			exclude: /node_modules/,
-			use: [{
-				loader: "ts-loader",
-				options: createTSLoaderOptions({
-					configFile: ROOT_TSCONFIG_PATH,
-				}),
-			}],
-		}],
+		rules: [
+			createTSLoaderRule({
+				configFile: ROOT_TSCONFIG_PATH,
+			}),
+		],
 	},
 	devServer: {
 		port: parseInt(process.env.UPLOADER_CLIENT_PORT),
@@ -54,13 +49,16 @@ const configuration: Configuration = {
 			"/api/upload/genre",
 			"/api/upload/artist",
 			"/api/audio-metadata",
+			"/api/check/country-exists",
+			"/api/check/genre-name-exists",
+			"/api/check/artist-name-exists",
 		]),
 	},
 	plugins: [
 		new HTMLWebpackPlugin(
 			createHTMLPluginOptions({
 				template: SRC_INDEX_PATH,
-				title: `${TITLE} Upload Client`,
+				title: `${TITLE} Uploader`,
 			}),
 		),
 	],

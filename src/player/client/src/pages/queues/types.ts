@@ -9,10 +9,6 @@ import {
 	SettingsQueuesDisclosureKeys,
 } from "../../types"
 
-export interface IndexVars {
-	index: number,
-}
-
 export interface ClearQueuesData {
 	clearQueues: Queue,
 }
@@ -23,14 +19,6 @@ export interface ShuffleNextData {
 
 export interface ClearNextQueuesData {
 	clearNextQueues: QueueNextLater,
-}
-
-export interface RemoveNextData {
-	removeSongFromQueueNext: QueueNext,
-}
-
-export interface RemoveLaterData {
-	removeSongFromQueueLater: QueueLater,
 }
 
 export interface QueuePropTypes extends ClassNameBEMPropTypes {

@@ -14,7 +14,7 @@ import { INSERT_QUEUE_SONG } from "../../sql"
 export const shuffleNext =
 	resolver(
 		async ({ context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
@@ -26,40 +26,43 @@ export const shuffleNext =
 				const laterSongs =
 					await getQueueSongs(client)({ userID, tableName: "queue_laters" })
 
-				const nextSongsShuffled =
-					shuffle<Song>()(nextSongs)
-				const laterSongsShuffled =
-					shuffle<Song>()(laterSongs)
-
-				await clearQueueNext(client)({ userID })
-				await clearQueueLater(client)({ userID })
-
-				await Promise.all([
-					...nextSongsShuffled.map(
-						({ songID }, index) => (
-							query(INSERT_QUEUE_SONG)({
-								variables: {
-									index,
-									userID,
-									songID,
-									tableName: "queue_nexts",
-								},
-							})
+				if (nextSongs) {
+					await clearQueueNext(client)({ userID })
+					const nextSongsShuffled =	await shuffle(context.randomDotOrg)<Song>(nextSongs)
+					await Promise.all(
+						nextSongsShuffled.map(
+							({ songID }, index) => (
+								query(INSERT_QUEUE_SONG)({
+									variables: {
+										index,
+										userID,
+										songID,
+										tableName: "queue_nexts",
+									},
+								})
+							),
 						),
-					),
-					...laterSongsShuffled.map(
-						({ songID }, index) => (
-							query(INSERT_QUEUE_SONG)({
-								variables: {
-									index,
-									userID,
-									songID,
-									tableName: "queue_laters",
-								},
-							})
+					)
+				}
+
+				if (laterSongs) {
+					await clearQueueLater(client)({ userID })
+					const laterSongsShuffled = await shuffle(context.randomDotOrg)<Song>(laterSongs)
+					await Promise.all(
+						laterSongsShuffled.map(
+							({ songID }, index) => (
+								query(INSERT_QUEUE_SONG)({
+									variables: {
+										index,
+										userID,
+										songID,
+										tableName: "queue_laters",
+									},
+								})
+							),
 						),
-					),
-				])
+					)
+				}
 
 				await query("COMMIT")()
 			} catch (error) {

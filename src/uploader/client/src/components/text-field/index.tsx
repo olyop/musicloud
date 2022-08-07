@@ -7,8 +7,10 @@ import {
 	ChangeEventHandler,
 } from "react"
 
+import isNull from "lodash-es/isNull"
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
+import isUndefined from "lodash-es/isUndefined"
 import { createBEM, BEMInput } from "@oly_op/bem"
 
 import { Item } from "../../types"
@@ -18,13 +20,14 @@ import "./index.scss"
 const bem =
 	createBEM("TextField")
 
-const TextField: FC<TextFieldPropTypes> = ({
+const TextField: FC<PropTypes> = ({
 	id,
 	type,
 	name,
 	list,
 	image,
 	value,
+	check,
 	action,
 	onChange,
 	className,
@@ -36,7 +39,7 @@ const TextField: FC<TextFieldPropTypes> = ({
 }) => {
 	const [ hover, setHover ] = useState(false)
 	const [ focus, setFocus ] = useState(false)
-	const [ privateValue, setPrivateValue ] = useState(value || "")
+	const [ privateValue, setPrivateValue ] = useState(isUndefined(value) ? "" : value)
 
 	const [ imageURL, setImageURL ] =
 		useState<string | null>(null)
@@ -68,6 +71,12 @@ const TextField: FC<TextFieldPropTypes> = ({
 				setPrivateValue("")
 			}
 		}
+
+	useEffect(() => {
+		if (value) {
+			setPrivateValue(value)
+		}
+	}, [value])
 
 	useEffect(() => {
 		let url: string
@@ -148,23 +157,36 @@ const TextField: FC<TextFieldPropTypes> = ({
 				)}
 				{...inputPropTypes}
 			/>
-			{action && !action.disabled && (
-				<a
-					tabIndex={999}
-					target="_blank"
-					rel="noreferrer"
-					href={action.url}
-					title={action.title}
-					className={bem("action")}
-					children={(
+			{(action || check) && (
+				<div className={bem("right", "FlexRowGapQuart")}>
+					{action && !action.disabled && (
+						<a
+							tabIndex={999}
+							target="_blank"
+							rel="noreferrer"
+							href={action.url}
+							title={action.title}
+							children={(
+								<Button
+									transparent
+									tabIndex={999}
+									icon={action.icon}
+									text={action.text}
+								/>
+							)}
+						/>
+					)}
+					{check && !isNull(check.value) && (
 						<Button
 							transparent
 							tabIndex={999}
-							icon={action.icon}
-							text={action.text}
+							text={check.text}
+							className={bem("check")}
+							icon={check.loading ? "loop" : (check.value ? "check_circle" : "cancel")}
+							iconClassName={bem(check.loading ? "check-loading" : (check.value ? "check-valid" : "check-invalid"))}
 						/>
 					)}
-				/>
+				</div>
 			)}
 			{list && (
 				<Button
@@ -185,6 +207,18 @@ type InputPropTypes =
 		"type" | "value" | "list" | "className"
 	>
 
+export type CheckOptionsText =
+	string | null
+
+export type CheckOptionsValue =
+	boolean | null
+
+interface CheckOptions {
+	loading: boolean,
+	text?: CheckOptionsText,
+	value: CheckOptionsValue,
+}
+
 interface ActionOptions {
 	url: string,
 	icon: string,
@@ -193,12 +227,13 @@ interface ActionOptions {
 	disabled?: boolean,
 }
 
-export interface TextFieldPropTypes extends InputPropTypes {
+interface PropTypes extends InputPropTypes {
 	type: string,
 	image?: File,
 	list?: Item[],
 	value?: string,
 	className?: BEMInput,
+	check?: CheckOptions,
 	action?: ActionOptions,
 	onItemAdd?: (value: string) => () => void,
 	imageOrientation?: "portrait" | "landscape",

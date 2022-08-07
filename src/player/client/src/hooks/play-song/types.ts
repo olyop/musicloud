@@ -1,38 +1,29 @@
-import { SongID } from "@oly_op/musicloud-common"
-
-import {
-	ApolloCache,
-	MutationUpdaterFunction as MutationUpdaterFunctionBase,
-} from "@apollo/client"
+import { SongID } from "@oly_op/musicloud-common/build/types"
+import { ApolloCache,	MutationUpdaterFunction } from "@apollo/client"
 
 import { QueueNowPlaying, Song } from "../../types"
 
 export type Input =
 	Song | SongID | null
 
-export type ToggleIsOptimistic =
-	(value: boolean) => void
-
 export interface QueryData {
 	getQueue: QueueNowPlaying,
 }
 
-export interface Data {
+export interface MutationData {
 	playSong: QueueNowPlaying,
 }
 
-interface UpdateOptions {
-	isOptimistic: boolean,
-	toggleIsOptimistic: ToggleIsOptimistic,
-}
+export type UpdateIsOptimistic =
+	(value: boolean) => void
 
 type MutationUpdaterFunctionReturn =
-	MutationUpdaterFunctionBase<
-		Data,
+	MutationUpdaterFunction<
+		MutationData,
 		SongID,
 		unknown,
 		ApolloCache<unknown>
 	>
 
-export type MutationUpdaterFunction =
-	(options: UpdateOptions) => MutationUpdaterFunctionReturn
+export type Updater =
+	(isOptimistic: boolean, updateIsOptimistic: UpdateIsOptimistic) => MutationUpdaterFunctionReturn

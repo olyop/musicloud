@@ -33,7 +33,7 @@ const Artists: FC<ArtistsPropTypes> = ({
 					orderBy={orderBy}
 					className={bem(
 						"FlexRowRight",
-						isList && artists && "ItemBorder",
+						isList && "ItemBorder",
 						isList ? "PaddingHalf" : "MarginBottom",
 					)}
 				/>

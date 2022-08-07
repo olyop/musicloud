@@ -1,5 +1,5 @@
 import { createElement, FC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import ShuffleButton from "./shuffle"
 import ObjectLink from "../../object-link"

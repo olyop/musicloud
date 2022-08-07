@@ -1,12 +1,15 @@
-import { FastifyServerOptions } from "fastify"
-import { FASTIFY_SERVER_OPTIONS as FASTIFY_SERVER_BASE_OPTIONS } from "@oly_op/musicloud-common"
+import { FastifyListenOptions } from "fastify"
+import { FastifyStaticOptions } from "@fastify/static"
+import { FASTIFY_STATIC_OPTIONS as FASTIFY_STATIC_BASE_OPTIONS } from "@oly_op/musicloud-common/build/server-options"
 
-export const FASTIFY_SERVER_OPTIONS: FastifyServerOptions = {
-	...FASTIFY_SERVER_BASE_OPTIONS,
-	bodyLimit: 2e+7,
+import { PUBLIC_PATH } from "./paths"
+
+export const FASTIFY_STATIC_OPTIONS: FastifyStaticOptions = {
+	...FASTIFY_STATIC_BASE_OPTIONS,
+	root: PUBLIC_PATH,
 }
 
-export const FASTIFY_LISTEN_OPTIONS = {
+export const FASTIFY_LISTEN_OPTIONS: FastifyListenOptions = {
 	host: process.env.HOST,
 	port: parseInt(process.env.AUTHENTICATOR_SERVER_PORT),
 }

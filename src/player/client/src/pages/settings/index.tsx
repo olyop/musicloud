@@ -21,9 +21,8 @@ import {
 	useStateGridChildWidth,
 } from "../../redux"
 
-import Page from "../../components/page"
+import Page from "../../layouts/page"
 import Select from "../../components/select"
-import Content from "../../components/content"
 import { SettingsTheme, SettingsListStyle, SettingsTransitions } from "../../types"
 
 import "./index.scss"
@@ -79,7 +78,7 @@ const SettingsPage: FC = () => {
 	return (
 		<Head pageTitle="Settings">
 			<Page>
-				<Content className={bem("", "FlexColumnGap")}>
+				<div className="ContentPaddingTopBottom FlexColumnGap">
 					<details open className={bem("details")}>
 						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
 							Appearance
@@ -193,7 +192,7 @@ const SettingsPage: FC = () => {
 							</div>
 						</div>
 					</details>
-				</Content>
+				</div>
 			</Page>
 		</Head>
 	)

@@ -1,0 +1,9 @@
+#import "../../graphql/fragments/song-core.gql";
+
+query writeQueueNowPlaying {
+	getQueue {
+		nowPlaying {
+			...SongCoreFragment
+		}
+	}
+}

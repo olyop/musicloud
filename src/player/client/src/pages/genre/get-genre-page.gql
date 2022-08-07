@@ -1,37 +1,15 @@
+#import "../../graphql/fragments/song-core.gql";
+#import "../../graphql/fragments/genre-core.gql";
+
 query getGenrePage(
   $genreID: UUID!
   $songsOrderBy: SongsOrderByInput!
 ) {
   getGenreByID(genreID: $genreID) {
-    name
-    genreID
+    ...GenreCoreFragment
     songs(orderBy: $songsOrderBy) {
-      mix
-      title
-      songID
-      duration
-      inLibrary
+      ...SongCoreFragment
       playsTotal
-      featuring {
-        artistID
-        name
-      }
-      remixers {
-        artistID
-        name
-      }
-      artists {
-        artistID
-        name
-      }
-      album {
-        albumID
-        title
-      }
-      genres {
-        genreID
-        name
-      }
     }
   }
 }

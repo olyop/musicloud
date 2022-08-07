@@ -2,10 +2,10 @@ import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
 import { createElement, FC, Fragment } from "react"
 
-import Page from "../../components/page"
+import Page from "../../layouts/page"
 import Song from "../../components/song"
 import Songs from "../../components/songs"
-import Content from "../../components/content"
+import { updateNowPlayingCache } from "../../helpers"
 import { Song as SongType, Queue } from "../../types"
 import { useQuery, useMutation, useResetPlayer } from "../../hooks"
 
@@ -16,14 +16,26 @@ import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql"
 const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer()
 
-	const { data } =
+	const { data: topOneHundredSongsData } =
 		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS)
 
 	const [ playTopOneHundredSongs ] =
-		useMutation<MutationData>(PLAY_TOP_ONE_HUNDRED_SONGS)
+		useMutation<PlayTopOneHundredSongsData>(PLAY_TOP_ONE_HUNDRED_SONGS, {
+			update: (cache, { data }) => {
+				if (data?.playTopOneHundredSongs.nowPlaying) {
+					updateNowPlayingCache(cache)(data.playTopOneHundredSongs.nowPlaying)
+				}
+			},
+		})
 
 	const [ shuffleTopOneHundredSongs ] =
-		useMutation<MutationData>(SHUFFLE_TOP_ONE_HUNDRED_SONGS)
+		useMutation<ShuffleTopOneHundredSongsData>(SHUFFLE_TOP_ONE_HUNDRED_SONGS, {
+			update: (cache, { data }) => {
+				if (data?.shuffleTopOneHundredSongs.nowPlaying) {
+					updateNowPlayingCache(cache)(data.shuffleTopOneHundredSongs.nowPlaying)
+				}
+			},
+		})
 
 	const handlePlay =
 		() => {
@@ -60,8 +72,8 @@ const TopOneHundredSongsPage: FC = () => {
 					</Fragment>
 				)}
 				children={(
-					<Content>
-						<Songs songs={data?.getTopOneHundredSongs}>
+					<div className="ContentPaddingTopBottom">
+						<Songs songs={topOneHundredSongsData?.getTopOneHundredSongs}>
 							{songs => songs.map(
 								(song, index) => (
 									<Song
@@ -74,7 +86,7 @@ const TopOneHundredSongsPage: FC = () => {
 								),
 							)}
 						</Songs>
-					</Content>
+					</div>
 				)}
 			/>
 		</Head>
@@ -85,8 +97,12 @@ interface QueryData {
 	getTopOneHundredSongs: SongType[],
 }
 
-interface MutationData {
+interface PlayTopOneHundredSongsData {
 	playTopOneHundredSongs: Queue,
+}
+
+interface ShuffleTopOneHundredSongsData {
+	shuffleTopOneHundredSongs: Queue,
 }
 
 export default TopOneHundredSongsPage

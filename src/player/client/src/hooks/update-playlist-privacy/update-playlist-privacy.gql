@@ -1,6 +1,6 @@
 mutation updatePlaylistPrivacy($input: UpdatePlaylistPrivacyInput!) {
 	updatePlaylistPrivacy(input: $input) {
-		privacy
 		playlistID
+		privacy
 	}
 }

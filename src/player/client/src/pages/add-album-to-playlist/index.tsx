@@ -3,7 +3,7 @@ import {
 	ImageSizes,
 	PlaylistID,
 	ImageDimensions,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
@@ -13,14 +13,14 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useState, createElement, FC, useEffect } from "react"
 
 import { Album, User } from "../../types"
-import Content from "../../components/content"
 import Playlist from "../../components/playlist"
-import GET_ALBUM_DATA from "./get-album-data.gql"
 import Playlists from "../../components/playlists"
 import { useQuery, useMutation } from "../../hooks"
 import ObjectLink from "../../components/object-link"
-import ADD_ALBUM_TO_PLAYLIST from "./add-album-to-playlist.gql"
 import { createObjectPath, createCatalogImageURL } from "../../helpers"
+
+import GET_ALBUM_DATA from "./get-album-data.gql"
+import ADD_ALBUM_TO_PLAYLIST from "./add-album-to-playlist.gql"
 import GET_USER_PLAYLISTS from "./get-user-playlists-filtered-by-album.gql"
 
 import "./index.scss"
@@ -74,7 +74,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 	}, [data])
 
 	return albumData && playlistsData ? (
-		<Content className={bem("")}>
+		<div className={bem("", "ContentPaddingTopBottom")}>
 			<img
 				crossOrigin="anonymous"
 				alt={albumData.getAlbumByID.title}
@@ -129,7 +129,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 					onClick={handleAdd}
 				/>
 			</div>
-		</Content>
+		</div>
 	) : null
 }
 

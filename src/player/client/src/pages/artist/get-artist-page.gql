@@ -1,13 +1,11 @@
+#import "../../graphql/fragments/artist-core.gql";
+
 query getArtistPage($artistID: UUID!) {
 	getArtistByID(artistID: $artistID) {
-		name
+		...ArtistCoreFragment
 		city
 		since
 		country
-		artistID
-		inLibrary
 		playsTotal
-		songsTotal
-		albumsTotal
 	}
 }

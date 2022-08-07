@@ -1,0 +1,6 @@
+#import "./song-core.gql";
+
+fragment SongQueueFragment on Song {
+	...SongCoreFragment
+	queueIndex
+}

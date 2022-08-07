@@ -2,11 +2,10 @@ import trim from "lodash-es/trim"
 import multiPart from "@fastify/multipart"
 import { readFile } from "node:fs/promises"
 import { FastifyPluginAsync } from "fastify"
-import { UserBase } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { UserBase } from "@oly_op/musicloud-common/build/types"
 import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
 
-import saveToAlogilia from "./save-to-algolia"
+import saveToAlgolia from "./save-to-algolia"
 import { hashPassword } from "./hash-password"
 import { coverImages, profileImages } from "./images"
 import { isPartFile, Part, Body, Route } from "./types"
@@ -52,7 +51,7 @@ export const signUp: FastifyPluginAsync =
 					await emailAddressExists(fastify.pg.pool)({ emailAddress })
 
 				if (doesUserExist) {
-					throw new UserInputError("Email address already exists")
+					throw new Error("Email address already exists")
 				}
 
 				const name =
@@ -106,7 +105,7 @@ export const signUp: FastifyPluginAsync =
 					images: profileImages,
 				})
 
-				await saveToAlogilia(fastify.ag.index)({
+				await saveToAlgolia(fastify.ag.index)({
 					name,
 					userID,
 					emailAddress,

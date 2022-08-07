@@ -1,15 +1,11 @@
+#import "../../../graphql/fragments/playlist-core.gql"
+
 query getLibraryPlaylistAtIndex($input: LibraryPlaylistAtIndexInput!) {
 	getLibrary {
 		playlistAtIndex(input: $input) {
-			title
-			inLibrary
-			playlistID
+			...PlaylistCoreFragment
 			songsTotal
 			dateAddedToLibrary
-			user {
-				name
-				userID
-			}
 		}
 	}
 }

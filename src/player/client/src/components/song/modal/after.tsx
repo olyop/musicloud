@@ -1,14 +1,14 @@
 import { createElement, FC } from "react"
-import { SongID } from "@oly_op/musicloud-common"
+import { SongID } from "@oly_op/musicloud-common/build/types"
 
-import { User } from "../../../types"
 import { useMutation } from "../../../hooks"
-import QUEUE_SONG_AFTER from "./queue-song-after.gql"
 import { ModalButton, ModalOnClose } from "../../modal"
+
+import QUEUE_SONG_AFTER from "./queue-song-after.gql"
 
 const AfterButton: FC<PropTypes> = ({ songID, onClose }) => {
 	const [ after, { loading } ] =
-		useMutation<Data, SongID>(
+		useMutation<unknown, SongID>(
 			QUEUE_SONG_AFTER,
 			{ variables: { songID } },
 		)
@@ -28,10 +28,6 @@ const AfterButton: FC<PropTypes> = ({ songID, onClose }) => {
 			onClick={handleClick}
 		/>
 	)
-}
-
-interface Data {
-	user: User,
 }
 
 interface PropTypes

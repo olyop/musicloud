@@ -1,6 +1,5 @@
 import { exists } from "@oly_op/pg-helpers"
-import { SongID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { SongID } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
@@ -10,7 +9,7 @@ export const playSong =
 	resolver<Record<string, never>, SongID>(
 		async ({ args, context }) => {
 			const { songID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const songExists =
 				await exists(context.pg)({
@@ -20,7 +19,7 @@ export const playSong =
 				})
 
 			if (!songExists) {
-				throw new UserInputError("Song does not exist")
+				throw new Error("Song does not exist")
 			}
 
 			await updateQueueNowPlaying(context.pg, context.ag.index)({

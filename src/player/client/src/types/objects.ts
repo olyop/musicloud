@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import {
+	UserID,
 	KeyBase,
 	UserBase,
 	PlayBase,
@@ -7,9 +8,8 @@ import {
 	AlbumBase,
 	GenreBase,
 	ArtistBase,
-	UserID,
 	PlaylistBase,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 export interface StoreObject<T = string> {
 	__typename: T,
@@ -47,7 +47,7 @@ export interface Play
 		song: Song,
 	}
 
-export interface LibraryObject<T = string>
+export interface LibraryObject<T>
 	extends StoreObject<T> {
 		userPlays: Play[] | null,
 		playsTotal: number | null,
@@ -72,7 +72,7 @@ export interface Album
 		remixers: Artist[],
 	}
 
-export interface InLibraryObject<T = string>
+export interface InLibraryObject<T>
 	extends InLibraryBase, LibraryObject<T> {
 		dateAddedToLibrary: number | null,
 	}
@@ -91,13 +91,13 @@ export interface Artist
 	ArtistSongs,
 	ArtistTopTenSongs,
 	InLibraryObject<"Artist"> {
-		since: string,
-		albums: Album[],
-		songsTotal: number,
-		albumsTotal: number,
-		city: string | null,
-		country: string | null,
-	}
+	since: string,
+	albums: Album[],
+	songsTotal: number,
+	albumsTotal: number,
+	city: string | null,
+	country: string | null,
+}
 
 export interface SongQueueIndex {
 	queueIndex: number | null,
@@ -113,130 +113,137 @@ export interface Song
 	SongQueueIndex,
 	SongPlaylistIndex,
 	InLibraryObject<"Song"> {
-		key: Key,
-		size: number,
-		album: Album,
-		genres: Genre[],
-		artists: Artist[],
-		remixers: Artist[],
-		featuring: Artist[],
-		isInPlaylist: boolean,
-		dateAddedToPlaylist: number | null,
-	}
+	key: Key,
+	size: number,
+	album: Album,
+	genres: Genre[],
+	artists: Artist[],
+	remixers: Artist[],
+	featuring: Artist[],
+	isInPlaylist: boolean,
+	dateAddedToPlaylist: number | null,
+}
 
 export interface Playlist
-	extends PlaylistBase, InLibraryObject<"Playlist"> {
-		user: User,
-		songs: Song[],
-		songsTotal: number | null,
-		playlistIndex: number | null,
-	}
-
-export interface QueueNext {
-	next: Song[],
+	extends
+	PlaylistBase,
+	InLibraryObject<"Playlist"> {
+	user: User,
+	songs: Song[],
+	songsTotal: number | null,
+	playlistIndex: number | null,
 }
 
-export interface QueueLater {
-	later: Song[],
+type QueueBase =
+	StoreObject<"Queue">
+
+export interface QueueNext
+	extends QueueBase {
+	next: Song[] | null,
 }
 
-export interface QueuePrevious {
-	previous: Song[],
+export interface QueueLater
+	extends QueueBase {
+	later: Song[] | null,
+}
+
+export interface QueuePrevious
+	extends QueueBase {
+	previous: Song[] | null,
 }
 
 export interface QueueNextLater
 	extends
+		QueueBase,
 		QueueNext,
 		QueueLater {}
 
 export interface QueuePreviousNextLater
 	extends
+		QueueBase,
 		QueuePrevious,
 		QueueNextLater {}
 
-export interface QueueNowPlaying {
+export interface QueueNowPlaying
+	extends QueueBase {
 	nowPlaying: Song | null,
 }
 
 export interface Queue
 	extends
+		StoreObject<"Queue">,
 		QueuePreviousNextLater,
 		QueueNowPlaying {}
 
-export interface LibrarySongs {
-	songs: Song[] | null,
+type LibraryBase =
+	StoreObject<"Library">
+
+export interface LibraryDuration
+	extends LibraryBase {
+	duration: number,
 }
 
-export interface LibraryGenres {
-	genres: Genre[] | null,
-}
-
-export interface LibraryAlbums {
-	albums: Album[] | null,
-}
-
-export interface LibraryArtists {
-	artists: Artist[] | null,
-}
-
-export interface LibraryPlaylists {
-	playlists: Playlist[] | null,
-}
-
-export interface LibrarySongsTotal {
+export interface LibrarySongsTotal
+	extends LibraryBase {
 	songsTotal: number | null,
 }
 
-export interface LibraryGenresTotal {
+export interface LibraryGenresTotal
+	extends LibraryBase {
 	genresTotal: number | null,
 }
 
-export interface LibraryAlbumsTotal {
+export interface LibraryAlbumsTotal
+	extends LibraryBase {
 	albumsTotal: number | null,
 }
 
-export interface LibraryArtistsTotal {
+export interface LibraryArtistsTotal
+	extends LibraryBase {
 	artistsTotal: number | null,
 }
 
-export interface LibraryPlaylistsTotal {
+export interface LibraryPlaylistsTotal
+	extends LibraryBase {
 	playlistsTotal: number | null,
 }
 
-export interface LibrarySongsPaginated {
-	songsPaginated: Song[] | null,
+export interface LibrarySongsAtIndex
+	extends LibraryBase {
+	songsAtIndex: Song[] | null,
 }
 
-export interface LibraryGenresPaginated {
-	genresPaginated: Genre[] | null,
+export interface LibraryGenresAtIndex
+	extends LibraryBase {
+	genresAtIndex: Genre[] | null,
 }
 
-export interface LibraryAlbumsPaginated {
-	albumsPaginated: Album[] | null,
+export interface LibraryAlbumsAtIndex
+	extends LibraryBase {
+	albumsAtIndex: Album[] | null,
 }
 
-export interface LibraryArtistsPaginated {
-	artistsPaginated: Artist[] | null,
+export interface LibraryArtistsAtIndex
+	extends LibraryBase {
+	artistsAtIndex: Artist[] | null,
 }
 
-export interface LibraryPlaylistsPaginated {
-	playlistsPaginated: Playlist[] | null,
+export interface LibraryPlaylistsAtIndex
+	extends LibraryBase {
+	playlistsAtIndex: Playlist[] | null,
 }
 
 export interface Library
 	extends
-		LibrarySongs,
-		LibraryGenres,
-		LibraryAlbums,
-		LibraryArtists,
-		LibraryPlaylists,
+		LibraryBase,
+		LibraryDuration,
 		LibrarySongsTotal,
 		LibraryGenresTotal,
 		LibraryAlbumsTotal,
 		LibraryArtistsTotal,
+		LibrarySongsAtIndex,
+		LibraryGenresAtIndex,
+		LibraryAlbumsAtIndex,
+		LibraryArtistsAtIndex,
 		LibraryPlaylistsTotal,
-		LibrarySongsPaginated,
-		LibraryGenresPaginated,
-		LibraryAlbumsPaginated,
-		LibraryArtistsPaginated,
-		LibraryPlaylistsPaginated {}
+		LibraryPlaylistsAtIndex {}

@@ -6,8 +6,8 @@ import {
 	useQuery as useBaseQuery,
 } from "@apollo/client"
 
+import uniqueID from "lodash-es/uniqueId"
 import { useRef, useEffect } from "react"
-import { uniqueId as uniqueID } from "lodash-es"
 
 import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../redux"
 

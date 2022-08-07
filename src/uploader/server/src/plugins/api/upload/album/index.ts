@@ -4,9 +4,9 @@ import {
 	GenreIDNameBase,
 	AlbumIDTitleBase,
 	ArtistIDNameBase,
-	AlgoliaRecordAlbum,
 	AlgoliaRecordSong,
-} from "@oly_op/musicloud-common"
+	AlgoliaRecordAlbum,
+} from "@oly_op/musicloud-common/build/types"
 
 import { random, trim } from "lodash-es"
 import musicMetadata from "music-metadata"
@@ -44,16 +44,17 @@ export const uploadAlbum: FastifyPluginAsync =
 		fastify.post<Route>(
 			"/album",
 			async (request, reply) => {
-				const { cover, released } = request.body
+				const { body } = request
+				const { cover, released } = body
 
 				const albumTitle =
-					trim(request.body.title)
+					trim(body.title)
 
 				const songs =
-					JSON.parse(request.body.songs) as Song[]
+					JSON.parse(body.songs) as Song[]
 
 				const albumArtistsList =
-					JSON.parse(request.body.artists) as List
+					JSON.parse(body.artists) as List
 
 				await checkRelationships(fastify.pg.pool)(
 					albumArtistsList,
@@ -123,7 +124,7 @@ export const uploadAlbum: FastifyPluginAsync =
 
 					const audio =
 						// @ts-ignore
-						(request.body[`${song.trackNumber}-audio`] as BodyEntry[])[0]!.data
+						(body[`${song.trackNumber}-audio`] as BodyEntry[])[0]!.data
 
 					const duration =
 						(await musicMetadata.parseBuffer(audio)).format.duration!
@@ -261,7 +262,7 @@ export const uploadAlbum: FastifyPluginAsync =
 					})
 				}
 
-				await reply.code(201)
+				void reply.code(201)
 
 				return {
 					albumID,

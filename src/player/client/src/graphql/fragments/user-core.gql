@@ -1,0 +1,4 @@
+fragment UserCoreFragment on User {
+	userID
+	name
+}

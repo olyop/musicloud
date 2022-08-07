@@ -20,7 +20,7 @@ const LibraryAlbums: FC = () => {
 	const listStyle = useStateListStyle()
 	const isList = listStyle === SettingsListStyle.LIST
 	return (
-		<Head pageTitle="Library Albums">
+		<Head pageTitle="Albums">
 			<Albums className={bem(isList ? "Content" : "PaddingLeftRight")}>
 				<Feed<GetAlbumsTotalData, AlbumType, GetAlbumAtIndexData>
 					settingsOrderBy="albums"

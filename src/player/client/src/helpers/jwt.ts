@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode"
-import { UserID } from "@oly_op/musicloud-common"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 export const getJWT =
 	() =>

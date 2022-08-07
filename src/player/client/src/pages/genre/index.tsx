@@ -2,8 +2,8 @@ import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
 import { useParams } from "react-router-dom"
 import isUndefined from "lodash-es/isUndefined"
-import { GenreID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { GenreID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	Genre,
@@ -13,8 +13,8 @@ import {
 	SettingsOrderBySongs,
 } from "../../types"
 
+import Page from "../../layouts/page"
 import { useQuery } from "../../hooks"
-import Page from "../../components/page"
 import Song from "../../components/song"
 import Songs from "../../components/songs"
 import { useStateOrderBy } from "../../redux"

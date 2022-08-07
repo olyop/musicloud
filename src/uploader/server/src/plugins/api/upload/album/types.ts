@@ -1,4 +1,4 @@
-import { AlbumBase, SongBase } from "@oly_op/musicloud-common"
+import { AlbumBase, SongBase } from "@oly_op/musicloud-common/build/types"
 
 import { BodyEntry } from "../../types"
 

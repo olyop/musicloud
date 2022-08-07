@@ -1,0 +1,7 @@
+#import "../fragments/queue-now-playing.gql";
+
+query getQueueNowPlaying {
+	getQueue {
+		...QueueNowPlayingFragment
+	}
+}

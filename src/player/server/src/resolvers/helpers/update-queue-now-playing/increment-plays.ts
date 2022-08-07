@@ -1,6 +1,6 @@
 import { SearchIndex } from "algoliasearch"
-import { ArtistID, GenreID, SongID, UserID } from "@oly_op/musicloud-common"
 import { convertTableToCamelCase, PoolOrClient, query } from "@oly_op/pg-helpers"
+import { ArtistID, GenreID, SongID, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	INSERT_PLAY,

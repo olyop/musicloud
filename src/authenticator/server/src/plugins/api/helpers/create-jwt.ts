@@ -1,21 +1,22 @@
+import ms from "ms"
 import { createSigner } from "fast-jwt"
 import { SearchClient } from "algoliasearch"
-import { JWTPayload, JWTPayloadUser, UserID } from "@oly_op/musicloud-common"
+import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals"
+import { JWTPayload, JWTPayloadUser, UserID } from "@oly_op/musicloud-common/build/types"
 
 const signer =
 	createSigner({
-		expiresIn: 1000 * 60 * 60 * 24,
-		algorithm: process.env.JWT_ALGORITHM,
+		expiresIn: ms("1d"),
+		algorithm: JWT_ALGORITHM,
 		key: () => Promise.resolve(process.env.JWT_TOKEN_SECRET),
 	})
 
 const createAlgoliaAPIKey =
 	(ag: SearchClient) =>
 		({ userID }: UserID) =>
-			ag.generateSecuredApiKey(
-				process.env.ALGOLIA_SEARCH_API_KEY,
-				{ filters: `NOT privacy:PRIVATE OR user.userID:"${userID}"` },
-			)
+			ag.generateSecuredApiKey(process.env.ALGOLIA_SEARCH_API_KEY, {
+				filters: `NOT privacy:PRIVATE OR user.userID:"${userID}"`,
+			})
 
 const generateJWT =
 	(payload: JWTPayload) =>

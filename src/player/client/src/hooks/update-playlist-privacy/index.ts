@@ -1,4 +1,4 @@
-import { InterfaceWithInput, PlaylistID, PlaylistPrivacy } from "@oly_op/musicloud-common"
+import { InterfaceWithInput, PlaylistID, PlaylistPrivacy } from "@oly_op/musicloud-common/build/types"
 
 import { Playlist } from "../../types"
 import { useMutation } from "../mutation"

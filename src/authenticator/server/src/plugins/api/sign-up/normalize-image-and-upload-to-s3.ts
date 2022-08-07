@@ -1,6 +1,7 @@
 import sharp, { ResizeOptions } from "sharp"
+import { NAME } from "@oly_op/musicloud-common/build/metadata"
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3"
-import { NAME, ImageSizes, ObjectID, ImageDimensions } from "@oly_op/musicloud-common"
+import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/musicloud-common/build/types"
 
 import { ImageInput } from "./types"
 import determineCatalogImagePath from "./determine-catalog-image-path"
@@ -17,7 +18,7 @@ interface Input extends BaseInput {
 	images: ImageInput[],
 }
 
-const determineImageDimesnions =
+const determineImageDimensions =
 	(image: ImageInput): ResizeOptions => {
 		const { size, dimension } = image
 		if (size === ImageSizes.MINI) {
@@ -54,7 +55,7 @@ const resizeImage =
 	(image: ImageInput, buffer: Buffer) =>
 		sharp(buffer)
 			.jpeg()
-			.resize(determineImageDimesnions(image))
+			.resize(determineImageDimensions(image))
 			.toBuffer()
 
 export const normalizeImageAndUploadToS3 =

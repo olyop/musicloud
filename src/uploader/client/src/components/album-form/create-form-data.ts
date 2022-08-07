@@ -1,5 +1,4 @@
-import { Song } from "./song"
-import { Album } from "./types"
+import { Album, Song } from "./types"
 
 const omitAudioFromSong =
 	({ audio, ...song }: Song): Omit<Song, "audio"> =>

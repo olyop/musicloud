@@ -8,7 +8,7 @@ import {
 	AlgoliaRecordAlbum,
 	AlgoliaRecordArtist,
 	AlgoliaRecordPlaylist,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 import { SearchIndex } from "algoliasearch"
 

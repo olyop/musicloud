@@ -39,7 +39,8 @@ export type LibraryPlaylistsOrderBy =
 	OrderBy<LibraryPlaylistsOrderByField>
 
 export type SettingsQueuesDisclosureKeys =
-	keyof QueuePreviousNextLater
+	keyof Omit<QueuePreviousNextLater, "__typename">
+
 export type SettingsQueuesDisclosure =
 	Record<SettingsQueuesDisclosureKeys, boolean>
 

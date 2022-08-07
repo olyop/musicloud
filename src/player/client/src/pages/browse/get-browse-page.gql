@@ -1,54 +1,16 @@
+#import "../../graphql/fragments/song-core.gql";
+#import "../../graphql/fragments/album-core.gql";
+#import "../../graphql/fragments/playlist-core.gql";
+
 query getBrowsePage {
 	getTopTenSongs {
-		mix
-		title
-		songID
+		...SongCoreFragment
 		playsTotal
-		featuring {
-			artistID
-			name
-		}
-		remixers {
-			artistID
-			name
-		}
-		artists {
-			artistID
-			name
-		}
-		genres {
-			genreID
-			name
-		}
-		album {
-			title
-			albumID
-		}
 	}
 	getTrendingAlbums {
-    title
-    albumID
-    released
-    duration
-    genres {
-      name
-      genreID
-    }
-    artists {
-      name
-      artistID
-    }
-		remixers {
-			artistID
-			name
-		}
+    ...AlbumCoreFragment
 	}
 	getTrendingPlaylists {
-		title
-		playlistID
-		user {
-			name
-			userID
-		}
+		...PlaylistCoreFragment
 	}
 }

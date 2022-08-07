@@ -8,7 +8,7 @@ export const removeSongFromQueueNext =
 			removeSongFromQueue(context.pg)({
 				index: args.index,
 				tableName: "queue_nexts",
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)

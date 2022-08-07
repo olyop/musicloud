@@ -1,14 +1,10 @@
+#import "../../graphql/fragments/playlist-core.gql";
+
 query getUserPlaylistsFilteredBySong($songID: UUID!) {
 	getUser {
 		userID
 		playlistsFilteredBySong(songID: $songID) {
-			title
-			playlistID
-			songsTotal
-			user {
-				name
-				userID
-			}
+			...PlaylistCoreFragment
 		}
 	}
 }

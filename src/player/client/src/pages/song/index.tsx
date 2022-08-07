@@ -4,7 +4,7 @@ import { Head } from "@oly_op/react-head"
 import { useParams } from "react-router-dom"
 import { createElement, FC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	numberWithCommas,
@@ -14,7 +14,7 @@ import {
 } from "../../helpers"
 
 import { Song } from "../../types"
-import Page from "../../components/page"
+import Page from "../../layouts/page"
 import { useStatePlay } from "../../redux"
 import GET_SONG_PAGE from "./get-song-page.gql"
 import { useQuery, usePlaySong } from "../../hooks"

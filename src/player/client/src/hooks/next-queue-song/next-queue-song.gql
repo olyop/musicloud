@@ -1,0 +1,7 @@
+#import "../../graphql/fragments/queue.gql";
+
+mutation nextQueueSong {
+	nextQueueSong {
+		...QueueFragment
+	}
+}

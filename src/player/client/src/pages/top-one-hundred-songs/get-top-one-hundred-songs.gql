@@ -1,29 +1,8 @@
-query TopOneHundredSongs {
+#import "../../graphql/fragments/song-core.gql";
+
+query getTopOneHundredSongs {
 	getTopOneHundredSongs {
-		mix
-		title
-		songID
+		...SongCoreFragment
 		playsTotal
-		featuring {
-			artistID
-			name
-		}
-		remixers {
-			artistID
-			name
-		}
-		artists {
-			artistID
-			name
-		}
-		genres {
-			genreID
-			name
-		}
-		album {
-			title
-			albumID
-			released
-		}
 	}
 }

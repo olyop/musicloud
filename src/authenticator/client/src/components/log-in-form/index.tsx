@@ -1,6 +1,6 @@
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
-import { AccessToken } from "@oly_op/musicloud-common"
+import { AccessToken } from "@oly_op/musicloud-common/build/types"
 import { useState, createElement, FC, FormEventHandler } from "react"
 
 import Input, { InputOnChange } from "../input"
@@ -35,6 +35,7 @@ const LogInForm: FC<PropTypes> = ({
 				const response =
 					await fetch("/api/log-in", {
 						method: "POST",
+						cache: "no-cache",
 						body: JSON.stringify(body),
 						headers: {
 							"Accept": "application/json",

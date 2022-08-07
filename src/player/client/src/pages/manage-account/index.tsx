@@ -9,8 +9,7 @@ import Modal, {
 	ModalButtons,
 } from "../../components/modal"
 
-import Page from "../../components/page"
-import Content from "../../components/content"
+import Page from "../../layouts/page"
 import { useMutation, useSignOut } from "../../hooks"
 
 import DELETE_USER from "./delete-user.gql"
@@ -62,7 +61,7 @@ const ManageAccount: FC = () => {
 	return (
 		<Head pageTitle="Manage Account">
 			<Page>
-				<Content className={bem("content", "FlexColumnGapHalf")}>
+				<div className={bem("", "ContentPaddingTopBottom FlexColumnGapHalf")}>
 					<Button
 						icon="password"
 						text="Change Password"
@@ -102,7 +101,7 @@ const ManageAccount: FC = () => {
 						onClick={signOut}
 						icon="exit_to_app"
 					/>
-				</Content>
+				</div>
 			</Page>
 		</Head>
 	)

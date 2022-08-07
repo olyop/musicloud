@@ -3,7 +3,7 @@ import {
 	UserPasswordBase,
 	InterfaceWithInput,
 	UserEmailAddressBase,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 export interface LogInInput
 	extends UserPasswordBase, UserEmailAddressBase {}

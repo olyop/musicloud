@@ -5,7 +5,6 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { head, isNull } from "lodash-es"
-import { ApolloError } from "apollo-server-errors"
 
 import {
 	INSERT_QUEUE_SONG,
@@ -22,7 +21,7 @@ import { getQueue, updateQueueNowPlaying } from "../helpers"
 export const nextQueueSong =
 	resolver<Record<string, never>>(
 		async ({ context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
@@ -40,7 +39,7 @@ export const nextQueueSong =
 						isNull(next) ? "later" : "next"
 
 					if (head(queueToBeEdited)?.index !== 0) {
-						throw new ApolloError("Invalid queue")
+						throw new Error("Invalid queue")
 					}
 
 					const newNowPlaying =

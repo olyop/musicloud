@@ -1,7 +1,8 @@
 import { createBEM } from "@oly_op/bem"
-import { determineServiceURL } from "@oly_op/musicloud-common"
 import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
+import { ServicesNames } from "@oly_op/musicloud-common/build/types"
+import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url"
 
 import "./index.scss"
 
@@ -13,7 +14,7 @@ const Footer: FC = () => (
 		target="_blank"
 		rel="noreferrer"
 		className={bem("", "Elevated")}
-		href={determineServiceURL({ service: "player" })}
+		href={determineServiceURL({ service: ServicesNames.PLAYER })}
 		children={(
 			<Button
 				transparent

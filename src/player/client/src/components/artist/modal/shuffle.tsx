@@ -1,5 +1,5 @@
 import { createElement, FC } from "react"
-import { ArtistID } from "@oly_op/musicloud-common"
+import { ArtistID } from "@oly_op/musicloud-common/build/types"
 
 import { Handler } from "../../../types"
 import { ModalButton } from "../../modal"

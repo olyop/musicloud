@@ -1,5 +1,4 @@
-import { pipe } from "rxjs"
-import { ArtistID } from "@oly_op/musicloud-common"
+import { ArtistID } from "@oly_op/musicloud-common/build/types"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
@@ -12,7 +11,7 @@ export const shuffleArtist =
 	resolver<Record<string, never>, ArtistID>(
 		async ({ args, context }) => {
 			const { artistID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
@@ -21,17 +20,17 @@ export const shuffleArtist =
 
 				await clearQueue(client)({ userID })
 
-				const [ nowPlaying, ...shuffled ] =
+				const artistSongs =
 					await query(SELECT_ARTIST_SONGS)({
-						parse: pipe(
-							convertTableToCamelCase<Song>(),
-							shuffle(),
-						),
+						parse: convertTableToCamelCase<Song>(),
 						variables: {
 							artistID,
 							columnNames: join(COLUMN_NAMES.SONG, "songs"),
 						},
 					})
+
+				const [ nowPlaying, ...shuffled ] =
+					await shuffle(context.randomDotOrg)(artistSongs)
 
 				await updateQueueNowPlaying(client, context.ag.index)({
 					userID,

@@ -16,7 +16,7 @@ const orderBy: OrderByOptions<SettingsOrderBySongs> = {
 }
 
 const LibrarySongs: FC = () => (
-	<Head pageTitle="Library Songs">
+	<Head pageTitle="Songs">
 		<Songs orderBy={orderBy} className="Content Elevated">
 			<Feed<GetSongsTotalData, SongType, GetSongAtIndexData>
 				settingsOrderBy="librarySongs"

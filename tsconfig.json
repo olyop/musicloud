@@ -1,20 +1,8 @@
 {
-	"extends": "@oly_op/tsconfig/tsconfig.json",
+	"extends": "@oly_op/tsconfig/tsconfig",
 	"compilerOptions": {
 		"baseUrl": "./",
-		"paths": { "*": ["src/types/*"] }
-	},
-	"ts-node": {
-		"files": true,
-		"compilerOptions": {
-			"target": "ES6",
-			"baseUrl": "./",
-			"module": "CommonJS",
-			"paths": { "*": ["src/types/*"] }
-		},
-		"moduleTypes": {
-			"webpack/**": "cjs",
-			"scripts/**/*": "cjs"
-		}
+		"paths": { "*": ["src/types/*"] },
+		"exactOptionalPropertyTypes": false
 	}
 }

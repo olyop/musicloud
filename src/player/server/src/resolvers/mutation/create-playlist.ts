@@ -1,5 +1,5 @@
 import { join, query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
-import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { getUser } from "../helpers"
@@ -13,7 +13,7 @@ type Args =
 export const createPlaylist =
 	resolver<Playlist, Args>(
 		async ({ args, context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const { input: { title, privacy } } = args
 
 			const playlist =
@@ -43,7 +43,7 @@ export const createPlaylist =
 					objectID: playlistID,
 					tableName: "library_playlists",
 					columnName: COLUMN_NAMES.PLAYLIST[0],
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				},
 			})
 

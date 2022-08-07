@@ -1,9 +1,10 @@
+#import "../../graphql/fragments/user-core.gql";
+
 query getUserFollowers($userID: UUID!) {
 	getUserByID(userID: $userID) {
 		userID
 		followers {
-			name
-			userID
+			...UserCoreFragment
 		}
 	}
 }

@@ -1,32 +1,7 @@
-mutation addSongLater($songID: UUID!) {
+#import "../../../graphql/fragments/queue-now-playing.gql";
+
+mutation queueSongLater($songID: UUID!) {
 	queueSongLater(songID: $songID) {
-    later {
-      mix
-      title
-      songID
-      duration
-      inLibrary
-      queueIndex
-      featuring {
-        artistID
-        name
-      }
-      remixers {
-        artistID
-        name
-      }
-      artists {
-        artistID
-        name
-      }
-      genres {
-        genreID
-        name
-      }
-      album {
-        albumID
-        title
-      }
-    }
+		...QueueNowPlayingFragment
 	}
 }

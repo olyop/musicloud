@@ -1,7 +1,6 @@
-import { NAME } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
 import { DeleteObjectCommand } from "@aws-sdk/client-s3"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
+import { NAME } from "@oly_op/musicloud-common/build/metadata"
 import { exists, query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
 import {
@@ -19,7 +18,7 @@ export const deleteUser =
 	resolver(
 		async ({ context }) => {
 			const query = pgHelpersQuery(context.pg)
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const userExists =
 				await exists(context.pg)({
@@ -29,7 +28,7 @@ export const deleteUser =
 				})
 
 			if (!userExists) {
-				throw new UserInputError("User does not exist")
+				throw new Error("User does not exist")
 			}
 
 			const variables = { userID }

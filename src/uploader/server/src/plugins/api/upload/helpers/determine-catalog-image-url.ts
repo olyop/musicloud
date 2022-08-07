@@ -1,4 +1,4 @@
-import { FILES_URL } from "@oly_op/musicloud-common"
+import { FILES_URL } from "@oly_op/musicloud-common/build/globals"
 
 import { ImageInput } from "../../types"
 import { determineCatalogImagePath } from "./determine-catalog-image-path"

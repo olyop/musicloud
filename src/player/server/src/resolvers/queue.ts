@@ -17,7 +17,7 @@ export const previous =
 			getQueueSongs(context.pg)({
 				limit: QUEUE_PAGE_SIZE,
 				tableName: "queue_previous",
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -28,7 +28,7 @@ export const nowPlaying =
 			query(context.pg)(SELECT_QUEUE_NOW_PLAYING_SONG)({
 				parse: convertFirstRowToCamelCaseOrNull<Song>(),
 				variables: {
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 				},
 			})
@@ -41,7 +41,7 @@ export const next =
 			getQueueSongs(context.pg)({
 				limit: QUEUE_PAGE_SIZE,
 				tableName: "queue_nexts",
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)
@@ -52,7 +52,7 @@ export const later =
 			getQueueSongs(context.pg)({
 				limit: QUEUE_PAGE_SIZE,
 				tableName: "queue_laters",
-				userID: context.authorization!.userID,
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			})
 		),
 	)

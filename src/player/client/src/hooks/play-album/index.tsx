@@ -1,11 +1,11 @@
-import { AlbumID } from "@oly_op/musicloud-common"
+import { AlbumID } from "@oly_op/musicloud-common/build/types"
 
 import { useQuery } from "../query"
 import PLAY_ALBUM from "./play-album.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
 import { useDispatch, togglePlay } from "../../redux"
-import GET_QUEUE_NOW_PLAYING from "./get-queue-now-playing.gql"
+import GET_ALBUM_NOW_PLAYING from "./get-album-now-playing.gql"
 import { PlayAlbumData, GetQueueNowPlayingData } from "./types"
 
 export const usePlayAlbum =
@@ -17,7 +17,7 @@ export const usePlayAlbum =
 			useMutation<PlayAlbumData, AlbumID>(PLAY_ALBUM)
 
 		const { data } =
-			useQuery<GetQueueNowPlayingData>(GET_QUEUE_NOW_PLAYING, {
+			useQuery<GetQueueNowPlayingData>(GET_ALBUM_NOW_PLAYING, {
 				fetchPolicy: "cache-first",
 			})
 

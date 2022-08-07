@@ -1,5 +1,5 @@
 import { query, PoolOrClient } from "@oly_op/pg-helpers"
-import { UserID } from "@oly_op/musicloud-common"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import { DELETE_QUEUE_BY_USER } from "../../sql"
 

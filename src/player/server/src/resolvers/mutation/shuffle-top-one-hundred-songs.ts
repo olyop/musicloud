@@ -1,7 +1,7 @@
-import { shuffle } from "lodash-es"
 import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
 
 import {
+	shuffle,
 	clearQueue,
 	getTopSongs,
 	updateQueueNowPlaying,
@@ -13,7 +13,7 @@ import { INSERT_QUEUE_SONG } from "../../sql"
 export const shuffleTopOneHundredSongs =
 	resolver<Record<string, never>>(
 		async ({ context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
@@ -26,12 +26,13 @@ export const shuffleTopOneHundredSongs =
 					await getTopSongs(context.pg)(100)
 
 				const [ nowPlaying, ...songs ] =
-					shuffle(topOneHundredSongs)
+					await shuffle(context.randomDotOrg)(topOneHundredSongs)
 
 				await updateQueueNowPlaying(client, context.ag.index)({
 					userID,
 					value: nowPlaying!.songID,
 				})
+
 				let index = 0
 				for (const { songID } of songs) {
 					await query(INSERT_QUEUE_SONG)({

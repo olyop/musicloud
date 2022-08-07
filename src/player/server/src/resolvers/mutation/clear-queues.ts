@@ -6,7 +6,7 @@ import { clearQueue } from "../helpers"
 export const clearQueues =
 	resolver<Record<string, never>>(
 		async ({ context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 

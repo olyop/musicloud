@@ -1,6 +1,5 @@
-import { pipe } from "rxjs"
 import { isEmpty } from "lodash-es"
-import { PlaylistID } from "@oly_op/musicloud-common"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
@@ -12,7 +11,7 @@ import { shuffle, clearQueue, updateQueueNowPlaying } from "../helpers"
 export const shufflePlaylist =
 	resolver<Record<string, never>, PlaylistID>(
 		async ({ args, context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 
@@ -21,10 +20,7 @@ export const shufflePlaylist =
 
 				const songs =
 					await query(SELECT_PLAYLIST_SONGS)({
-						parse: pipe(
-							convertTableToCamelCase<Song>(),
-							shuffle(),
-						),
+						parse: convertTableToCamelCase<Song>(),
 						variables: {
 							playlistID: args.playlistID,
 							columnNames: join(COLUMN_NAMES.SONG, "songs"),
@@ -34,7 +30,8 @@ export const shufflePlaylist =
 				if (!isEmpty(songs)) {
 					await clearQueue(client)({ userID })
 
-					const [ nowPlaying, ...shuffled ] = songs
+					const [ nowPlaying, ...shuffled ] =
+						await shuffle(context.randomDotOrg)(songs)
 
 					await updateQueueNowPlaying(client, context.ag.index)({
 						userID,

@@ -6,8 +6,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { isEmpty } from "lodash-es"
-import { PlaylistID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { Song } from "../../types"
@@ -19,7 +18,7 @@ export const playPlaylist =
 	resolver<Record<string, never>, PlaylistID>(
 		async ({ args, context }) => {
 			const { playlistID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
 			const exists = pgExists(client)
@@ -35,7 +34,7 @@ export const playPlaylist =
 					})
 
 				if (!playlistExists) {
-					throw new UserInputError("Playlist does not exist")
+					throw new Error("Playlist does not exist")
 				}
 
 				await clearQueue(client)({ userID })

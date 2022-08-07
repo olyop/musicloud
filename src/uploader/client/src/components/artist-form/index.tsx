@@ -1,11 +1,11 @@
 import { useFormik } from "formik"
 import isEmpty from "lodash-es/isEmpty"
-import { ArtistBase } from "@oly_op/musicloud-common"
-import { ChangeEventHandler, createElement, FC, useState } from "react"
+import { ArtistBase } from "@oly_op/musicloud-common/build/types"
+import { ChangeEventHandler, createElement, FC, useEffect, useState } from "react"
 
 import Form from "../form"
-import TextField from "../text-field"
 import { createGoogleSearchURL } from "../../helpers"
+import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field"
 
 interface ArtistImages {
 	cover: File | null,
@@ -19,8 +19,14 @@ interface Artist
 }
 
 const ArtistForm: FC = () => {
-	const [ loading, setLoading ] =
-		useState(false)
+	const [ loading, setLoading ] =	useState(false)
+
+	const [ checkNameLoading, setCheckNameLoading ] = useState(false)
+	const [ checkNameText, setCheckNameText ] = useState<CheckOptionsText>(null)
+	const [ checkNameValue, setCheckNameValue ] = useState<CheckOptionsValue>(null)
+
+	const [ checkCountryLoading, setCheckCountryLoading ] = useState(false)
+	const [ checkCountryValue, setCheckCountryValue ] = useState<CheckOptionsValue>(null)
 
 	const formik =
 		useFormik<Artist>({
@@ -65,6 +71,79 @@ const ArtistForm: FC = () => {
 
 	const isNameEmpty = isEmpty(name)
 
+	const handleCheckNameExists =
+		async () => {
+			setCheckNameLoading(true)
+
+			const url = new URL("/api/check/artist-name-exists", location.href)
+			url.searchParams.append("name", name)
+
+			const requestInit: RequestInit = {
+				method: "GET",
+				headers: {
+					Accept: "application/json",
+				},
+			}
+
+			const response =
+				await fetch(url, requestInit)
+
+			const { exists } =
+				await response.json() as { exists: boolean }
+
+			if (exists) {
+				setCheckNameText("Already exists")
+			}
+
+			setCheckNameLoading(false)
+			setCheckNameValue(!exists)
+		}
+
+	useEffect(() => {
+		if (!isEmpty(name)) {
+			void handleCheckNameExists()
+		}
+		return () => {
+			setCheckNameText(null)
+			setCheckNameValue(null)
+			setCheckNameLoading(false)
+		}
+	}, [name])
+
+	const handleCheckCountryExists =
+		async () => {
+			setCheckCountryLoading(true)
+
+			const url = new URL("/api/check/country-exists", location.href)
+			url.searchParams.append("name", country)
+
+			const requestInit: RequestInit = {
+				method: "GET",
+				headers: {
+					Accept: "application/json",
+				},
+			}
+
+			const response =
+				await fetch(url, requestInit)
+
+			const { exists } =
+				await response.json() as { exists: boolean }
+
+			setCheckCountryLoading(false)
+			setCheckCountryValue(exists)
+		}
+
+	useEffect(() => {
+		if (!isEmpty(country)) {
+			void handleCheckCountryExists()
+		}
+		return () => {
+			setCheckCountryValue(null)
+			setCheckCountryLoading(false)
+		}
+	}, [country])
+
 	return (
 		<Form
 			title="Artist"
@@ -80,6 +159,11 @@ const ArtistForm: FC = () => {
 				placeholder="Name"
 				autoComplete="nope"
 				onChange={handleChange}
+				check={{
+					text: checkNameText,
+					value: checkNameValue,
+					loading: checkNameLoading,
+				}}
 			/>
 			<TextField
 				id="city"
@@ -104,6 +188,10 @@ const ArtistForm: FC = () => {
 				value={country}
 				placeholder="Country"
 				onChange={handleChange}
+				check={{
+					value: checkCountryValue,
+					loading: checkCountryLoading,
+				}}
 				action={{
 					icon: "search",
 					text: "Country",

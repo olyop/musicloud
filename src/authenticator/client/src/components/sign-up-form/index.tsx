@@ -53,6 +53,7 @@ const SignUpForm: FC<PropTypes> = ({
 				const response =
 					await fetch("/api/sign-up", {
 						method: "POST",
+						cache: "no-cache",
 						body,
 					})
 

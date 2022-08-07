@@ -1,12 +1,12 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
-import { FC, createElement, useState, Fragment } from "react"
+import { FC, createElement, useState, Fragment, useRef } from "react"
 
-import { determineTitle } from "./helpers"
 import LoggedIn from "./components/logged-in"
 import LogInForm from "./components/log-in-form"
 import SignUpForm from "./components/sign-up-form"
 import { InputOnChange } from "./components/input"
+import { determineTitle, isValidServiceName } from "./helpers"
 import EmailAddressForm, { EmailAddressFormOnExists } from "./components/email-address-form"
 
 import packageDotJSON from "../../../../package.json"
@@ -17,8 +17,6 @@ const bem =
 	createBEM("Application")
 
 const Application: FC = () => {
-	// @ts-ignore
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [ accessToken, setAccessToken ] =
 		useState<string | null>(null)
 
@@ -30,6 +28,9 @@ const Application: FC = () => {
 
 	const [ emailAddressChecked, setEmailAddressChecked ] =
 		useState(false)
+
+	const redirectParam =
+		useRef(new URLSearchParams(document.location.search).get("redirect"))
 
 	const handleBack =
 		() => setEmailAddressChecked(false)
@@ -76,6 +77,7 @@ const Application: FC = () => {
 								<a
 									target="_blank"
 									rel="noreferrer"
+									className="Link"
 									href="https://olyop.com"
 									children={packageDotJSON.author.name}
 								/>
@@ -83,34 +85,47 @@ const Application: FC = () => {
 						)}
 					</div>
 				)}
-				{accessToken ? (
-					<LoggedIn
-						accessToken={accessToken}
-					/>
-				) : (
+				{isValidServiceName(redirectParam.current) ? (
 					<Fragment>
-						{emailAddressChecked ? (
-							emailAddressExists ? (
-								<LogInForm
-									onSubmit={handleSubmit}
-									emailAddress={emailAddress}
-									onEmailAddressChange={handleEmailAddressChange}
-								/>
-							) : (
-								<SignUpForm
-									onSubmit={handleSubmit}
-									emailAddress={emailAddress}
-									onEmailAddressChange={handleEmailAddressChange}
-								/>
-							)
-						) : (
-							<EmailAddressForm
-								emailAddress={emailAddress}
-								onEmailAddressChange={handleEmailAddressChange}
-								onEmailAddressExists={handleEmailAddressExists}
+						{accessToken ? (
+							<LoggedIn
+								accessToken={accessToken}
+								redirectService={redirectParam.current}
 							/>
+						) : (
+							<Fragment>
+								{emailAddressChecked ? (
+									emailAddressExists ? (
+										<LogInForm
+											onSubmit={handleSubmit}
+											emailAddress={emailAddress}
+											onEmailAddressChange={handleEmailAddressChange}
+										/>
+									) : (
+										<SignUpForm
+											onSubmit={handleSubmit}
+											emailAddress={emailAddress}
+											onEmailAddressChange={handleEmailAddressChange}
+										/>
+									)
+								) : (
+									<EmailAddressForm
+										emailAddress={emailAddress}
+										onEmailAddressChange={handleEmailAddressChange}
+										onEmailAddressExists={handleEmailAddressExists}
+									/>
+								)}
+							</Fragment>
 						)}
 					</Fragment>
+				) : (
+					<p className="BodyOne Error">
+						<Fragment>Invalid redirect url paramater:</Fragment>
+						<br/>
+						<Fragment>&apos;</Fragment>
+						<span className="LightWeight">{redirectParam.current}</span>
+						<Fragment>&apos; is a invalid service name.</Fragment>
+					</p>
 				)}
 			</div>
 		</div>

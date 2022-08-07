@@ -1,6 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import { Reference } from "@apollo/client/cache"
-import { ObjectID } from "@oly_op/musicloud-common"
+import { ObjectID } from "@oly_op/musicloud-common/build/types"
 import { Modifier } from "@apollo/client/cache/core/types/common"
 
 import { InLibraryObject } from "../../types"
@@ -34,7 +34,7 @@ const modifer =
 interface Options extends ObjectID {
 	objectIDKey: string,
 	objectTypeName: string,
-	object: InLibraryObject,
+	object: InLibraryObject<string>,
 }
 
 export default modifer

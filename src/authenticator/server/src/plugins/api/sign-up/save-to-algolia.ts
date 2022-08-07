@@ -1,5 +1,5 @@
 import { SearchIndex } from "algoliasearch"
-import { AlgoliaRecordUser, NameBase, UserEmailAddressBase, UserID } from "@oly_op/musicloud-common"
+import { AlgoliaRecordUser, NameBase, UserEmailAddressBase, UserID } from "@oly_op/musicloud-common/build/types"
 
 import { ImageInput } from "./types"
 import determineCatalogImageURL from "./determine-catalog-image-url"

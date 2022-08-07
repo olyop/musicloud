@@ -1,5 +1,4 @@
 .ManageAccount {
-	&__content {
-		align-items: flex-start;
-		@media (max-width: 600px) {
-			align-items: stretch; } } }
+	align-items: flex-start;
+	@media (max-width: 600px) {
+		align-items: stretch; } }

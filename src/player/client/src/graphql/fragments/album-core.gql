@@ -1,0 +1,13 @@
+fragment AlbumCoreFragment on Album {
+	albumID
+	title
+	released
+	artists {
+		artistID
+		name
+	}
+	remixers {
+		artistID
+		name
+	}
+}

@@ -17,9 +17,8 @@ import {
 } from "../../redux"
 
 import Queue from "./queue"
+import Page from "../../layouts/page"
 import NowPlaying from "./now-playing"
-import Page from "../../components/page"
-import Content from "../../components/content"
 import { useMutation, useResetPlayer } from "../../hooks"
 
 import CLEAR_QUEUES from "./clear-queues.gql"
@@ -48,6 +47,7 @@ const Queues: FC = () => {
 				clearNextQueues: {
 					next: [],
 					later: [],
+					__typename: "Queue",
 				},
 			},
 		})
@@ -60,6 +60,7 @@ const Queues: FC = () => {
 					later: [],
 					previous: [],
 					nowPlaying: null,
+					__typename: "Queue",
 				},
 			},
 		})
@@ -93,8 +94,8 @@ const Queues: FC = () => {
 		}
 
 	const areQueuesCollapsed =
-		queuesDisclosure.next &&
-		queuesDisclosure.later &&
+		queuesDisclosure.next ||
+		queuesDisclosure.later ||
 		queuesDisclosure.previous
 
 	const header = (
@@ -126,7 +127,7 @@ const Queues: FC = () => {
 	return (
 		<Head pageTitle="Queue">
 			<Page header={header}>
-				<Content>
+				<div className="Content PaddingTopBottom">
 					<div className="Elevated FlexColumn">
 						<Queue
 							name="Previous"
@@ -145,7 +146,7 @@ const Queues: FC = () => {
 							query={GET_QUEUE_LATER}
 						/>
 					</div>
-				</Content>
+				</div>
 			</Page>
 		</Head>
 	)

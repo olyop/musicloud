@@ -1,15 +1,15 @@
-import { isNull } from "lodash-es"
+import isNull from "lodash-es/isNull"
 import { Reference } from "@apollo/client"
-import { PlaylistID } from "@oly_op/musicloud-common"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
+import { Data } from "./types"
 import { useMutation } from "../mutation"
-import { DeletePlaylistData } from "./types"
 import DELETE_PLAYLIST from "./delete-playlist.gql"
 
 export const useDeletePlaylist =
 	({ playlistID }: PlaylistID) => {
 		const [ deletePlaylist, result ] =
-			useMutation<DeletePlaylistData, PlaylistID>(DELETE_PLAYLIST, {
+			useMutation<Data, PlaylistID>(DELETE_PLAYLIST, {
 				variables: { playlistID },
 				update: cache => {
 					cache.modify({

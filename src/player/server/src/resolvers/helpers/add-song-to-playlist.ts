@@ -1,5 +1,4 @@
-import { UserInputError } from "apollo-server-errors"
-import { PlaylistID, SongID } from "@oly_op/musicloud-common"
+import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types"
 import { query, getResultExists, PoolOrClient } from "@oly_op/pg-helpers"
 
 import { IndexOptions } from "../../types"
@@ -20,7 +19,7 @@ export const addSongToPlaylist =
 				})
 
 			if (inPlaylist) {
-				throw new UserInputError("Song already in playlist")
+				throw new Error("Song already in playlist")
 			}
 
 			await query(pg)(INSERT_PLAYLIST_SONG)({

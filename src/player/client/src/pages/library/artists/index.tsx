@@ -22,7 +22,7 @@ const orderBy: OrderByOptions<SettingsOrderByArtists> = {
 }
 
 const LibrarySongs: FC = () => (
-	<Head pageTitle="Library Artists">
+	<Head pageTitle="Artists">
 		<Artists orderBy={orderBy} className="Content Elevated">
 			<Feed<GetArtistsTotalData, ArtistType, GetArtistAtIndexData>
 				settingsOrderBy="libraryArtists"

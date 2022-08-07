@@ -74,7 +74,7 @@ const PlaylistPageRenameButton: FC<PropTypes> = ({ playlist }) => {
 }
 
 interface PropTypes {
-	playlist: Playlist,
+	playlist: Pick<Playlist, "__typename" | "playlistID" | "title">,
 }
 
 export default PlaylistPageRenameButton

@@ -16,7 +16,7 @@ export const genresTotal =
 			query(context.pg)(SELECT_LIBRARY_GENRES_TOTAL)({
 				parse: getResultCount,
 				variables: {
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				},
 			})
 		),
@@ -29,7 +29,7 @@ export const genreAtIndex =
 				parse: convertFirstRowToCamelCaseOrNull(),
 				variables: {
 					atIndex: args.input.atIndex,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					orderByField: args.input.orderBy.field,
 					orderByDirection: args.input.orderBy.direction,
 					columnNames: join(COLUMN_NAMES.GENRE, "genres"),

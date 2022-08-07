@@ -16,14 +16,16 @@
 		},
 		{
 			"files": ["*.gql"],
-			"extends": "plugin:@graphql-eslint/operations-all",
+			"extends": [
+				"plugin:@graphql-eslint/operations-all",
+				"@oly_op/eslint-config-graphql"
+			],
 			"parserOptions": {
 				"operations": "src/player/client/src/**/*.gql",
 				"schema": "src/player/server/src/type-defs/*.gql"
 			},
 			"rules": {
-				"@graphql-eslint/alphabetize": "off",
-				"@graphql-eslint/naming-convention": "off"
+				
 			}
 		}
 	]

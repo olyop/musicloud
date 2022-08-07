@@ -1,3 +1,5 @@
+#import "../../graphql/fragments/song-core.gql";
+
 query getArtistPageSongs(
 	$artistID: UUID!
 	$songsOrderBy: SongsOrderByInput!
@@ -5,32 +7,7 @@ query getArtistPageSongs(
 	getArtistByID(artistID: $artistID) {
 		artistID
 		songs(orderBy: $songsOrderBy) {
-			mix
-			title
-			songID
-			duration
-			inLibrary
-			playsTotal
-			featuring {
-				artistID
-				name
-			}
-			remixers {
-				artistID
-				name
-			}
-			artists {
-				artistID
-				name
-			}
-			genres {
-				genreID
-				name
-			}
-			album {
-				albumID
-				title
-			}
+			...SongCoreFragment
 		}
 	}
 }

@@ -1,56 +1,49 @@
+import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
-import { isEmpty, isNull } from "lodash-es"
+import { Modifier } from "@apollo/client/cache/core/types/common"
 
-import {
-	IndexVars,
-	QueuePropTypes,
-	RemoveNextData,
-	RemoveLaterData,
-} from "../types"
-
+import { QueuePropTypes } from "../types"
 import Song from "../../../components/song"
 import Songs from "../../../components/songs"
-import { useQuery, useMutation, useJWTPayload } from "../../../hooks"
 import { Queue as QueueType, Song as SongType, SongQueueIndex } from "../../../types"
 import { useDispatch, toggleQueueDisclosure, useStateQueuesDisclosure } from "../../../redux"
+import { useQuery, useMutation, useRemoveSongFromQueueNext, useRemoveSongFromQueueLater } from "../../../hooks"
 
 import JUMP_TO_SONG_IN_QUEUE_NEXT from "./jump-to-song-in-queue-next.gql"
 import JUMP_TO_SONG_IN_QUEUE_LATER from "./jump-to-song-in-queue-later.gql"
-import REMOVE_SONG_FROM_QUEUE_NEXT from "./remove-song-from-queue-next.gql"
-import REMOVE_SONG_FROM_QUEUE_LATER from "./remove-song-from-queue-later.gql"
 
 import "./index.scss"
 
 const bem =
 	createBEM("Queue")
 
+const removeFromQueueModifier =
+	(queueIndex: number): Modifier<SongType[]> =>
+		(existing: SongType[] = []) =>
+			existing.filter(song => song.queueIndex !== queueIndex)
+
 const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 	const dispatch = useDispatch()
-	const { userID } = useJWTPayload()
 	const queuesDisclosure = useStateQueuesDisclosure()
 
 	const { data } =
 		useQuery<Data>(query)
 
 	const [ removeNext ] =
-		useMutation<RemoveNextData, IndexVars>(
-			REMOVE_SONG_FROM_QUEUE_NEXT,
-		)
+		useRemoveSongFromQueueNext()
 
 	const [ removeLater ] =
-		useMutation<RemoveLaterData, IndexVars>(
-			REMOVE_SONG_FROM_QUEUE_LATER,
-		)
+		useRemoveSongFromQueueLater()
 
 	const [ jumpNext ] =
-		useMutation<unknown, IndexVars>(
+		useMutation<unknown, { index: number }>(
 			JUMP_TO_SONG_IN_QUEUE_NEXT,
 		)
 
 	const [ jumpLater ] =
-		useMutation<unknown, IndexVars>(
+		useMutation<unknown, { index: number }>(
 			JUMP_TO_SONG_IN_QUEUE_LATER,
 		)
 
@@ -68,11 +61,9 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 							variables: { index: queueIndex },
 							update: cache => {
 								cache.modify({
-									id: cache.identify({ userID, __typename: "User" }),
+									id: cache.identify({ __typename: "Queue" }),
 									fields: {
-										queueNext:
-											(exisiting: SongType[] = []) =>
-												exisiting.filter(song => song.queueIndex !== queueIndex),
+										next: removeFromQueueModifier(queueIndex),
 									},
 								})
 							},
@@ -82,11 +73,9 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 							variables: { index: queueIndex },
 							update: cache => {
 								cache.modify({
-									id: cache.identify({ userID, __typename: "User" }),
+									id: cache.identify({ __typename: "Queue" }),
 									fields: {
-										queueLaters:
-											(exisiting: SongType[] = []) =>
-												exisiting.filter(song => song.queueIndex !== queueIndex),
+										laters: removeFromQueueModifier(queueIndex),
 									},
 								})
 							},
@@ -111,10 +100,10 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 				}
 			}
 
-	if (data && !isEmpty(data.getQueue[queueKey])) {
+	if (data) {
 		const songs = data.getQueue[queueKey]
-		return (
-			<div className={bem(className, "FlexColumn ItemBorder")}>
+		return isNull(songs) ? null : (
+			<div className={bem(className, "FlexColumn")}>
 				<Button
 					text={name}
 					transparent
@@ -125,14 +114,14 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 				{queuesDisclosure[queueKey] && (
 					<Songs hideElevated className={bem("section")}>
 						{songs.map(
-							song => (
+							song => song.queueIndex && (
 								<Song
 									hidePlay
 									hidePlays
 									song={song}
-									key={song.queueIndex}
 									onJump={handleJump(song)}
 									onRemove={handleRemove(song)}
+									key={`${song.queueIndex}_${song.songID}`}
 								/>
 							),
 						)}

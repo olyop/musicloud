@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import { createElement, FC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import Item from "../item"
 import Modal from "./modal"

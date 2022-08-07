@@ -1,4 +1,4 @@
-import { FILES_URL } from "@oly_op/musicloud-common"
+import { FILES_URL } from "@oly_op/musicloud-common/build/globals"
 
 import { determineCatalogAudioPath } from "./determine-catalog-audio-path"
 

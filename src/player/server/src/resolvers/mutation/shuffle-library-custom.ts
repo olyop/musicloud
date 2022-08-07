@@ -13,7 +13,7 @@
 // 	resolver<Record<string, never>, Args>(
 // 		async ({ args, context }) => {
 // 			const { genres, artists } = args
-// 			const { userID } = context.authorization!
+// 			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 // 			const client = await context.pg.connect()
 // 			const query = pgHelpersQuery(client)
 

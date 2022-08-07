@@ -1,5 +1,5 @@
 import { pipe } from "rxjs"
-import { PlaylistID, UserID } from "@oly_op/musicloud-common"
+import { PlaylistID, UserID } from "@oly_op/musicloud-common/build/types"
 import { query, PoolOrClient, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import { Playlist } from "../../types"

@@ -8,8 +8,9 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers"
 
-import { SongID, AlbumID, UserID } from "@oly_op/musicloud-common"
-import { ApolloError, ForbiddenError } from "apollo-server-errors"
+import { GraphQLError } from "graphql"
+import { ApolloServerErrorCode } from "@apollo/server/errors"
+import { SongID, AlbumID, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	SELECT_USER_PLAYS,
@@ -20,9 +21,9 @@ import {
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
+import { timeStampToMilliseconds } from "./helpers"
 import createParentResolver from "./create-parent-resolver"
 import { Play, User, Playlist, GetObjectsOptions } from "../types"
-import { timeStampToMilliseconds } from "./helpers"
 
 interface GetUserObjectsOptions<T>
 	extends UserID, GetObjectsOptions<T> {}
@@ -30,8 +31,12 @@ interface GetUserObjectsOptions<T>
 const resolver =
 	createParentResolver<User>(
 		({ parent, context }) => {
-			if (parent.userID !== context.authorization!.userID) {
-				throw new ForbiddenError("Unauthorized access to this user")
+			if (parent.userID !== context.getAuthorizationJWTPayload(context.authorization).userID) {
+				throw new GraphQLError("Not Authorized", {
+					extensions: {
+						code: ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED,
+					},
+				})
 			}
 		},
 	)
@@ -63,7 +68,7 @@ export const isFollowing =
 				parse: getResultExists,
 				variables: {
 					userID: parent.userID,
-					followerUserID: context.authorization!.userID,
+					followerUserID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				},
 			})
 		),
@@ -77,7 +82,7 @@ export const isFollower =
 				parse: getResultExists,
 				variables: {
 					followerUserID: parent.userID,
-					userID: context.authorization!.userID,
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				},
 			})
 		),
@@ -148,7 +153,7 @@ export const playlistsFilteredBySong =
 export const playlistsFilteredByAlbum =
 	resolver<Playlist[], AlbumID>(
 		() => {
-			throw new ApolloError("Not implemented yet.")
+			throw new Error("Not implemented yet.")
 		},
 		// ({ context }) => (
 		// 	query(context.pg)("SE")({

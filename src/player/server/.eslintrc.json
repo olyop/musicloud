@@ -13,21 +13,13 @@
 		},
 		{
 			"files": ["*.gql"],
-			"extends": "plugin:@graphql-eslint/schema-all",
+			"extends": [
+				"plugin:@graphql-eslint/schema-all",
+				"@oly_op/eslint-config-graphql"
+			],
 			"parserOptions": {
 				"operations": "src/player/client/src/**/*.gql",
 				"schema": "src/player/server/src/type-defs/*.gql"
-			},
-			"rules": {
-				"@graphql-eslint/input-name": "off",
-				"@graphql-eslint/alphabetize": "off",
-				"@graphql-eslint/naming-convention": "off",
-				"@graphql-eslint/strict-id-in-types": "off",
-				"@graphql-eslint/no-typename-prefix": "off",
-				"@graphql-eslint/require-description": "off",
-				"@graphql-eslint/no-hashtag-description": "off",
-				"@graphql-eslint/no-scalar-result-type-on-mutation": "off",
-				"@graphql-eslint/require-field-of-type-query-in-mutation-result": "off"
 			}
 		}
 	]

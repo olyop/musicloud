@@ -1,0 +1,6 @@
+fragment ArtistCoreFragment on Artist {
+	name
+	artistID
+	songsTotal
+	albumsTotal
+}

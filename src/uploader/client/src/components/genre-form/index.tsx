@@ -1,16 +1,20 @@
 import { useFormik } from "formik"
-import { GenreBase } from "@oly_op/musicloud-common"
-import { createElement, FC, useState } from "react"
+import isEmpty from "lodash-es/isEmpty"
+import { createElement, FC, useEffect, useState } from "react"
+import { GenreBase } from "@oly_op/musicloud-common/build/types"
 
 import Form from "../form"
-import TextField from "../text-field"
+import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field"
 
 type Genre =
 	Pick<GenreBase, "name">
 
 const GenreForm: FC = () => {
-	const [ loading, setLoading ] =
-		useState(false)
+	const [ loading, setLoading ] =	useState(false)
+
+	const [ checkNameLoading, setCheckNameLoading ] = useState(false)
+	const [ checkNameText, setCheckNameText ] = useState<CheckOptionsText>(null)
+	const [ checkNameValue, setCheckNameValue ] = useState<CheckOptionsValue>(null)
 
 	const formik =
 		useFormik<Genre>({
@@ -30,6 +34,45 @@ const GenreForm: FC = () => {
 			},
 		})
 
+	const handleCheckNameExists =
+		async () => {
+			setCheckNameLoading(true)
+
+			const url = new URL("/api/check/genre-name-exists", location.href)
+			url.searchParams.append("name", formik.values.name)
+
+			const requestInit: RequestInit = {
+				method: "GET",
+				headers: {
+					Accept: "application/json",
+				},
+			}
+
+			const response =
+				await fetch(url, requestInit)
+
+			const { exists } =
+				await response.json() as { exists: boolean }
+
+			if (exists) {
+				setCheckNameText("Already exists")
+			}
+
+			setCheckNameLoading(false)
+			setCheckNameValue(!exists)
+		}
+
+	useEffect(() => {
+		if (!isEmpty(formik.values.name)) {
+			void handleCheckNameExists()
+		}
+		return () => {
+			setCheckNameText(null)
+			setCheckNameValue(null)
+			setCheckNameLoading(false)
+		}
+	}, [formik.values.name])
+
 	return (
 		<Form
 			title="Genre"
@@ -45,6 +88,11 @@ const GenreForm: FC = () => {
 				autoComplete="nope"
 				value={formik.values.name}
 				onChange={formik.handleChange}
+				check={{
+					text: checkNameText,
+					value: checkNameValue,
+					loading: checkNameLoading,
+				}}
 			/>
 		</Form>
 	)

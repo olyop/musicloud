@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button"
 import { useNavigate } from "react-router-dom"
-import { PlaylistID } from "@oly_op/musicloud-common"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 import { createElement, Fragment, useEffect, useState, FC } from "react"
 
 import Modal, { ModalButton, ModalButtons, ModalHeader } from "../../components/modal"

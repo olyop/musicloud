@@ -8,7 +8,7 @@ import {
 	ArtistID,
 	PlaylistID,
 	PlaylistPrivacy,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 import {
 	join,
@@ -18,7 +18,6 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { isNull } from "lodash-es"
-import { UserInputError } from "apollo-server-errors"
 
 import {
 	Key,
@@ -56,7 +55,7 @@ export const getKey =
 					},
 				})
 			if (isNull(key)) {
-				throw new UserInputError("Key does not exist")
+				throw new Error("Key does not exist")
 			} else {
 				return key
 			}
@@ -74,7 +73,7 @@ export const getUser =
 					},
 				})
 			if (isNull(user)) {
-				throw new UserInputError("User does not exist")
+				throw new Error("User does not exist")
 			} else {
 				return user
 			}
@@ -92,7 +91,7 @@ export const getSong =
 					},
 				})
 			if (isNull(song)) {
-				throw new UserInputError("Song does not exist")
+				throw new Error("Song does not exist")
 			} else {
 				return song
 			}
@@ -110,7 +109,7 @@ export const getPlay =
 					},
 				})
 			if (isNull(play)) {
-				throw new UserInputError("Play does not exist")
+				throw new Error("Play does not exist")
 			} else {
 				return play
 			}
@@ -128,7 +127,7 @@ export const getGenre =
 					},
 				})
 			if (isNull(genre)) {
-				throw new UserInputError("Genre does not exist")
+				throw new Error("Genre does not exist")
 			} else {
 				return genre
 			}
@@ -146,7 +145,7 @@ export const getAlbum =
 					},
 				})
 			if (isNull(album)) {
-				throw new UserInputError("Album does not exist")
+				throw new Error("Album does not exist")
 			} else {
 				return album
 			}
@@ -164,7 +163,7 @@ export const getArtist =
 					},
 				})
 			if (isNull(artist)) {
-				throw new UserInputError("Artist does not exist")
+				throw new Error("Artist does not exist")
 			} else {
 				return artist
 			}
@@ -182,7 +181,7 @@ export const getPlaylist =
 					},
 				})
 			if (isNull(playlist)) {
-				throw new UserInputError("Playlist does not exist")
+				throw new Error("Playlist does not exist")
 			} else {
 				return {
 					...playlist,

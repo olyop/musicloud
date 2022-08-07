@@ -12,7 +12,7 @@ import {
 	ArtistBase,
 	PlaylistID,
 	PlaylistBase,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 export type Key =
 	KeyBase

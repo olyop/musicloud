@@ -5,8 +5,7 @@ import {
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { SongID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { SongID } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { QueueSong } from "../../types"
@@ -17,7 +16,7 @@ export const queueSongLater =
 	resolver<Record<string, never>, SongID>(
 		async ({ args, context }) => {
 			const { songID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(client)
@@ -34,7 +33,7 @@ export const queueSongLater =
 					})
 
 				if (!songExists) {
-					throw new UserInputError("Song does not exist")
+					throw new Error("Song does not exist")
 				}
 
 				const nexts =

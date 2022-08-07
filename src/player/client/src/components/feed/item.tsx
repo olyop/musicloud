@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/comma-dangle */
 import isNull from "lodash-es/isNull"
 import uniqueID from "lodash-es/uniqueId"
-import { InterfaceWithInput } from "@oly_op/musicloud-common"
+import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
 import { DocumentNode, useApolloClient } from "@apollo/client"
 import { createElement, Fragment, ReactNode, Ref, useCallback, useEffect, useRef, useState } from "react"
 
 import { OrderBy, SettingsOrderBy } from "../../types"
-import { addLoading, removeLoading, useDispatch, useStateOrderBy } from "../../redux"
 import { useHasMounted, useInView, UseInViewOptionsOnChange } from "../../hooks"
+import { addLoading, removeLoading, useDispatch, useStateOrderBy } from "../../redux"
 
 const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const {

@@ -1,5 +1,4 @@
-import { ForbiddenError, UserInputError } from "apollo-server-errors"
-import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common"
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
 import { join, query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
@@ -15,7 +14,7 @@ export const updatePlaylistTitle =
 	resolver<Playlist, Args>(
 		async ({ args, context }) => {
 			const { title, playlistID } = args.input
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const playlistExists =
 				await exists(context.pg)({
@@ -25,11 +24,11 @@ export const updatePlaylistTitle =
 				})
 
 			if (!playlistExists) {
-				throw new UserInputError("Playlist does not exist")
+				throw new Error("Playlist does not exist")
 			}
 
 			if (await isNotUsersPlaylist(context.pg)({ userID, playlistID })) {
-				throw new ForbiddenError("Unauthorized to delete playlist")
+				throw new Error("Unauthorized to delete playlist")
 			}
 
 			const algoliaRecordUpdate: Partial<AlgoliaRecordPlaylist> = {

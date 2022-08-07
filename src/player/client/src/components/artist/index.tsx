@@ -2,7 +2,7 @@ import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
 import { createElement, Fragment, forwardRef } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import {
 	ObjectShowIcon,
@@ -14,9 +14,10 @@ import Modal from "./modal"
 import ObjectLink from "../object-link"
 import { useStateListStyle } from "../../redux"
 import Item, { ItemModal, InfoOptions, ImageOptions } from "../item"
-import { createObjectPath, createArtistLower, createCatalogImageURL } from "../../helpers"
+import { createObjectPath, createCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
+import ArtistLower from "../artist-lower"
 
 const bem =
 	createBEM("Artist")
@@ -37,7 +38,11 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 
 	const info: InfoOptions | undefined =
 		isArtistNull ? undefined : {
-			lowerLeft: hideArtistLower ? undefined : createArtistLower(artist),
+			lowerLeft: hideArtistLower ? undefined : (
+				<ArtistLower
+					artist={artist}
+				/>
+			),
 			upperLeft: (
 				<ObjectLink
 					link={{

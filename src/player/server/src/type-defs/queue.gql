@@ -1,6 +1,6 @@
 type Queue {
-	next: [Song!]!
-	later: [Song!]!
+	next: [Song!]
+	later: [Song!]
 	nowPlaying: Song
-	previous: [Song!]!
+	previous: [Song!]
 }

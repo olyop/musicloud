@@ -1,15 +1,17 @@
 import { useFormik } from "formik"
+import orderBy from "lodash-es/orderBy"
 import isEmpty from "lodash-es/isEmpty"
 import { useState, createElement, FC, ChangeEventHandler } from "react"
 
 import Form from "../form"
-import { Album } from "./types"
-import AlbumSongs, { OnAddSong } from "./songs"
+import AlbumFormSong from "./song"
 import TextField from "../text-field"
+import AlbumSongs, { OnAddSong } from "./songs"
 import createFormData from "./create-form-data"
-import { createGoogleSearchURL } from "../../helpers"
-import AlbumFormSong, { Song, SongLists } from "./song"
+import { Album, Song, SongLists } from "./types"
 import getAudioMetadata from "./get-audio-metadata"
+import { createGoogleSearchURL } from "../../helpers"
+import { Item } from "../../types"
 
 const AlbumForm: FC = () => {
 	const [ loading, setLoading ] = useState(false)
@@ -52,38 +54,51 @@ const AlbumForm: FC = () => {
 		async files => {
 			for (const audio of files) {
 				const metadata = await getAudioMetadata(audio)
-				setSongs(prevState => [
-					...prevState,
-					{
-						audio,
-						artists,
-						mix: "",
-						remixers: [],
-						featuring: [],
-						title: metadata.title,
-						discNumber: metadata.discNumber,
-						trackNumber: metadata.trackNumber,
-						genres: (
-							isEmpty(metadata.genres) ? (
+
+				await setFieldValue("title", metadata.title)
+
+				if (isEmpty(artists)) {
+					await setFieldValue("artists", [{
+						index: 0,
+						value: metadata.artist,
+					}] as Item[])
+				}
+
+				setSongs(prevState => orderBy(
+					[
+						...prevState,
+						{
+							audio,
+							mix: "",
+							remixers: [],
+							featuring: [],
+							title: metadata.title,
+							discNumber: metadata.discNumber,
+							trackNumber: metadata.trackNumber,
+							artists: isEmpty(artists) ? [{
+								index: 0,
+								value: metadata.artist,
+							}] : artists,
+							genres: (isEmpty(metadata.genres) ? (
 								isEmpty(prevState) ?
 									[] :
 									prevState[0]!.genres
 							) : [{
 								index: 0,
 								value: metadata.genres,
-							}]
-						),
-					},
-				])
+							}]),
+						},
+					],
+					"trackNumber",
+				))
 			}
 		}
 
 	const handleSongRemove =
-		(trackNumber: number) =>
-			() =>
-				setSongs(prevState => prevState.filter(
-					song => song.trackNumber !== trackNumber,
-				))
+		(trackNumber: number) => () =>
+			setSongs(prevState => prevState.filter(
+				song => song.trackNumber !== trackNumber,
+			))
 
 	const handleSongMixChange =
 		(trackNumber: number) =>
@@ -142,46 +157,42 @@ const AlbumForm: FC = () => {
 						))
 
 	const handleArtistAdd =
-		(value: string) =>
-			() =>
-				setFieldValue(
-					"artists",
-					[...artists, {
-						value,
-						index: artists.length,
-					}],
-				)
+		(value: string) => () =>
+			setFieldValue(
+				"artists",
+				[...artists, {
+					value,
+					index: artists.length,
+				}],
+			)
 
 	const handleArtistRemove =
-		(index: number) =>
-			() =>
-				setFieldValue(
-					"artists",
-					artists.filter(
-						artist => index !== artist.index,
-					),
-				)
+		(index: number) => () =>
+			setFieldValue(
+				"artists",
+				artists.filter(
+					artist => index !== artist.index,
+				),
+			)
 
 	const handleRemixerAdd =
-		(value: string) =>
-			() =>
-				setFieldValue(
-					"remixers",
-					[...remixers, {
-						value,
-						index: remixers.length,
-					}],
-				)
+		(value: string) => () =>
+			setFieldValue(
+				"remixers",
+				[...remixers, {
+					value,
+					index: remixers.length,
+				}],
+			)
 
 	const handleRemixerRemove =
-		(index: number) =>
-			() =>
-				setFieldValue(
-					"remixers",
-					remixers.filter(
-						remixer => index !== remixer.index,
-					),
-				)
+		(index: number) => () =>
+			setFieldValue(
+				"remixers",
+				remixers.filter(
+					remixer => index !== remixer.index,
+				),
+			)
 
 	const handleCoverChange: ChangeEventHandler<HTMLInputElement> =
 		({ target: { files } }) => {
@@ -252,26 +263,18 @@ const AlbumForm: FC = () => {
 					}),
 				}}
 			/>
-			<AlbumSongs onAddSong={handleSongAdd}>
-				{isEmpty(songs) ? (
-					<p className="BodyOne PaddingHalf">
-						No songs...
-					</p>
-				) : (
-					songs.map(
-						song => (
-							<AlbumFormSong
-								song={song}
-								key={song.trackNumber}
-								onSongRemove={handleSongRemove(song.trackNumber)}
-								onSongListAdd={handleSongListAdd(song.trackNumber)}
-								onMixChange={handleSongMixChange(song.trackNumber)}
-								onTitleChange={handleSongTitleChange(song.trackNumber)}
-								onSongListChange={handleSongListChange(song.trackNumber)}
-							/>
-						),
-					)
-				)}
+			<AlbumSongs onAddSong={handleSongAdd} songs={songs}>
+				{songs.map(song => (
+					<AlbumFormSong
+						song={song}
+						key={song.trackNumber}
+						onSongRemove={handleSongRemove(song.trackNumber)}
+						onSongListAdd={handleSongListAdd(song.trackNumber)}
+						onMixChange={handleSongMixChange(song.trackNumber)}
+						onTitleChange={handleSongTitleChange(song.trackNumber)}
+						onSongListChange={handleSongListChange(song.trackNumber)}
+					/>
+				))}
 			</AlbumSongs>
 		</Form>
 	)

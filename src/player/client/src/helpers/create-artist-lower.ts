@@ -1,4 +1,4 @@
-import { isUndefined } from "lodash-es"
+import isUndefined from "lodash-es/isUndefined"
 
 import { Artist } from "../types"
 import { determinePlural } from "./determine-plural"

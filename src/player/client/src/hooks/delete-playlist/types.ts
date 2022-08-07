@@ -1,13 +1,13 @@
-import { PlaylistID } from "@oly_op/musicloud-common"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 import { ApolloCache, MutationUpdaterFunction } from "@apollo/client"
 
-export interface DeletePlaylistData {
+export interface Data {
 	deletePlaylistByID: null,
 }
 
-export type DeletePlaylistUpdate =
+export type Update =
 	MutationUpdaterFunction<
-		DeletePlaylistData,
+		Data,
 		PlaylistID,
 		unknown,
 		ApolloCache<unknown>

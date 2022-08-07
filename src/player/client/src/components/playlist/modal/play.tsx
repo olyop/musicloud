@@ -1,5 +1,5 @@
 import { createElement, FC } from "react"
-import { PlaylistID } from "@oly_op/musicloud-common"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
 import { Handler } from "../../../types"
 import { useStatePlay } from "../../../redux"

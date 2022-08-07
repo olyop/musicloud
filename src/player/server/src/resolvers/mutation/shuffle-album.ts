@@ -5,9 +5,7 @@ import {
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
-import { pipe } from "rxjs"
-import { AlbumID } from "@oly_op/musicloud-common"
-import { UserInputError } from "apollo-server-errors"
+import { AlbumID } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { Song } from "../../types"
@@ -19,7 +17,7 @@ export const shuffleAlbum =
 	resolver<Record<string, never>, AlbumID>(
 		async ({ args, context }) => {
 			const { albumID } = args
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 			const client = await context.pg.connect()
 			const query = pgHelpersQuery(context.pg)
 
@@ -34,22 +32,22 @@ export const shuffleAlbum =
 					})
 
 				if (!albumExists) {
-					throw new UserInputError("Album does not exist")
+					throw new Error("Album does not exist")
 				}
 
 				await clearQueue(client)({ userID })
 
-				const [ nowPlaying, ...shuffled ] =
+				const albumsSongs =
 					await query(SELECT_ALBUM_SONGS)({
-						parse: pipe(
-							convertTableToCamelCase<Song>(),
-							shuffle(),
-						),
+						parse: convertTableToCamelCase<Song>(),
 						variables: {
 							albumID,
 							columnNames: join(COLUMN_NAMES.SONG),
 						},
 					})
+
+				const [ nowPlaying, ...shuffled ] =
+					await shuffle(context.randomDotOrg)(albumsSongs)
 
 				await updateQueueNowPlaying(client, context.ag.index)({
 					userID,

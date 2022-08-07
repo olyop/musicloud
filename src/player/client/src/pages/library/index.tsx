@@ -5,10 +5,10 @@ import { Route, Routes, NavLink } from "react-router-dom"
 import { useState, createElement, FC, Fragment } from "react"
 
 import routes from "./routes"
-import Page from "../../components/page"
+import Page from "../../layouts/page"
 import Modal from "../../components/modal"
 import Window from "../../components/window"
-import Navigation from "../../components/navigation"
+import Navigation from "../../layouts/navigation"
 import LibraryCreatePlaylist from "./create-playlist"
 import { useMutation, useResetPlayer } from "../../hooks"
 

@@ -1,0 +1,10 @@
+query getAlbumNowPlaying {
+	getQueue {
+		nowPlaying {
+			songID
+			album {
+				albumID
+			}
+		}
+	}
+}

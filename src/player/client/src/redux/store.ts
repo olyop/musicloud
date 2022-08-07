@@ -1,4 +1,4 @@
-import { isNull } from "lodash-es"
+import isNull from "lodash-es/isNull"
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch as baseUseDispatch, useSelector as baseUseSelector } from "react-redux"
 

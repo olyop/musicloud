@@ -1,14 +1,15 @@
 import isEmpty from "lodash-es/isEmpty"
 import { useParams } from "react-router-dom"
-import { UserID } from "@oly_op/musicloud-common"
 import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { UserID } from "@oly_op/musicloud-common/build/types"
 
 import { useQuery } from "../../hooks"
 import User from "../../components/user"
 import { User as UserType } from "../../types"
-import GET_USER_FOLLOWERS from "./get-user-followers.gql"
 import { determinePlural } from "../../helpers"
+
+import GET_USER_FOLLOWERS from "./get-user-followers.gql"
 
 const UserFollowers: FC = () => {
 	const params = useParams<keyof UserID>()

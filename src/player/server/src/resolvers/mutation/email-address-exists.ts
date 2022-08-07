@@ -1,4 +1,4 @@
-import { UserEmailAddressBase } from "@oly_op/musicloud-common"
+import { UserEmailAddressBase } from "@oly_op/musicloud-common/build/types"
 
 import resolver from "./resolver"
 import { emailAddressExists as emailAddressExistsHelper } from "../helpers"

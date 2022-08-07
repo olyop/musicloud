@@ -1,5 +1,5 @@
 {
-	"extends": "../tsconfig.json",
+	"extends": "../tsconfig",
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM"]
 	},
@@ -8,6 +8,11 @@
 		"player",
 		"uploader",
 		"authenticator",
-		"../src/types",
-	]
+		"../src/types"
+	],
+	"ts-node": {
+		"swc": true,
+		"files": true,
+    "require": ["tsconfig-paths/register"]
+  }
 }

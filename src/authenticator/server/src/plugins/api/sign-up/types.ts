@@ -5,7 +5,7 @@ import {
 	ImageDimensions,
 	UserPasswordBase,
 	UserEmailAddressBase,
-} from "@oly_op/musicloud-common"
+} from "@oly_op/musicloud-common/build/types"
 
 import {
 	MultipartFile,

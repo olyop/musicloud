@@ -12,10 +12,6 @@ const apollo =
 const useApolloClient =
 	() => useBaseApolloClient() as ApolloClient<NormalizedCacheObject>
 
-export {
-	link,
-	cache,
-	useApolloClient,
-}
+export { useApolloClient }
 
 export default apollo

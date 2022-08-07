@@ -10,13 +10,12 @@ import {
 	Playlist as PlaylistType,
 } from "../../types"
 
+import Page from "../../layouts/page"
 import { useQuery } from "../../hooks"
 import Song from "../../components/song"
-import Page from "../../components/page"
 import Songs from "../../components/songs"
 import Album from "../../components/album"
 import Albums from "../../components/albums"
-import Content from "../../components/content"
 import Playlist from "../../components/playlist"
 import Playlists from "../../components/playlists"
 
@@ -33,7 +32,7 @@ const BrowsePage: FC = () => {
 		<Head pageTitle="Browse">
 			<Page>
 				{data && (
-					<Content className={bem("")}>
+					<div className={bem("", "ContentPaddingTopBottom")}>
 						<div className={bem("trending", "FlexColumn")}>
 							<div className="FlexColumnGapHalf">
 								<h2 className="HeadingFive">
@@ -107,7 +106,7 @@ const BrowsePage: FC = () => {
 								/>
 							</Link>
 						</div>
-					</Content>
+					</div>
 				)}
 			</Page>
 		</Head>

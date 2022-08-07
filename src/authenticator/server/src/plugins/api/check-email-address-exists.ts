@@ -1,6 +1,6 @@
 import { exists } from "@oly_op/pg-helpers"
-import { UserEmailAddressBase } from "@oly_op/musicloud-common"
 import { FastifyPluginAsync, RouteShorthandOptions } from "fastify"
+import { UserEmailAddressBase } from "@oly_op/musicloud-common/build/types"
 
 interface Reply {
 	exists: boolean,

@@ -43,6 +43,7 @@ const EmailAddressForm: FC<PropTypes> = ({
 				const response =
 					await fetch("/api/check-email-address-exists", {
 						method: "POST",
+						cache: "no-cache",
 						body: JSON.stringify(body),
 						headers: {
 							"Accept": "application/json",

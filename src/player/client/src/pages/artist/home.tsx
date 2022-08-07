@@ -1,13 +1,13 @@
 import { createElement, FC } from "react"
 import { useParams } from "react-router-dom"
-import { ArtistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { ArtistID } from "@oly_op/musicloud-common/build/types"
 
 import { useQuery } from "../../hooks"
 import Song from "../../components/song"
 import Songs from "../../components/songs"
-import Content from "../../components/content"
 import { ArtistTopTenSongs } from "../../types"
+
 import GET_ARTIST_PAGE_HOME from "./get-artist-page-home.gql"
 
 const ArtistPageHome: FC = () => {
@@ -21,7 +21,7 @@ const ArtistPageHome: FC = () => {
 		)
 
 	return (
-		<Content>
+		<div className="ContentPaddingTopBottom">
 			<h1 className="HeadingFive PaddingBottomHalf">
 				Most Played
 			</h1>
@@ -36,7 +36,7 @@ const ArtistPageHome: FC = () => {
 					),
 				)}
 			</Songs>
-		</Content>
+		</div>
 	)
 }
 

@@ -1,10 +1,13 @@
+import isNull from "lodash-es/isNull"
+import toLower from "lodash-es/toLower"
+import isEmpty from "lodash-es/isEmpty"
+import startCase from "lodash-es/startCase"
 import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
 import { useParams } from "react-router-dom"
 import { createElement, FC, Fragment } from "react"
-import { PlaylistID } from "@oly_op/musicloud-common"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { isNull, toLower, startCase, isEmpty } from "lodash-es"
+import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	useQuery,
@@ -14,15 +17,14 @@ import {
 	useShufflePlaylist,
 } from "../../hooks"
 
+import Page from "../../layouts/page"
 import Song from "../../components/song"
-import Page from "../../components/page"
 import DeleteButton from "./delete-button"
 import RenameButton from "./rename-button"
 import Songs from "../../components/songs"
 import { useStatePlay } from "../../redux"
 import PrivacyButton from "./privacy-button"
 import Buttons from "../../components/buttons"
-import Content from "../../components/content"
 import InLibraryButton from "./in-library-button"
 import ObjectLink from "../../components/object-link"
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
@@ -91,11 +93,11 @@ const PlaylistPage: FC = () => {
 
 	if (data) {
 		const playlist = data.getPlaylistByID
-		const { title, user, dateCreated, privacy, songs, songsTotal } = playlist
+		const { title, user, dateCreated, privacy, songs, songsTotal, playlistIndex } = playlist
 		return (
 			<Head pageTitle={title}>
 				<Page>
-					<Content className="FlexColumnGap">
+					<div className="ContentPaddingTopBottom FlexColumnGap">
 						<div className="FlexColumnGapHalf">
 							<div className="FlexRowGapHalf">
 								<h1 className="HeadingFour">
@@ -132,9 +134,10 @@ const PlaylistPage: FC = () => {
 								{songs.map(
 									song => (
 										<Song
+											hidePlays
 											song={song}
 											key={song.songID}
-											index={playlist.playlistIndex!}
+											index={playlistIndex!}
 											onRemove={isUsers ? handleRemoveSongFromPlaylist(song) : undefined}
 										/>
 									),
@@ -183,7 +186,7 @@ const PlaylistPage: FC = () => {
 								</Buttons>
 							</div>
 						)}
-					</Content>
+					</div>
 				</Page>
 			</Head>
 		)

@@ -2,7 +2,7 @@ import isNull from "lodash-es/isNull"
 import { BEMInput } from "@oly_op/bem"
 import isUndefined from "lodash-es/isUndefined"
 import { createElement, forwardRef, Fragment, Ref } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import {
 	createObjectPath,
@@ -40,14 +40,9 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		className = "ItemBorder PaddingHalf",
 	} = propTypes
 
-	const isSongNull =
-		isNull(song)
-
-	const showGenres =
-		useStateShowGenres()
-
-	const showDuration =
-		useStateShowDuration()
+	const isSongNull = isNull(song)
+	const showGenres = useStateShowGenres()
+	const showDuration = useStateShowDuration()
 
 	const [ playSong, isPlaying ] =
 		usePlaySong(hidePlay ? null : song)
@@ -107,7 +102,6 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					upperLeft: (
 						<SongTitle
 							song={song}
-							onClick={playSong}
 						/>
 					),
 					lowerLeft: (

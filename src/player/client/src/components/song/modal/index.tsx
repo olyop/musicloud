@@ -1,6 +1,6 @@
 import { createElement, FC } from "react"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common"
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import PlayButton from "./play"
 import NextButton from "./next"
@@ -28,7 +28,6 @@ const SongModal: FC<PropTypes> = ({
 			}}
 			text={(
 				<SongTitle
-					noLink
 					song={song}
 					onClick={onClose}
 				/>

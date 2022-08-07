@@ -32,11 +32,21 @@
 			width: var(--content-image-height); }
 		&-landscape {
 			width: var(--content-image-width); } }
-	&__action {
-		position: absolute;
+	&__right {
 		top: 50%;
+		position: absolute;
 		right: var(--space-half);
 		transform: translateY(-50%); }
+	&__check {
+		&:hover,
+		&:focus {
+			background-color: transparent !important; }
+		&-valid {
+			color: #4caf50 !important; }
+		&-invalid {
+			color: #f44336 !important; }
+		&-loading {
+			animation: spin 1s infinite linear; } }
 	&__list {
 		top: 18rem;
 		left: 14rem;
@@ -82,3 +92,9 @@
 			display: none; } }
 	&:hover &__label {
 		color: var(--primary-color); } }
+
+@keyframes spin {
+	from {
+		transform: rotate(360deg); }
+	to {
+		transform: rotate(0deg); } }

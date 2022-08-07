@@ -6,7 +6,6 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { find, isEmpty } from "lodash-es"
-import { UserInputError } from "apollo-server-errors"
 
 import {
 	SELECT_QUEUE,
@@ -23,7 +22,7 @@ import { updateQueueNowPlaying } from "../helpers"
 export const jumpToSongInQueueLater =
 	resolver<Record<string, never>, IndexOptions>(
 		async ({ args, context }) => {
-			const { userID } = context.authorization!
+			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const pg = await context.pg.connect()
 			const query = pgHelpersQuery(pg)
@@ -39,7 +38,7 @@ export const jumpToSongInQueueLater =
 				})
 
 			if (!queueSongExists) {
-				throw new UserInputError("Queue song does not exist")
+				throw new Error("Queue song does not exist")
 			}
 
 			try {
