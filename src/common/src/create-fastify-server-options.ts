@@ -15,7 +15,8 @@ export const createFastifyServerOptions =
 	(https: Pick<SecureServerOptions, "cert" | "key">, options?: FastifyHttp2SecureOptions<Http2SecureServer>): FastifyHttp2SecureOptions<Http2SecureServer> => ({
 		http2: true,
 		bodyLimit: 2e+7,
-		connectionTimeout: ms("15s"),
+		connectionTimeout: ms("120s"),
+		http2SessionTimeout: ms("120s"),
 		https: {
 			...https,
 			allowHTTP1: true,

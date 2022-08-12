@@ -5,13 +5,13 @@ import { useState, createElement, FC, ChangeEventHandler } from "react"
 
 import Form from "../form"
 import AlbumFormSong from "./song"
+import { Item } from "../../types"
 import TextField from "../text-field"
 import AlbumSongs, { OnAddSong } from "./songs"
 import createFormData from "./create-form-data"
 import { Album, Song, SongLists } from "./types"
 import getAudioMetadata from "./get-audio-metadata"
 import { createGoogleSearchURL } from "../../helpers"
-import { Item } from "../../types"
 
 const AlbumForm: FC = () => {
 	const [ loading, setLoading ] = useState(false)
@@ -55,13 +55,12 @@ const AlbumForm: FC = () => {
 			for (const audio of files) {
 				const metadata = await getAudioMetadata(audio)
 
-				await setFieldValue("title", metadata.title)
+				await setFieldValue("title", metadata.album)
 
-				if (isEmpty(artists)) {
-					await setFieldValue("artists", [{
-						index: 0,
-						value: metadata.artist,
-					}] as Item[])
+				if (metadata.artists && isEmpty(artists)) {
+					await setFieldValue("artists", metadata.artists.map<Item>(
+						(value, index) => ({ index, value }),
+					))
 				}
 
 				setSongs(prevState => orderBy(
@@ -75,18 +74,12 @@ const AlbumForm: FC = () => {
 							title: metadata.title,
 							discNumber: metadata.discNumber,
 							trackNumber: metadata.trackNumber,
-							artists: isEmpty(artists) ? [{
-								index: 0,
-								value: metadata.artist,
-							}] : artists,
-							genres: (isEmpty(metadata.genres) ? (
-								isEmpty(prevState) ?
-									[] :
-									prevState[0]!.genres
-							) : [{
-								index: 0,
-								value: metadata.genres,
-							}]),
+							genres: metadata.genres?.map<Item>(
+								(value, index) => ({ index, value }),
+							) || [],
+							artists: metadata.artists?.map<Item>(
+								(value, index) => ({ index, value }),
+							) || [],
 						},
 					],
 					"trackNumber",

@@ -19,17 +19,19 @@ export const addCatalogToLibrary =
 					},
 				})
 
-			for (const { songID } of songs) {
-				await handleInLibrary(context.pg)({
-					userID,
-					inLibrary: true,
-					objectID: songID,
-					tableName: "songs",
-					columnKey: "songID",
-					columnNames: COLUMN_NAMES.SONG,
-					columnName: COLUMN_NAMES.SONG[0],
-					libraryTableName: "library_songs",
-				})
-			}
+			await Promise.all(
+				songs.map(({ songID }) => (
+					handleInLibrary(context.pg)({
+						userID,
+						inLibrary: true,
+						objectID: songID,
+						tableName: "songs",
+						columnKey: "songID",
+						columnNames: COLUMN_NAMES.SONG,
+						columnName: COLUMN_NAMES.SONG[0],
+						libraryTableName: "library_songs",
+					})
+				)),
+			)
 		},
 	)

@@ -96,7 +96,7 @@
 		"@oly_op/bem": "5.0.8",
 		"@oly_op/css-utilities": "2.0.74",
 		"@oly_op/graphql-create-resolver": "2.0.1",
-		"@oly_op/musicloud-common": "1.1.111",
+		"@oly_op/musicloud-common": "1.1.112",
 		"@oly_op/react-button": "5.3.5",
 		"@oly_op/react-head": "1.0.9",
 		"@oly_op/uuid-dashes": "1.0.0",

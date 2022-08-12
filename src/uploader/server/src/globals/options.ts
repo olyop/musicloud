@@ -7,8 +7,9 @@ import { PUBLIC_PATH } from "./paths"
 
 export const FASTIFY_MULTIPART_OPTIONS: FastifyMultipartOptions = {
 	addToBody: true,
+	throwFileSizeLimit: false,
 	limits: {
-		fileSize: 20000000,
+		fileSize: 30000000,
 	},
 }
 

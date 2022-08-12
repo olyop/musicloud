@@ -1,3 +1,4 @@
+import { trim } from "lodash-es"
 import musicMetadata from "music-metadata"
 import { FastifyPluginAsync } from "fastify"
 
@@ -8,6 +9,12 @@ interface Route {
 		audio: BodyEntry[],
 	},
 }
+
+const toList =
+	(value: string) =>
+		value.split(/(,|&)/)
+				 .map(trim)
+				 .filter((x, index) => index % 2 === 0)
 
 export const audioMetadata: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
@@ -31,12 +38,13 @@ export const audioMetadata: FastifyPluginAsync =
 				} = metadata.common
 
 				return {
-					title,
-					album,
-					artist,
-					genres: genre![0],
+					title: title || null,
+					album: album || null,
 					discNumber: disk.no || 1,
 					trackNumber: track.no || 1,
+					artists: artist ? toList(artist) : null,
+					genres: genre ? toList(genre[0]!) : null,
+					mix: title ? (title.includes("Extended") ? "Extended" : null) : null,
 				}
 			},
 		)

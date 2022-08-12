@@ -2,10 +2,10 @@ import { SongBase } from "@oly_op/musicloud-common/build/types"
 
 interface Metadata
 	extends
-	Pick<SongBase, "title" | "discNumber" | "trackNumber"> {
+	Pick<SongBase, "mix" | "title" | "discNumber" | "trackNumber"> {
 	album: string,
-	artist: string,
-	genres: string,
+	genres: string[],
+	artists: string[],
 }
 
 const getAudioMetadata =
