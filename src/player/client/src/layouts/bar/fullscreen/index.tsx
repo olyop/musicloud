@@ -1,6 +1,7 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, useEffect, FC } from "react"
+import { AudioPlayerControls } from "react-use-audio-player"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import Progress from "../progress"
@@ -22,7 +23,9 @@ const BarFullscreen: FC<PropTypes> = ({
 	open,
 	song,
 	ready,
+	error,
 	onClose,
+	hasHitPlay,
 	isNowPlaying,
 }) => {
 	const escapePress = useKeyPress("Escape")
@@ -89,6 +92,8 @@ const BarFullscreen: FC<PropTypes> = ({
 					/>
 					<Controls
 						ready={ready}
+						error={error}
+						hasHitPlay={hasHitPlay}
 						isNowPlaying={isNowPlaying}
 						className={bem("content-controls")}
 						playButtonClassName={bem("content-controls-play")}
@@ -104,7 +109,9 @@ interface PropTypes {
 	ready: boolean,
 	onClose: Handler,
 	song?: Song | null,
+	hasHitPlay: boolean,
 	isNowPlaying: boolean,
+	error: AudioPlayerControls["error"],
 }
 
 export default BarFullscreen

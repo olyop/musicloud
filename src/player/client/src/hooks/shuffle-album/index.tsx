@@ -3,7 +3,7 @@ import { AlbumID } from "@oly_op/musicloud-common/build/types"
 import { useMutation } from "../mutation"
 import { QueueNowPlaying } from "../../types"
 import { useResetPlayer } from "../reset-player"
-import { updateNowPlayingCache } from "../../helpers"
+import { updateNowPlayingMutationFunction } from "../../helpers"
 
 import SHUFFLE_ALBUM from "./shuffle-album.gql"
 
@@ -14,11 +14,7 @@ export const useShuffleAlbum =
 		const [ shuffleAlbum, result ] =
 			useMutation<Data, AlbumID>(SHUFFLE_ALBUM, {
 				variables: { albumID },
-				update: (cache, { data }) => {
-					if (data?.shuffleAlbum.nowPlaying) {
-						updateNowPlayingCache(cache)(data.shuffleAlbum.nowPlaying)
-					}
-				},
+				update: updateNowPlayingMutationFunction(({ shuffleAlbum: { nowPlaying } }) => nowPlaying),
 			})
 
 		const handler =

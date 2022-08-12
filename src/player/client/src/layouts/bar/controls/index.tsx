@@ -1,6 +1,7 @@
 import Button from "@oly_op/react-button"
 import { createBEM, BEMInput } from "@oly_op/bem"
 import { useEffect, createElement, FC } from "react"
+import { AudioPlayerControls } from "react-use-audio-player"
 
 import { togglePlay, useDispatch, useStatePlay } from "../../../redux"
 import { useKeyPress, useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
@@ -12,7 +13,9 @@ const bem =
 
 const PlayButton: FC<PlayButtonPropTypes> = ({
 	ready,
+	error,
 	loading,
+	hasHitPlay,
 	isNowPlaying,
 	buttonClassName,
 	buttonIconClassName,
@@ -24,16 +27,24 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 	const playPausePress = useKeyPress("MediaPlayPause")
 
 	const showLoop =
-		isNowPlaying ?
-			(loading || !ready) :
-			false
+		error ?
+			false : (
+				hasHitPlay ? (
+					isNowPlaying ?
+						(loading || !ready) :
+						false
+				) : false
+			)
 
 	const icon =
-		showLoop ?
-			"loop" : (
-				play ?
-					"pause" :
-					"play_arrow"
+		error ?
+			"error_outline" : (
+				showLoop ?
+					"loop" : (
+						play ?
+							"pause" :
+							"play_arrow"
+					)
 			)
 
 	const handleTogglePlay =
@@ -44,7 +55,7 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 		}
 
 	useEffect(() => {
-		if (playPausePress) {
+		if (!error && playPausePress) {
 			handleTogglePlay()
 		}
 	}, [playPausePress])
@@ -53,7 +64,7 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 		<Button
 			icon={icon}
 			onClick={handleTogglePlay}
-			className={bem(playButtonClassName, buttonClassName)}
+			className={bem(playButtonClassName, buttonClassName, error && "play-error")}
 			iconClassName={bem(playButtonIconClassName, buttonIconClassName, showLoop && "loading")}
 		/>
 	)
@@ -61,7 +72,9 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 
 const BarControls: FC<PropTypes> = ({
 	ready,
+	error,
 	className,
+	hasHitPlay,
 	isNowPlaying,
 	buttonClassName,
 	buttonIconClassName,
@@ -91,6 +104,8 @@ const BarControls: FC<PropTypes> = ({
 			/>
 			<PlayButton
 				ready={ready}
+				error={error}
+				hasHitPlay={hasHitPlay}
 				isNowPlaying={isNowPlaying}
 				buttonClassName={buttonClassName}
 				buttonIconClassName={buttonIconClassName}
@@ -111,11 +126,13 @@ const BarControls: FC<PropTypes> = ({
 
 interface PropTypesBase {
 	ready: boolean,
+	hasHitPlay: boolean,
 	isNowPlaying: boolean,
 	buttonClassName?: BEMInput,
 	buttonIconClassName?: BEMInput,
 	playButtonClassName?: BEMInput,
 	playButtonIconClassName?: BEMInput,
+	error: AudioPlayerControls["error"],
 }
 
 interface PlayButtonPropTypes extends PropTypesBase {

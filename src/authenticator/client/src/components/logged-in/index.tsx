@@ -21,7 +21,7 @@ const LoggedIn: FC<PropTypes> = ({ accessToken, redirectService }) => {
 			<h2 className="HeadingFive">
 				Logged In, redirecting...
 			</h2>
-			<p className="BodyTwo">
+			<p className="ParagraphTwo">
 				<Fragment>If page does not redirect, </Fragment>
 				<a href={redirectURL} className="Link">
 					Click Here

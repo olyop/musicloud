@@ -31,7 +31,7 @@ const Progress: FC<PropTypes> = ({ ready, isNowPlaying, className }) => {
 	return (
 		<div className={bem(className, "", "FlexRowGapHalf")}>
 			<p
-				className={bem("text", "BodyTwo")}
+				className={bem("text", "ParagraphTwo")}
 				children={deserializeDuration(position)}
 			/>
 			<input
@@ -44,7 +44,7 @@ const Progress: FC<PropTypes> = ({ ready, isNowPlaying, className }) => {
 				className={bem("slider", "OverflowHidden")}
 			/>
 			<p
-				className={bem("text", "BodyTwo")}
+				className={bem("text", "ParagraphTwo")}
 				children={deserializeDuration(duration)}
 			/>
 		</div>

@@ -16,6 +16,11 @@ export const useStateIsOnline =
 		({ isOnline }) => isOnline,
 	)
 
+export const useStateErrors =
+	() => useSelector(
+		({ errors }) => errors,
+	)
+
 export const useStateLoading =
 	() => useSelector(
 		({ loading }) => loading,

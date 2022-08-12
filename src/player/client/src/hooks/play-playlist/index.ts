@@ -6,9 +6,11 @@ import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
 import { useMutation } from "../mutation"
 import { QueueNowPlaying } from "../../types"
-import PLAY_PLAYLIST from "./play-playlist.gql"
 import { useResetPlayer } from "../reset-player"
 import { useDispatch, togglePlay } from "../../redux"
+import { updateNowPlayingMutationFunction } from "../../helpers"
+
+import PLAY_PLAYLIST from "./play-playlist.gql"
 import GET_PLAYLIST_NOW_PLAYING from "./get-playlist-now-playing.gql"
 
 export const usePlayPlaylist =
@@ -17,7 +19,9 @@ export const usePlayPlaylist =
 		const resetPlayer = useResetPlayer()
 
 		const [ playPlaylist, result ] =
-			useMutation<MutationData, PlaylistID>(PLAY_PLAYLIST)
+			useMutation<MutationData, PlaylistID>(PLAY_PLAYLIST, {
+				update: updateNowPlayingMutationFunction(({ playPlaylist: { nowPlaying } }) => nowPlaying),
+			})
 
 		const [ getQueueNowPlaying, { data, called } ] =
 			useLazyQuery<QueryData, PlaylistID>(GET_PLAYLIST_NOW_PLAYING, {

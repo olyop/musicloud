@@ -1,5 +1,5 @@
 import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button/build"
+import Button from "@oly_op/react-button"
 import { createElement, ReactNode, FC } from "react"
 
 import { Handler } from "../../../types"
@@ -45,7 +45,7 @@ const Header: FC<ModalHeaderPropTypes> = ({
 					className={bem("img", "Rounded")}
 				/>
 			)}
-			<p className={bem("text", "BodyOne")}>
+			<p className={bem("text", "ParagraphOne")}>
 				{text}
 			</p>
 			{canShare() && !hideShare && shareData && (

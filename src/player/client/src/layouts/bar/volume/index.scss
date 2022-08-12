@@ -9,12 +9,12 @@
 		flex-direction: column;
 		justify-content: space-between; }
 	&__slider {
-		--slider-w: calc(var(--button-dimesnion) - var(--space-half));
+		--slider-w: calc(var(--button-dimension) - var(--space-half));
 		appearance: none;
 		height: var(--slider-w);
 		transform: rotateZ(-90deg);
 		background-color: transparent;
-		width: calc(var(--h) - var(--button-dimesnion) * 2 - var(--space-double));
+		width: calc(var(--h) - var(--button-dimension) * 2 - var(--space-double));
 		&:focus {
 			outline: none; }
 		&::-webkit-slider-runnable-track {

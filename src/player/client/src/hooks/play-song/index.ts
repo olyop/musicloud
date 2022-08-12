@@ -52,7 +52,7 @@ export const usePlaySong =
 
 		const handler =
 			() => {
-				if (song && !result.loading) {
+				if (!result.loading && !isNull(song)) {
 					if (isPlaying) {
 						dispatch(togglePlay())
 					} else {

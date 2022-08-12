@@ -46,14 +46,14 @@ const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
 				className="MarginBottomThreeQuart"
 			/>
 			<div className="MarginBottom FlexColumnGapFifth">
-				<p className="BodyTwoBold MarginBottomQuart">
+				<p className="ParagraphTwoBold MarginBottomQuart">
 					Privacy:
 				</p>
 				<Select
 					tabIndex={2}
 					value={privacy}
 					onChange={handleSetPrivacyChange}
-					className="BodyTwo MarginRightQuart"
+					className="ParagraphTwo MarginRightQuart"
 					options={Object.keys(PlaylistPrivacy)}
 				/>
 			</div>

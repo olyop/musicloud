@@ -1,4 +1,4 @@
-#import "../../graphql/fragments/queue.gql";
+#import "../../../graphql/fragments/queue.gql";
 
 mutation clearQueues {
 	clearQueues {

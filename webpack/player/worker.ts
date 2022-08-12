@@ -31,6 +31,9 @@ const configuration: Configuration = {
 		path: BUILD_PATH,
 		filename: "service-worker.js",
 	},
+	experiments: {
+		topLevelAwait: true,
+	},
 	resolve: {
 		symlinks: false,
 		extensions: [".js", ".ts"],

@@ -1,6 +1,6 @@
 import { SongID } from "@oly_op/musicloud-common/build/types"
 
-import { createCatalogMP3URL } from "../../../../helpers"
+import { createCatalogMP3URL } from "../../../../../helpers"
 
 const downloadSongMP3 =
 	async ({ songID }: SongID) => {

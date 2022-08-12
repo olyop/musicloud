@@ -7,13 +7,14 @@ import { AudioPlayerProvider as AudioProvider } from "react-use-audio-player"
 import {
 	HeadProvider,
 	ReduxProvider,
+	ErrorProvider,
 	ApolloProvider,
 	LoadingProvider,
 	SettingsProvider,
 	AuthenticationProvider,
 } from "./providers"
 
-import Pages from "./pages"
+import Routes from "./routes"
 import Bar from "./layouts/bar"
 import Header from "./layouts/header"
 import Sidebar from "./layouts/sidebar"
@@ -30,18 +31,20 @@ root.render(
 			<ReduxProvider>
 				<BrowserRouter>
 					<ApolloProvider>
-						<LoadingProvider>
-							<AuthenticationProvider>
-								<SettingsProvider>
-									<HeadProvider>
-										<Sidebar/>
-										<Header/>
-										<Pages/>
-										<Bar/>
-									</HeadProvider>
-								</SettingsProvider>
-							</AuthenticationProvider>
-						</LoadingProvider>
+						<ErrorProvider>
+							<LoadingProvider>
+								<AuthenticationProvider>
+									<SettingsProvider>
+										<HeadProvider>
+											<Sidebar/>
+											<Header/>
+											<Routes/>
+											<Bar/>
+										</HeadProvider>
+									</SettingsProvider>
+								</AuthenticationProvider>
+							</LoadingProvider>
+						</ErrorProvider>
 					</ApolloProvider>
 				</BrowserRouter>
 			</ReduxProvider>
@@ -49,7 +52,7 @@ root.render(
 	</StrictMode>,
 )
 
-if (process.env.SERVICE_WORKER === "true") {
+if ("serviceWorker" in navigator && process.env.SERVICE_WORKER === "true") {
 	const workbox = new Workbox("/service-worker.js")
 	void workbox.register()
 }

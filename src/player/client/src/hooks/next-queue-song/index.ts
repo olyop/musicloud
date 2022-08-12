@@ -2,7 +2,10 @@ import { useEffect } from "react"
 
 import { useMutation } from "../mutation"
 import { useKeyPress } from "../key-press"
+import { QueueNowPlaying } from "../../types"
 import { useResetPlayer } from "../reset-player"
+import { updateNowPlayingMutationFunction } from "../../helpers"
+
 import NEXT_QUEUE_SONG from "./next-queue-song.gql"
 
 export const useNextQueueSong =
@@ -11,7 +14,9 @@ export const useNextQueueSong =
 		const nextPress = useKeyPress("MediaTrackNext")
 
 		const [ nextQueueSong, result ] =
-			useMutation(NEXT_QUEUE_SONG)
+			useMutation<Data>(NEXT_QUEUE_SONG, {
+				update: updateNowPlayingMutationFunction(({ nextQueueSong: { nowPlaying } }) => nowPlaying),
+			})
 
 		const handleNextClick =
 			async () => {
@@ -29,3 +34,7 @@ export const useNextQueueSong =
 
 		return [ handleNextClick, result ] as const
 	}
+
+interface Data {
+	nextQueueSong: QueueNowPlaying,
+}

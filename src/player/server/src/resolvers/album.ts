@@ -133,6 +133,7 @@ export const playsTotal =
 			query(context.pg)(SELECT_ALBUM_PLAYS)({
 				parse: getResultRowCountOrNull,
 				variables: {
+					columnNames: "*",
 					albumID: parent.albumID,
 				},
 			})

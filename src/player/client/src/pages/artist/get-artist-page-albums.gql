@@ -8,6 +8,7 @@ query getArtistPageAlbums(
 		artistID
 		albums(orderBy: $orderBy) {
 			...AlbumCoreFragment
+			playsTotal
 		}
 	}
 }

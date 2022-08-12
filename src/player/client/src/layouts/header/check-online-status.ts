@@ -1,10 +1,12 @@
+import ms from "ms"
+
 const timeout =
 	(promise: Promise<unknown>) =>
 		new Promise(
 			(resolve, reject) => {
 				setTimeout(() => {
 					reject(new Error("Request timed out."))
-				}, 3000)
+				}, ms("3s"))
 				promise.then(resolve, reject)
 			},
 		)

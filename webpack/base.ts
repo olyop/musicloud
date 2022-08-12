@@ -12,13 +12,11 @@ import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import type { WithRequired } from "@apollo/utils.withrequired"
+import { IS_DEVELOPMENT } from "@oly_op/musicloud-common/build/globals"
 import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin"
 import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common/build/metadata"
 
 import packageDotJSON from "../package.json" assert { type: "json" }
-
-export const IS_DEV =
-	process.env.NODE_ENV === "development"
 
 export const BASE_ROOT_PATH =
 	process.cwd()
@@ -80,7 +78,7 @@ export const createDevServerProxy =
 	})
 
 const firstCSSLoader =
-	IS_DEV ?
+	IS_DEVELOPMENT ?
 		"style-loader" :
 		MiniCSSExtractPlugin.loader
 
@@ -150,7 +148,7 @@ const baseConfiguration: webpack.Configuration = {
 				extensions: ["ts", "tsx", ".gql"],
 			}),
 		] : []),
-		...(IS_DEV ? [] : [
+		...(IS_DEVELOPMENT ? [] : [
 			new CompressionPlugin(),
 			new CSSMinimizerPlugin(),
 			new MiniCSSExtractPlugin({

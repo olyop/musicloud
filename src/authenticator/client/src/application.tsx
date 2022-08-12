@@ -72,7 +72,7 @@ const Application: FC = () => {
 							</h1>
 						</div>
 						{emailAddressChecked || (
-							<p className="BodyTwo">
+							<p className="ParagraphTwo">
 								<Fragment>Created by </Fragment>
 								<a
 									target="_blank"
@@ -119,7 +119,7 @@ const Application: FC = () => {
 						)}
 					</Fragment>
 				) : (
-					<p className="BodyOne Error">
+					<p className="ParagraphOne Error">
 						<Fragment>Invalid redirect url paramater:</Fragment>
 						<br/>
 						<Fragment>&apos;</Fragment>

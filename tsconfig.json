@@ -2,7 +2,9 @@
 	"extends": "@oly_op/tsconfig/tsconfig",
 	"compilerOptions": {
 		"baseUrl": "./",
-		"paths": { "*": ["src/types/*"] },
-		"exactOptionalPropertyTypes": false
+		"exactOptionalPropertyTypes": false,
+		"paths": {
+			"*": ["src/types/*"]
+		}
 	}
 }

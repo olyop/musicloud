@@ -1,8 +1,8 @@
 import { AlbumID, ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
-import { createCatalogImageURL } from "../../../../helpers"
+import { createCatalogImageURL } from "../../../../../helpers"
 
-const downloadAlbumCovers =
+const downloadSongAlbumCovers =
 	async ({ albumID }: AlbumID) => {
 		await fetch(createCatalogImageURL(
 			albumID,
@@ -24,4 +24,4 @@ const downloadAlbumCovers =
 		))
 	}
 
-export default downloadAlbumCovers
+export default downloadSongAlbumCovers

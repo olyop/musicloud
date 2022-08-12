@@ -17,7 +17,7 @@ const AlbumSongs: FC<PropsWithChildren<PropTypes>> = ({ onAddSong, songs, childr
 		<div className={bem("content", "Border Rounded FlexColumn")}>
 			<div>
 				{isEmpty(songs) ? (
-					<p className={bem("no-songs", "BodyOne")}>
+					<p className={bem("no-songs", "ParagraphOne")}>
 						No songs...
 					</p>
 				) : children}

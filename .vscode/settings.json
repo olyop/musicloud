@@ -4,5 +4,7 @@
 		"webpack/**/*.js": true,
 		"src/common/build": true
 	},
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib",
+	"gitlens.codeLens.enabled": false,
+	"gitlens.plusFeatures.enabled": true
 }

@@ -40,7 +40,7 @@ const GenrePage: FC = () => {
 	if (!isUndefined(error)) {
 		return (
 			<Page>
-				<h2 className="BodyOne">
+				<h2 className="ParagraphOne">
 					{error.message === "Failed to fetch" ?
 						error.message :
 						"Genre does not exist."}

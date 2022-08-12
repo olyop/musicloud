@@ -1,3 +1,4 @@
+import ms from "ms"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, useEffect, FC } from "react"
@@ -24,7 +25,7 @@ const HeaderOfflineButton: FC = () => {
 		const id =
 			setInterval(() => {
 				void checkStatus()
-			}, 20000)
+			}, ms("5s"))
 
 		return () => {
 			window.removeEventListener("offline", () => {
@@ -40,7 +41,7 @@ const HeaderOfflineButton: FC = () => {
 			title="Offline"
 			icon="cloud_off"
 			className={bem("offline")}
-			iconTextClassName={bem("offline-span")}
+			childrenClassName={bem("offline-span")}
 		/>
 	)
 }

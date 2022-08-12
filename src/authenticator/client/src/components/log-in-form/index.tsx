@@ -85,7 +85,7 @@ const LogInForm: FC<PropTypes> = ({
 				onChange={handlePasswordChange}
 			/>
 			{error && (
-				<p className="BodyOne Error">
+				<p className="ParagraphOne Error">
 					{error.message}
 				</p>
 			)}

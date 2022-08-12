@@ -85,51 +85,51 @@ const SettingsPage: FC = () => {
 						</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="BodyTwoBold">
+								<p className="ParagraphTwoBold">
 									Theme:
 								</p>
 								<Select
 									value={theme}
-									className="BodyTwo"
+									className="ParagraphTwo"
 									onChange={handleThemeChange}
 									options={Object.keys(SettingsTheme)}
 								/>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="BodyTwoBold">
+								<p className="ParagraphTwoBold">
 									List Style:
 								</p>
 								<Select
 									value={listStyle}
-									className="BodyTwo"
+									className="ParagraphTwo"
 									onChange={handleListStyleChange}
 									options={Object.keys(SettingsListStyle)}
 								/>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="BodyTwoBold">
+								<p className="ParagraphTwoBold">
 									Transitions:
 								</p>
 								<Select
 									value={transitions}
-									className="BodyTwo"
+									className="ParagraphTwo"
 									onChange={handleTransitionsChange}
 									options={Object.keys(SettingsTransitions)}
 								/>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="BodyTwoBold">
+								<p className="ParagraphTwoBold">
 									Grid Child Width:
 								</p>
 								<div className="FlexRowGapQuart">
-									<p className="BodyTwo">
+									<p className="ParagraphTwo">
 										{gridChildWidth}
 									</p>
 									<input
 										min="100"
 										max="300"
 										type="range"
-										className="BodyTwo"
+										className="ParagraphTwo"
 										value={gridChildWidth}
 										onChange={handleGridChildWidthChange}
 									/>
@@ -143,7 +143,7 @@ const SettingsPage: FC = () => {
 						</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="BodyTwoBold">
+								<p className="ParagraphTwoBold">
 									Song Genres:
 								</p>
 								<div className="FlexRowGapFifth">
@@ -151,15 +151,15 @@ const SettingsPage: FC = () => {
 										type="checkbox"
 										checked={showGenres}
 										onChange={handleToggleShowGenres}
-										className={bem("checkbox", "BodyTwo")}
+										className={bem("checkbox", "ParagraphTwo")}
 									/>
-									<p className="BodyTwo LightWeight">
+									<p className="ParagraphTwo LightWeight">
 										{showGenres ? "Show" : "Hide"}
 									</p>
 								</div>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="BodyTwoBold">
+								<p className="ParagraphTwoBold">
 									Song Duration:
 								</p>
 								<div className="FlexRowGapFifth">
@@ -167,15 +167,15 @@ const SettingsPage: FC = () => {
 										type="checkbox"
 										checked={showDuration}
 										onChange={handleToggleShowDuration}
-										className={bem("checkbox", "BodyTwo")}
+										className={bem("checkbox", "ParagraphTwo")}
 									/>
-									<p className="BodyTwo LightWeight">
+									<p className="ParagraphTwo LightWeight">
 										{showDuration ? "Show" : "Hide"}
 									</p>
 								</div>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="BodyTwoBold">
+								<p className="ParagraphTwoBold">
 									Album Released:
 								</p>
 								<div className="FlexRowGapFifth">
@@ -185,7 +185,7 @@ const SettingsPage: FC = () => {
 										checked={showReleased}
 										onChange={handleToggleShowReleased}
 									/>
-									<p className="BodyTwo LightWeight">
+									<p className="ParagraphTwo LightWeight">
 										{showReleased ? "Show" : "Hide"}
 									</p>
 								</div>

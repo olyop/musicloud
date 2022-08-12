@@ -86,7 +86,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 					ImageDimensions.SQUARE,
 				)}
 			/>
-			<h1 className="BodyOne">
+			<h1 className="ParagraphOne">
 				<ObjectLink
 					link={{
 						text: albumData.getAlbumByID.title,
@@ -98,7 +98,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 				/>
 			</h1>
 			{isEmpty(playlistsData.getUser.playlists) ? (
-				<p className="BodyTwo">
+				<p className="ParagraphTwo">
 					No playlists to add to.
 				</p>
 			) : (

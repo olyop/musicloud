@@ -2,12 +2,19 @@ import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
+import { DocumentNode } from "@apollo/client"
 import { Modifier } from "@apollo/client/cache/core/types/common"
 
-import { QueuePropTypes } from "../types"
+import {
+	SongQueueIndex,
+	Song as SongType,
+	Queue as QueueType,
+	ClassNameBEMPropTypes,
+	SettingsQueuesDisclosureKeys,
+} from "../../../types"
+
 import Song from "../../../components/song"
 import Songs from "../../../components/songs"
-import { Queue as QueueType, Song as SongType, SongQueueIndex } from "../../../types"
 import { useDispatch, toggleQueueDisclosure, useStateQueuesDisclosure } from "../../../redux"
 import { useQuery, useMutation, useRemoveSongFromQueueNext, useRemoveSongFromQueueLater } from "../../../hooks"
 
@@ -24,12 +31,14 @@ const removeFromQueueModifier =
 		(existing: SongType[] = []) =>
 			existing.filter(song => song.queueIndex !== queueIndex)
 
-const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
+const Queue: FC<PropTypes> = ({ name, query, queueKey, className }) => {
 	const dispatch = useDispatch()
 	const queuesDisclosure = useStateQueuesDisclosure()
 
 	const { data } =
-		useQuery<Data>(query)
+		useQuery<Data>(query, {
+			fetchPolicy: "cache-and-network",
+		})
 
 	const [ removeNext ] =
 		useRemoveSongFromQueueNext()
@@ -136,6 +145,12 @@ const Queue: FC<QueuePropTypes> = ({ name, query, queueKey, className }) => {
 
 interface Data {
 	getQueue: QueueType,
+}
+
+export interface PropTypes extends ClassNameBEMPropTypes {
+	name: string,
+	query: DocumentNode,
+	queueKey: SettingsQueuesDisclosureKeys,
 }
 
 export default Queue

@@ -31,6 +31,7 @@ const LibraryAlbums: FC = () => {
 					renderItem={(ref, album) => (
 						<Album
 							ref={ref}
+							hidePlays
 							album={album}
 							className={bem(
 								isList && "list",

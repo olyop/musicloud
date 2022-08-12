@@ -8,7 +8,7 @@ import ArtistForm from "../artist-form"
 import "./index.scss"
 
 const Pages: FC = () => (
-	<div className="Padding BodyOne Pages">
+	<div className="Padding ParagraphOne Pages">
 		<Routes>
 			<Route
 				path="*"

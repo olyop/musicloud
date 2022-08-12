@@ -18,6 +18,7 @@ const AlgoliaLogo: FC = () => {
 	return (
 		<img
 			alt="Search by Algolia"
+			crossOrigin="anonymous"
 			src={`${FILES_URL}/algolia/${fileName}.svg`}
 			className={bem("bar-input-right-algolia", "Rounded")}
 		/>

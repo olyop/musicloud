@@ -14,7 +14,7 @@ const LibraryEmpty: FC<PropTypes> = ({ name, content }) => (
 			{name}
 			<Fragment>.</Fragment>
 		</h2>
-		<h3 className="BodyOne">
+		<h3 className="ParagraphOne">
 			<Link
 				to="/"
 				children="Browse"

@@ -4,6 +4,7 @@ import {
 
 import {
 	OrderBy,
+	StateError,
 	SettingsTheme,
 	StatePageTitle,
 	SettingsOrderBy,
@@ -43,15 +44,28 @@ export const updateVolume =
 		"UPDATE_VOLUME",
 		withPayloadType<number>(),
 	)
-export const removeLoading =
+
+export const addError =
 	createAction(
-		"REMOVE_LOADING",
+		"ADD_ERROR",
+		withPayloadType<StateError>(),
+	)
+
+export const removeError =
+	createAction(
+		"REMOVE_ERROR",
 		withPayloadType<string>(),
 	)
 
 export const addLoading =
 	createAction(
 		"ADD_LOADING",
+		withPayloadType<string>(),
+	)
+
+export const removeLoading =
+	createAction(
+		"REMOVE_LOADING",
 		withPayloadType<string>(),
 	)
 

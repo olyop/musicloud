@@ -1,0 +1,9 @@
+#import "../../../graphql/fragments/queue-next.gql";
+#import "../../../graphql/fragments/queue-later.gql";
+
+mutation clearNextQueues {
+	clearNextQueues {
+		...QueueNextFragment
+		...QueueLaterFragment
+	}
+}

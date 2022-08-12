@@ -24,7 +24,7 @@ const AlbumFormSong: FC<PropTypes> = ({
 		event => onTitleChange(event.target.value)
 	return (
 		<div className={bem("", "ItemBorder PaddingHalf")}>
-			<p className={bem("index", "BodyTwoBold")}>
+			<p className={bem("index", "ParagraphTwoBold")}>
 				{song.trackNumber}
 			</p>
 			<div>

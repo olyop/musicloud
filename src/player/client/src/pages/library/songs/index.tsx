@@ -37,13 +37,13 @@ const LibrarySongs: FC = () => (
 	</Head>
 )
 
-interface GetSongsTotalData {
+export interface GetSongsTotalData {
 	getLibrary: {
 		songsTotal: number | null,
 	},
 }
 
-interface GetSongAtIndexData {
+export interface GetSongAtIndexData {
 	getLibrary: {
 		songAtIndex: SongType | null,
 	},

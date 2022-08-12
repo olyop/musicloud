@@ -4,7 +4,7 @@ import { createElement, FC } from "react"
 const LibraryHome: FC = () => (
 	<Head pageTitle="Library">
 		<div className="Content">
-			<h2 className="BodyOne">
+			<h2 className="ParagraphOne">
 				W.I.P.
 			</h2>
 		</div>

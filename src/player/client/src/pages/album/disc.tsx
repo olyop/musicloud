@@ -11,7 +11,7 @@ const Disc: FC<PropTypes> = ({
 }) => (
 	<div className={className}>
 		{hideLabel || (
-			<h4 className="BodyTwo MarginBottomHalf UpperCase">
+			<h4 className="ParagraphTwo MarginBottomHalf UpperCase">
 				<Fragment>Disc </Fragment>
 				{index}
 			</h4>

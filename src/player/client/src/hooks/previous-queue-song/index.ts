@@ -4,6 +4,8 @@ import { useMutation } from "../mutation"
 import { useKeyPress } from "../key-press"
 import { QueueNowPlaying } from "../../types"
 import { useResetPlayer } from "../reset-player"
+import { updateNowPlayingMutationFunction } from "../../helpers"
+
 import PREVIOUS_QUEUE_SONG from "./previous-queue-song.gql"
 
 export const usePreviousQueueSong =
@@ -12,7 +14,9 @@ export const usePreviousQueueSong =
 		const previousPress = useKeyPress("MediaTrackPrevious")
 
 		const [ previousQueueSong, result ] =
-			useMutation<Data>(PREVIOUS_QUEUE_SONG)
+			useMutation<Data>(PREVIOUS_QUEUE_SONG, {
+				update: updateNowPlayingMutationFunction(({ previousQueueSong: { nowPlaying } }) => nowPlaying),
+			})
 
 		const handlePreviousClick =
 			() => {

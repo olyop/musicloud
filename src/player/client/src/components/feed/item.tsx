@@ -38,7 +38,7 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 				dispatch(addLoading(loadingID.current))
 
 				const { data } =
-					await client.query<ItemData, Vars>({
+					await client.query<ItemData, FeedItemVars>({
 						query: itemQuery,
 						variables: {
 							input: {
@@ -95,7 +95,7 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	)
 }
 
-type Vars =
+export type FeedItemVars =
 	InterfaceWithInput<{
 		atIndex: number,
 		orderBy: OrderBy,

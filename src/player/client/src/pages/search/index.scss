@@ -9,7 +9,7 @@
 			font-size: 20rem;
 			background-color: transparent;
 			transition: var(--transition-duration) border-bottom;
-			padding-left: calc(var(--space-quart) + var(--button-dimesnion));
+			padding-left: calc(var(--space-quart) + var(--button-dimension));
 			border-bottom: calc(var(--border-width) * 2) solid var(--border-color);
 			&:focus {
 				border-bottom-color: var(--grey-color-500); }

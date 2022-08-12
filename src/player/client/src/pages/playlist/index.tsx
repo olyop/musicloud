@@ -85,7 +85,7 @@ const PlaylistPage: FC = () => {
 
 	if (error?.message === "Playlist does not exist") {
 		return (
-			<p className="BodyOneBold Padding">
+			<p className="ParagraphOneBold Padding">
 				{error.message}
 			</p>
 		)
@@ -111,7 +111,7 @@ const PlaylistPage: FC = () => {
 									icon={play && isPlaying ? "pause" : "play_arrow"}
 								/>
 							</div>
-							<h2 className="BodyOne">
+							<h2 className="ParagraphOne">
 								<ObjectLink
 									link={{
 										text: user.name,
@@ -121,12 +121,12 @@ const PlaylistPage: FC = () => {
 								<Fragment> - </Fragment>
 								{startCase(toLower(privacy))}
 							</h2>
-							<p className="BodyOne LightColor">
+							<p className="ParagraphOne LightColor">
 								{(new Date(dateCreated)).toLocaleDateString()}
 							</p>
 						</div>
 						{isEmpty(songs) ? (
-							<p className="BodyOneBold">
+							<p className="ParagraphOneBold">
 								No songs.
 							</p>
 						) : (
@@ -145,7 +145,7 @@ const PlaylistPage: FC = () => {
 							</Songs>
 						)}
 						{songsTotal && (
-							<p className="BodyTwoBold">
+							<p className="ParagraphTwoBold">
 								{songsTotal}
 								<Fragment> song</Fragment>
 								{determinePlural(songsTotal)}
@@ -170,7 +170,7 @@ const PlaylistPage: FC = () => {
 						</Buttons>
 						{isUsers && (
 							<div className="FlexColumnGapHalf">
-								<p className="BodyOneBold">
+								<p className="ParagraphOneBold">
 									Actions
 								</p>
 								<Buttons>

@@ -23,7 +23,7 @@ const Select: FC<PropTypes> = ({
 			value={value}
 			tabIndex={tabIndex}
 			onChange={handleChange}
-			className={bem(className, "", "BodyTwo Border Rounded PaddingFifth")}
+			className={bem(className, "", "ParagraphTwo Border Rounded PaddingFifth")}
 		>
 			{options.map(
 				option => (

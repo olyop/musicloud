@@ -74,7 +74,7 @@ const SongPage: FC<PropTypes> = ({ song }) => (
 							song={song}
 						/>
 					</h2>
-					<h3 className="BodyTwo MarginBottomHalf">
+					<h3 className="ParagraphTwo MarginBottomHalf">
 						<ObjectLink
 							link={{
 								text: song.album.title,
@@ -82,7 +82,7 @@ const SongPage: FC<PropTypes> = ({ song }) => (
 							}}
 						/>
 					</h3>
-					<h3 className="BodyOne MarginBottom LightColor LightWeight">
+					<h3 className="ParagraphOne MarginBottom LightColor LightWeight">
 						<ObjectLinks
 							links={song.genres.map(({ genreID, name }) => ({
 								text: name,
@@ -90,36 +90,36 @@ const SongPage: FC<PropTypes> = ({ song }) => (
 							}))}
 						/>
 					</h3>
-					<h4 className="BodyTwo MarginBottomQuart">
+					<h4 className="ParagraphTwo MarginBottomQuart">
 						Released:
 						<Fragment> </Fragment>
 						{song.album.released}
 					</h4>
-					<h4 className="BodyTwo MarginBottomQuart">
+					<h4 className="ParagraphTwo MarginBottomQuart">
 						Duration:
 						<Fragment> </Fragment>
 						{deserializeDuration(song.duration)}
 					</h4>
 					{song.playsTotal && (
-						<h4 className="BodyTwo MarginBottomQuart">
+						<h4 className="ParagraphTwo MarginBottomQuart">
 							Plays:
 							<Fragment> </Fragment>
 							{numberWithCommas(song.playsTotal)}
 						</h4>
 					)}
-					<h4 className="BodyTwo MarginBottomQuart">
+					<h4 className="ParagraphTwo MarginBottomQuart">
 						Size:
 						<Fragment> </Fragment>
 						{(song.size * 1e-6).toFixed(2)}
 						<Fragment> MB</Fragment>
 					</h4>
-					<h4 className="BodyTwo MarginBottomQuart">
+					<h4 className="ParagraphTwo MarginBottomQuart">
 						BPM:
 						<Fragment> </Fragment>
 						{song.bpm}
 						<Fragment> BPM</Fragment>
 					</h4>
-					<h4 className="BodyTwo">
+					<h4 className="ParagraphTwo">
 						Key:
 						<Fragment> </Fragment>
 						{song.key.sharp}
@@ -145,7 +145,7 @@ const SongPageWrapper: FC = () => {
 
 	if (error) {
 		return (
-			<h2 className="Content BodyOne PaddingTopBottom">
+			<h2 className="Content ParagraphOne PaddingTopBottom">
 				{error.message === "Failed to fetch" ?
 					error.message :
 					"Song does not exist."}

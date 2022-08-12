@@ -1,70 +1,121 @@
+import { Link } from "react-router-dom"
+import { createBEM } from "@oly_op/bem"
+import Button from "@oly_op/react-button"
+import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
-import { useRoutes, RouteObject } from "react-router-dom"
 
-import UserPage from "./user"
-import SongsPage from "./song"
-import GenrePage from "./genre"
-import AlbumPage from "./album"
-import QueuesPage from "./queues"
-import SearchPage from "./search"
-import ArtistPage from "./artist"
-import BrowsePage from "./browse"
-import LibraryPage from "./library"
-import SettingsPage from "./settings"
-import PlaylistPage from "./playlist"
-import ManageAccount from "./manage-account"
-import AddSongToPlaylistPage from "./add-song-to-playlist"
-// import AddAlbumToPlaylistPage from "./add-album-to-playlist"
-import TopOneHundredSongsPage from "./top-one-hundred-songs"
+import {
+	Song as SongType,
+	Album as AlbumType,
+	Playlist as PlaylistType,
+} from "../types"
 
-const routes: RouteObject[] = [{
-	path: "",
-	element: <BrowsePage/>,
-},{
-	element: <UserPage/>,
-	path: "user/:userID/*",
-},{
-	element: <SongsPage/>,
-	path: "song/:songID",
-},{
-	path: "search/*",
-	element: <SearchPage/>,
-},{
-	path: "queues",
-	element: <QueuesPage/>,
-},{
-	path: "library/*",
-	element: <LibraryPage/>,
-},{
-	element: <AlbumPage/>,
-	path: "album/:albumID",
-},{
-	element: <GenrePage/>,
-	path: "genre/:genreID",
-},{
-	path: "settings",
-	element: <SettingsPage/>,
-},{
-	path: "manage-account",
-	element: <ManageAccount/>,
-},{
-	element: <ArtistPage/>,
-	path: "artist/:artistID/*",
-},{
-	element: <PlaylistPage/>,
-	path: "playlist/:playlistID",
-},{
-	path: "top-one-hundred-songs",
-	element: <TopOneHundredSongsPage/>,
-},{
-	element: <AddSongToPlaylistPage/>,
-	path: "add-song-to-playlist/:songID",
-},{
-	// element: <AddAlbumToPlaylistPage/>,
-	path: "add-album-to-playlist/:albumID",
-}]
+import Page from "../layouts/page"
+import { useQuery } from "../hooks"
+import Song from "../components/song"
+import Songs from "../components/songs"
+import Album from "../components/album"
+import Albums from "../components/albums"
+import Playlist from "../components/playlist"
+import Playlists from "../components/playlists"
 
-const Pages: FC =
-	() => useRoutes(routes)
+import GET_HOME_PAGE from "./get-home-page.gql"
 
-export default Pages
+import "./index.scss"
+
+const bem =
+	createBEM("HomePage")
+
+const HomePage: FC = () => {
+	const { data } = useQuery<Data>(GET_HOME_PAGE)
+	return (
+		<Head pageTitle="Home">
+			<Page>
+				{data && (
+					<div className={bem("", "ContentPaddingTopBottom")}>
+						<div className={bem("trending", "FlexColumn")}>
+							<div className="FlexColumnGapHalf">
+								<h2 className="HeadingFive">
+									Trending Albums
+								</h2>
+								<Albums alwaysList hideOrderBy albums={data.getTrendingAlbums}>
+									{albums => albums.map(
+										album => (
+											<Album
+												album={album}
+												hideInLibrary
+												key={album.albumID}
+											/>
+										),
+									)}
+								</Albums>
+								{/* <Button
+									transparent
+									text="View All"
+									icon="arrow_forward"
+									style={{ alignSelf: "flex-start" }}
+								/> */}
+							</div>
+							<div className="FlexColumnGapHalf">
+								<h2 className="HeadingFive">
+									Trending Playlists
+								</h2>
+								<Playlists playlists={data.getTrendingPlaylists}>
+									{playlists => playlists.map(
+										playlist => (
+											<Playlist
+												hideModal
+												hideInLibrary
+												playlist={playlist}
+												key={playlist.playlistID}
+											/>
+										),
+									)}
+								</Playlists>
+								{/* <Button
+									transparent
+									text="View All"
+									icon="arrow_forward"
+									style={{ alignSelf: "flex-start" }}
+								/> */}
+							</div>
+						</div>
+						<div className="FlexColumnGapHalf">
+							<h2 className="HeadingFive">
+								Top Ten Songs
+							</h2>
+							<Songs songs={data.getTopTenSongs}>
+								{songs => songs.map(
+									song => (
+										<Song
+											song={song}
+											hideDuration
+											hideInLibrary
+											hideTrackNumber
+											key={song.songID}
+										/>
+									),
+								)}
+							</Songs>
+							<Link to="/top-one-hundred-songs">
+								<Button
+									transparent
+									text="View All"
+									icon="arrow_forward"
+								/>
+							</Link>
+						</div>
+					</div>
+				)}
+			</Page>
+		</Head>
+	)
+}
+
+interface Data {
+	getTopTenSongs: SongType[],
+	getTrendingAlbums: AlbumType[],
+	getTrendingPlaylists: PlaylistType[],
+}
+
+export default HomePage

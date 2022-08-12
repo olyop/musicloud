@@ -52,7 +52,7 @@ const AlbumPage: FC = () => {
 			<Head pageTitle={null}>
 				<Page>
 					<div className="ContentPaddingTopBottom">
-						<h2 className="BodyOne">
+						<h2 className="ParagraphOne">
 							{error.message === "Failed to fetch" ?
 								error.message :
 								"Album does not exist."}
@@ -103,10 +103,10 @@ const AlbumPage: FC = () => {
 										),
 									)}
 								</div>
-								<h3 className="BodyOne LightColor MarginBottomHalf LightWeight">
+								<h3 className="ParagraphOne LightColor MarginBottomHalf LightWeight">
 									{released}
 								</h3>
-								<h3 className="BodyTwo LightColor LightWeight">
+								<h3 className="ParagraphTwo LightColor LightWeight">
 									<ObjectLinks
 										links={genres.map(({ genreID, name }) => ({
 											text: name,
@@ -149,7 +149,7 @@ const AlbumPage: FC = () => {
 									album={album}
 								/>
 							</Buttons>
-							<p className="BodyTwo LightColor">
+							<p className="ParagraphTwo LightColor">
 								{discs.length > 1 && (
 									<Fragment>
 										{discs.length}

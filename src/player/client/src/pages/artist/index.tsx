@@ -34,7 +34,7 @@ const ArtistPage: FC = () => {
 	if (error) {
 		return (
 			<Page>
-				<h2 className="Content BodyOne PaddingTopBottom">
+				<h2 className="Content ParagraphOne PaddingTopBottom">
 					{error.message === "Failed to fetch" ?
 						error.message :
 						"Artist does not exist."}
@@ -87,7 +87,7 @@ const ArtistPage: FC = () => {
 						)}
 						content={(
 							<div className="FlexColumnGapQuart" style={{ alignItems: "flex-start" }}>
-								<p className="BodyTwoInverted">
+								<p className="ParagraphTwoInverted">
 									<Fragment>Formed in </Fragment>
 									{data.getArtistByID.since.slice(0, -6)}
 								</p>
@@ -95,7 +95,7 @@ const ArtistPage: FC = () => {
 									<a
 										target="_blank"
 										rel="noreferrer"
-										className="BodyTwoInverted"
+										className="ParagraphTwoInverted"
 										href={createGoogleMapsURL(data.getArtistByID)}
 									>
 										{city}
@@ -104,7 +104,7 @@ const ArtistPage: FC = () => {
 									</a>
 								)}
 								{playsTotal && (
-									<p className=" BodyTwoInverted">
+									<p className=" ParagraphTwoInverted">
 										{playsTotal.toLocaleString() ?? 0}
 										<Fragment> play</Fragment>
 										{determinePlural(playsTotal)}

@@ -1,10 +1,13 @@
+import last from "lodash-es/last"
 import isNull from "lodash-es/isNull"
+import isEmpty from "lodash-es/isEmpty"
 import { configureStore } from "@reduxjs/toolkit"
 import { useDispatch as baseUseDispatch, useSelector as baseUseSelector } from "react-redux"
 
 import reducer from "./reducer"
 import { getJWT } from "../helpers"
 import { Settings, State } from "../types"
+import { removeError } from "./actions"
 
 const loadSettings =
 	() => {
@@ -30,7 +33,8 @@ export const store =
 	})
 
 store.subscribe(() => {
-	const { settings, accessToken } = store.getState()
+	const { settings, accessToken, errors } = store.getState()
+
 	const serializedSettings = JSON.stringify(settings)
 
 	localStorage.setItem("settings", serializedSettings)
@@ -39,6 +43,12 @@ store.subscribe(() => {
 		localStorage.removeItem("authorization")
 	} else {
 		localStorage.setItem("authorization", accessToken)
+	}
+
+	if (!isEmpty(errors)) {
+		setTimeout(() => {
+			store.dispatch(removeError(last(errors)!.errorID))
+		}, 2500)
 	}
 })
 

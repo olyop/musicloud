@@ -125,15 +125,15 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							)}
 						</Fragment>
 					),
+					rightLeft: (
+						hidePlays || isNull(song.playsTotal) ?
+							null : numberWithCommas(song.playsTotal)
+					),
 					rightRight: (
 						showDuration ?
 							(hideDuration ?
 								null : deserializeDuration(song.duration)) :
 							null
-					),
-					rightLeft: (
-						hidePlays || isNull(song.playsTotal) ?
-							null : numberWithCommas(song.playsTotal)
 					),
 				}
 			)}

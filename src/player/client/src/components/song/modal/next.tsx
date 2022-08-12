@@ -8,10 +8,9 @@ import QUEUE_SONG_NEXT from "./queue-song-next.gql"
 
 const NextButton: FC<PropTypes> = ({ songID, onClose }) => {
 	const [ next, { loading } ] =
-		useMutation<unknown, SongID>(
-			QUEUE_SONG_NEXT,
-			{ variables: { songID } },
-		)
+		useMutation<unknown, SongID>(QUEUE_SONG_NEXT,	{
+			variables: { songID },
+		})
 
 	const handleClick =
 		() => {

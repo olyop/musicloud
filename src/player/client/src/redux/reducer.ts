@@ -4,10 +4,12 @@ import {
 } from "@reduxjs/toolkit"
 
 import {
+	addError,
 	addLoading,
 	updatePlay,
 	togglePlay,
 	updateTheme,
+	removeError,
 	updateVolume,
 	removeLoading,
 	updateOrderBy,
@@ -45,10 +47,24 @@ const isOnline =
 		builder
 			.addCase(updateIsOnline, (state, { payload }) => payload))
 
+const errors =
+	createReducer(initialState.errors, builder =>
+		builder
+			.addCase(addError, (state, { payload }) => [
+				...state,
+				payload,
+			])
+			.addCase(removeError, (state, { payload }) => (
+				state.filter(({ errorID }) => errorID !== payload)
+			)))
+
 const loading =
 	createReducer(initialState.loading, builder =>
 		builder
-			.addCase(addLoading, (state, { payload }) => [ ...state, payload ])
+			.addCase(addLoading, (state, { payload }) => [
+				...state,
+				payload,
+			])
 			.addCase(removeLoading, (state, { payload }) => (
 				state.filter(x => x !== payload)
 			)))
@@ -135,6 +151,7 @@ const settings =
 const reducer =
 	combineReducers<State>({
 		play,
+		errors,
 		sidebar,
 		loading,
 		settings,

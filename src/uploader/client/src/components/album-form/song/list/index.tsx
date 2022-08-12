@@ -25,7 +25,7 @@ const AlbumFormSongList: FC<PropTypes> = ({ list, onAdd, onChange }) => {
 								key={index}
 								value={value}
 								onChange={handleChange(index)}
-								className={bem("text", "BodyTwo Rounded Elevated PaddingQuart")}
+								className={bem("text", "ParagraphTwo Rounded Elevated PaddingQuart")}
 							/>
 						),
 					)}

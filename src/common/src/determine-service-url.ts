@@ -12,10 +12,8 @@ const determineDevelopmentPort =
 			return process.env.PLAYER_CLIENT_PORT
 		} else if (service === "uploader") {
 			return process.env.UPLOADER_CLIENT_PORT
-		} else if (service === "authenticator") {
-			return process.env.AUTHENTICATOR_CLIENT_PORT
 		} else {
-			throw new Error("Invalid service name")
+			return process.env.AUTHENTICATOR_CLIENT_PORT
 		}
 	}
 
@@ -25,10 +23,8 @@ const determineTestingPort =
 			return process.env.PLAYER_SERVER_PORT
 		} else if (service === "uploader") {
 			return process.env.UPLOADER_SERVER_PORT
-		} else if (service === "authenticator") {
-			return process.env.AUTHENTICATOR_SERVER_PORT
 		} else {
-			throw new Error("Invalid service name")
+			return process.env.AUTHENTICATOR_SERVER_PORT
 		}
 	}
 

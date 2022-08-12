@@ -1,0 +1,17 @@
+#import "../graphql/fragments/song-core.gql";
+#import "../graphql/fragments/album-core.gql";
+#import "../graphql/fragments/playlist-core.gql";
+
+query getHomePage {
+	getTopTenSongs {
+		...SongCoreFragment
+		playsTotal
+	}
+	getTrendingAlbums {
+    ...AlbumCoreFragment
+		playsTotal
+	}
+	getTrendingPlaylists {
+		...PlaylistCoreFragment
+	}
+}

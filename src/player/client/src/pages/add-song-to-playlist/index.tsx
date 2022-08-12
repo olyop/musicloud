@@ -94,13 +94,13 @@ const AddSongToPlaylistPage: FC = () => {
 								ImageDimensions.SQUARE,
 							)}
 						/>
-						<h1 className="BodyOne">
+						<h1 className="ParagraphOne">
 							<SongTitle
 								song={songData.getSongByID}
 							/>
 						</h1>
 						{isEmpty(playlistsData.getUser.playlistsFilteredBySong) ? (
-							<p className="BodyTwo">
+							<p className="ParagraphTwo">
 								No playlists to add to.
 							</p>
 						) : (

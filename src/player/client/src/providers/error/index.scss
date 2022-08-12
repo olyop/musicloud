@@ -1,0 +1,17 @@
+.Errors {
+	left: 50%;
+	z-index: 6;
+	width: 350rem;
+	position: absolute;
+	background-color: #d32f2f;
+	transform: translateX(-50%);
+	border-radius: var(--border-radius);
+	top: calc(var(--space-half) + env(safe-area-inset-top));
+	&__text {
+		color: var(--text-color-inverted); }
+	&__close {
+		--button-dimension: 14rem;
+		&:hover {
+			background-color: #ff867c; }
+		& &-text {
+			color: var(--text-color-inverted); } } }

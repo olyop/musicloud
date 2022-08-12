@@ -66,6 +66,7 @@ export const initialSettings: Settings = {
 }
 
 export const initialState: State = {
+	errors: [],
 	play: false,
 	loading: [],
 	sidebar: false,

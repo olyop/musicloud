@@ -27,12 +27,12 @@ const UserFollowers: FC = () => {
 			</h2>
 			{data?.getUserByID.followers && (
 				isEmpty(data.getUserByID.followers) ? (
-					<p className="BodyTwo">
+					<p className="ParagraphTwo">
 						No followers.
 					</p>
 				) : (
 					<Fragment>
-						<p className="BodyTwo">
+						<p className="ParagraphTwo">
 							{data.getUserByID.followers.length}
 							<Fragment> follower</Fragment>
 							{determinePlural(data.getUserByID.followers.length)}

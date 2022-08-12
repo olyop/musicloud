@@ -91,12 +91,26 @@ export interface Settings {
 export type StatePageTitle =
 	string | null
 
+export type StateAccessToken =
+	string | null
+
+export interface StateErrorID {
+	errorID: string,
+}
+
+export interface StateError
+	extends StateErrorID {
+	message: string,
+	location: string,
+}
+
 export interface State {
 	play: boolean,
 	sidebar: boolean,
 	loading: string[],
 	isOnline: boolean,
 	settings: Settings,
+	errors: StateError[],
 	pageTitle: StatePageTitle,
-	accessToken: string | null,
+	accessToken: StateAccessToken,
 }

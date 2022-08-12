@@ -89,7 +89,7 @@ const EmailAddressForm: FC<PropTypes> = ({
 				placeholder="example@example.com"
 			/>
 			{error && (
-				<p className="BodyOne Error">
+				<p className="ParagraphOne Error">
 					{error.message}
 				</p>
 			)}

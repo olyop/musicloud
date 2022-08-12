@@ -27,7 +27,7 @@ const Bar: FC = () => {
 	const { data } =
 		useQuery<Data>(GET_NOW_PLAYING)
 
-	const songAudio =
+	const [ songAudio, hasHitPlay ] =
 		useSongAudio(data?.getQueue.nowPlaying || null)
 
 	const handleExpandOpen =
@@ -44,7 +44,9 @@ const Bar: FC = () => {
 		<footer className={bem("", "BorderTop")}>
 			<Fragment>
 				<Controls
+					error={songAudio.error}
 					ready={songAudio.ready}
+					hasHitPlay={hasHitPlay}
 					isNowPlaying={isNowPlaying}
 					className={bem("controls")}
 					buttonClassName={bem("controls-button")}
@@ -53,7 +55,7 @@ const Bar: FC = () => {
 				<div className={bem("main", "PaddingHalf")}>
 					<div className={bem("main-content-wrapper")}>
 						<div className={bem("main-content")}>
-							{data?.getQueue.nowPlaying ? (
+							{data ? (
 								<Fragment>
 									<Song
 										hidePlay
@@ -107,7 +109,9 @@ const Bar: FC = () => {
 				)}
 				<Fullscreen
 					open={expand}
+					error={songAudio.error}
 					ready={songAudio.ready}
+					hasHitPlay={hasHitPlay}
 					isNowPlaying={isNowPlaying}
 					onClose={handleExpandClose}
 					song={data?.getQueue.nowPlaying}

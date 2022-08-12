@@ -7,10 +7,10 @@ import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/type
 import AlbumModal from "./modal"
 import AlbumTitle from "../album-title"
 import ObjectLinks from "../object-links"
-import Item, { ItemModal } from "../item"
+import Item, { ItemModal, PlayOptions } from "../item"
 import { usePlayAlbum } from "../../hooks"
 import { useStateListStyle, useStateShowReleased } from "../../redux"
-import { createCatalogImageURL, createObjectPath } from "../../helpers"
+import { createCatalogImageURL, createObjectPath, numberWithCommas } from "../../helpers"
 import { ObjectShowIcon, SettingsListStyle, Album as AlbumType } from "../../types"
 
 import "./index.scss"
@@ -24,6 +24,7 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		className,
 		showIcon = false,
 		hidePlay = false,
+		hidePlays = false,
 		hideModal = false,
 		alwaysList = false,
 		hideReleased = false,
@@ -37,11 +38,10 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 	const showReleased = useStateShowReleased()
 
 	const [ playAlbum, isPlaying ] =
-		usePlayAlbum(album && { albumID: album.albumID })
+		usePlayAlbum(hidePlay ? null : album)
 
 	const modal: ItemModal | undefined =
-		isAlbumNull ?
-			undefined :
+		(hideModal || isAlbumNull) ? undefined :
 			({ open, onClose }) => (
 				<AlbumModal
 					open={open}
@@ -51,19 +51,20 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 				/>
 			)
 
+	const playOptions: PlayOptions | undefined =
+		isAlbumNull || hidePlay ? undefined : {
+			isPlaying,
+			onClick: playAlbum,
+		}
+
 	return (
 		alwaysList || listStyle === SettingsListStyle.LIST ? (
 			<Item
 				ref={ref}
-				modal={hideModal ? undefined : modal}
+				modal={modal}
+				playOptions={playOptions}
 				leftIcon={showIcon ? "album" : undefined}
 				className={bem(className, "PaddingHalf ItemBorder")}
-				playOptions={(
-					isAlbumNull || hidePlay ? undefined : {
-						isPlaying,
-						onClick: playAlbum,
-					}
-				)}
 				imageOptions={(
 					isAlbumNull ? undefined : {
 						path: createObjectPath("album", album.albumID),
@@ -91,6 +92,10 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 									path: createObjectPath("artist", artistID),
 								}))}
 							/>
+						),
+						rightLeft: (
+							hidePlays || isNull(album.playsTotal) ?
+								null : numberWithCommas(album.playsTotal)
 						),
 						rightRight: (
 							hideReleased || !showReleased ?
@@ -127,12 +132,9 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							)}
 						/>
 						<Item
+							modal={modal}
 							className="PaddingHalf"
-							modal={hideModal ? undefined : modal}
-							playOptions={{
-								isPlaying,
-								onClick: playAlbum,
-							}}
+							playOptions={playOptions}
 							infoOptions={{
 								upperLeft: (
 									<AlbumTitle
@@ -159,6 +161,7 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 interface PropTypes extends ObjectShowIcon {
 	hidePlay?: boolean,
 	className?: string,
+	hidePlays?: boolean,
 	hideModal?: boolean,
 	alwaysList?: boolean,
 	hideReleased?: boolean,

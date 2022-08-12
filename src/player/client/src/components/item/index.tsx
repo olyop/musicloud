@@ -15,10 +15,6 @@ import {
 
 import PlayButton from "./play-button"
 
-import "@oly_op/css-utilities/index.css"
-import "@oly_op/react-button/build/index.css"
-import "../../index.scss"
-
 import "./index.scss"
 
 const bem =
@@ -70,7 +66,7 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 			{!isUndefined(left) && !isUndefined(left) && (
 				<p
 					children={left}
-					className={bem("left", "BodyOne")}
+					className={bem("left", "ParagraphOne")}
 				/>
 			)}
 			{playOptions && (
@@ -119,17 +115,17 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					>
 						<p
 							children={infoOptions.upperLeft}
-							className={bem("info-left-text", "BodyOneBold")}
+							className={bem("info-left-text", "ParagraphOneBold")}
 						/>
 						{infoOptions.lowerLeft && (
 							<p
 								children={infoOptions.lowerLeft}
-								className={bem("info-left-text", "BodyTwo OverflowHidden")}
+								className={bem("info-left-text", "ParagraphTwo OverflowHidden")}
 							/>
 						)}
 					</div>
 					{(infoOptions.rightLeft || infoOptions.rightRight) && (
-						<p className={bem(rightClassName, "info-right", "BodyTwo LightColor")}>
+						<p className={bem(rightClassName, "info-right", "ParagraphTwo LightColor")}>
 							{infoOptions.rightLeft}
 							{(infoOptions.rightLeft && infoOptions.rightRight) && (
 								<span className="MarginLeftRightQuart">&#8226;</span>

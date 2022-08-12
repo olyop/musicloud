@@ -1,7 +1,7 @@
 import { createElement, FC } from "react"
 import { useParams } from "react-router-dom"
-import { ArtistID } from "@oly_op/musicloud-common/build/types"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { ArtistID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	ArtistSongs,
@@ -15,6 +15,7 @@ import { useQuery } from "../../hooks"
 import Song from "../../components/song"
 import Songs from "../../components/songs"
 import { useStateOrderBy } from "../../redux"
+
 import GET_ARTIST_PAGE_SONGS from "./get-artist-page-songs.gql"
 
 const orderBy: OrderByOptions<SettingsOrderBySongs> = {
@@ -39,7 +40,6 @@ const ArtistPageSongs: FC = () => {
 				{songs => songs.map(
 					song => (
 						<Song
-							hidePlays
 							song={song}
 							hideTrackNumber
 							key={song.songID}

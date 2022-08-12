@@ -124,7 +124,7 @@ const TextField: FC<PropTypes> = ({
 					{list.map(
 						item => (
 							<div key={item.index} className="Elevated FlexRow Rounded PaddingQuart">
-								<p className="BodyOne">
+								<p className="ParagraphOne">
 									{item.value}
 								</p>
 								<Button

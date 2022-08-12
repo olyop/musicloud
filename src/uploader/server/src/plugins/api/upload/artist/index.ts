@@ -51,23 +51,17 @@ export const uploadArtist: FastifyPluginAsync =
 							}],
 						})
 
-					console.log("1")
-
 					await normalizeImageAndUploadToS3(fastify.s3)({
 						buffer: cover,
 						objectID: artistID,
 						images: coverImageInputs,
 					})
 
-					console.log("2")
-
 					await normalizeImageAndUploadToS3(fastify.s3)({
 						buffer: profile,
 						objectID: artistID,
 						images: profileImageInputs,
 					})
-
-					console.log("3")
 
 					await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordArtist>({
 						name,
@@ -77,8 +71,6 @@ export const uploadArtist: FastifyPluginAsync =
 						image: determineCatalogImageURL(artistID, profileImageInputs[2]!),
 						...(city && country ? { city, country } : {}),
 					})
-
-					console.log("4")
 
 					void reply.code(201)
 

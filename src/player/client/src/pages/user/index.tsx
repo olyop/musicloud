@@ -15,7 +15,7 @@ import { useQuery, useToggleUserFollowing } from "../../hooks"
 import GET_USER_PAGE from "./get-user-page.gql"
 
 const UserPageHome: FC = () => (
-	<p className="BodyOne">
+	<p className="ParagraphOne">
 		W.I.P.
 	</p>
 )
@@ -35,7 +35,7 @@ const UserPage: FC = () => {
 	if (error) {
 		return (
 			<Page>
-				<h2 className="Content BodyOne PaddingTopBottom">
+				<h2 className="Content ParagraphOne PaddingTopBottom">
 					{error.message === "Failed to fetch" ?
 						error.message :
 						"User does not exist."}

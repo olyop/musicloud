@@ -3,6 +3,7 @@ import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
 import { createElement, FC, Fragment } from "react"
 import { ServicesNames } from "@oly_op/musicloud-common/build/types"
+import { IS_DEVELOPMENT } from "@oly_op/musicloud-common/build/globals"
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url"
 
 import { useDispatch, toggleSidebar, useStateSidebar, useStateAccessToken } from "../../redux"
@@ -198,7 +199,7 @@ const Sidebar: FC = () => {
 								/>
 							)}
 						/>
-						{process.env.NODE_ENV === "development" && accessToken && (
+						{IS_DEVELOPMENT && accessToken && (
 							<a
 								title="Upload"
 								onClick={handleClose}
@@ -222,7 +223,7 @@ const Sidebar: FC = () => {
 					target="_blank"
 					rel="noreferrer"
 					title="Source Code"
-					className="BodyOne PaddingLeftRight"
+					className="ParagraphOne PaddingLeftRight"
 					href="https://github.com/olyop/music-app"
 					children={(
 						<Fragment>

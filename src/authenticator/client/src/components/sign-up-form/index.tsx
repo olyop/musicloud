@@ -135,7 +135,7 @@ const SignUpForm: FC<PropTypes> = ({
 				onChange={handleCoverChange}
 			/>
 			{error && (
-				<p className="BodyOne Error">
+				<p className="ParagraphOne Error">
 					{error.message}
 				</p>
 			)}
