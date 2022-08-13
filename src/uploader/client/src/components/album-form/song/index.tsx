@@ -17,6 +17,7 @@ const AlbumFormSong: FC<PropTypes> = ({
 	onSongListAdd,
 	onTitleChange,
 	onSongListChange,
+	onSongListRemove,
 }) => {
 	const handleMixChange: ChangeEventHandler<HTMLInputElement> =
 		event => onMixChange(event.target.value)
@@ -57,6 +58,7 @@ const AlbumFormSong: FC<PropTypes> = ({
 				<AlbumFormSongList
 					list={song.artists}
 					onAdd={onSongListAdd("artists")}
+					onRemove={onSongListRemove("artists")}
 					onChange={onSongListChange("artists")}
 				/>
 			</div>
@@ -67,6 +69,7 @@ const AlbumFormSong: FC<PropTypes> = ({
 				<AlbumFormSongList
 					list={song.featuring}
 					onAdd={onSongListAdd("featuring")}
+					onRemove={onSongListRemove("featuring")}
 					onChange={onSongListChange("featuring")}
 				/>
 			</div>
@@ -77,6 +80,7 @@ const AlbumFormSong: FC<PropTypes> = ({
 				<AlbumFormSongList
 					list={song.remixers}
 					onAdd={onSongListAdd("remixers")}
+					onRemove={onSongListRemove("remixers")}
 					onChange={onSongListChange("remixers")}
 				/>
 			</div>
@@ -87,6 +91,7 @@ const AlbumFormSong: FC<PropTypes> = ({
 				<AlbumFormSongList
 					list={song.genres}
 					onAdd={onSongListAdd("genres")}
+					onRemove={onSongListRemove("genres")}
 					onChange={onSongListChange("genres")}
 				/>
 			</div>
@@ -107,6 +112,7 @@ interface PropTypes {
 	onMixChange: (value: string) => void,
 	onTitleChange: (value: string) => void,
 	onSongListAdd: (key: keyof SongLists) => () => void,
+	onSongListRemove: (key: keyof SongLists) => (index: number) => () => void,
 	onSongListChange: (key: keyof SongLists) => (index: number) => (value: string) => void,
 }
 

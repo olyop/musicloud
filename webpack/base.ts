@@ -108,9 +108,9 @@ const baseConfiguration: webpack.Configuration = {
 		fullySpecified: false,
 		extensions: [".js", ".ts", ".tsx"],
 	},
-	watchOptions: {
-		ignored: "/node_modules/",
-	},
+	// watchOptions: {
+	// 	ignored: "/node_modules/",
+	// },
 	experiments: {
 		topLevelAwait: true,
 	},

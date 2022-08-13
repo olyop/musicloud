@@ -47,9 +47,7 @@ const isOnline =
 	))
 
 const http =
-	new HttpLink({
-		useGETForQueries: true,
-	})
+	new HttpLink()
 
 const link =
 	from([

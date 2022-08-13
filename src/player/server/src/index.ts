@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import Fastify from "fastify"
 import cors from "@fastify/cors"
 import helmet from "@fastify/helmet"
@@ -43,13 +41,9 @@ await fastify.register(postgres, PG_POOL_OPTIONS)
 await fastify.register(compress)
 await fastify.register(serveStatic, FASTIFY_STATIC_OPTIONS)
 
-fastify.route({
-	url: "/graphql",
-	method: ["GET", "POST"],
-	handler: fastifyApolloHandler(apollo, {
-		context: createContext(),
-	}),
-})
+fastify.post("/graphql", fastifyApolloHandler(apollo, {
+	context: createContext(),
+}))
 
 await fastify.register(serveClient)
 

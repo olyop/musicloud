@@ -1,11 +1,9 @@
-import { SongBase } from "@oly_op/musicloud-common/build/types"
+import type { ConnectionError } from "fastify"
+import { SongAudioMetadataBase } from "@oly_op/musicloud-common/build/types"
 
-interface Metadata
-	extends
-	Pick<SongBase, "mix" | "title" | "discNumber" | "trackNumber"> {
-	album: string,
-	genres: string[],
-	artists: string[],
+interface SongAudioMetadata
+	extends SongAudioMetadataBase {
+	cover: ConnectionError["rawPacket"] | null,
 }
 
 const getAudioMetadata =
@@ -14,7 +12,7 @@ const getAudioMetadata =
 		body.append("audio", audio)
 		const requestInit: RequestInit = { method: "PUT", body }
 		const response = await fetch("/api/audio-metadata", requestInit)
-		return await response.json() as Metadata
+		return await response.json() as SongAudioMetadata
 	}
 
 export default getAudioMetadata

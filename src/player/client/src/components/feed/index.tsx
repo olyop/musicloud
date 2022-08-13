@@ -9,7 +9,6 @@ import {
 	ReactNode,
 	useEffect,
 	createElement,
-	useCallback,
 } from "react"
 
 import uniqueID from "lodash-es/uniqueId"
@@ -40,23 +39,20 @@ const Feed = <ItemsTotalData, Item, ItemData>(
 		useState<Total>(null)
 
 	const getAndSetItemsTotal =
-		useCallback(
-			async () => {
-				dispatch(addLoading(loadingID.current))
+		async () => {
+			dispatch(addLoading(loadingID.current))
 
-				const { data } =
-					await client.query<ItemsTotalData>({
-						query: itemsTotalQuery,
-					})
+			const { data } =
+				await client.query<ItemsTotalData>({
+					query: itemsTotalQuery,
+				})
 
-				if (itemsTotalDataToValue(data)) {
-					setItemsTotal(itemsTotalDataToValue(data))
-				}
+			if (itemsTotalDataToValue(data)) {
+				setItemsTotal(itemsTotalDataToValue(data))
+			}
 
-				dispatch(removeLoading(loadingID.current))
-			},
-			[],
-		)
+			dispatch(removeLoading(loadingID.current))
+		}
 
 	useEffect(() => {
 		void getAndSetItemsTotal()

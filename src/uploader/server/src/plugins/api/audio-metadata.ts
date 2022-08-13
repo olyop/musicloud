@@ -1,20 +1,27 @@
-import { trim } from "lodash-es"
+import { isEmpty, trim } from "lodash-es"
 import musicMetadata from "music-metadata"
 import { FastifyPluginAsync } from "fastify"
+import { SongAudioMetadataBase } from "@oly_op/musicloud-common/build/types"
 
 import { BodyEntry } from "./types"
+
+interface Reply
+	extends SongAudioMetadataBase {
+	cover: Buffer | null,
+}
 
 interface Route {
 	Body: {
 		audio: BodyEntry[],
 	},
+	Reply: Reply,
 }
 
 const toList =
 	(value: string) =>
-		value.split(/(,|&)/)
+		value.split(/(,|&|feat.)/)
 				 .map(trim)
-				 .filter((x, index) => index % 2 === 0)
+				 .filter(x => !(x === "," || x === "&" || x === "feat."))
 
 export const audioMetadata: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
@@ -22,29 +29,23 @@ export const audioMetadata: FastifyPluginAsync =
 		fastify.put<Route>(
 			"/audio-metadata",
 			async request => {
-				const audio =
-					request.body.audio[0]!.data
-
-				const metadata =
-					await musicMetadata.parseBuffer(audio)
-
-				const {
-					disk,
-					title,
-					genre,
-					track,
-					album,
-					artist,
-				} = metadata.common
-
-				return {
-					title: title || null,
-					album: album || null,
-					discNumber: disk.no || 1,
-					trackNumber: track.no || 1,
-					artists: artist ? toList(artist) : null,
-					genres: genre ? toList(genre[0]!) : null,
-					mix: title ? (title.includes("Extended") ? "Extended" : null) : null,
+				const body =	request.body.audio[0]
+				if (body) {
+					const { common } = await musicMetadata.parseBuffer(body.data)
+					const { title, album, year, disk, track, artist, genre, picture } = common
+					return {
+						year: year || null,
+						title: title || null,
+						album: album || null,
+						discNumber: disk.no || null,
+						trackNumber: track.no || null,
+						cover: (picture && picture[0]) ? picture[0].data : null,
+						mix: title ? (title.includes("Extended") ? "Extended" : null) : null,
+						artists: artist ? (isEmpty(toList(artist)) ? null : toList(artist)) : null,
+						genres: (genre && genre[0]) ? (isEmpty(toList(genre[0])) ? null : toList(genre[0])) : null,
+					}
+				} else {
+					throw new Error("Audio value not provided in body")
 				}
 			},
 		)

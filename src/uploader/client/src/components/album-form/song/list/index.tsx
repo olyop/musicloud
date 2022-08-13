@@ -10,7 +10,7 @@ import "./index.scss"
 const bem =
 	createBEM("AlbumFormSongList")
 
-const AlbumFormSongList: FC<PropTypes> = ({ list, onAdd, onChange }) => {
+const AlbumFormSongList: FC<PropTypes> = ({ list, onAdd, onChange, onRemove }) => {
 	const handleChange =
 		(index: number): ChangeEventHandler<HTMLInputElement> =>
 			({ target: { value } }) =>
@@ -21,12 +21,19 @@ const AlbumFormSongList: FC<PropTypes> = ({ list, onAdd, onChange }) => {
 				<div className="FlexRowGapQuart">
 					{list.map(
 						({ index, value }) => (
-							<input
-								key={index}
-								value={value}
-								onChange={handleChange(index)}
-								className={bem("text", "ParagraphTwo Rounded Elevated PaddingQuart")}
-							/>
+							<div key={index} className="Elevated FlexRow Rounded">
+								<input
+									value={value}
+									onChange={handleChange(index)}
+									className={bem("input", "ParagraphTwo PaddingQuart")}
+								/>
+								<Button
+									transparent
+									icon="close"
+									onClick={onRemove(index)}
+									className={bem("remove")}
+								/>
+							</div>
 						),
 					)}
 				</div>
@@ -44,6 +51,7 @@ const AlbumFormSongList: FC<PropTypes> = ({ list, onAdd, onChange }) => {
 interface PropTypes {
 	list: Item[],
 	onAdd: () => void,
+	onRemove: (index: number) => () => void,
 	onChange: (index: number) => (value: string) => void,
 }
 

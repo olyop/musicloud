@@ -1,6 +1,7 @@
 import { useFormik } from "formik"
 import orderBy from "lodash-es/orderBy"
 import isEmpty from "lodash-es/isEmpty"
+import isUndefined from "lodash-es/isUndefined"
 import { useState, createElement, FC, ChangeEventHandler } from "react"
 
 import Form from "../form"
@@ -55,12 +56,22 @@ const AlbumForm: FC = () => {
 			for (const audio of files) {
 				const metadata = await getAudioMetadata(audio)
 
-				await setFieldValue("title", metadata.album)
+				if (isEmpty(title) && metadata.album) {
+					await setFieldValue("title", metadata.album)
+				}
 
-				if (metadata.artists && isEmpty(artists)) {
+				if (isEmpty(released) && metadata.year) {
+					await setFieldValue("released", `${metadata.year}-01-01`)
+				}
+
+				if (isEmpty(artists) && metadata.artists) {
 					await setFieldValue("artists", metadata.artists.map<Item>(
 						(value, index) => ({ index, value }),
 					))
+				}
+
+				if (isUndefined(cover) && metadata.cover) {
+					await setFieldValue("cover", new Blob([new Uint8Array(metadata.cover.data)]))
 				}
 
 				setSongs(prevState => orderBy(
@@ -71,9 +82,9 @@ const AlbumForm: FC = () => {
 							mix: "",
 							remixers: [],
 							featuring: [],
-							title: metadata.title,
-							discNumber: metadata.discNumber,
-							trackNumber: metadata.trackNumber,
+							title: metadata.title || "",
+							discNumber: metadata.discNumber || 1,
+							trackNumber: metadata.trackNumber || 1,
 							genres: metadata.genres?.map<Item>(
 								(value, index) => ({ index, value }),
 							) || [],
@@ -144,6 +155,22 @@ const AlbumForm: FC = () => {
 									...song,
 									[key]: song[key].map(
 										(item => (item.index === index ? { index, value } : item)),
+									),
+								}) : song
+							),
+						))
+
+	const handleSongListRemove =
+		(trackNumber: number) =>
+			(key: keyof SongLists) =>
+				(index: number) =>
+					() =>
+						setSongs(prevState => prevState.map(
+							song => (
+								song.trackNumber === trackNumber ? ({
+									...song,
+									[key]: song[key].filter(
+										(item => item.index !== index),
 									),
 								}) : song
 							),
@@ -245,6 +272,7 @@ const AlbumForm: FC = () => {
 				name="cover"
 				image={cover}
 				multiple={false}
+				accept="image/*"
 				onChange={handleCoverChange}
 				action={cover ? undefined : {
 					text: "Cover",
@@ -265,6 +293,7 @@ const AlbumForm: FC = () => {
 						onSongListAdd={handleSongListAdd(song.trackNumber)}
 						onMixChange={handleSongMixChange(song.trackNumber)}
 						onTitleChange={handleSongTitleChange(song.trackNumber)}
+						onSongListRemove={handleSongListRemove(song.trackNumber)}
 						onSongListChange={handleSongListChange(song.trackNumber)}
 					/>
 				))}

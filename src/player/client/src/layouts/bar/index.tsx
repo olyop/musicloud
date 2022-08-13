@@ -27,18 +27,18 @@ const Bar: FC = () => {
 	const { data } =
 		useQuery<Data>(GET_NOW_PLAYING)
 
+	const isNowPlaying =
+		!isUndefined(data) &&
+		!isNull(data.getQueue.nowPlaying)
+
 	const [ songAudio, hasHitPlay ] =
-		useSongAudio(data?.getQueue.nowPlaying || null)
+		useSongAudio(isNowPlaying ? data.getQueue.nowPlaying : null)
 
 	const handleExpandOpen =
 		() => setExpand(true)
 
 	const handleExpandClose =
 		() => setExpand(false)
-
-	const isNowPlaying =
-		!isUndefined(data) &&
-		!isNull(data.getQueue.nowPlaying)
 
 	return (
 		<footer className={bem("", "BorderTop")}>

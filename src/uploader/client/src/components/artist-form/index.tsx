@@ -177,7 +177,7 @@ const ArtistForm: FC = () => {
 					icon: "search",
 					disabled: isNameEmpty,
 					url: createGoogleSearchURL({
-						query: `${name} artist origin`,
+						query: `${name} artist origin city`,
 					}),
 				}}
 			/>
@@ -204,13 +204,14 @@ const ArtistForm: FC = () => {
 				id="profile"
 				name="Profile"
 				multiple={false}
+				accept="image/*"
 				image={profile || undefined}
 				onChange={handlePhotoChange("profile")}
 				action={profile ? undefined : {
 					icon: "search",
 					text: "Profile",
 					disabled: isEmpty(name),
-					url: createGoogleSearchURL({ isImage: true, query: `${name} artist profile` }),
+					url: createGoogleSearchURL({ isImage: true, query: `${name} artist profile image` }),
 				}}
 			/>
 			<TextField
@@ -218,6 +219,7 @@ const ArtistForm: FC = () => {
 				type="file"
 				name="Cover"
 				multiple={false}
+				accept="image/*"
 				image={cover || undefined}
 				imageOrientation="landscape"
 				onChange={handlePhotoChange("cover")}
@@ -225,7 +227,7 @@ const ArtistForm: FC = () => {
 					text: "Cover",
 					icon: "search",
 					disabled: isNameEmpty,
-					url: createGoogleSearchURL({ isImage: true, query: `${name} artist cover` }),
+					url: createGoogleSearchURL({ isImage: true, query: `${name} artist cover image` }),
 				}}
 			/>
 		</Form>
