@@ -25,7 +25,7 @@ const HeaderOfflineButton: FC = () => {
 		const id =
 			setInterval(() => {
 				void checkStatus()
-			}, ms("5s"))
+			}, ms("10s"))
 
 		return () => {
 			window.removeEventListener("offline", () => {

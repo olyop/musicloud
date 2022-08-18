@@ -24,7 +24,6 @@ export interface InfoOptions {
 interface ClassNames extends ClassNameBEMPropTypes {
 	infoClassName?: BEMInput,
 	iconClassName?: BEMInput,
-	rightClassName?: BEMInput,
 }
 
 interface Options {
@@ -49,6 +48,7 @@ interface Other {
 	onRemove?: Handler,
 	shareIcon?: boolean,
 	style?: CSSProperties,
+	infoFadeInFromRight?: boolean,
 }
 
 export interface PropTypes extends

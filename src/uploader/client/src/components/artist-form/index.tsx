@@ -49,7 +49,13 @@ const ArtistForm: FC = () => {
 						body.append("country", artist.country)
 					}
 					try {
-						await fetch("/api/upload/artist", { method: "POST", body })
+						await fetch("/api/upload/artist", {
+							method: "POST",
+							body,
+							headers: {
+								Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+							},
+						})
 					} finally {
 						resetForm()
 						setLoading(false)
@@ -82,6 +88,7 @@ const ArtistForm: FC = () => {
 				method: "GET",
 				headers: {
 					Accept: "application/json",
+					Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
 				},
 			}
 
@@ -121,6 +128,7 @@ const ArtistForm: FC = () => {
 				method: "GET",
 				headers: {
 					Accept: "application/json",
+					Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
 				},
 			}
 

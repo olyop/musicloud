@@ -28,6 +28,7 @@ export const audioMetadata: FastifyPluginAsync =
 	async fastify => {
 		fastify.put<Route>(
 			"/audio-metadata",
+			{ onRequest: fastify.authenticate },
 			async request => {
 				const body =	request.body.audio[0]
 				if (body) {

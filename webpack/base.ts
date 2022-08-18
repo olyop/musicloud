@@ -106,7 +106,7 @@ const baseConfiguration: webpack.Configuration = {
 	resolve: {
 		symlinks: false,
 		fullySpecified: false,
-		extensions: [".js", ".ts", ".tsx"],
+		extensions: [".js", ".ts", ".tsx", ".css"],
 	},
 	// watchOptions: {
 	// 	ignored: "/node_modules/",

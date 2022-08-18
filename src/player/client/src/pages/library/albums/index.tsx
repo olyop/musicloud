@@ -1,5 +1,4 @@
 import { createBEM } from "@oly_op/bem"
-import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
 
 import Feed from "../../../components/feed"
@@ -20,28 +19,27 @@ const LibraryAlbums: FC = () => {
 	const listStyle = useStateListStyle()
 	const isList = listStyle === SettingsListStyle.LIST
 	return (
-		<Head pageTitle="Albums">
-			<Albums className={bem(isList ? "Content" : "PaddingLeftRight")}>
-				<Feed<GetAlbumsTotalData, AlbumType, GetAlbumAtIndexData>
-					settingsOrderBy="albums"
-					itemQuery={GET_LIBRARY_ALBUM_AT_INDEX}
-					itemsTotalQuery={GET_LIBRARY_ALBUMS_TOTAL}
-					itemDataToValue={({ getLibrary }) => getLibrary.albumAtIndex}
-					itemsTotalDataToValue={({ getLibrary }) => getLibrary.albumsTotal}
-					renderItem={(ref, album) => (
-						<Album
-							ref={ref}
-							hidePlays
-							album={album}
-							className={bem(
-								isList && "list",
-								isList && "PaddingHalf ItemBorder",
-							)}
-						/>
-					)}
-				/>
-			</Albums>
-		</Head>
+		<Albums className={bem(isList ? "Content" : "PaddingLeftRight")}>
+			<Feed<GetAlbumsTotalData, AlbumType, GetAlbumAtIndexData>
+				settingsOrderBy="albums"
+				itemQuery={GET_LIBRARY_ALBUM_AT_INDEX}
+				itemsTotalQuery={GET_LIBRARY_ALBUMS_TOTAL}
+				itemDataToValue={({ getLibrary }) => getLibrary.albumAtIndex}
+				itemsTotalDataToValue={({ getLibrary }) => getLibrary.albumsTotal}
+				renderItem={(ref, album) => (
+					<Album
+						ref={ref}
+						hidePlays
+						album={album}
+						infoFadeInFromRight
+						className={bem(
+							isList && "",
+							isList && "PaddingHalf ItemBorder",
+						)}
+					/>
+				)}
+			/>
+		</Albums>
 	)
 }
 

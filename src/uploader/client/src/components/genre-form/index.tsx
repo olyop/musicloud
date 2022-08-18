@@ -26,7 +26,13 @@ const GenreForm: FC = () => {
 				const body = new FormData()
 				body.append("name", genre.name)
 				try {
-					await fetch("/api/upload/genre", { method: "POST", body })
+					await fetch("/api/upload/genre", {
+						method: "POST",
+						body,
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+						},
+					})
 				} finally {
 					formik.resetForm()
 					setLoading(false)
@@ -45,6 +51,7 @@ const GenreForm: FC = () => {
 				method: "GET",
 				headers: {
 					Accept: "application/json",
+					Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
 				},
 			}
 

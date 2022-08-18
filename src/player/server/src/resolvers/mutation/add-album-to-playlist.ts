@@ -11,8 +11,8 @@ import { AlbumID, PlaylistID } from "@oly_op/musicloud-common/build/types"
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
 import { Song, Playlist, PlaylistSong } from "../../types"
-import { SELECT_ALBUM_SONGS, SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql"
 import { addSongToPlaylist, getPlaylist, isNotUsersPlaylist } from "../helpers"
+import { SELECT_ALBUM_SONGS, SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql"
 
 interface Args
 	extends AlbumID, PlaylistID {}

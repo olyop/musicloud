@@ -1,6 +1,6 @@
 .Library {
 	&__header {
-		padding-left: 13rem;
+		padding-left: calc(var(--space) + 1rem);
 		&-link {
 			&::after {
 				bottom: -12rem; } } } }

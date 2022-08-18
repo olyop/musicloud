@@ -54,5 +54,5 @@ root.render(
 
 if ("serviceWorker" in navigator && process.env.SERVICE_WORKER === "true") {
 	const workbox = new Workbox("/service-worker.js")
-	void workbox.register()
+	await workbox.register()
 }

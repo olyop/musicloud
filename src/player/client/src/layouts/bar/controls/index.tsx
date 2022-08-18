@@ -1,22 +1,19 @@
 import Button from "@oly_op/react-button"
 import { createBEM, BEMInput } from "@oly_op/bem"
 import { useEffect, createElement, FC } from "react"
-import { AudioPlayerControls } from "react-use-audio-player"
 
+import { BarCommonPropTypes } from "../types"
+import { ClassNameBEMPropTypes } from "../../../types"
 import { togglePlay, useDispatch, useStatePlay } from "../../../redux"
 import { useKeyPress, useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
 
 import "./index.scss"
 
-const bem =
-	createBEM("BarControls")
+const bem =	createBEM("BarControls")
 
 const PlayButton: FC<PlayButtonPropTypes> = ({
-	ready,
-	error,
-	loading,
-	hasHitPlay,
-	isNowPlaying,
+	audio,
+	nowPlaying,
 	buttonClassName,
 	buttonIconClassName,
 	playButtonClassName,
@@ -27,71 +24,77 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 	const playPausePress = useKeyPress("MediaPlayPause")
 
 	const showLoop =
-		error ?
-			false : (
-				hasHitPlay ? (
-					isNowPlaying ?
-						(loading || !ready) :
-						false
-				) : false
-			)
+		nowPlaying ?
+			(play ?
+				audio.stopped && audio.loading :
+				false) :
+			false
 
 	const icon =
-		error ?
+		audio.error ?
 			"error_outline" : (
 				showLoop ?
 					"loop" : (
-						play ?
-							"pause" :
+						nowPlaying ?
+							(play ?
+								"pause" :
+								"play_arrow") :
 							"play_arrow"
 					)
 			)
 
 	const handleTogglePlay =
 		() => {
-			if (isNowPlaying && !showLoop) {
+			if (nowPlaying) {
 				dispatch(togglePlay())
 			}
 		}
 
 	useEffect(() => {
-		if (!error && playPausePress) {
-			handleTogglePlay()
-		}
+		handleTogglePlay()
 	}, [playPausePress])
 
 	return (
 		<Button
 			icon={icon}
 			onClick={handleTogglePlay}
-			className={bem(playButtonClassName, buttonClassName, error && "play-error")}
+			className={bem(playButtonClassName, buttonClassName)}
 			iconClassName={bem(playButtonIconClassName, buttonIconClassName, showLoop && "loading")}
 		/>
 	)
 }
 
 const BarControls: FC<PropTypes> = ({
-	ready,
-	error,
+	audio,
 	className,
-	hasHitPlay,
-	isNowPlaying,
+	nowPlaying,
 	buttonClassName,
 	buttonIconClassName,
 	playButtonClassName,
 	playButtonIconClassName,
 }) => {
-	const [ nextQueueSong, nextData ] =
+	const [ nextQueueSong, { loading: nextQueueSongLoading } ] =
 		useNextQueueSong()
 
-	const [ previousQueueSong, previousData ] =
+	const [ previousQueueSong, { loading: previousQueueSongLoading } ] =
 		usePreviousQueueSong()
 
+	const loading =
+		nextQueueSongLoading || previousQueueSongLoading
+
 	const handleNextQueueSong =
-		() => { void nextQueueSong() }
+		() => {
+			if (!loading) {
+				void nextQueueSong()
+			}
+		}
 
 	const handlePreviousQueueSong =
-		() => { void previousQueueSong() }
+		() => {
+			if (!previousQueueSongLoading) {
+				void previousQueueSong()
+			}
+		}
 
 	return (
 		<div className={bem(className, "")}>
@@ -103,15 +106,12 @@ const BarControls: FC<PropTypes> = ({
 				iconClassName={buttonIconClassName}
 			/>
 			<PlayButton
-				ready={ready}
-				error={error}
-				hasHitPlay={hasHitPlay}
-				isNowPlaying={isNowPlaying}
+				audio={audio}
+				nowPlaying={nowPlaying}
 				buttonClassName={buttonClassName}
 				buttonIconClassName={buttonIconClassName}
 				playButtonClassName={playButtonClassName}
 				playButtonIconClassName={playButtonIconClassName}
-				loading={nextData.loading || previousData.loading}
 			/>
 			<Button
 				transparent
@@ -124,23 +124,17 @@ const BarControls: FC<PropTypes> = ({
 	)
 }
 
-interface PropTypesBase {
-	ready: boolean,
-	hasHitPlay: boolean,
-	isNowPlaying: boolean,
+interface ClassNamePropTypes {
 	buttonClassName?: BEMInput,
 	buttonIconClassName?: BEMInput,
 	playButtonClassName?: BEMInput,
 	playButtonIconClassName?: BEMInput,
-	error: AudioPlayerControls["error"],
 }
 
-interface PlayButtonPropTypes extends PropTypesBase {
-	loading: boolean,
-}
+interface PlayButtonPropTypes
+	extends BarCommonPropTypes, ClassNamePropTypes {}
 
-interface PropTypes extends PropTypesBase {
-	className?: BEMInput,
-}
+interface PropTypes
+	extends ClassNameBEMPropTypes, BarCommonPropTypes, ClassNamePropTypes {}
 
 export default BarControls

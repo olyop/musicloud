@@ -2,7 +2,7 @@ import {
 	createAction,
 } from "@reduxjs/toolkit"
 
-import {
+import type {
 	OrderBy,
 	StateError,
 	SettingsTheme,

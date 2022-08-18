@@ -34,6 +34,9 @@ const AlbumForm: FC = () => {
 					await fetch("/api/upload/album", {
 						method: "POST",
 						body: createFormData(album, songs),
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+						},
 					})
 				} catch (error) {
 					console.error(error)

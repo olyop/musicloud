@@ -4,9 +4,7 @@
 	gap: var(--space-quart);
 	justify-content: center;
 	&__loading {
-		animation: spin 1s infinite linear; }
-	&__play-error {
-		background-color: #ba000d; } }
+		animation: spin 1s infinite linear; } }
 
 @keyframes spin {
 	from {

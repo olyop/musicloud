@@ -29,6 +29,7 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		alwaysList = false,
 		hideReleased = false,
 		hideInLibrary = false,
+		infoFadeInFromRight = false,
 	} = propTypes
 
 	const isAlbumNull =
@@ -58,11 +59,12 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		}
 
 	return (
-		alwaysList || listStyle === SettingsListStyle.LIST ? (
+		(alwaysList || listStyle === SettingsListStyle.LIST) ? (
 			<Item
 				ref={ref}
 				modal={modal}
 				playOptions={playOptions}
+				infoFadeInFromRight={infoFadeInFromRight}
 				leftIcon={showIcon ? "album" : undefined}
 				className={bem(className, "PaddingHalf ItemBorder")}
 				imageOptions={(
@@ -135,6 +137,7 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							modal={modal}
 							className="PaddingHalf"
 							playOptions={playOptions}
+							infoFadeInFromRight={infoFadeInFromRight}
 							infoOptions={{
 								upperLeft: (
 									<AlbumTitle
@@ -167,6 +170,7 @@ interface PropTypes extends ObjectShowIcon {
 	hideReleased?: boolean,
 	album: AlbumType | null,
 	hideInLibrary?: boolean,
+	infoFadeInFromRight?: boolean,
 }
 
 export default Album

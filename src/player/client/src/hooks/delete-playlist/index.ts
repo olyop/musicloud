@@ -1,9 +1,7 @@
-import isNull from "lodash-es/isNull"
-import { Reference } from "@apollo/client"
 import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
-import { Data } from "./types"
 import { useMutation } from "../mutation"
+
 import DELETE_PLAYLIST from "./delete-playlist.gql"
 
 export const useDeletePlaylist =
@@ -11,33 +9,16 @@ export const useDeletePlaylist =
 		const [ deletePlaylist, result ] =
 			useMutation<Data, PlaylistID>(DELETE_PLAYLIST, {
 				variables: { playlistID },
-				update: cache => {
-					cache.modify({
-						id: cache.identify({ __typename: "Library" }),
-						fields: {
-							playlistsPaginated:
-								(existing: Reference[] | null, { readField }) => {
-									if (isNull(existing)) {
-										return null
-									} else {
-										if (existing.length === 1) {
-											return null
-										} else {
-											return existing.filter(playlist => (
-												readField("playlistID", playlist) !== playlistID
-											))
-										}
-									}
-								},
-						},
-					})
-				},
 			})
 
 		const handleDeletePlaylist =
-			async () => {
-				await deletePlaylist()
+			() => {
+				void deletePlaylist()
 			}
 
 		return [ handleDeletePlaylist, result ] as const
 	}
+
+export interface Data {
+	deletePlaylistByID: null,
+}

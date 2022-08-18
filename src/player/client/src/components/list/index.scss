@@ -12,5 +12,8 @@
 	grid-template-columns:
 		repeat(
 			auto-fill,
-			minmax(var(--grid-child-width), 1fr)
+			minmax(
+				var(--grid-child-width),
+				1fr,
+			)
 		); }

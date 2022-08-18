@@ -1,14 +1,14 @@
 import { useEffect } from "react"
 import isNull from "lodash-es/isNull"
-import { useLazyQuery } from "@apollo/client"
 import isUndefined from "lodash-es/isUndefined"
 import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
+import { useQuery } from "../query"
 import { useMutation } from "../mutation"
 import { QueueNowPlaying } from "../../types"
 import { useResetPlayer } from "../reset-player"
-import { useDispatch, togglePlay } from "../../redux"
 import { updateNowPlayingMutationFunction } from "../../helpers"
+import { useDispatch, togglePlay, updatePlay } from "../../redux"
 
 import PLAY_PLAYLIST from "./play-playlist.gql"
 import GET_PLAYLIST_NOW_PLAYING from "./get-playlist-now-playing.gql"
@@ -19,17 +19,20 @@ export const usePlayPlaylist =
 		const resetPlayer = useResetPlayer()
 
 		const [ playPlaylist, result ] =
-			useMutation<MutationData, PlaylistID>(PLAY_PLAYLIST, {
+			useMutation<PlayPlaylistData, PlaylistID>(PLAY_PLAYLIST, {
 				update: updateNowPlayingMutationFunction(({ playPlaylist: { nowPlaying } }) => nowPlaying),
 			})
 
-		const [ getQueueNowPlaying, { data, called } ] =
-			useLazyQuery<QueryData, PlaylistID>(GET_PLAYLIST_NOW_PLAYING, {
+		const { data } =
+			useQuery<GetQueueNowPlayingData, PlaylistID>(GET_PLAYLIST_NOW_PLAYING, {
 				fetchPolicy: "cache-first",
 			})
 
+		const isPlaylistNotNull =
+			!isNull(playlist)
+
 		const isNowPlaying = (
-			!isNull(playlist) &&
+			isPlaylistNotNull &&
 			!isUndefined(data) &&
 			!isNull(data.getQueue.nowPlaying) &&
 			data.getQueue.nowPlaying.isInPlaylist
@@ -37,37 +40,31 @@ export const usePlayPlaylist =
 
 		const handlePlayPlaylist =
 			() => {
-				if (playlist && !result.loading) {
+				if (isPlaylistNotNull) {
 					if (isNowPlaying) {
 						dispatch(togglePlay())
 					} else {
 						resetPlayer()
 						void playPlaylist({
-							variables: {
-								playlistID: playlist.playlistID,
-							},
+							variables: { playlistID: playlist.playlistID	},
 						})
 					}
 				}
 			}
 
 		useEffect(() => {
-			if (!isNull(playlist) && !called) {
-				void getQueueNowPlaying({
-					variables: {
-						playlistID: playlist.playlistID,
-					},
-				})
+			if (result.data) {
+				dispatch(updatePlay(true))
 			}
-		}, [playlist])
+		}, [result.data])
 
 		return [ handlePlayPlaylist, isNowPlaying, result ] as const
 	}
 
-interface MutationData {
+interface PlayPlaylistData {
 	playPlaylist: QueueNowPlaying,
 }
 
-interface QueryData {
+interface GetQueueNowPlayingData {
 	getQueue: QueueNowPlaying,
 }

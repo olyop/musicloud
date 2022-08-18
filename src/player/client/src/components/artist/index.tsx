@@ -12,12 +12,12 @@ import {
 
 import Modal from "./modal"
 import ObjectLink from "../object-link"
+import ArtistLower from "../artist-lower"
 import { useStateListStyle } from "../../redux"
 import Item, { ItemModal, InfoOptions, ImageOptions } from "../item"
 import { createObjectPath, createCatalogImageURL } from "../../helpers"
 
 import "./index.scss"
-import ArtistLower from "../artist-lower"
 
 const bem =
 	createBEM("Artist")
@@ -88,30 +88,32 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 			className={bem(className, "PaddingHalf ItemBorder")}
 		/>
 	) : (
-		<div className={bem(className, "Card Elevated")}>
-			<NavLink
-				title={artist!.name}
-				className={bem("cover")}
-				to={createObjectPath("artist", artist!.artistID)}
-				children={(
-					<Fragment>
-						<div
-							className={bem("cover-black", "FullWidthAndHeight")}
-						/>
-						<img
-							alt={artist!.name}
-							crossOrigin="anonymous"
-							className={bem("cover-image", "FullWidthAndHeight")}
-							src={createCatalogImageURL(
-								artist!.artistID,
-								"cover",
-								ImageSizes.HALF,
-								ImageDimensions.LANDSCAPE,
-							)}
-						/>
-					</Fragment>
-				)}
-			/>
+		<div ref={ref} className={bem(className, "Card Elevated")}>
+			{artist && (
+				<NavLink
+					title={artist.name}
+					className={bem("cover")}
+					to={createObjectPath("artist", artist.artistID)}
+					children={(
+						<Fragment>
+							<div
+								className={bem("cover-black", "FullWidthAndHeight")}
+							/>
+							<img
+								alt={artist.name}
+								crossOrigin="anonymous"
+								className={bem("cover-image", "FullWidthAndHeight")}
+								src={createCatalogImageURL(
+									artist.artistID,
+									"cover",
+									ImageSizes.HALF,
+									ImageDimensions.LANDSCAPE,
+								)}
+							/>
+						</Fragment>
+					)}
+				/>
+			)}
 			<Item
 				modal={modal}
 				infoOptions={info}

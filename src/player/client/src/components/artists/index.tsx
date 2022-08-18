@@ -27,14 +27,13 @@ const Artists: FC<ArtistsPropTypes> = ({
 	const listStyle = useStateListStyle()
 	const isList = alwaysList || (listStyle === SettingsListStyle.LIST)
 	return (
-		<div className={bem(className, isList && "Elevated")}>
+		<div className={bem(className, isList ? "Elevated Content" : "PaddingLeftRight")}>
 			{orderBy && (
 				<SelectOrderBy
 					orderBy={orderBy}
 					className={bem(
 						"FlexRowRight",
-						isList && "ItemBorder",
-						isList ? "PaddingHalf" : "MarginBottom",
+						isList ? "ItemBorder PaddingHalf" : "MarginBottom",
 					)}
 				/>
 			)}

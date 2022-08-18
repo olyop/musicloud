@@ -13,6 +13,7 @@ export const uploadArtist: FastifyPluginAsync =
 	async fastify => {
 		fastify.post<Route>(
 			"/artist",
+			{ onRequest: fastify.authenticate },
 			async (request, reply) => {
 				const { body } = request
 				const name = trim(body.name)

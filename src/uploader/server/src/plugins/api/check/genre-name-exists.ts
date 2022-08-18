@@ -12,6 +12,7 @@ export const checkGenreNameExists: FastifyPluginAsync =
 	async fastify => {
 		fastify.get<Route>(
 			"/genre-name-exists",
+			{ onRequest: [fastify.authenticate] },
 			async request => ({
 				exists: await exists(fastify.pg.pool)({
 					column: "name",

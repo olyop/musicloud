@@ -1,4 +1,3 @@
-import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
 
 import {
@@ -22,24 +21,22 @@ const orderBy: OrderByOptions<SettingsOrderByPlaylists> = {
 }
 
 const LibraryPlaylists: FC = () => (
-	<Head pageTitle="Playlists">
-		<Playlists orderBy={orderBy} className="Content">
-			<Feed<GetPlaylistsTotalData, PlaylistType, GetPlaylistAtIndexData>
-				settingsOrderBy="libraryPlaylists"
-				itemQuery={GET_LIBRARY_PLAYLIST_AT_INDEX}
-				itemsTotalQuery={GET_LIBRARY_PLAYLISTS_TOTAL}
-				itemDataToValue={({ getLibrary }) => getLibrary.playlistAtIndex}
-				itemsTotalDataToValue={({ getLibrary }) => getLibrary.playlistsTotal}
-				renderItem={(ref, playlist) => (
-					<Playlist
-						ref={ref}
-						playlist={playlist}
-						className="LibraryPlaylist"
-					/>
-				)}
-			/>
-		</Playlists>
-	</Head>
+	<Playlists orderBy={orderBy} className="Content">
+		<Feed<GetPlaylistsTotalData, PlaylistType, GetPlaylistAtIndexData>
+			settingsOrderBy="libraryPlaylists"
+			itemQuery={GET_LIBRARY_PLAYLIST_AT_INDEX}
+			itemsTotalQuery={GET_LIBRARY_PLAYLISTS_TOTAL}
+			itemDataToValue={({ getLibrary }) => getLibrary.playlistAtIndex}
+			itemsTotalDataToValue={({ getLibrary }) => getLibrary.playlistsTotal}
+			renderItem={(ref, playlist) => (
+				<Playlist
+					ref={ref}
+					playlist={playlist}
+					className="LibraryPlaylist"
+				/>
+			)}
+		/>
+	</Playlists>
 )
 
 interface GetPlaylistsTotalData {

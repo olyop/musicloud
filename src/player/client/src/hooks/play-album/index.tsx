@@ -1,13 +1,14 @@
+import { useEffect } from "react"
 import isNull from "lodash-es/isNull"
 import isUndefined from "lodash-es/isUndefined"
 import { AlbumID } from "@oly_op/musicloud-common/build/types"
 
 import { useQuery } from "../query"
 import { useMutation } from "../mutation"
+import { QueueNowPlaying } from "../../types"
 import { useResetPlayer } from "../reset-player"
-import { useDispatch, togglePlay } from "../../redux"
-import { PlayAlbumData, GetQueueNowPlayingData } from "./types"
 import { updateNowPlayingMutationFunction } from "../../helpers"
+import { useDispatch, togglePlay, updatePlay } from "../../redux"
 
 import PLAY_ALBUM from "./play-album.gql"
 import GET_ALBUM_NOW_PLAYING from "./get-album-now-playing.gql"
@@ -27,8 +28,11 @@ export const usePlayAlbum =
 				fetchPolicy: "cache-first",
 			})
 
+		const isAlbumNotNull =
+			!isNull(album)
+
 		const isPlaying = (
-			!isNull(album) &&
+			isAlbumNotNull &&
 			!isUndefined(data) &&
 			!isNull(data.getQueue.nowPlaying) &&
 			data.getQueue.nowPlaying.album.albumID === album.albumID
@@ -36,7 +40,7 @@ export const usePlayAlbum =
 
 		const handlePlayAlbum =
 			() => {
-				if (!result.loading && !isNull(album)) {
+				if (isAlbumNotNull) {
 					if (isPlaying) {
 						dispatch(togglePlay())
 					} else {
@@ -48,5 +52,19 @@ export const usePlayAlbum =
 				}
 			}
 
+		useEffect(() => {
+			if (result.data) {
+				dispatch(updatePlay(true))
+			}
+		}, [result.data])
+
 		return [ handlePlayAlbum, isPlaying, result ] as const
 	}
+
+interface PlayAlbumData {
+	playAlbum: QueueNowPlaying,
+}
+
+interface GetQueueNowPlayingData {
+	getQueue: QueueNowPlaying,
+}

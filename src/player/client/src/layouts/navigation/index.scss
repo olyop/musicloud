@@ -1,4 +1,10 @@
 .Navigation {
+	&__links {
+		gap: var(--space-one-half);
+		@media (max-width: 1100px) {
+			gap: var(--space-three-quart); }
+		@media (max-width: 850px) {
+			gap: var(--space-half); } }
 	&__link {
 		position: relative;
 		outline: none !important;
@@ -7,6 +13,7 @@
 		&:active {
 			background-color: transparent !important; }
 		&-button {
+			padding: 0;
 			outline: none !important;
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
@@ -14,9 +21,11 @@
 			&:focus,
 			&:active {
 				background-color: transparent !important; }
-			@media (min-width: 700px) {
+			@media (max-width: 700px) {
 				padding-left: 0;
-				padding-right: 0; } } }
+				padding-right: 0; }
+			&-icon {
+				margin-bottom: 2rem; } } }
 	&__active {
 		&::after {
 			width: 100%;

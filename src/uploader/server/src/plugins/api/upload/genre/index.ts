@@ -18,6 +18,7 @@ export const uploadGenre: FastifyPluginAsync =
 	async fastify => {
 		fastify.post<Route>(
 			"/genre",
+			{ onRequest: fastify.authenticate },
 			async (request, reply) => {
 				const name = trim(request.body.name)
 

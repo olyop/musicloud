@@ -1,10 +1,11 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
+import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
 
-import update from "./update"
+import { Playlist } from "../../types"
 import { useMutation } from "../mutation"
-import { Data, Vars, Input } from "./types"
+
 import CREATE_PLAYLIST from "./create-playlist.gql"
 
 export const useCreatePlaylist =
@@ -12,10 +13,7 @@ export const useCreatePlaylist =
 		const navigate = useNavigate()
 
 		const [ createPlaylist, result ] =
-			useMutation<Data, Vars>(
-				CREATE_PLAYLIST,
-				{ update },
-			)
+			useMutation<Data, Vars>(CREATE_PLAYLIST)
 
 		const handleCreatePlaylist =
 			(input: Input) => {
@@ -31,3 +29,13 @@ export const useCreatePlaylist =
 
 		return [ handleCreatePlaylist, result ] as const
 	}
+
+type Input =
+	Pick<Playlist, "title" | "privacy">
+
+type Vars =
+	InterfaceWithInput<Input>
+
+interface Data {
+	createPlaylist: Playlist,
+}

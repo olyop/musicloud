@@ -27,26 +27,4 @@
 		height: var(--button-dimension);
 		&-link {
 			height: 100%;
-			margin-right: var(--gap); } }
-	&__info {
-		flex-grow: 1;
-		display: flex;
-		overflow-x: hidden;
-		overflow-y: hidden;
-		align-self: stretch;
-		align-items: stretch;
-		justify-content: space-between;
-		height: var(--button-dimension);
-		&-left {
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-			&-text {
-				white-space: nowrap;
-				text-overflow: ellipsis; } }
-		&-right {
-			align-self: center;
-			white-space: nowrap;
-			text-overflow: clip;
-			@media (max-width: 800px) {
-				display: none; } } } }
+			margin-right: var(--gap); } } }

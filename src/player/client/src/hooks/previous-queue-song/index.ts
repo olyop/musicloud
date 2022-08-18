@@ -1,17 +1,17 @@
 import { useEffect } from "react"
 
 import { useMutation } from "../mutation"
-import { useKeyPress } from "../key-press"
 import { QueueNowPlaying } from "../../types"
 import { useResetPlayer } from "../reset-player"
+import { updatePlay, useDispatch } from "../../redux"
 import { updateNowPlayingMutationFunction } from "../../helpers"
 
 import PREVIOUS_QUEUE_SONG from "./previous-queue-song.gql"
 
 export const usePreviousQueueSong =
 	() => {
+		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
-		const previousPress = useKeyPress("MediaTrackPrevious")
 
 		const [ previousQueueSong, result ] =
 			useMutation<Data>(PREVIOUS_QUEUE_SONG, {
@@ -27,10 +27,10 @@ export const usePreviousQueueSong =
 			}
 
 		useEffect(() => {
-			if (previousPress) {
-				void handlePreviousClick()
+			if (result.data) {
+				dispatch(updatePlay(true))
 			}
-		}, [previousPress])
+		}, [result.data])
 
 		return [ handlePreviousClick, result ] as const
 	}

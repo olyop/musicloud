@@ -34,8 +34,8 @@ const Sidebar: FC = () => {
 				<div>
 					<div className={bem("content-header", "FlexRow")}>
 						<Button
-							icon="close"
 							transparent
+							icon="close"
 							text="Close"
 							onClick={handleClose}
 							className={bem("content-header-close")}
@@ -48,138 +48,107 @@ const Sidebar: FC = () => {
 							title="Browse"
 							onClick={handleClose}
 							className="BorderTop PaddingTopHalf"
-							children={
-								({ isActive }) => (
-									<Button
-										icon="home"
-										text="Browse"
-										transparent={!isActive}
-										className={bem("route-button")}
-									/>
-								)
-							}
+							children={({ isActive }) => (
+								<Button
+									icon="home"
+									text="Browse"
+									transparent={!isActive}
+									className={bem("route-button")}
+								/>
+							)}
 						/>
 						<NavLink
 							title="Top 100"
 							onClick={handleClose}
 							to="/top-one-hundred-songs"
-							children={
-								({ isActive }) => (
-									<Button
-										icon="list"
-										text="Top 100"
-										transparent={!isActive}
-										className={bem("route-button-sub", "route-button")}
-									/>
-								)
-							}
+							children={({ isActive }) => (
+								<Button
+									icon="list"
+									text="Top 100"
+									transparent={!isActive}
+									className={bem("route-button-sub", "route-button")}
+								/>
+							)}
 						/>
 						<NavLink
 							to="/library"
 							title="Library"
 							onClick={handleClose}
 							className="BorderTop MarginTopHalf PaddingTopHalf"
-							children={
-								({ isActive }) => (
-									<Button
-										text="Library"
-										icon="library_music"
-										transparent={!isActive}
-										className={bem("route-button")}
-									/>
-								)
-							}
+							children={({ isActive }) => (
+								<Button
+									text="Library"
+									icon="library_music"
+									transparent={!isActive}
+									className={bem("route-button")}
+								/>
+							)}
 						/>
 						<NavLink
 							to="/library/songs"
 							title="Library Songs"
 							onClick={handleClose}
-							children={
-								({ isActive }) => (
-									<Button
-										text="Songs"
-										icon="audiotrack"
-										transparent={!isActive}
-										className={bem("route-button-sub", "route-button")}
-									/>
-								)
-							}
-						/>
-						<NavLink
-							to="/library/artists"
-							onClick={handleClose}
-							title="Library Artists"
-							children={
-								({ isActive }) => (
-									<Button
-										icon="person"
-										text="Artists"
-										transparent={!isActive}
-										className={bem("route-button-sub", "route-button")}
-									/>
-								)
-							}
+							children={({ isActive }) => (
+								<Button
+									text="Songs"
+									icon="audiotrack"
+									transparent={!isActive}
+									className={bem("route-button-sub", "route-button")}
+								/>
+							)}
 						/>
 						<NavLink
 							to="/library/albums"
 							onClick={handleClose}
 							title="Library Albums"
-							children={
-								({ isActive }) => (
-									<Button
-										icon="album"
-										text="Albums"
-										transparent={!isActive}
-										className={bem("route-button-sub", "route-button")}
-									/>
-								)
-							}
-						/>
-						<NavLink
-							onClick={handleClose}
-							to="/library/playlists"
-							title="Library Playlists"
-							children={
-								({ isActive }) => (
-									<Button
-										text="Playlists"
-										icon="queue_music"
-										transparent={!isActive}
-										className={bem("route-button-sub", "route-button")}
-									/>
-								)
-							}
+							children={({ isActive }) => (
+								<Button
+									icon="album"
+									text="Albums"
+									transparent={!isActive}
+									className={bem("route-button-sub", "route-button")}
+								/>
+							)}
 						/>
 						<NavLink
 							onClick={handleClose}
 							to="/library/genres"
 							title="Library Genres"
-							children={
-								({ isActive }) => (
-									<Button
-										icon="list"
-										text="Genres"
-										transparent={!isActive}
-										className={bem("route-button-sub", "route-button")}
-									/>
-								)
-							}
+							children={({ isActive }) => (
+								<Button
+									icon="list"
+									text="Genres"
+									transparent={!isActive}
+									className={bem("route-button-sub", "route-button")}
+								/>
+							)}
+						/>
+						<NavLink
+							to="/library/artists"
+							onClick={handleClose}
+							title="Library Artists"
+							children={({ isActive }) => (
+								<Button
+									icon="person"
+									text="Artists"
+									transparent={!isActive}
+									className={bem("route-button-sub", "route-button")}
+								/>
+							)}
 						/>
 						<NavLink
 							onClick={handleClose}
-							to="/library/albums"
-							title="Library Albums"
-							className="BorderBottom"
-							children={
-								({ isActive }) => (
-									<Button
-										icon="album"
-										text="Albums"
-										transparent={!isActive}
-										className={bem("route-button-sub", "route-button")}
-									/>
-								)
-							}
+							to="/library/playlists"
+							title="Library Playlists"
+							className="BorderBottom PaddingBottomHalf"
+							children={({ isActive }) => (
+								<Button
+									text="Playlists"
+									icon="queue_music"
+									transparent={!isActive}
+									className={bem("route-button-sub", "route-button")}
+								/>
+							)}
 						/>
 						<a
 							title="About"

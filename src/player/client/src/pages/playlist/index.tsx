@@ -10,6 +10,7 @@ import { addDashesToUUID } from "@oly_op/uuid-dashes"
 import { PlaylistID } from "@oly_op/musicloud-common/build/types"
 
 import {
+	useShare,
 	useQuery,
 	useMutation,
 	useJWTPayload,
@@ -27,9 +28,10 @@ import PrivacyButton from "./privacy-button"
 import Buttons from "../../components/buttons"
 import InLibraryButton from "./in-library-button"
 import ObjectLink from "../../components/object-link"
-import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
 import { Playlist, SongPlaylistIndex } from "../../types"
 import { determinePlural, createObjectPath } from "../../helpers"
+
+import GET_PLAYLIST_PAGE from "./get-playlist-page.gql"
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql"
 
 const PlaylistPage: FC = () => {
@@ -37,6 +39,9 @@ const PlaylistPage: FC = () => {
 	const { userID } = useJWTPayload()
 	const params = useParams<keyof PlaylistID>()
 	const playlistID = addDashesToUUID(params.playlistID!)
+
+	const [ share, shareText ] =
+		useShare("Share")
 
 	const variables: PlaylistID = { playlistID }
 
@@ -73,16 +78,6 @@ const PlaylistPage: FC = () => {
 				}
 			}
 
-	const handleShare =
-		() => {
-			if ("share" in navigator && data) {
-				void navigator.share({
-					title: data.getPlaylistByID.title,
-					url: createObjectPath("playlist", data.getPlaylistByID.playlistID),
-				})
-			}
-		}
-
 	if (error?.message === "Playlist does not exist") {
 		return (
 			<p className="ParagraphOneBold Padding">
@@ -94,6 +89,15 @@ const PlaylistPage: FC = () => {
 	if (data) {
 		const playlist = data.getPlaylistByID
 		const { title, user, dateCreated, privacy, songs, songsTotal, playlistIndex } = playlist
+
+		const handleShare =
+			() => {
+				share({
+					title,
+					url: createObjectPath("artist", playlistID),
+				})
+			}
+
 		return (
 			<Head pageTitle={title}>
 				<Page>
@@ -164,7 +168,7 @@ const PlaylistPage: FC = () => {
 							)}
 							<Button
 								icon="share"
-								text="Share"
+								text={shareText}
 								onClick={handleShare}
 							/>
 						</Buttons>

@@ -14,7 +14,7 @@ import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../re
 export const useQuery = <Data, Vars extends OperationVariables = OperationVariables>(
 	query: DocumentNode,
 	{ queryID, hideLoading = false, ...options }: Options<Data, Vars> = {},
-): Omit<QueryResult<Data, Vars>, "loading"> => {
+): QueryResult<Data, Vars> => {
 	const dispatch = useDispatch()
 
 	const id =
@@ -44,7 +44,10 @@ export const useQuery = <Data, Vars extends OperationVariables = OperationVariab
 		}
 	}, [result.error])
 
-	return result
+	return {
+		...result,
+		loading,
+	}
 }
 
 interface Options<Data, Vars> extends QueryHookOptions<Data, Vars> {

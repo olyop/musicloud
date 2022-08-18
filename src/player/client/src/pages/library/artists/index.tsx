@@ -1,8 +1,8 @@
-import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
 
 import {
 	OrderByOptions,
+	SettingsListStyle,
 	Artist as ArtistType,
 	SettingsOrderByArtists,
 	LibraryArtistsOrderByField,
@@ -22,25 +22,26 @@ const orderBy: OrderByOptions<SettingsOrderByArtists> = {
 	fields: Object.keys(LibraryArtistsOrderByField),
 }
 
-const LibrarySongs: FC = () => (
-	<Head pageTitle="Artists">
-		<Artists orderBy={orderBy} className="Content Elevated">
-			<Feed<GetArtistsTotalData, ArtistType, GetArtistAtIndexData>
-				settingsOrderBy="libraryArtists"
-				itemQuery={GET_LIBRARY_ARTIST_AT_INDEX}
-				itemsTotalQuery={GET_LIBRARY_ARTISTS_TOTAL}
-				itemDataToValue={({ getLibrary }) => getLibrary.artistAtIndex}
-				itemsTotalDataToValue={({ getLibrary }) => getLibrary.artistsTotal}
-				renderItem={(ref, artist) => (
-					<Artist
-						ref={ref}
-						artist={artist}
-						className="LibraryArtist PaddingHalf ItemBorder"
-					/>
-				)}
-			/>
-		</Artists>
-	</Head>
+const LibraryArtists: FC = () => (
+	<Artists orderBy={orderBy}>
+		<Feed<GetArtistsTotalData, ArtistType, GetArtistAtIndexData>
+			settingsOrderBy="libraryArtists"
+			itemQuery={GET_LIBRARY_ARTIST_AT_INDEX}
+			itemsTotalQuery={GET_LIBRARY_ARTISTS_TOTAL}
+			itemDataToValue={({ getLibrary }) => getLibrary.artistAtIndex}
+			itemsTotalDataToValue={({ getLibrary }) => getLibrary.artistsTotal}
+			renderItem={(ref, artist, listStyle) => (
+				<Artist
+					ref={ref}
+					artist={artist}
+					className={(listStyle === SettingsListStyle.LIST ?
+						"LibraryArtist PaddingHalf ItemBorder" :
+						undefined
+					)}
+				/>
+			)}
+		/>
+	</Artists>
 )
 
 interface GetArtistsTotalData {
@@ -55,4 +56,4 @@ interface GetArtistAtIndexData {
 	},
 }
 
-export default LibrarySongs
+export default LibraryArtists

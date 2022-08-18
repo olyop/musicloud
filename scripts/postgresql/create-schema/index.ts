@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { Pool } from "pg"
-import { PG_POOL_OPTIONS } from "@oly_op/musicloud-common"
+import { PG_POOL_OPTIONS } from "@oly_op/musicloud-common/build/server-options"
 
 const SQL_PATH =
 	path.join(process.cwd(), "src", "sql")
@@ -42,15 +42,6 @@ const files = [
 const pool =
 	new Pool(PG_POOL_OPTIONS)
 
-const main =
-	async () => {
-		try {
-			for (const file of files) {
-				console.log(await pool.query(file))
-			}
-		} catch (error) {
-			console.error(error)
-		}
-	}
-
-void main()
+for (const file of files) {
+	console.log(await pool.query(file))
+}

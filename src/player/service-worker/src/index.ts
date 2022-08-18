@@ -17,9 +17,9 @@ declare const self: ServiceWorkerGlobalScope
 // eslint-disable-next-line no-underscore-dangle
 self.__WB_DISABLE_DEV_LOGS = true
 
-await self.skipWaiting()
-
 clientsClaim()
+
+await self.skipWaiting()
 
 pageCache()
 

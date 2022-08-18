@@ -28,7 +28,7 @@ const Genres: FC<PropTypes> = ({
 				}}
 			/>
 		)}
-		<List>
+		<List alwaysList>
 			{(isFunction(children) ?
 				(isUndefined(genres) ?
 					genres :

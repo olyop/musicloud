@@ -8,14 +8,16 @@ import routes from "./routes"
 import Page from "../../layouts/page"
 import Modal from "../../components/modal"
 import Window from "../../components/window"
+import { QueueNowPlaying } from "../../types"
 import Navigation from "../../layouts/navigation"
+import { updatePlay, useDispatch } from "../../redux"
 import LibraryCreatePlaylist from "./create-playlist"
 import { useMutation, useResetPlayer } from "../../hooks"
+import { updateNowPlayingMutationFunction } from "../../helpers"
 
 import SHUFFLE_LIBRARY from "./shuffle-library.gql"
 
 import "./index.scss"
-import { updatePlay, useDispatch } from "../../redux"
 
 const bem =
 	createBEM("Library")
@@ -28,7 +30,9 @@ const Library: FC = () => {
 		useState(false)
 
 	const [ libraryShuffle ] =
-		useMutation(SHUFFLE_LIBRARY)
+		useMutation<ShuffleLibraryData>(SHUFFLE_LIBRARY, {
+			update: updateNowPlayingMutationFunction(({ shuffleLibrary }) => shuffleLibrary.nowPlaying),
+		})
 
 	const handleCreatePlaylistModalOpen =
 		() => setCreatePlaylistModal(true)
@@ -39,8 +43,9 @@ const Library: FC = () => {
 	const handleLibraryShuffle =
 		() => {
 			resetPlayer()
-			void libraryShuffle()
-			dispatch(updatePlay(true))
+			void libraryShuffle().then(() => (
+				dispatch(updatePlay(true))
+			))
 		}
 
 	return (
@@ -70,7 +75,7 @@ const Library: FC = () => {
 												icon="playlist_add"
 												title="Create Playlist"
 												onClick={handleCreatePlaylistModalOpen}
-												text={width > 1000 ? "Playlist" : undefined}
+												text={width > 1100 ? "Playlist" : undefined}
 											/>
 											<Modal
 												className="Padding"
@@ -86,7 +91,7 @@ const Library: FC = () => {
 												icon="shuffle"
 												title="Shuffle"
 												onClick={handleLibraryShuffle}
-												text={width > 1000 ? "Shuffle" : undefined}
+												text={width > 1100 ? "Shuffle" : undefined}
 											/>
 										</Fragment>
 									)}
@@ -111,6 +116,10 @@ const Library: FC = () => {
 			/>
 		</Head>
 	)
+}
+
+interface ShuffleLibraryData {
+	shuffleLibrary: QueueNowPlaying,
 }
 
 export default Library

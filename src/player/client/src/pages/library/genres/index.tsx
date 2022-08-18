@@ -1,4 +1,3 @@
-import { Head } from "@oly_op/react-head"
 import { createElement, FC } from "react"
 
 import Feed from "../../../components/feed"
@@ -12,24 +11,22 @@ import GET_LIBRARY_GENRE_AT_INDEX from "./get-library-genre-at-index.gql"
 import "./index.scss"
 
 const LibraryGenres: FC = () => (
-	<Head pageTitle="Genres">
-		<Genres orderBy className="Content Elevated">
-			<Feed<GetGenresTotalData, GenreType, GetGenreAtIndexData>
-				settingsOrderBy="genres"
-				itemQuery={GET_LIBRARY_GENRE_AT_INDEX}
-				itemsTotalQuery={GET_LIBRARY_GENRES_TOTAL}
-				itemDataToValue={({ getLibrary }) => getLibrary.genreAtIndex}
-				itemsTotalDataToValue={({ getLibrary }) => getLibrary.genresTotal}
-				renderItem={(ref, genre) => (
-					<Genre
-						ref={ref}
-						genre={genre}
-						className="LibraryGenre PaddingHalf ItemBorder"
-					/>
-				)}
-			/>
-		</Genres>
-	</Head>
+	<Genres orderBy className="Content Elevated">
+		<Feed<GetGenresTotalData, GenreType, GetGenreAtIndexData>
+			settingsOrderBy="genres"
+			itemQuery={GET_LIBRARY_GENRE_AT_INDEX}
+			itemsTotalQuery={GET_LIBRARY_GENRES_TOTAL}
+			itemDataToValue={({ getLibrary }) => getLibrary.genreAtIndex}
+			itemsTotalDataToValue={({ getLibrary }) => getLibrary.genresTotal}
+			renderItem={(ref, genre) => (
+				<Genre
+					ref={ref}
+					genre={genre}
+					className="LibraryGenre PaddingHalf ItemBorder"
+				/>
+			)}
+		/>
+	</Genres>
 )
 
 interface GetGenresTotalData {

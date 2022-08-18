@@ -14,6 +14,7 @@ import LibraryPlaylists from "./playlists"
 const routes: Route[] = [{
 	path: "",
 	icon: "home",
+	name: "Home",
 	underline: false,
 	routeID: uniqueID(),
 	element: <LibraryHome/>,

@@ -42,6 +42,7 @@ const HomePage: FC = () => {
 									{albums => albums.map(
 										album => (
 											<Album
+												alwaysList
 												album={album}
 												hideInLibrary
 												key={album.albumID}

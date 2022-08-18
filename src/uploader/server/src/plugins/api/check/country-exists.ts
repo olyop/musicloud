@@ -21,6 +21,7 @@ export const checkCountryExists: FastifyPluginAsync =
 	async fastify => {
 		fastify.get<Route>(
 			"/country-exists",
+			{ onRequest: fastify.authenticate },
 			request => ({
 				exists: includes(countriesNames, request.query.name),
 			}),

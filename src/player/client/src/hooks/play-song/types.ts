@@ -6,11 +6,11 @@ import { QueueNowPlaying, Song } from "../../types"
 export type Input =
 	Song | SongID | null
 
-export interface QueryData {
+export interface GetQueueNowPlayingData {
 	getQueue: QueueNowPlaying,
 }
 
-export interface MutationData {
+export interface PlaySongData {
 	playSong: QueueNowPlaying,
 }
 
@@ -19,7 +19,7 @@ export type UpdateIsOptimistic =
 
 type MutationUpdaterFunctionReturn =
 	MutationUpdaterFunction<
-		MutationData,
+		PlaySongData,
 		SongID,
 		unknown,
 		ApolloCache<unknown>

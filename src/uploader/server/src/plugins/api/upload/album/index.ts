@@ -43,6 +43,7 @@ export const uploadAlbum: FastifyPluginAsync =
 	async fastify => {
 		fastify.post<Route>(
 			"/album",
+			{ onRequest: fastify.authenticate },
 			async (request, reply) => {
 				const { body } = request
 				const { cover, released } = body

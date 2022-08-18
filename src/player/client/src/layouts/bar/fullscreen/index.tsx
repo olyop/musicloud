@@ -1,14 +1,14 @@
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { createElement, useEffect, FC } from "react"
-import { AudioPlayerControls } from "react-use-audio-player"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import Progress from "../progress"
 import Controls from "../controls"
+import { Handler } from "../../../types"
 import { useKeyPress } from "../../../hooks"
 import Modal from "../../../components/modal"
-import { Song, Handler } from "../../../types"
+import { BarCommonPropTypes } from "../types"
 import SongTitle from "../../../components/song-title"
 import ObjectLinks from "../../../components/object-links"
 import FeaturingArtists from "../../../components/featuring-artists"
@@ -16,17 +16,13 @@ import { createObjectPath, createCatalogImageURL } from "../../../helpers"
 
 import "./index.scss"
 
-const bem =
-	createBEM("BarFullscreen")
+const bem =	createBEM("BarFullscreen")
 
 const BarFullscreen: FC<PropTypes> = ({
 	open,
-	song,
-	ready,
-	error,
+	audio,
 	onClose,
-	hasHitPlay,
-	isNowPlaying,
+	nowPlaying,
 }) => {
 	const escapePress = useKeyPress("Escape")
 
@@ -49,14 +45,14 @@ const BarFullscreen: FC<PropTypes> = ({
 				title="Close Player"
 				className={bem("close")}
 			/>
-			{song && (
+			{nowPlaying && (
 				<div className={bem("content", "FlexColumn")}>
 					<img
-						alt={song.album.title}
+						alt={nowPlaying.album.title}
 						crossOrigin="anonymous"
 						className={bem("content-cover", "Card")}
 						src={createCatalogImageURL(
-							song.album.albumID,
+							nowPlaying.album.albumID,
 							"cover",
 							ImageSizes.FULL,
 							ImageDimensions.SQUARE,
@@ -65,20 +61,20 @@ const BarFullscreen: FC<PropTypes> = ({
 					<div className="FlexColumnGapHalf">
 						<h1 className={bem("content-title", "content-text")}>
 							<SongTitle
-								song={song}
+								song={nowPlaying}
 								onClick={onClose}
 							/>
 						</h1>
 						<h3 className={bem("content-artists", "content-text")}>
 							<FeaturingArtists
-								song={song}
+								song={nowPlaying}
 								onClick={onClose}
 							/>
 						</h3>
 						<h2 className={bem("content-genres", "content-text")}>
 							<ObjectLinks
 								onClick={onClose}
-								links={song.genres.map(({ genreID, name }) => ({
+								links={nowPlaying.genres.map(({ genreID, name }) => ({
 									text: name,
 									path: createObjectPath("genre", genreID),
 								}))}
@@ -86,15 +82,13 @@ const BarFullscreen: FC<PropTypes> = ({
 						</h2>
 					</div>
 					<Progress
-						ready={ready}
-						isNowPlaying={isNowPlaying}
+						audio={audio}
+						nowPlaying={nowPlaying}
 						className={bem("content-progress")}
 					/>
 					<Controls
-						ready={ready}
-						error={error}
-						hasHitPlay={hasHitPlay}
-						isNowPlaying={isNowPlaying}
+						audio={audio}
+						nowPlaying={nowPlaying}
 						className={bem("content-controls")}
 						playButtonClassName={bem("content-controls-play")}
 					/>
@@ -104,14 +98,9 @@ const BarFullscreen: FC<PropTypes> = ({
 	)
 }
 
-interface PropTypes {
+interface PropTypes extends BarCommonPropTypes {
 	open: boolean,
-	ready: boolean,
 	onClose: Handler,
-	song?: Song | null,
-	hasHitPlay: boolean,
-	isNowPlaying: boolean,
-	error: AudioPlayerControls["error"],
 }
 
 export default BarFullscreen

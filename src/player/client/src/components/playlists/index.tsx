@@ -38,7 +38,7 @@ const Playlists: FC<PropTypes> = ({
 				className="PaddingHalf ItemBorder FlexRowRight"
 			/>
 		)}
-		<List>
+		<List alwaysList>
 			{(isFunction(children) ?
 				(isUndefined(playlists) ?
 					playlists :

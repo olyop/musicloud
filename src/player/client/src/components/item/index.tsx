@@ -16,6 +16,7 @@ import {
 import PlayButton from "./play-button"
 
 import "./index.scss"
+import ItemInfo from "./info"
 
 const bem =
 	createBEM("Item")
@@ -34,8 +35,8 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		imageOptions,
 		infoClassName,
 		iconClassName,
-		rightClassName,
 		shareIcon = false,
+		infoFadeInFromRight = false,
 	} = propTypes
 
 	const [ showModal, setShowModal ] =
@@ -103,37 +104,11 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 				</Fragment>
 			)}
 			{infoOptions && (
-				<div className={bem(infoClassName, "info", "MarginRightHalf")}>
-					<div
-						className={bem("info-left")}
-						style={{
-							justifyContent:
-								infoOptions.lowerLeft ?
-									undefined :
-									"center",
-						}}
-					>
-						<p
-							children={infoOptions.upperLeft}
-							className={bem("info-left-text", "ParagraphOneBold")}
-						/>
-						{infoOptions.lowerLeft && (
-							<p
-								children={infoOptions.lowerLeft}
-								className={bem("info-left-text", "ParagraphTwo OverflowHidden")}
-							/>
-						)}
-					</div>
-					{(infoOptions.rightLeft || infoOptions.rightRight) && (
-						<p className={bem(rightClassName, "info-right", "ParagraphTwo LightColor")}>
-							{infoOptions.rightLeft}
-							{(infoOptions.rightLeft && infoOptions.rightRight) && (
-								<span className="MarginLeftRightQuart">&#8226;</span>
-							)}
-							{infoOptions.rightRight}
-						</p>
-					)}
-				</div>
+				<ItemInfo
+					info={infoOptions}
+					className={infoClassName}
+					fadeInFromRight={infoFadeInFromRight}
+				/>
 			)}
 			{modal && (
 				<Button

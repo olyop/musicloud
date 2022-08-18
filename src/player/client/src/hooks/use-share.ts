@@ -3,8 +3,9 @@ import { ServicesNames } from "@oly_op/musicloud-common/build/types"
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url"
 
 export const useShare =
-	() => {
-		const [ text, setText ] = useState<string | null>(null)
+	(defaultText?: string) => {
+		const [ text, setText ] =
+			useState<string | null>(defaultText || null)
 
 		const handler =
 			(data: ShareData) => {

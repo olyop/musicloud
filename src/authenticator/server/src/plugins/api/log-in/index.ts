@@ -34,10 +34,10 @@ export const logIn: FastifyPluginAsync =
 			async request => {
 				const { password, emailAddress } = request.body
 
-				const doesEmailAddressExsists =
+				const doesEmailAddressExists =
 					await emailAddressExists(fastify.pg.pool)({ emailAddress })
 
-				if (doesEmailAddressExsists) {
+				if (doesEmailAddressExists) {
 					const user =
 						await getUserFromEmailAddress(fastify.pg.pool)({ emailAddress })
 
