@@ -2,10 +2,6 @@ import { DOMAIN_NAME } from "./metadata"
 import { AccessToken, ServicesNames } from "./types"
 import { IS_DEVELOPMENT, IS_TESTING, USE_HTTPS } from "./globals"
 
-const DOMAIN =
-	IS_DEVELOPMENT || IS_TESTING ?
-		process.env.HOST : DOMAIN_NAME
-
 const determineDevelopmentPort =
 	({ service }: ServiceOptions) => {
 		if (service === "player") {
@@ -17,7 +13,7 @@ const determineDevelopmentPort =
 		}
 	}
 
-const determineTestingPort =
+const determinePort =
 	({ service }: ServiceOptions) => {
 		if (service === "player") {
 			return process.env.PLAYER_SERVER_PORT
@@ -28,26 +24,24 @@ const determineTestingPort =
 		}
 	}
 
-const determinePort =
-	({ service }: ServiceOptions) => (
-		IS_DEVELOPMENT ?
-			determineDevelopmentPort({ service }) :
-			determineTestingPort({ service })
-	)
-
 export const determineServiceURL =
 	({ service, redirect, accessToken }: DetermineServiceURLOptions) => {
 		let url: URL
 
 		const protocol =
-			IS_DEVELOPMENT ?
+			(IS_DEVELOPMENT || IS_TESTING) ?
 				(USE_HTTPS ? "https" : "http") :
 				"https"
 
+		const port =
+			IS_DEVELOPMENT ?
+				determineDevelopmentPort({ service }) :
+				determinePort({ service })
+
 		if (IS_DEVELOPMENT || IS_TESTING) {
-			url = new URL(`${protocol}://${DOMAIN}:${determinePort({ service })}`)
+			url = new URL(`${protocol}://${process.env.HOST}:${port}`)
 		} else {
-			url = new URL(`${protocol}://${service}.${DOMAIN}`)
+			url = new URL(`${protocol}://${service}.${DOMAIN_NAME}`)
 		}
 
 		if (accessToken) {

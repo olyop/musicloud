@@ -1,3 +1,4 @@
+import isEmpty from "lodash-es/isEmpty"
 import { createBEM } from "@oly_op/bem"
 import { Head } from "@oly_op/react-head"
 import Button from "@oly_op/react-button"
@@ -11,6 +12,7 @@ import Modal, {
 
 import Page from "../../layouts/page"
 import { useMutation, useSignOut } from "../../hooks"
+import Input, { InputOnChange } from "../../components/input"
 
 import DELETE_USER from "./delete-user.gql"
 import CHANGE_PASSWORD from "./change-password.gql"
@@ -26,24 +28,37 @@ const ManageAccount: FC = () => {
 	const [ deleteUserModal, setDeleteUserModal ] =
 		useState(false)
 
-	const [ deleteUser, { data } ] =
+	const [ changePasswordModal, setChangePasswordModal ] =
+		useState(false)
+
+	const [ newPassword, setNewPassword ] =
+		useState("")
+
+	const [ deleteUser, deleteUserResult ] =
 		useMutation(DELETE_USER)
 
-	const [ changePassword ] =
+	const [ changePassword, changePasswordResult ] =
 		useMutation(CHANGE_PASSWORD)
 
 	const handleDeleteUser =
 		() => {
-			void deleteUser()
+			if (!deleteUserResult.loading) {
+				void deleteUser()
+			}
 		}
 
-	const handleChangePassword =
+	const handleNewPasswordChange: InputOnChange =
+		value => setNewPassword(value)
+
+	const handleChangePasswordSubmit =
 		() => {
-			void changePassword({
-				variables: {
-					password: "password",
-				},
-			})
+			if (!changePasswordResult.loading && !isEmpty(newPassword)) {
+				void changePassword({
+					variables: {
+						password: newPassword,
+					},
+				})
+			}
 		}
 
 	const handleDeleteUserModalOpen =
@@ -52,21 +67,66 @@ const ManageAccount: FC = () => {
 	const handleDeleteUserModalClose =
 		() => setDeleteUserModal(false)
 
+	const handleChangePasswordModalOpen =
+		() => setChangePasswordModal(true)
+
+	const handleChangePasswordModalClose =
+		() => {
+			setNewPassword("")
+			setChangePasswordModal(false)
+		}
+
 	useEffect(() => {
-		if (data) {
+		if (deleteUserResult.data) {
 			signOut()
 		}
-	}, [data])
+	}, [deleteUserResult.data])
+
+	useEffect(() => {
+		if (changePasswordResult.data) {
+			handleChangePasswordModalClose()
+		}
+	}, [changePasswordResult.data])
 
 	return (
 		<Head pageTitle="Manage Account">
 			<Page>
-				<div className={bem("", "ContentPaddingTopBottom FlexColumnGapHalf")}>
+				<div className={bem("", "Content PaddingTopBottom FlexColumnGapHalf")}>
 					<Button
 						icon="password"
 						text="Change Password"
-						onClick={handleChangePassword}
+						onClick={handleChangePasswordModalOpen}
 					/>
+					<Modal open={changePasswordModal} onClose={handleChangePasswordModalClose} className="Padding">
+						<h1 className="HeadingFive MarginBottom">
+							Change Password
+						</h1>
+						<Input
+							tabIndex={1}
+							type="password"
+							name="Password"
+							placeholder="Password"
+							value={newPassword}
+							className="MarginBottom"
+							inputID="addToPlaylistTitle"
+							onChange={handleNewPasswordChange}
+						/>
+						<div className="FlexRowGapHalf">
+							<Button
+								icon="edit"
+								tabIndex={2}
+								text="Submit"
+								onClick={handleChangePasswordSubmit}
+							/>
+							<Button
+								transparent
+								icon="close"
+								text="Close"
+								tabIndex={3}
+								onClick={handleChangePasswordModalClose}
+							/>
+						</div>
+					</Modal>
 					<Button
 						text="Delete Account"
 						icon="manage_accounts"

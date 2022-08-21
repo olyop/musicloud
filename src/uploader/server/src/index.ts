@@ -1,24 +1,18 @@
-import Fastify from "fastify"
 import cors from "@fastify/cors"
 import helmet from "@fastify/helmet"
 import compress from "@fastify/compress"
 import serveStatic from "@fastify/static"
 import multiPart from "@fastify/multipart"
 import rateLimit from "@fastify/rate-limit"
-import { readFile } from "node:fs/promises"
 import { ServicesNames } from "@oly_op/musicloud-common/build/types"
+import { createFastify } from "@oly_op/musicloud-common/build/create-fastify"
 import { FASTIFY_HELMET_OPTIONS } from "@oly_op/musicloud-common/build/server-options"
 import { createFastifyCORSOptions } from "@oly_op/musicloud-common/build/create-fastify-cors-options"
-import { createFastifyServerOptions } from "@oly_op/musicloud-common/build/create-fastify-server-options"
 
 import { jwt, api, services, serveClient } from "./plugins"
-import { FASTIFY_STATIC_OPTIONS, FASTIFY_LISTEN_OPTIONS, FASTIFY_MULTIPART_OPTIONS } from "./globals"
+import { FASTIFY_STATIC_OPTIONS, FASTIFY_LISTEN_OPTIONS, FASTIFY_MULTIPART_OPTIONS } from "./options"
 
-const fastify =
-	Fastify(createFastifyServerOptions({
-		cert: await readFile(process.env.TLS_CERTIFICATE_PATH),
-		key: await readFile(process.env.TLS_CERTIFICATE_KEY_PATH),
-	}))
+const fastify = await createFastify()
 
 await fastify.register(rateLimit)
 await fastify.register(helmet, FASTIFY_HELMET_OPTIONS)

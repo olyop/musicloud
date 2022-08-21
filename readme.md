@@ -49,7 +49,7 @@ ALGOLIA_SEARCH_API_KEY=""
 If you want to use https in development, sign you're own certificate with `mkcert` using this [Guide](https://web.dev/how-to-use-local-https/) and set these environment variables:
 
 ```properties
-USE_HTTPS=true
+HTTPS=true
 TLS_CERTIFICATE_PATH=""
 TLS_CERTIFICATE_KEY_PATH=""
 ```

@@ -8,10 +8,6 @@
 	&__link {
 		position: relative;
 		outline: none !important;
-		&:hover,
-		&:focus,
-		&:active {
-			background-color: transparent !important; }
 		&-button {
 			padding: 0;
 			outline: none !important;
@@ -25,12 +21,17 @@
 				padding-left: 0;
 				padding-right: 0; }
 			&-icon {
-				margin-bottom: 2rem; } } }
-	&__active {
-		&::after {
-			width: 100%;
-			content: "";
-			height: 3rem;
-			bottom: -3rem;
-			position: absolute;
-			background-color: var(--text-color); } } }
+				margin-bottom: 2rem; }
+			&-children {
+				transition: var(--transition-duration) color; } }
+		&-active {
+			&::after {
+				width: 100%;
+				content: "";
+				height: 3rem;
+				bottom: -3rem;
+				position: absolute;
+				background-color: var(--text-color); } }
+		&:hover &-button-children,
+		&:focus &-button-children {
+			color: var(--text-color-light); } } }

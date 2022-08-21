@@ -1,4 +1,5 @@
 .env
+dist
 build
 node_modules
 src/common/build

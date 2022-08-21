@@ -1,6 +1,6 @@
 {
   "license": "MIT",
-  "version": "1.1.118",
+  "version": "1.1.126",
   "description": "musicloud-common",
   "name": "@oly_op/musicloud-common",
   "homepage": "https://github.com/olyop/musicloud",
@@ -39,6 +39,10 @@
       "types": "./build/server-options.d.ts",
       "import": "./build/server-options.js"
     },
+    "./build/create-fastify": {
+      "types": "./build/create-fastify.d.ts",
+      "import": "./build/create-fastify.js"
+    },
     "./build/determine-service-url": {
       "types": "./build/determine-service-url.d.ts",
       "import": "./build/determine-service-url.js"
@@ -46,10 +50,6 @@
     "./build/create-fastify-cors-options": {
       "types": "./build/create-fastify-cors-options.d.ts",
       "import": "./build/create-fastify-cors-options.js"
-    },
-    "./build/create-fastify-server-options": {
-      "types": "./build/create-fastify-server-options.d.ts",
-      "import": "./build/create-fastify-server-options.js"
     }
   },
   "peerDependencies": {

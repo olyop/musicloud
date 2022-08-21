@@ -21,7 +21,7 @@ declare namespace NodeJS {
 		AUTHENTICATOR_SERVER_PORT: string,
 		AUTHENTICATOR_CLIENT_PORT: string,
 
-		USE_HTTPS: TrueFalse,
+		HTTPS: TrueFalse,
 		TLS_CERTIFICATE_PATH: string,
 		TLS_CERTIFICATE_KEY_PATH: string,
 
@@ -43,8 +43,9 @@ declare namespace NodeJS {
 		ALGOLIA_ADMIN_API_KEY: string,
 		ALGOLIA_SEARCH_API_KEY: string,
 
-		JWT_TOKEN_SECRET: string,
-
 		RANDOM_ORG_API_KEY: string,
+
+		JWT_TOKEN_SECRET: string,
+		JWT_TOKEN_ADMIN_USERS: string,
 	}
 }

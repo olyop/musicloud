@@ -1,9 +1,0 @@
-LICENSE
-ngrok.yml
-nodemon.json
-.env.template
-
-build
-scripts
-packages
-node_modules

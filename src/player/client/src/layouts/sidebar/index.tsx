@@ -71,6 +71,7 @@ const Sidebar: FC = () => {
 							)}
 						/>
 						<NavLink
+							end
 							to="/library"
 							title="Library"
 							onClick={handleClose}

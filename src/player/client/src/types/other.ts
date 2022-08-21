@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react"
-import { PathRouteProps } from "react-router-dom"
+import { NavLinkProps, PathRouteProps } from "react-router-dom"
 import { BEMInput as BaseBEMInput } from "@oly_op/bem"
 
 import { Song, Artist, Playlist } from "./objects"
@@ -10,7 +10,7 @@ export interface Disc {
 	hideLabel: boolean,
 }
 
-export interface Route extends PathRouteProps {
+export interface Route extends PathRouteProps, Omit<NavLinkProps, "children" | "to"> {
 	icon?: string,
 	name?: string,
 	routeID: string,

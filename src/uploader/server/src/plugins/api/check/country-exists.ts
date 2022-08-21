@@ -3,18 +3,14 @@ import { FastifyPluginAsync } from "fastify"
 import { RouteGenericInterface } from "fastify/types/route"
 import { NameBase } from "@oly_op/musicloud-common/build/types"
 
+import countries from "./countries"
+
 interface Route extends RouteGenericInterface {
 	Querystring: NameBase,
 }
 
-const countriesResult =
-	await fetch("http://country.io/names.json")
-
-const countriesRecord =
-	await countriesResult.json() as Record<string, string>
-
 const countriesNames =
-	Object.values(countriesRecord)
+	Object.values(countries)
 
 export const checkCountryExists: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await

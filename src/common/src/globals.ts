@@ -8,7 +8,7 @@ export const IS_PRODUCTION =
 	process.env.NODE_ENV === "production"
 
 export const USE_HTTPS =
-	process.env.USE_HTTPS === "true"
+	process.env.HTTPS === "true"
 
 export const JWT_ALGORITHM =
 	"HS512"

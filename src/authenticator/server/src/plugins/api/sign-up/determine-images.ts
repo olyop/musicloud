@@ -6,7 +6,7 @@ const DEFAULT_COVER_PATH =
 	new URL("./default-cover.jpg", import.meta.url).toString()
 
 const DEFAULT_PROFILE_PATH =
-	new URL("./default-prifle.jpg", import.meta.url).toString()
+	new URL("./default-profile.jpg", import.meta.url).toString()
 
 export const determineCover =
 	async ({ cover }: InputCover) =>

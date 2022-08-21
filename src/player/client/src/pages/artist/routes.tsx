@@ -8,9 +8,8 @@ import ArtistPageAlbums from "./albums"
 
 const routes: Route[] = [{
 	path: "",
-	name: "Home",
+	end: true,
 	icon: "home",
-	underline: false,
 	routeID: uniqueID(),
 	element: <ArtistPageHome/>,
 },{

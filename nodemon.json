@@ -1,6 +1,6 @@
 {
-	"quiet": true,
-	"verbose": false,
-	"ignore": ["src"],
-	"ext": "js,sql,gql,env"
+	"$schema": "https://json.schemastore.org/nodemon.json",
+	"quiet": false,
+	"verbose": true,
+	"ext": "ts,sql,gql,env"
 }

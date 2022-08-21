@@ -2,7 +2,8 @@ import fs from "fs"
 import path from "path"
 import { isUndefined } from "lodash-es"
 
-import { SQL_PATH } from "../globals"
+const SQL_ROOT_PATH =
+	new URL(".", import.meta.url).pathname
 
 const filterUndefined =
 	(...paths: (string | undefined)[]) =>
@@ -12,7 +13,7 @@ const importSQL =
 	(folder: string) =>
 		(subFolder?: string) =>
 			(fileName: string) =>
-				fs.readFileSync(path.join(...filterUndefined(SQL_PATH, folder, subFolder, `${fileName}.sql`)))
+				fs.readFileSync(path.join(...filterUndefined(SQL_ROOT_PATH, folder, subFolder, `${fileName}.sql`)))
 					.toString()
 
 export default importSQL

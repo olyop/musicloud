@@ -65,9 +65,9 @@ export const createDevServerProxy =
 		logLevel: "silent",
 		timeout: ms("120s"),
 		proxyTimeout: ms("120s"),
-		secure: process.env.USE_HTTPS ? false : undefined,
+		secure: process.env.HTTPS ? false : undefined,
 		onProxyReq: (proxyRequest, request) => request.setTimeout(ms("120s")),
-		target: `${process.env.USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
+		target: `${process.env.HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
 		context: [
 			"/icon.png",
 			"/robots.txt",
@@ -91,7 +91,7 @@ const baseConfiguration: webpack.Configuration = {
 		host: process.env.HOST,
 		historyApiFallback: true,
 		client: { logging: "error" },
-		server: process.env.USE_HTTPS === "true" ? {
+		server: process.env.HTTPS === "true" ? {
 			type: "https",
 			options: {
 				cert: readFileSync(process.env.TLS_CERTIFICATE_PATH),

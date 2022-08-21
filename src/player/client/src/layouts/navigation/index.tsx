@@ -8,12 +8,12 @@ import { ClassNameBEMPropTypes, ClassNamePropTypes, Route } from "../../types"
 
 import "./index.scss"
 
-const bem =
-	createBEM("Navigation")
+const bem =	createBEM("Navigation")
 
 const NavigationLink: FC<LinkPropTypes> = ({
 	className,
 	route: {
+		end,
 		icon,
 		path,
 		name,
@@ -22,29 +22,29 @@ const NavigationLink: FC<LinkPropTypes> = ({
 }) => (
 	<NavLink
 		to={path}
+		end={end}
 		className={({ isActive }) => (
 			bem(
 				className,
-				isActive && (
-					underline ?
-						"active" :
-						"active-no-underline"
-				),
+				underline && isActive && "link-active",
 				"link",
 			)
 		)}
 	>
-		<Window>
-			{({ width }) => (
-				<Button
-					icon={icon}
-					transparent
-					className={bem("link-button")}
-					text={width > 800 ? name : undefined}
-					iconClassName={bem("link-button-icon")}
-				/>
-			)}
-		</Window>
+		{({ isActive }) => (
+			<Window>
+				{({ width }) => (
+					<Button
+						icon={icon}
+						transparent
+						className={bem("link-button")}
+						text={width > 800 ? name : undefined}
+						iconClassName={bem("link-button-icon")}
+						childrenClassName={bem(isActive || "link-button-children")}
+					/>
+				)}
+			</Window>
+		)}
 	</NavLink>
 )
 

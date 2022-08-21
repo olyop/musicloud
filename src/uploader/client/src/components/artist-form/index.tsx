@@ -95,15 +95,20 @@ const ArtistForm: FC = () => {
 			const response =
 				await fetch(url, requestInit)
 
-			const { exists } =
-				await response.json() as { exists: boolean }
+			if (response.ok) {
+				const { exists } =
+					await response.json() as { exists: boolean }
 
-			if (exists) {
-				setCheckNameText("Already exists")
+				if (exists) {
+					setCheckNameText("Already exists")
+				}
+
+				setCheckNameValue(!exists)
+			} else {
+				setCheckNameValue(null)
 			}
 
 			setCheckNameLoading(false)
-			setCheckNameValue(!exists)
 		}
 
 	useEffect(() => {
@@ -135,11 +140,16 @@ const ArtistForm: FC = () => {
 			const response =
 				await fetch(url, requestInit)
 
-			const { exists } =
-				await response.json() as { exists: boolean }
+			if (response.ok) {
+				const { exists } =
+					await response.json() as { exists: boolean }
+
+				setCheckCountryValue(exists)
+			} else {
+				setCheckCountryValue(null)
+			}
 
 			setCheckCountryLoading(false)
-			setCheckCountryValue(exists)
 		}
 
 	useEffect(() => {

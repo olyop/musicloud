@@ -3,7 +3,8 @@
 		"@oly_op/cspell-dict/cspell-ext.json"
 	],
 	"ignorePaths": [
-		"./cspell-dict.txt"
+		"cspell-dict.txt",
+		"src/uploader/server/src/plugins/api/check/countries.json"
 	],
 	"dictionaries": [
 		"custom-words"
