@@ -14,7 +14,7 @@
 		"url": "https://github.com/olyop/musicloud.git"
 	},
 	"engines": {
-		"npm": "8.17.0",
+		"npm": "8.18.0",
 		"node": "18.7.0"
 	},
 	"volta": {
