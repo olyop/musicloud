@@ -6,8 +6,8 @@ import type { FastifyStaticOptions } from "@fastify/static"
 
 import { IS_PRODUCTION, IS_TESTING, FILES_URL } from "./globals"
 
-const GOOGLE_FONTS_CSS_ORIGIN = "https://fonts.googleapis.com"
 const GOOGLE_FONTS_FONT_ORIGIN = "https://fonts.gstatic.com"
+const GOOGLE_FONTS_CSS_ORIGIN = "https://fonts.googleapis.com"
 
 export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 	hsts: IS_PRODUCTION && !IS_TESTING,

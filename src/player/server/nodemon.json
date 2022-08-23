@@ -1,5 +1,5 @@
 {
-	"$schema": "https://json.schemastore.org/nodemon.json",
+	"quiet": true,
 	"ext": "ts,sql,gql,env",
 	"ignore": [
 		"webpack",

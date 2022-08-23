@@ -1,5 +1,5 @@
 export const IS_TESTING =
-	process.env.TESTING
+	process.env.TESTING === "true"
 
 export const IS_DEVELOPMENT =
 	process.env.NODE_ENV === "development"

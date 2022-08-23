@@ -1,13 +1,8 @@
-import path from "node:path"
-import { fileURLToPath } from "node:url"
 import { loadSchema } from "@graphql-tools/load"
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader"
 
-const directoryName =
-	path.dirname(fileURLToPath(import.meta.url))
-
 const typeDefs =
-	await loadSchema(path.join(directoryName, "*.gql"), {
+	await loadSchema(new URL("./*.gql", import.meta.url).pathname, {
 		loaders: [new GraphQLFileLoader()],
 	})
 
