@@ -1,13 +1,13 @@
 import type { FastifyCorsOptions } from "@fastify/cors"
 
 import { IS_DEVELOPMENT } from "./globals"
-import { determineServiceURL, ServiceOptions } from "./determine-service-url"
+import { determinePort, determineServiceURL, ServiceOptions } from "./determine-service-url"
 
 export const createFastifyCORSOptions =
 	({ service }: ServiceOptions): FastifyCorsOptions => ({
 		origin: (
 			IS_DEVELOPMENT ?
 				[determineServiceURL({ service }), "https://studio.apollographql.com"] :
-				determineServiceURL({ service })
+				[determineServiceURL({ service }), `http://${process.env.TESTING_DOMAIN}:${determinePort({ service })}`]
 		),
 	})

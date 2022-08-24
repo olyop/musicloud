@@ -45,5 +45,6 @@ declare namespace NodeJS {
 
 		DISABLE_HSTS: TrueFalse,
 		ADMIN_USER_IDS: string,
+		TESTING_DOMAIN: string,
 	}
 }
