@@ -7,21 +7,17 @@ type NodeENV =
 declare namespace NodeJS {
 	interface ProcessEnv {
 		NODE_ENV: NodeENV,
-
+		HTTPS: TrueFalse,
 		TESTING: TrueFalse,
-
 		HOST: string,
 
 		PLAYER_SERVER_PORT: string,
 		PLAYER_CLIENT_PORT: string,
-
 		UPLOADER_SERVER_PORT: string,
 		UPLOADER_CLIENT_PORT: string,
-
 		AUTHENTICATOR_SERVER_PORT: string,
 		AUTHENTICATOR_CLIENT_PORT: string,
 
-		HTTPS: TrueFalse,
 		TLS_CERTIFICATE_PATH: string,
 		TLS_CERTIFICATE_KEY_PATH: string,
 
@@ -46,6 +42,8 @@ declare namespace NodeJS {
 		RANDOM_ORG_API_KEY: string,
 
 		JWT_TOKEN_SECRET: string,
-		JWT_TOKEN_ADMIN_USERS: string,
+
+		DISABLE_HSTS: TrueFalse,
+		ADMIN_USER_IDS: string,
 	}
 }

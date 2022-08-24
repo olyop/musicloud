@@ -19,7 +19,7 @@ export const FASTIFY_JWT_OPTIONS: FastifyJWTOptions = {
 			})
 
 		if (userExists) {
-			const adminUsers = JSON.parse(process.env.JWT_TOKEN_ADMIN_USERS) as string[]
+			const adminUsers = JSON.parse(process.env.ADMIN_USER_IDS) as string[]
 			return adminUsers.includes(userID)
 		} else {
 			return false

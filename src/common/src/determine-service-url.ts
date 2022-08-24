@@ -13,7 +13,7 @@ const determineDevelopmentPort =
 		}
 	}
 
-export const determinePort =
+const determinePort =
 	({ service }: ServiceOptions) => {
 		if (service === "player") {
 			return process.env.PLAYER_SERVER_PORT

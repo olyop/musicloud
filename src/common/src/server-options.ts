@@ -10,7 +10,7 @@ const GOOGLE_FONTS_FONT_ORIGIN = "https://fonts.gstatic.com"
 const GOOGLE_FONTS_CSS_ORIGIN = "https://fonts.googleapis.com"
 
 export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
-	hsts: IS_PRODUCTION && !IS_TESTING,
+	hsts: process.env.DISABLE_HSTS ? false : (IS_PRODUCTION && !IS_TESTING),
 	contentSecurityPolicy: {
 		directives: {
 			workerSrc: ["'self'"],
