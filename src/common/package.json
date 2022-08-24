@@ -1,6 +1,6 @@
 {
   "license": "MIT",
-  "version": "1.1.129",
+  "version": "1.1.131",
   "description": "musicloud-common",
   "name": "@oly_op/musicloud-common",
   "homepage": "https://github.com/olyop/musicloud",
@@ -15,8 +15,8 @@
     "url": "https://github.com/olyop/musicloud.git"
   },
   "engines": {
-    "npm": ">=8",
-    "node": ">=18"
+    "npm": ">=8.18",
+    "node": ">=16.7"
   },
   "files": [
     "build"
