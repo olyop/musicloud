@@ -141,7 +141,7 @@
 		"@types/howler": "2.2.7",
 		"@types/lodash-es": "4.17.6",
 		"@types/ms": "0.7.31",
-		"@types/node": "18.7.11",
+		"@types/node": "18.7.13",
 		"@types/pg": "8.6.5",
 		"@types/react": "18.0.17",
 		"@types/react-dom": "18.0.6",
