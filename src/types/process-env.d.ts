@@ -43,8 +43,6 @@ declare namespace NodeJS {
 
 		JWT_TOKEN_SECRET: string,
 
-		DISABLE_HSTS: TrueFalse,
 		ADMIN_USER_IDS: string,
-		TESTING_DOMAIN: string,
 	}
 }

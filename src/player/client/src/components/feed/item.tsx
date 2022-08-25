@@ -5,9 +5,9 @@ import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
 import { DocumentNode, useApolloClient } from "@apollo/client"
 import { createElement, Fragment, ReactNode, Ref, useCallback, useEffect, useRef, useState } from "react"
 
-import { OrderBy, SettingsListStyle, SettingsOrderBy } from "../../types"
+import { OrderBy, SettingsOrderBy } from "../../types"
 import { useHasMounted, useInView, UseInViewOptionsOnChange } from "../../hooks"
-import { addLoading, removeLoading, useDispatch, useStateListStyle, useStateOrderBy } from "../../redux"
+import { addLoading, removeLoading, useDispatch, useStateOrderBy } from "../../redux"
 
 const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const {
@@ -22,7 +22,6 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const client = useApolloClient()
 	const hasMounted = useHasMounted()
 	const loadingID = useRef(uniqueID())
-	const listStyle = useStateListStyle()
 
 	const orderBy =
 		useStateOrderBy(settingsOrderBy)
@@ -91,7 +90,7 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 
 	return (
 		<Fragment>
-			{renderItem(ref, item, listStyle)}
+			{renderItem(ref, item)}
 		</Fragment>
 	)
 }
@@ -107,7 +106,7 @@ interface PropTypes<Item, ItemData> {
 	itemQuery: DocumentNode,
 	settingsOrderBy: keyof SettingsOrderBy,
 	itemDataToValue: (data: ItemData) => Item | null,
-	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null, listStyle: SettingsListStyle) => ReactNode,
+	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => ReactNode,
 }
 
 export default FeedItem

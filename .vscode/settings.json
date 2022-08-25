@@ -1,6 +1,6 @@
 {
 	"files.exclude": {
-		"buildd": true,
+		"build": true,
 		"src/common/build": true
 	}
 }

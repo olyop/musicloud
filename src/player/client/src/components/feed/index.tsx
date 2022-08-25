@@ -14,9 +14,9 @@ import {
 import uniqueID from "lodash-es/uniqueId"
 import type { DocumentNode } from "@apollo/client"
 
+import { SettingsOrderBy } from "../../types"
 import { useApolloClient } from "../../apollo"
 import FeedItem, { FeedItemVars } from "./item"
-import { SettingsListStyle, SettingsOrderBy } from "../../types"
 import { useDispatch, addLoading, removeLoading } from "../../redux"
 
 const Feed = <ItemsTotalData, Item, ItemData>(
@@ -90,7 +90,7 @@ interface PropTypes<ItemsTotalData, Item, ItemData> {
 	settingsOrderBy: keyof SettingsOrderBy,
 	itemDataToValue: (data: ItemData) => Item | null,
 	itemsTotalDataToValue: (data: ItemsTotalData) => Total,
-	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null, listStyle: SettingsListStyle) => ReactNode,
+	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => ReactNode,
 }
 
 export { FeedItemVars }

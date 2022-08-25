@@ -2,7 +2,7 @@ import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
 import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { useParams, Route, Routes } from "react-router-dom"
+import { useParams, Route, Routes, Link } from "react-router-dom"
 import { ImageSizes, ArtistID, ImageDimensions } from "@oly_op/musicloud-common/build/types"
 
 import routes from "./routes"
@@ -95,7 +95,7 @@ const ArtistPage: FC = () => {
 									<a
 										target="_blank"
 										rel="noreferrer"
-										className="ParagraphTwoInverted"
+										className="Link ParagraphTwoInverted"
 										href={createGoogleMapsURL(data.getArtistByID)}
 									>
 										{city}
@@ -104,11 +104,11 @@ const ArtistPage: FC = () => {
 									</a>
 								)}
 								{playsTotal && (
-									<p className=" ParagraphTwoInverted">
+									<Link to="plays" className="Link ParagraphTwoInverted">
 										{playsTotal.toLocaleString() ?? 0}
 										<Fragment> play</Fragment>
 										{determinePlural(playsTotal)}
-									</p>
+									</Link>
 								)}
 							</div>
 						)}

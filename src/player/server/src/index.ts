@@ -24,8 +24,7 @@ const apollo =
 		resolvers,
 	})
 
-const fastify =
-	await createFastify()
+const fastify = await createFastify()
 
 await apollo.start()
 

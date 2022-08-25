@@ -4,13 +4,13 @@ import type { S3ClientConfig } from "@aws-sdk/client-s3"
 import type { FastifyHelmetOptions } from "@fastify/helmet"
 import type { FastifyStaticOptions } from "@fastify/static"
 
-import { IS_PRODUCTION, IS_TESTING, FILES_URL } from "./globals"
+import { USE_HTTPS, IS_PRODUCTION, IS_TESTING, FILES_URL } from "./globals"
 
 const GOOGLE_FONTS_FONT_ORIGIN = "https://fonts.gstatic.com"
 const GOOGLE_FONTS_CSS_ORIGIN = "https://fonts.googleapis.com"
 
 export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
-	hsts: process.env.DISABLE_HSTS ? false : (IS_PRODUCTION && !IS_TESTING),
+	hsts: USE_HTTPS ? (IS_PRODUCTION && !IS_TESTING) : false,
 	contentSecurityPolicy: {
 		directives: {
 			workerSrc: ["'self'"],

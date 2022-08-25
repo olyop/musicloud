@@ -137,6 +137,7 @@ const AlbumPage: FC = () => {
 								/>
 								<Link
 									className={bem("buttons-link")}
+									style={{ pointerEvents: "none" }}
 									to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}
 								>
 									<Button

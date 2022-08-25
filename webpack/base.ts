@@ -90,7 +90,9 @@ const baseConfiguration: webpack.Configuration = {
 		static: false,
 		host: process.env.HOST,
 		historyApiFallback: true,
-		client: { logging: "error" },
+		client: {
+			logging: "none",
+		},
 		server: process.env.HTTPS === "true" ? {
 			type: "https",
 			options: {

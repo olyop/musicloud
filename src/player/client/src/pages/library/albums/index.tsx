@@ -31,7 +31,7 @@ const LibraryAlbums: FC = () => {
 						ref={ref}
 						hidePlays
 						album={album}
-						infoFadeInFromRight
+						infoFadeInFromRight={!isList}
 						className={bem(
 							isList && "",
 							isList && "PaddingHalf ItemBorder",
