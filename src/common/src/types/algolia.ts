@@ -63,6 +63,7 @@ export interface AlgoliaRecordAlbum
 	Omit<AlbumBase, "albumID">,
 	AlgoliaRecordBase<"Album"> {
 	artists: ArtistIDNameBase[],
+	remixers: ArtistIDNameBase[],
 }
 
 export interface AlgoliaRecordArtist

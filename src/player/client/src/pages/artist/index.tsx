@@ -132,9 +132,7 @@ const ArtistPage: FC = () => {
 			</Head>
 		)
 	} else {
-		return (
-			<Page/>
-		)
+		return <Page/>
 	}
 }
 

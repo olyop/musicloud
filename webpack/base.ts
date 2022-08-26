@@ -30,7 +30,7 @@ export const BASE_BUILD_PATH =
 export const createHTMLPluginOptions =
 	({ title, ...options }: WithRequired<HTMLWebpackPluginOptions, "title">): HTMLWebpackPluginOptions => ({
 		title,
-		minify: false,
+		minify: true,
 		filename: "index.html",
 		meta: {
 			"og:title": title,

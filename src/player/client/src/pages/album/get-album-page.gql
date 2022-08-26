@@ -5,6 +5,7 @@ query getAlbumPage($albumID: UUID!) {
 	getAlbumByID(albumID: $albumID) {
 		...AlbumCoreFragment
 		duration
+		playsTotal
 		songsTotal
 		genres {
 			genreID

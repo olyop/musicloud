@@ -1,21 +1,17 @@
 import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import { NavLink } from "react-router-dom"
-import { createElement, Fragment, forwardRef } from "react"
+import { createElement, forwardRef } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
-
-import {
-	ObjectShowIcon,
-	SettingsListStyle,
-	Artist as ArtistType,
-} from "../../types"
 
 import Modal from "./modal"
 import ObjectLink from "../object-link"
 import ArtistLower from "../artist-lower"
+import { useShuffleArtist } from "../../hooks"
 import { useStateListStyle } from "../../redux"
-import Item, { ItemModal, InfoOptions, ImageOptions } from "../item"
 import { createObjectPath, createCatalogImageURL } from "../../helpers"
+import Item, { ItemModal, InfoOptions, ImageOptions, PlayOptions } from "../item"
+import { ObjectShowIcon, SettingsListStyle, Artist as ArtistType } from "../../types"
 
 import "./index.scss"
 
@@ -27,6 +23,7 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		artist,
 		className,
 		showIcon = false,
+		hidePlay = false,
 		hideModal = false,
 		alwaysList = false,
 		hideInLibrary = false,
@@ -35,6 +32,15 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 
 	const isArtistNull = isNull(artist)
 	const listStyle = useStateListStyle()
+
+	const [ shuffleArtist ] =
+		useShuffleArtist(artist)
+
+	const playOptions: PlayOptions | undefined =
+		hidePlay ? undefined : {
+			isPlaying: false,
+			onClick: shuffleArtist,
+		}
 
 	const info: InfoOptions | undefined =
 		isArtistNull ? undefined : {
@@ -83,6 +89,7 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 			ref={ref}
 			modal={modal}
 			infoOptions={info}
+			playOptions={playOptions}
 			imageOptions={imageOptions}
 			leftIcon={showIcon ? "person" : undefined}
 			className={bem(className, "PaddingHalf ItemBorder")}
@@ -94,36 +101,35 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					title={artist.name}
 					className={bem("cover")}
 					to={createObjectPath("artist", artist.artistID)}
-					children={(
-						<Fragment>
-							<div
-								className={bem("cover-black", "FullWidthAndHeight")}
-							/>
-							<img
-								alt={artist.name}
-								crossOrigin="anonymous"
-								className={bem("cover-image", "FullWidthAndHeight")}
-								src={createCatalogImageURL(
-									artist.artistID,
-									"cover",
-									ImageSizes.HALF,
-									ImageDimensions.LANDSCAPE,
-								)}
-							/>
-						</Fragment>
-					)}
-				/>
+				>
+					<div
+						className={bem("cover-black", "FullWidthAndHeight")}
+					/>
+					<img
+						alt={artist.name}
+						crossOrigin="anonymous"
+						className={bem("cover-image", "FullWidthAndHeight")}
+						src={createCatalogImageURL(
+							artist.artistID,
+							"cover",
+							ImageSizes.HALF,
+							ImageDimensions.LANDSCAPE,
+						)}
+					/>
+				</NavLink>
 			)}
 			<Item
 				modal={modal}
 				infoOptions={info}
 				className="PaddingHalf"
+				playOptions={playOptions}
 			/>
 		</div>
 	)
 })
 
 interface PropTypes extends ObjectShowIcon {
+	hidePlay?: boolean,
 	className?: string,
 	hideModal?: boolean,
 	alwaysList?: boolean,

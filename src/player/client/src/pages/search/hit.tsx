@@ -1,5 +1,4 @@
 import { createElement, FC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import {
 	isUser,
@@ -10,16 +9,20 @@ import {
 	isPlaylist,
 } from "./is-object"
 
+import {
+	Song as SongType,
+	Album as AlbumType,
+	Artist as ArtistType,
+	Playlist as PlaylistType,
+} from "../../types"
+
 import { Hit } from "./types"
 import User from "../../components/user"
-import Item from "../../components/item"
 import Song from "../../components/song"
 import Genre from "../../components/genre"
+import Album from "../../components/album"
 import Artist from "../../components/artist"
-import ObjectLink from "../../components/object-link"
-import ObjectLinks from "../../components/object-links"
-import { Song as SongType, Artist as ArtistType } from "../../types"
-import { createCatalogImageURL, createObjectPath } from "../../helpers"
+import Playlist from "../../components/playlist"
 
 const className =
 	"PaddingHalf ItemBorder"
@@ -71,45 +74,27 @@ const SearchHit: FC<PropTypes> = ({ hit }) => {
 		)
 	} else if (isAlbum(hit)) {
 		return (
-			<Item
-				leftIcon="album"
-				className={className}
-				infoOptions={{
-					upperLeft: (
-						<ObjectLink
-							link={{
-								text: hit.title,
-								path: createObjectPath("album", hit.objectID),
-							}}
-						/>
-					),
-					lowerLeft: (
-						<ObjectLinks
-							links={hit.artists.map(({ artistID, name }) => ({
-								text: name,
-								path: createObjectPath("artist", artistID),
-							}))}
-						/>
-					),
-				}}
-				imageOptions={{
+			<Album
+				showIcon
+				hidePlay
+				hidePlays
+				hideModal
+				alwaysList
+				hideReleased
+				hideInLibrary
+				infoFadeInFromRight
+				album={({
 					title: hit.title,
-					path: createObjectPath(
-						"album",
-						hit.objectID,
-					),
-					url: createCatalogImageURL(
-						hit.objectID,
-						"cover",
-						ImageSizes.MINI,
-						ImageDimensions.SQUARE,
-					),
-				}}
+					artists: hit.artists,
+					albumID: hit.objectID,
+					remixers: hit.remixers,
+				} as Partial<AlbumType>) as AlbumType}
 			/>
 		)
 	} else if (isArtist(hit)) {
 		return (
 			<Artist
+				showIcon
 				hideModal
 				alwaysList
 				hideInLibrary
@@ -122,27 +107,14 @@ const SearchHit: FC<PropTypes> = ({ hit }) => {
 		)
 	} else if (isPlaylist(hit)) {
 		return (
-			<Item
-				className={className}
-				leftIcon="queue_music"
-				infoOptions={{
-					upperLeft: (
-						<ObjectLink
-							link={{
-								text: hit.title,
-								path: createObjectPath("playlist", hit.objectID),
-							}}
-						/>
-					),
-					lowerLeft: (
-						<ObjectLink
-							link={{
-								text: hit.user.name,
-								path: createObjectPath("user", hit.user.userID),
-							}}
-						/>
-					),
-				}}
+			<Playlist
+				hideModal
+				hideInLibrary
+				playlist={({
+					user: hit.user,
+					title: hit.title,
+					playlistID: hit.objectID,
+				} as Partial<PlaylistType>) as PlaylistType}
 			/>
 		)
 	} else {

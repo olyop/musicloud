@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-unresolved
+import { parseBuffer } from "music-metadata"
+
 import {
 	SongID,
 	AlbumID,
@@ -9,7 +12,6 @@ import {
 } from "@oly_op/musicloud-common/build/types"
 
 import { random, trim } from "lodash-es"
-import musicMetadata from "music-metadata"
 import { FastifyPluginAsync } from "fastify"
 import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
@@ -112,6 +114,7 @@ export const uploadAlbum: FastifyPluginAsync =
 
 				await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordAlbum>({
 					plays: 0,
+					remixers: [],
 					title: albumTitle,
 					typeName: "Album",
 					objectID: albumID,
@@ -128,7 +131,7 @@ export const uploadAlbum: FastifyPluginAsync =
 						(body[`${song.trackNumber}-audio`] as BodyEntry[])[0]!.data
 
 					const duration =
-						(await musicMetadata.parseBuffer(audio)).format.duration!
+						(await parseBuffer(audio)).format.duration!
 
 					const { songID } =
 						await query(fastify.pg.pool)(INSERT_SONG)({

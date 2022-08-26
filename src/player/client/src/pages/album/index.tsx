@@ -150,22 +150,31 @@ const AlbumPage: FC = () => {
 									album={album}
 								/>
 							</Buttons>
-							<p className="ParagraphTwo LightColor">
-								{discs.length > 1 && (
-									<Fragment>
-										{discs.length}
-										<Fragment> discs, </Fragment>
-									</Fragment>
+							<div className="FlexColumnGapQuart">
+								<p className="ParagraphTwo LightColor">
+									{discs.length > 1 && (
+										<Fragment>
+											{discs.length}
+											<Fragment> discs, </Fragment>
+										</Fragment>
+									)}
+									{songs.length}
+									<Fragment> song</Fragment>
+									{determinePlural(songsTotal)}
+									<Fragment>, </Fragment>
+									{Math.floor(duration / 60)}
+									<Fragment> minutes, </Fragment>
+									{Math.floor(duration % 60)}
+									<Fragment> seconds</Fragment>
+								</p>
+								{album.playsTotal && (
+									<p className="ParagraphTwo LightColor">
+										{album.playsTotal}
+										<Fragment> play</Fragment>
+										{determinePlural(album.playsTotal)}
+									</p>
 								)}
-								{songs.length}
-								<Fragment> song</Fragment>
-								{determinePlural(songsTotal)}
-								<Fragment>, </Fragment>
-								{Math.floor(duration / 60)}
-								<Fragment> minutes, </Fragment>
-								{Math.floor(duration % 60)}
-								<Fragment> seconds</Fragment>
-							</p>
+							</div>
 						</div>
 					</div>
 				</Page>

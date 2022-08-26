@@ -1,5 +1,7 @@
+// eslint-disable-next-line import/no-unresolved
+import { parseBuffer } from "music-metadata"
+
 import { isEmpty, trim } from "lodash-es"
-import musicMetadata from "music-metadata"
 import { FastifyPluginAsync } from "fastify"
 import { SongAudioMetadataBase } from "@oly_op/musicloud-common/build/types"
 
@@ -32,7 +34,7 @@ export const audioMetadata: FastifyPluginAsync =
 			async request => {
 				const body =	request.body.audio[0]
 				if (body) {
-					const { common } = await musicMetadata.parseBuffer(body.data)
+					const { common } = await parseBuffer(body.data)
 					const { title, album, year, disk, track, artist, genre, picture } = common
 					return {
 						year: year || null,

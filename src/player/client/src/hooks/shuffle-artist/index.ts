@@ -10,20 +10,25 @@ import { updateNowPlayingMutationFunction } from "../../helpers"
 import SHUFFLE_ARTIST from "./shuffle-artist.gql"
 
 export const useShuffleArtist =
-	({ artistID }: ArtistID) => {
+	(artist: ArtistID | null) => {
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
 		const [ shuffleArtist, result ] =
 			useMutation<Data, ArtistID>(SHUFFLE_ARTIST, {
-				variables: { artistID },
 				update: updateNowPlayingMutationFunction(({ shuffleArtist: { nowPlaying } }) => nowPlaying),
 			})
 
 		const handler =
 			() => {
-				resetPlayer()
-				void shuffleArtist()
+				if (artist) {
+					resetPlayer()
+					void shuffleArtist({
+						variables: {
+							artistID: artist.artistID,
+						},
+					})
+				}
 			}
 
 		useEffect(() => {
