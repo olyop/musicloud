@@ -3,7 +3,6 @@ import Button from "@oly_op/react-button"
 import { NavLink } from "react-router-dom"
 import { createElement, FC, Fragment } from "react"
 import { ServicesNames } from "@oly_op/musicloud-common/build/types"
-import { IS_DEVELOPMENT } from "@oly_op/musicloud-common/build/globals"
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url"
 
 import { useDispatch, toggleSidebar, useStateSidebar, useStateAccessToken } from "../../redux"
@@ -169,7 +168,7 @@ const Sidebar: FC = () => {
 								/>
 							)}
 						/>
-						{IS_DEVELOPMENT && accessToken && (
+						{accessToken && (
 							<a
 								title="Upload"
 								onClick={handleClose}

@@ -84,7 +84,7 @@
 		"@oly_op/graphql-create-resolver": "2.0.1",
 		"@oly_op/musicloud-common": "1.1.136",
 		"@oly_op/pg-helpers": "6.2.20",
-		"@oly_op/react-button": "5.3.5",
+		"@oly_op/react-button": "5.3.6",
 		"@oly_op/react-head": "1.0.9",
 		"@oly_op/uuid-dashes": "1.0.0",
 		"@randomorg/core": "1.0.3",
