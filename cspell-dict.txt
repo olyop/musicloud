@@ -3,5 +3,4 @@ musicloud
 nexts
 npmrc
 remixer
-tsnd
 unfollow

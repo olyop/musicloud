@@ -110,9 +110,9 @@ const baseConfiguration: webpack.Configuration = {
 		fullySpecified: false,
 		extensions: [".js", ".ts", ".tsx", ".css"],
 	},
-	// watchOptions: {
-	// 	ignored: "/node_modules/",
-	// },
+	watchOptions: {
+		ignored: "/node_modules/",
+	},
 	experiments: {
 		topLevelAwait: true,
 	},
@@ -130,11 +130,6 @@ const baseConfiguration: webpack.Configuration = {
 				"css-loader",
 				"sass-loader",
 			],
-		},{
-			test: /\.(cj|mj|j)s/,
-			resolve: {
-				fullySpecified: false,
-			},
 		}],
 	},
 	plugins: [
