@@ -1,14 +1,14 @@
 import {
 	join,
+	exists,
 	VariableInput,
 	getResultExists,
-	exists as pgExists,
 	query as pgHelpersQuery,
 	convertFirstRowToCamelCase,
 } from "@oly_op/pg-helpers"
 
 import { Pool } from "pg"
-import { UserID, ObjectID } from "@oly_op/musicloud-common/build/types"
+import { UserID, ObjectID, ObjectTypeNames } from "@oly_op/musicloud-common/build/types"
 
 import {
 	INSERT_LIBRARY_OBJECT,
@@ -16,28 +16,27 @@ import {
 	UPDATE_OBJECT_IN_LIBRARY,
 } from "../../sql"
 
-import { TableNameOptions, ColumnNameOptions } from "../../types"
-
-export interface HandleInLibraryOptionsBase
-	extends UserID, ObjectID { inLibrary: boolean }
-
 export interface HandleInLibraryOptions
-	extends HandleInLibraryOptionsBase, TableNameOptions, ColumnNameOptions {
-	columnKey: string,
-	returnQuery?: string,
-	libraryTableName: string,
+	extends UserID, ObjectID {
+	inLibrary: boolean,
+	returnQuery: string,
 	columnNames: readonly string[],
+	tableName: "songs" | "artists" | "playlists",
+	columnKey: "songID" | "artistID" | "playlistID",
+	columnName: "song_id" | "artist_id" | "playlist_id",
+	typeName: Extract<ObjectTypeNames, "Song" | "Artist" | "Playlist">,
+	libraryTableName: "library_songs" | "library_artists" | "library_playlists",
 }
 
 export const handleInLibrary =
 	(pool: Pool) =>
-		// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-		async <T = void>(options: HandleInLibraryOptions) => {
+		async <T>(options: HandleInLibraryOptions) => {
 			const {
 				userID,
 				objectID,
-				inLibrary,
+				typeName,
 				columnKey,
+				inLibrary,
 				tableName,
 				columnName,
 				columnNames,
@@ -47,23 +46,20 @@ export const handleInLibrary =
 
 			const client = await pool.connect()
 			const query = pgHelpersQuery(client)
-			const exists = pgExists(client)
-
-			const doesObjectExist =
-				await exists({
-					value: objectID,
-					table: tableName,
-					column: columnName,
-				})
-
-			if (!doesObjectExist) {
-				throw new Error("Object does not exist")
-			}
-
-			let returnResult: T
 
 			try {
 				await query("BEGIN")()
+
+				const doesObjectExist =
+					await exists(client)({
+						value: objectID,
+						table: tableName,
+						column: columnName,
+					})
+
+				if (!doesObjectExist) {
+					throw new Error(`${typeName} ${objectID} does not exist`)
+				}
 
 				const variables: VariableInput = {
 					userID,
@@ -94,17 +90,6 @@ export const handleInLibrary =
 					})
 				}
 
-				if (returnQuery) {
-					returnResult =
-						await query(returnQuery)({
-							parse: convertFirstRowToCamelCase<T>(),
-							variables: {
-								[columnKey]: objectID,
-								columnNames: join(columnNames),
-							},
-						})
-				}
-
 				await query("COMMIT")()
 			} catch (error) {
 				await query("ROLLBACK")()
@@ -113,6 +98,11 @@ export const handleInLibrary =
 				client.release()
 			}
 
-			// @ts-ignore
-			return returnResult
+			return query(returnQuery)({
+				parse: convertFirstRowToCamelCase<T>(),
+				variables: {
+					[columnKey]: objectID,
+					columnNames: join(columnNames),
+				},
+			})
 		}

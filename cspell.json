@@ -4,7 +4,8 @@
 	],
 	"ignorePaths": [
 		"cspell-dict.txt",
-		"src/uploader/server/src/plugins/api/check/countries.json"
+		"src/uploader/server/src/plugins/api/check/countries.json",
+		"src/authenticator/server/src/plugins/api/sign-up/compromised-passwords.txt"
 	],
 	"dictionaries": [
 		"custom-words"

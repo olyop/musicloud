@@ -1,7 +1,7 @@
 import { useApolloClient as useBaseApolloClient, ApolloClient, NormalizedCacheObject } from "@apollo/client"
 
 import link from "./link"
-import cache from "./cache"
+import { cache, cachePersistor } from "./cache"
 
 const apollo =
 	new ApolloClient({
@@ -12,6 +12,6 @@ const apollo =
 const useApolloClient =
 	() => useBaseApolloClient() as ApolloClient<NormalizedCacheObject>
 
-export { useApolloClient }
+export { useApolloClient, cachePersistor }
 
 export default apollo

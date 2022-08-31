@@ -21,8 +21,8 @@ const SignUpForm: FC<PropTypes> = ({
 	const [ loading, setLoading ] =
 		useState(false)
 
-	const [ name, setName ] = useState("")
-	const [ password, setPassword ] = useState("")
+	const [ name, setName ] = useState("Oliver")
+	const [ password, setPassword ] = useState("password")
 	const [ cover, setCover ] = useState<File | null>(null)
 	const [ profile, setProfile ] = useState<File | null>(null)
 
@@ -40,37 +40,40 @@ const SignUpForm: FC<PropTypes> = ({
 
 	const handleSignUp =
 		async () => {
-			try {
-				setLoading(true)
+			setLoading(true)
 
-				const body = new FormData()
-				body.append("name", name)
-				body.append("cover", cover!)
-				body.append("profile", profile!)
-				body.append("password", password)
-				body.append("emailAddress", emailAddress)
+			const body = new FormData()
+			body.append("name", name)
+			body.append("cover", cover!)
+			body.append("profile", profile!)
+			body.append("password", password)
+			body.append("emailAddress", emailAddress)
 
-				const response =
-					await fetch("/api/sign-up", {
-						method: "POST",
-						cache: "no-cache",
-						body,
-					})
+			const response =
+				await fetch("/api/sign-up", {
+					method: "POST",
+					cache: "no-cache",
+					body,
+				})
 
-				const { accessToken } =
-					await response.json() as { accessToken: string }
+			const data =
+				await response.json() as DataOk | DataError
 
-				onSubmit(accessToken)
-			} catch (e) {
-				setError(e as Error)
-			} finally {
-				setLoading(false)
+			if (response.ok && "accessToken" in data) {
+				onSubmit(data.accessToken)
+			} else if ("message" in data) {
+				setError(new Error(data.message))
+			} else {
+				setError(new Error("Unknown error"))
 			}
+
+			setLoading(false)
 		}
 
 	const handleSubmit: FormEventHandler =
 		event => {
 			event.preventDefault()
+
 			if (isSignUpFormValid({
 				name,
 				cover,
@@ -154,6 +157,14 @@ const SignUpForm: FC<PropTypes> = ({
 			/>
 		</form>
 	)
+}
+
+interface DataOk {
+	accessToken: string,
+}
+
+interface DataError {
+	message: string,
 }
 
 interface PropTypes {

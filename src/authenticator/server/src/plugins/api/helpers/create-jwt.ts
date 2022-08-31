@@ -1,13 +1,13 @@
 import ms from "ms"
 import { createSigner } from "fast-jwt"
 import { SearchClient } from "algoliasearch"
-import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals"
+import { IS_DEVELOPMENT, JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals"
 import { JWTPayload, JWTPayloadUser, UserID } from "@oly_op/musicloud-common/build/types"
 
 const signer =
 	createSigner({
-		expiresIn: ms("1d"),
 		algorithm: JWT_ALGORITHM,
+		expiresIn: IS_DEVELOPMENT ? ms("1d") : ms("5d"),
 		key: () => Promise.resolve(process.env.JWT_TOKEN_SECRET),
 	})
 

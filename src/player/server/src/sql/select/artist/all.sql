@@ -1,0 +1,4 @@
+SELECT
+	{{ columnNames }}
+FROM
+	artists;

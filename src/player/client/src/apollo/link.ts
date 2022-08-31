@@ -19,23 +19,19 @@ const withAuthorization =
 	})
 
 const checkNetworkError =
-	onError(({ forward, operation, networkError }) => {
+	onError(({ networkError }) => {
 		if (networkError) {
 			dispatch(updateIsOnline(false))
 		}
-
-		return forward(operation)
 	})
 
 const checkExpiredToken =
-	onError(({ forward, operation, graphQLErrors }) => {
+	onError(({ graphQLErrors }) => {
 		if (graphQLErrors) {
 			if (graphQLErrors[0]?.message === "Access Token Expired") {
 				dispatch(updateAccessToken(null))
 			}
 		}
-
-		return forward(operation)
 	})
 
 const isOnline =
@@ -47,7 +43,9 @@ const isOnline =
 	))
 
 const http =
-	new HttpLink()
+	new HttpLink({
+		fetchOptions: {},
+	})
 
 const link =
 	from([

@@ -10,12 +10,13 @@ import Modal from "../../components/modal"
 import { useJWTPayload, useSignOut } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
 import { createCatalogImageURL, createObjectPath } from "../../helpers"
+import { cachePersistor } from "../../apollo"
 
 const bem =
 	createBEM("Header")
 
-const loadingID =
-	uniqueID()
+const refreshLoadingID = uniqueID()
+const clearCacheLoadingID = uniqueID()
 
 const HeaderAccountButton: FC = () => {
 	const signOut = useSignOut()
@@ -34,15 +35,20 @@ const HeaderAccountButton: FC = () => {
 
 	const handleRefresh =
 		() => {
-			dispatch(addLoading(loadingID))
+			dispatch(addLoading(refreshLoadingID))
 			handleAccountModalClose()
-			void (
-				client
-					.refetchQueries({ include: "all" })
-					.then(() => (
-						dispatch(removeLoading(loadingID))
-					))
-			)
+			void cachePersistor.purge()
+				.then(() => client.resetStore())
+				.then(() => dispatch(removeLoading(refreshLoadingID)))
+		}
+
+	const handleClearCache =
+		() => {
+			dispatch(addLoading(clearCacheLoadingID))
+			handleAccountModalClose()
+			void cachePersistor.purge()
+				.then(() => client.clearStore())
+				.then(() => dispatch(removeLoading(clearCacheLoadingID)))
 		}
 
 	return (
@@ -98,6 +104,13 @@ const HeaderAccountButton: FC = () => {
 					icon="refresh"
 					text="Refresh"
 					onClick={handleRefresh}
+					className={bem("account-modal-content-button")}
+				/>
+				<Button
+					transparent
+					text="Clear"
+					icon="delete_outline"
+					onClick={handleClearCache}
 					className={bem("account-modal-content-button")}
 				/>
 				<Link

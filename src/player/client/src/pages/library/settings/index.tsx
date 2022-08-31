@@ -1,28 +1,31 @@
 import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
-import { createElement, FC, Fragment, useState, useEffect } from "react"
-
-import Modal, {
-	ModalButton,
-	ModalHeader,
-	ModalButtons,
-} from "../../../components/modal"
+import { useNavigate } from "react-router-dom"
+import { useApolloClient } from "@apollo/client"
+import { createElement, FC, Fragment, useState } from "react"
 
 import { useMutation } from "../../../hooks"
+import { cachePersistor } from "../../../apollo"
+import Buttons from "../../../components/buttons"
+import Modal, { ModalButton, ModalHeader, ModalButtons } from "../../../components/modal"
 
 import DELETE_LIBRARY from "./delete-library.gql"
-import Buttons from "../../../components/buttons"
 import ADD_CATALOG_TO_LIBRARY from "./add-catalog-to-library.gql"
 
 const LibrarySettings: FC = () => {
+	const navigate = useNavigate()
+	const client = useApolloClient()
+
 	const [ deleteLibraryModal, setDeleteLibraryModal ] =
 		useState(false)
 
-	const [ deleteLibrary, { data: deleteLibraryData } ] =
+	const [ deleteLibrary, { loading: deleteLibraryLoading } ] =
 		useMutation(DELETE_LIBRARY)
 
-	const [ addCatalogToLibrary ] =
-		useMutation(ADD_CATALOG_TO_LIBRARY)
+	const [ addCatalogToLibrary, { loading: addCatalogToLibraryLoading } ] =
+		useMutation(ADD_CATALOG_TO_LIBRARY, {
+			fetchPolicy: "network-only",
+		})
 
 	const handleDeleteLibraryModalOpen =
 		() => setDeleteLibraryModal(true)
@@ -32,20 +35,26 @@ const LibrarySettings: FC = () => {
 
 	const handleDeleteLibrary =
 		() => {
-			handleDeleteLibraryModalClose()
-			void deleteLibrary()
+			if (!deleteLibraryLoading) {
+				handleDeleteLibraryModalClose()
+				cachePersistor.purge()
+					.then(() => client.resetStore())
+					.then(() => deleteLibrary())
+					.then(() => navigate("/"))
+					.catch(console.error)
+			}
 		}
 
 	const handleCatalogToLibrary =
 		() => {
-			void addCatalogToLibrary()
+			if (!addCatalogToLibraryLoading) {
+				cachePersistor.purge()
+					.then(() => client.resetStore())
+					.then(() => addCatalogToLibrary())
+					.then(() => navigate("/library"))
+					.catch(console.error)
+			}
 		}
-
-	useEffect(() => {
-		if (deleteLibraryData) {
-			location.reload()
-		}
-	}, [deleteLibraryData])
 
 	return (
 		<Head pageTitle="Library Settings">

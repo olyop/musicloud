@@ -13,7 +13,7 @@ import "./index.scss"
 const bem =
 	createBEM("Modal")
 
-const Modal: FC<ModalPropTypes> = ({
+const Modal: FC<PropTypes> = ({
 	open,
 	onClose,
 	children,
@@ -54,7 +54,7 @@ export interface ModalOnClose {
 	onClose: Handler,
 }
 
-export interface ModalPropTypes extends ModalOnClose, ClassNameBEMPropTypes {
+export interface PropTypes extends ModalOnClose, ClassNameBEMPropTypes {
 	open: boolean,
 	contentClassName?: BEMInput,
 	backgroundClassName?: BEMInput,

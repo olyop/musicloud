@@ -58,7 +58,7 @@ const Feed = <ItemsTotalData, Item, ItemData>(
 		void getAndSetItemsTotal()
 	}, [])
 
-	if (itemsTotal) {
+	if (itemsTotal && itemsTotal !== 0) {
 		const nullArray = new Array<null>(itemsTotal).fill(null)
 		return (
 			<Fragment>

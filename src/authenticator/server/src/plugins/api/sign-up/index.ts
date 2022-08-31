@@ -1,4 +1,5 @@
 import trim from "lodash-es/trim"
+import { isEmpty } from "lodash-es"
 import multiPart from "@fastify/multipart"
 import { readFile } from "node:fs/promises"
 import { FastifyPluginAsync } from "fastify"
@@ -7,9 +8,10 @@ import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers"
 
 import saveToAlgolia from "./save-to-algolia"
 import { hashPassword } from "./hash-password"
-import { coverImages, profileImages } from "./images"
+import passwordSchema from "./password-schema"
 import { isPartFile, Part, Body, Route } from "./types"
 import { createJWT, emailAddressExists } from "../helpers"
+import { coverImages, profileImages } from "./image-inputs"
 import { determineCover, determineProfile } from "./determine-images"
 import { normalizeImageAndUploadToS3 } from "./normalize-image-and-upload-to-s3"
 
@@ -54,11 +56,20 @@ export const signUp: FastifyPluginAsync =
 					throw new Error("Email address already exists")
 				}
 
+				const passwordValidation =
+					passwordSchema.validate(body.password, { list: true })
+
+				if (Array.isArray(passwordValidation) && !isEmpty(passwordValidation)) {
+					throw new Error(`Password validation failed: ${passwordValidation.toString()}`)
+				}
+
 				const name =
 					trim(body.name)
 
 				const password =
-					await hashPassword(body)
+					await hashPassword({
+						password: body.password,
+					})
 
 				const user =
 					await query(fastify.pg.pool)(INSERT_USER)({

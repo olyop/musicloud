@@ -25,21 +25,21 @@ import {
 	getPlaylist,
 	handleInLibrary,
 	HandleInLibraryOptions,
-	HandleInLibraryOptionsBase,
 } from "../helpers"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
 import { Song, Artist, Playlist, Album } from "../../types"
 
-type ConfigFunc =
-	(input: HandleInLibraryOptionsBase) => HandleInLibraryOptions
+type CreateConfig =
+	(input: Pick<HandleInLibraryOptions, "userID" | "objectID" | "inLibrary">) => HandleInLibraryOptions
 
-const createSongConfig: ConfigFunc =
+const createSongConfig: CreateConfig =
 	({ userID, objectID, inLibrary }) => ({
 		userID,
 		objectID,
 		inLibrary,
+		typeName: "Song",
 		tableName: "songs",
 		columnKey: "songID",
 		columnNames: COLUMN_NAMES.SONG,
@@ -48,11 +48,12 @@ const createSongConfig: ConfigFunc =
 		libraryTableName: "library_songs",
 	})
 
-const createArtistConfig: ConfigFunc =
+const createArtistConfig: CreateConfig =
 	({ userID, objectID, inLibrary }) => ({
 		userID,
 		objectID,
 		inLibrary,
+		typeName: "Artist",
 		tableName: "artists",
 		columnKey: "artistID",
 		columnNames: COLUMN_NAMES.ARTIST,
@@ -61,11 +62,12 @@ const createArtistConfig: ConfigFunc =
 		libraryTableName: "library_artists",
 	})
 
-const createPlaylistConfig: ConfigFunc =
+const createPlaylistConfig: CreateConfig =
 	({ userID, objectID, inLibrary }) => ({
 		userID,
 		objectID,
 		inLibrary,
+		typeName: "Playlist",
 		tableName: "playlists",
 		columnKey: "playlistID",
 		columnNames: COLUMN_NAMES.PLAYLIST,

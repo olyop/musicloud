@@ -21,7 +21,7 @@ const Application: FC = () => {
 		useState<string | null>(null)
 
 	const [ emailAddress, setEmailAddress ] =
-		useState("")
+		useState("oly.rbsc@gmail.com")
 
 	const [ emailAddressExists, setEmailAddressExists ] =
 		useState(false)

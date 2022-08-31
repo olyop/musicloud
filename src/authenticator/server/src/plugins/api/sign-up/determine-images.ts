@@ -3,15 +3,15 @@ import { readFile } from "node:fs/promises"
 import { InputCover, InputProfile } from "./types"
 
 const DEFAULT_COVER_PATH =
-	new URL("./default-cover.jpg", import.meta.url).toString()
+	new URL("./default-cover.jpg", import.meta.url)
 
 const DEFAULT_PROFILE_PATH =
-	new URL("./default-profile.jpg", import.meta.url).toString()
+	new URL("./default-profile.jpg", import.meta.url)
 
 export const determineCover =
 	async ({ cover }: InputCover) =>
-		cover || readFile(DEFAULT_COVER_PATH)
+		cover || await readFile(DEFAULT_COVER_PATH)
 
 export const determineProfile =
 	async ({ profile }: InputProfile) =>
-		profile || readFile(DEFAULT_PROFILE_PATH)
+		profile || await readFile(DEFAULT_PROFILE_PATH)
