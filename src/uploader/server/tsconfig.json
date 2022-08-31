@@ -1,17 +1,10 @@
 {
-	"extends": "../../../tsconfig",
+	"extends": "../../../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM"],
-		"outDir": "../../../build/uploader",
+		"outDir": "../../../build/uploader"
 	},
 	"include": [
 		"src",
 		"../../types"
-	],
-	"ts-node": {
-		"esm": true,
-		"swc": true,
-		"files": true,
-    "require": ["tsconfig-paths/register"]
-  }
+	]
 }

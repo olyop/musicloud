@@ -2,6 +2,7 @@ import { Workbox } from "workbox-window"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 import { createElement, StrictMode } from "react"
+import { IS_PRODUCTION } from "@oly_op/musicloud-common/build/globals"
 import { AudioPlayerProvider as AudioProvider } from "react-use-audio-player"
 
 import {
@@ -52,7 +53,7 @@ root.render(
 	</StrictMode>,
 )
 
-if ("serviceWorker" in navigator && process.env.SERVICE_WORKER === "true") {
+if (IS_PRODUCTION && process.env.SERVICE_WORKER === "true" && "serviceWorker" in navigator) {
 	const workbox = new Workbox("/service-worker.js")
 	await workbox.register()
 }

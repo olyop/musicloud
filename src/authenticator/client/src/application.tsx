@@ -120,11 +120,7 @@ const Application: FC = () => {
 					</Fragment>
 				) : (
 					<p className="ParagraphOne Error">
-						<Fragment>Invalid redirect url paramater:</Fragment>
-						<br/>
-						<Fragment>&apos;</Fragment>
-						<span className="LightWeight">{redirectParam.current}</span>
-						<Fragment>&apos; is a invalid service name.</Fragment>
+						Invalid redirect url paramater
 					</p>
 				)}
 			</div>

@@ -1,7 +1,7 @@
 import ms from "ms"
 import path from "node:path"
-import { readFileSync } from "node:fs"
 import DotenvPlugin from "dotenv-webpack"
+import { readFile } from "node:fs/promises"
 import webpack, { RuleSetRule } from "webpack"
 import ESLintPlugin from "eslint-webpack-plugin"
 import StylelintPlugin from "stylelint-webpack-plugin"
@@ -12,9 +12,9 @@ import MiniCSSExtractPlugin from "mini-css-extract-plugin"
 import CSSMinimizerPlugin from "css-minimizer-webpack-plugin"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import type { WithRequired } from "@apollo/utils.withrequired"
-import { IS_DEVELOPMENT } from "@oly_op/musicloud-common/build/globals"
 import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin"
 import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common/build/metadata"
+import { IS_DEVELOPMENT, IS_PRODUCTION, USE_HTTPS } from "@oly_op/musicloud-common/build/globals"
 
 import packageDotJSON from "../package.json" assert { type: "json" }
 
@@ -30,7 +30,7 @@ export const BASE_BUILD_PATH =
 export const createHTMLPluginOptions =
 	({ title, ...options }: WithRequired<HTMLWebpackPluginOptions, "title">): HTMLWebpackPluginOptions => ({
 		title,
-		minify: true,
+		minify: IS_PRODUCTION,
 		filename: "index.html",
 		meta: {
 			"og:title": title,
@@ -44,7 +44,7 @@ export const createHTMLPluginOptions =
 	})
 
 export const createTSLoaderRule =
-	({ configFile, ...options }: WithRequired<Partial<TSLoaderOptions>, "configFile">): RuleSetRule => ({
+	(configFile: Pick<TSLoaderOptions, "configFile">["configFile"]): RuleSetRule => ({
 		exclude: /node_modules/,
 		test: /\.tsx?$/,
 		resolve: {
@@ -55,7 +55,6 @@ export const createTSLoaderRule =
 			options: {
 				configFile,
 				onlyCompileBundledFiles: true,
-				...options,
 			},
 		},
 	})
@@ -67,7 +66,7 @@ export const createDevServerProxy =
 		proxyTimeout: ms("120s"),
 		secure: process.env.HTTPS ? false : undefined,
 		onProxyReq: (proxyRequest, request) => request.setTimeout(ms("120s")),
-		target: `${process.env.HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
+		target: `${USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
 		context: [
 			"/icon.png",
 			"/robots.txt",
@@ -96,8 +95,8 @@ const baseConfiguration: webpack.Configuration = {
 		server: process.env.HTTPS === "true" ? {
 			type: "https",
 			options: {
-				cert: readFileSync(process.env.TLS_CERTIFICATE_PATH),
-				key: readFileSync(process.env.TLS_CERTIFICATE_KEY_PATH),
+				cert: await readFile(process.env.TLS_CERTIFICATE_PATH),
+				key: await readFile(process.env.TLS_CERTIFICATE_KEY_PATH),
 			},
 		} : undefined,
 	},
@@ -118,6 +117,11 @@ const baseConfiguration: webpack.Configuration = {
 	},
 	module: {
 		rules: [{
+			test: /\.m?js/,
+			resolve: {
+				fullySpecified: false,
+			},
+		},{
 			test: /\.css$/,
 			use: [
 				firstCSSLoader,

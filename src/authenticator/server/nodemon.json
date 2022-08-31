@@ -7,7 +7,6 @@
 		"scripts",
 		".vscode",
 		"src/types",
-		"src/common",
 		"src/player",
 		"src/uploader",
 		"src/authenticator/client"

@@ -1,4 +1,4 @@
-#import "../../graphql/fragments/playlist-core.gql";
+#import "../../../../graphql/fragments/playlist-core.gql";
 
 query getUserPlaylistsFilteredBySong($songID: UUID!) {
 	getUser {

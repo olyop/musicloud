@@ -16,7 +16,7 @@ const SRC_PATH =
 const SRC_ENTRY_PATH =
 	path.join(SRC_PATH, "index.ts")
 
-const ROOT_TSCONFIG_PATH =
+const TSCONFIG_PATH =
 	path.join(ROOT_PATH, "tsconfig.json")
 
 const BUILD_PATH =
@@ -31,18 +31,26 @@ const configuration: Configuration = {
 		path: BUILD_PATH,
 		filename: "service-worker.js",
 	},
+	watchOptions: {
+		ignored: "/node_modules/",
+	},
 	experiments: {
 		topLevelAwait: true,
 	},
 	resolve: {
 		symlinks: false,
+		fullySpecified: false,
 		extensions: [".js", ".ts"],
 	},
 	module: {
 		rules: [
-			createTSLoaderRule({
-				configFile: ROOT_TSCONFIG_PATH,
-			}),
+			{
+				test: /\.m?js/,
+				resolve: {
+					fullySpecified: false,
+				},
+			},
+			createTSLoaderRule(TSCONFIG_PATH),
 		],
 	},
 }

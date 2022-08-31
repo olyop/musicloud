@@ -4,9 +4,9 @@ import { IS_DEVELOPMENT, IS_TESTING, USE_HTTPS } from "./globals"
 
 const determineDevelopmentPort =
 	({ service }: ServiceOptions) => {
-		if (service === "player") {
+		if (service === ServicesNames.PLAYER) {
 			return process.env.PLAYER_CLIENT_PORT
-		} else if (service === "uploader") {
+		} else if (service === ServicesNames.UPLOADER) {
 			return process.env.UPLOADER_CLIENT_PORT
 		} else {
 			return process.env.AUTHENTICATOR_CLIENT_PORT
@@ -15,9 +15,9 @@ const determineDevelopmentPort =
 
 export const determinePort =
 	({ service }: ServiceOptions) => {
-		if (service === "player") {
+		if (service === ServicesNames.PLAYER) {
 			return process.env.PLAYER_SERVER_PORT
-		} else if (service === "uploader") {
+		} else if (service === ServicesNames.UPLOADER) {
 			return process.env.UPLOADER_SERVER_PORT
 		} else {
 			return process.env.AUTHENTICATOR_SERVER_PORT
@@ -33,12 +33,12 @@ export const determineServiceURL =
 				(USE_HTTPS ? "https" : "http") :
 				"https"
 
-		const port =
-			IS_DEVELOPMENT ?
-				determineDevelopmentPort({ service }) :
-				determinePort({ service })
-
 		if (IS_DEVELOPMENT || IS_TESTING) {
+			const port =
+				IS_DEVELOPMENT ?
+					determineDevelopmentPort({ service }) :
+					determinePort({ service })
+
 			url = new URL(`${protocol}://${process.env.HOST}:${port}`)
 		} else {
 			url = new URL(`${protocol}://${service}.${DOMAIN_NAME}`)

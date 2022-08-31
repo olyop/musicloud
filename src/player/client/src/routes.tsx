@@ -13,8 +13,6 @@ import LibraryPage from "./pages/library"
 import SettingsPage from "./pages/settings"
 import PlaylistPage from "./pages/playlist"
 import ManageAccount from "./pages/manage-account"
-import AddSongToPlaylistPage from "./pages/add-song-to-playlist"
-// import AddAlbumToPlaylistPage from "./add-album-to-playlist"
 import TopOneHundredSongsPage from "./pages/top-one-hundred-songs"
 
 const routes: RouteObject[] = [{
@@ -56,12 +54,6 @@ const routes: RouteObject[] = [{
 },{
 	path: "top-one-hundred-songs",
 	element: <TopOneHundredSongsPage/>,
-},{
-	element: <AddSongToPlaylistPage/>,
-	path: "add-song-to-playlist/:songID",
-},{
-	// element: <AddAlbumToPlaylistPage/>,
-	path: "add-album-to-playlist/:albumID",
 }]
 
 const Routes: FC =

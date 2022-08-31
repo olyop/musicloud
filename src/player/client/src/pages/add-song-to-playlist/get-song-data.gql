@@ -1,7 +1,0 @@
-#import "../../graphql/fragments/song-core.gql";
-
-query getSongData($songID: UUID!) {
-  getSongByID(songID: $songID) {
-    ...SongCoreFragment
-  }
-}

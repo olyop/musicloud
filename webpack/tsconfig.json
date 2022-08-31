@@ -1,7 +1,7 @@
 {
-	"extends": "../tsconfig",
+	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["ESNext", "DOM"]
+		"lib": ["ESNext"]
 	},
 	"include": [
 		"base.ts",
@@ -9,10 +9,5 @@
 		"uploader",
 		"authenticator",
 		"../src/types"
-	],
-	"ts-node": {
-		"swc": true,
-		"files": true,
-    "require": ["tsconfig-paths/register"]
-  }
+	]
 }

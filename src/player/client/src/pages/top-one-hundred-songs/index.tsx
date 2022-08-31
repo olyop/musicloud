@@ -7,14 +7,19 @@ import Song from "../../components/song"
 import Songs from "../../components/songs"
 import { updateNowPlayingCache } from "../../helpers"
 import { Song as SongType, Queue } from "../../types"
-import { useQuery, useMutation, useResetPlayer } from "../../hooks"
+import { useQuery, useMutation, useResetPlayer, useShare } from "../../hooks"
 
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
 import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
 import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql"
 
+import "./index.scss"
+
 const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer()
+
+	const [ share, shareText ] =
+		useShare()
 
 	const { data: topOneHundredSongsData } =
 		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS)
@@ -49,25 +54,41 @@ const TopOneHundredSongsPage: FC = () => {
 			void shuffleTopOneHundredSongs()
 		}
 
+	const handleShare =
+		() => {
+			share({
+				title: "Top One Hundread",
+				url: "/top-one-hundred-songs",
+			})
+		}
+
 	return (
 		<Head pageTitle="Top #100">
 			<Page
-				headerClassName="FlexRowGapHalf"
+				headerClassName="TopOneHundredSongsPage FlexRow"
 				header={(
 					<Fragment>
+						<div className="FlexRowGapHalf">
+							<Button
+								transparent
+								text="Play"
+								icon="play_arrow"
+								className="Border"
+								onClick={handlePlay}
+							/>
+							<Button
+								transparent
+								icon="shuffle"
+								text="Shuffle"
+								className="Border"
+								onClick={handleShuffle}
+							/>
+						</div>
 						<Button
 							transparent
-							text="Play"
-							icon="play_arrow"
-							className="Border"
-							onClick={handlePlay}
-						/>
-						<Button
-							transparent
-							icon="shuffle"
-							text="Shuffle"
-							className="Border"
-							onClick={handleShuffle}
+							icon="share"
+							onClick={handleShare}
+							text={shareText || undefined}
 						/>
 					</Fragment>
 				)}

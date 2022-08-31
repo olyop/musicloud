@@ -1,35 +1,43 @@
 import isEmpty from "lodash-es/isEmpty"
 import Button from "@oly_op/react-button"
-import { useState, createElement, FC, Fragment } from "react"
+import { useNavigate } from "react-router-dom"
+import { useState, createElement, FC, Fragment, useEffect } from "react"
 import { PlaylistPrivacy } from "@oly_op/musicloud-common/build/types"
 
 import { Handler } from "../../types"
-import Select from "../../components/select"
 import { useCreatePlaylist } from "../../hooks"
 import Input, { InputOnChange } from "../../components/input"
+import Select, { SelectOnChange } from "../../components/select"
+import { createObjectPath } from "../../helpers"
 
 const LibraryCreatePlaylist: FC<PropTypes> = ({ onClose }) => {
+	const navigate = useNavigate()
 	const [ title, setTitle ] = useState("")
 	const [ privacy, setPrivacy ] = useState(PlaylistPrivacy.PUBLIC)
 
-	const [ createPlaylist ] =
+	const [ createPlaylist, { data } ] =
 		useCreatePlaylist()
 
 	const handleTitleChange: InputOnChange =
 		value => setTitle(value)
 
-	const handleSetPrivacyChange =
-		(value: string) =>
-			setPrivacy(value as PlaylistPrivacy)
+	const handleSetPrivacyChange: SelectOnChange =
+		(value: string) => setPrivacy(value as PlaylistPrivacy)
 
 	const handleSubmit =
 		() => {
 			if (!isEmpty(title)) {
-				setTitle("")
-				onClose()
 				void createPlaylist({ title, privacy })
 			}
 		}
+
+	useEffect(() => {
+		if (data) {
+			setTitle("")
+			navigate(createObjectPath("playlist", data.createPlaylist.playlistID))
+			onClose()
+		}
+	}, [data])
 
 	return (
 		<Fragment>

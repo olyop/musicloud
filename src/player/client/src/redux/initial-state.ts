@@ -18,8 +18,8 @@ import {
 export const initialSettings: Settings = {
 	volume: 75,
 	showGenres: false,
-	showDuration: false,
-	showReleased: false,
+	showReleased: true,
+	showDuration: true,
 	gridChildWidth: 200,
 	theme: SettingsTheme.SYSTEM,
 	listStyle: SettingsListStyle.GRID,

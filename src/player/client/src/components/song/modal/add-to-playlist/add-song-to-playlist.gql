@@ -1,4 +1,4 @@
-#import "../../graphql/fragments/song-core.gql";
+#import "../../../../graphql/fragments/song-core.gql";
 
 mutation addSongToPlaylist(
 	$songID: UUID!

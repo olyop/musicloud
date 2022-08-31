@@ -1,10 +1,17 @@
 {
-	"extends": "@oly_op/tsconfig/tsconfig",
+	"extends": "@oly_op/tsconfig/tsconfig.json",
 	"compilerOptions": {
 		"baseUrl": "./",
+		"lib": ["ESNext", "DOM"],
 		"exactOptionalPropertyTypes": false,
 		"paths": {
 			"*": ["src/types/*"]
 		}
-	}
+	},
+	"ts-node": {
+		"esm": true,
+		"swc": true,
+		"files": true,
+    "require": ["tsconfig-paths/register"]
+  }
 }

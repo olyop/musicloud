@@ -24,7 +24,7 @@ const SRC_ENTRY_PATH =
 const SRC_INDEX_PATH =
 	path.join(SRC_PATH, "index.html")
 
-const ROOT_TSCONFIG_PATH =
+const TSCONFIG_PATH =
 	path.join(ROOT_PATH, "tsconfig.json")
 
 const BUILD_PATH =
@@ -55,12 +55,9 @@ const configuration: Configuration = {
 	},
 	module: {
 		rules: [
-			createTSLoaderRule({
-				configFile: ROOT_TSCONFIG_PATH,
-			}),
+			createTSLoaderRule(TSCONFIG_PATH),
 			{
 				test: /\.gql$/,
-				exclude: /node_modules/,
 				loader: "graphql-mini-transforms/webpack-loader",
 			},
 		],

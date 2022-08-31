@@ -65,7 +65,6 @@ const HomePage: FC = () => {
 									{playlists => playlists.map(
 										playlist => (
 											<Playlist
-												hideModal
 												hideInLibrary
 												playlist={playlist}
 												key={playlist.playlistID}

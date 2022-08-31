@@ -23,6 +23,7 @@ const Playlist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		onClick,
 		playlist,
 		showIcon = false,
+		hidePlay = false,
 		hideModal = false,
 		hideInLibrary = false,
 		className = "ItemBorder PaddingHalf",
@@ -61,7 +62,7 @@ const Playlist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 				}
 			)}
 			playOptions={(
-				isPlaylistNull ? undefined : {
+				(hidePlay || isPlaylistNull) ? undefined : {
 					isPlaying,
 					onClick: playPlaylist,
 				}
@@ -85,6 +86,7 @@ interface PropTypes
 	ObjectShowIcon,
 	OnClickPropTypes,
 	ClassNameBEMPropTypes {
+	hidePlay?: boolean,
 	hideModal?: boolean,
 	hideInLibrary?: boolean,
 	playlist: PlaylistType | null,

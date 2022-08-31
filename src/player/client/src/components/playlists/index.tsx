@@ -22,13 +22,16 @@ const Playlists: FC<PropTypes> = ({
 	children,
 	className,
 	playlists,
+	hideElevated = false,
 }) => (
 	<div
 		className={bem(
 			className,
-			isUndefined(playlists) ?
-				"Elevated" :
-				!isEmpty(playlists) && "Elevated",
+			hideElevated || (
+				isUndefined(playlists) ?
+					"Elevated" :
+					!isEmpty(playlists) && "Elevated"
+			),
 		)}
 	>
 		{orderBy && (
@@ -51,6 +54,7 @@ const Playlists: FC<PropTypes> = ({
 
 export interface PropTypes extends ClassNamePropTypes {
 	playlists?: Playlist[],
+	hideElevated?: boolean,
 	orderBy?: OrderByOptions<SettingsOrderByPlaylists>,
 	children: ((playlists: Playlist[]) => ReactNode) | ReactNode,
 }

@@ -18,6 +18,9 @@ export const usePlayPlaylist =
 		const dispatch = useDispatch()
 		const resetPlayer = useResetPlayer()
 
+		const isPlaylistNotNull =
+			!isNull(playlist)
+
 		const [ playPlaylist, result ] =
 			useMutation<PlayPlaylistData, PlaylistID>(PLAY_PLAYLIST, {
 				update: updateNowPlayingMutationFunction(({ playPlaylist: { nowPlaying } }) => nowPlaying),
@@ -25,11 +28,10 @@ export const usePlayPlaylist =
 
 		const { data } =
 			useQuery<GetQueueNowPlayingData, PlaylistID>(GET_PLAYLIST_NOW_PLAYING, {
+				skip: !isPlaylistNotNull,
 				fetchPolicy: "cache-first",
+				variables: { playlistID: playlist?.playlistID || "" },
 			})
-
-		const isPlaylistNotNull =
-			!isNull(playlist)
 
 		const isNowPlaying = (
 			isPlaylistNotNull &&
