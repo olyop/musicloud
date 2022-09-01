@@ -8,6 +8,7 @@ import {
 } from "@oly_op/pg-helpers"
 
 import { pipe } from "rxjs"
+import { random } from "lodash-es"
 import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
@@ -59,13 +60,20 @@ export const user =
 		),
 	)
 
+export const playsTotal =
+	resolver(
+		() => Promise.resolve(
+			random(50, 1_000),
+		),
+	)
+
 interface GetPlaylistSongsOptions<T>
 	extends PlaylistID, GetObjectsOptions<T> {}
 
 const getPlaylistSongs =
-	(client: PoolOrClient) =>
+	(pg: PoolOrClient) =>
 		<T>({ playlistID, columnNames, parse }: GetPlaylistSongsOptions<T>) =>
-			query(client)(SELECT_PLAYLIST_SONGS)({
+			query(pg)(SELECT_PLAYLIST_SONGS)({
 				parse,
 				variables: {
 					playlistID,

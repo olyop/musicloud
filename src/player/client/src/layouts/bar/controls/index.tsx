@@ -1,11 +1,11 @@
 import Button from "@oly_op/react-button"
+import { createElement, FC } from "react"
 import { createBEM, BEMInput } from "@oly_op/bem"
-import { useEffect, createElement, FC } from "react"
 
 import { BarCommonPropTypes } from "../types"
 import { ClassNameBEMPropTypes } from "../../../types"
 import { togglePlay, useDispatch, useStatePlay } from "../../../redux"
-import { useKeyPress, useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
+import { useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
 
 import "./index.scss"
 
@@ -21,7 +21,6 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 }) => {
 	const play = useStatePlay()
 	const dispatch = useDispatch()
-	const playPausePress = useKeyPress("MediaPlayPause")
 
 	const showLoop =
 		nowPlaying ?
@@ -49,10 +48,6 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 				dispatch(togglePlay())
 			}
 		}
-
-	useEffect(() => {
-		handleTogglePlay()
-	}, [playPausePress])
 
 	return (
 		<Button

@@ -21,8 +21,8 @@ const SignUpForm: FC<PropTypes> = ({
 	const [ loading, setLoading ] =
 		useState(false)
 
-	const [ name, setName ] = useState("Oliver")
-	const [ password, setPassword ] = useState("password")
+	const [ name, setName ] = useState("")
+	const [ password, setPassword ] = useState("")
 	const [ cover, setCover ] = useState<File | null>(null)
 	const [ profile, setProfile ] = useState<File | null>(null)
 

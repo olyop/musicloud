@@ -6,7 +6,6 @@ import {
 	useRef,
 	useState,
 	Fragment,
-	ReactNode,
 	useEffect,
 	createElement,
 } from "react"
@@ -90,7 +89,7 @@ interface PropTypes<ItemsTotalData, Item, ItemData> {
 	settingsOrderBy: keyof SettingsOrderBy,
 	itemDataToValue: (data: ItemData) => Item | null,
 	itemsTotalDataToValue: (data: ItemsTotalData) => Total,
-	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => ReactNode,
+	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => JSX.Element,
 }
 
 export { FeedItemVars }

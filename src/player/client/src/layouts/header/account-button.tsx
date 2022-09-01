@@ -2,15 +2,13 @@ import { Link } from "react-router-dom"
 import { createBEM } from "@oly_op/bem"
 import uniqueID from "lodash-es/uniqueId"
 import Button from "@oly_op/react-button"
-import { useApolloClient } from "@apollo/client"
 import { createElement, Fragment, useState, FC } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import Modal from "../../components/modal"
-import { useJWTPayload, useSignOut } from "../../hooks"
 import { addLoading, removeLoading, useDispatch } from "../../redux"
 import { createCatalogImageURL, createObjectPath } from "../../helpers"
-import { cachePersistor } from "../../apollo"
+import { useClearCache, useJWTPayload, useResetCache, useSignOut } from "../../hooks"
 
 const bem =
 	createBEM("Header")
@@ -21,7 +19,8 @@ const clearCacheLoadingID = uniqueID()
 const HeaderAccountButton: FC = () => {
 	const signOut = useSignOut()
 	const dispatch = useDispatch()
-	const client = useApolloClient()
+	const clearCache = useClearCache()
+	const resetCache = useResetCache()
 	const { userID, name } = useJWTPayload()
 
 	const [ accountModal, setAccountModal ] =
@@ -37,18 +36,18 @@ const HeaderAccountButton: FC = () => {
 		() => {
 			dispatch(addLoading(refreshLoadingID))
 			handleAccountModalClose()
-			void cachePersistor.purge()
-				.then(() => client.resetStore())
-				.then(() => dispatch(removeLoading(refreshLoadingID)))
+			resetCache()
+				.catch(console.error)
+				.finally(() => dispatch(removeLoading(refreshLoadingID)))
 		}
 
 	const handleClearCache =
 		() => {
 			dispatch(addLoading(clearCacheLoadingID))
 			handleAccountModalClose()
-			void cachePersistor.purge()
-				.then(() => client.clearStore())
-				.then(() => dispatch(removeLoading(clearCacheLoadingID)))
+			clearCache()
+				.catch(console.error)
+				.finally(() => dispatch(removeLoading(refreshLoadingID)))
 		}
 
 	return (

@@ -38,30 +38,24 @@ const PlaylistPagePrivacyButton: FC<PropTypes> = ({ playlist }) => {
 							text="Change playlist privacy"
 						/>
 						<ModalButtons>
-							{playlist.privacy === PlaylistPrivacy.PUBLIC || (
-								<ModalButton
-									icon="public"
-									text="Public"
-									onClose={onClose}
-									onClick={handleChange(PlaylistPrivacy.PUBLIC)}
-								/>
-							)}
-							{playlist.privacy === PlaylistPrivacy.FOLLOWERS || (
-								<ModalButton
-									icon="people"
-									text="Followers"
-									onClose={onClose}
-									onClick={handleChange(PlaylistPrivacy.FOLLOWERS)}
-								/>
-							)}
-							{playlist.privacy === PlaylistPrivacy.PRIVATE || (
-								<ModalButton
-									icon="lock"
-									text="Private"
-									onClose={onClose}
-									onClick={handleChange(PlaylistPrivacy.PRIVATE)}
-								/>
-							)}
+							<ModalButton
+								icon="public"
+								text="Public"
+								onClose={onClose}
+								onClick={handleChange(PlaylistPrivacy.PUBLIC)}
+							/>
+							<ModalButton
+								icon="people"
+								text="Followers"
+								onClose={onClose}
+								onClick={handleChange(PlaylistPrivacy.FOLLOWERS)}
+							/>
+							<ModalButton
+								icon="lock"
+								text="Private"
+								onClose={onClose}
+								onClick={handleChange(PlaylistPrivacy.PRIVATE)}
+							/>
 							<ModalButton
 								icon="close"
 								text="Cancel"

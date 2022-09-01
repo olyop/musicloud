@@ -46,7 +46,7 @@ interface Other {
 	left?: ReactNode,
 	leftIcon?: string,
 	onRemove?: Handler,
-	shareIcon?: boolean,
+	shareData?: ShareData,
 	style?: CSSProperties,
 	infoFadeInFromRight?: boolean,
 }

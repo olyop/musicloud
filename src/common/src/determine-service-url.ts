@@ -24,10 +24,8 @@ export const determinePort =
 		}
 	}
 
-export const determineServiceURL =
-	({ service, redirect, accessToken }: DetermineServiceURLOptions) => {
-		let url: URL
-
+const determineOrigin =
+	({ service }: ServiceOptions) => {
 		const protocol =
 			(IS_DEVELOPMENT || IS_TESTING) ?
 				(USE_HTTPS ? "https" : "http") :
@@ -39,10 +37,17 @@ export const determineServiceURL =
 					determineDevelopmentPort({ service }) :
 					determinePort({ service })
 
-			url = new URL(`${protocol}://${process.env.HOST}:${port}`)
+			return `${protocol}://${process.env.HOST}:${port}`
 		} else {
-			url = new URL(`${protocol}://${service}.${DOMAIN_NAME}`)
+			return `${protocol}://${service}.${DOMAIN_NAME}`
 		}
+	}
+
+export const determineServiceURL =
+	({ service, servicePath, redirect, redirectPath, accessToken }: DetermineServiceURLOptions) => {
+		const origin = determineOrigin({ service })
+		const path = servicePath || ""
+		const url = new URL(`${origin}${path}`)
 
 		if (accessToken) {
 			url.searchParams.append("accessToken", accessToken)
@@ -52,6 +57,10 @@ export const determineServiceURL =
 			url.searchParams.append("redirect", redirect)
 		}
 
+		if (redirectPath) {
+			url.searchParams.append("redirectPath", redirectPath)
+		}
+
 		return url.toString()
 	}
 
@@ -59,12 +68,22 @@ export interface ServiceOptions {
 	service: ServicesNames,
 }
 
+export interface ServicePathOptions {
+	servicePath: string,
+}
+
 export interface RedirectOptions {
 	redirect: ServicesNames,
+}
+
+export interface RedirectPathOptions {
+	redirectPath: string,
 }
 
 export interface DetermineServiceURLOptions
 	extends
 	ServiceOptions,
 	Partial<AccessToken>,
-	Partial<RedirectOptions> {}
+	Partial<RedirectOptions>,
+	Partial<ServicePathOptions>,
+	Partial<RedirectPathOptions> {}

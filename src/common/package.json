@@ -1,66 +1,65 @@
 {
 	"type": "module",
-  "license": "MIT",
-  "version": "1.1.136",
-  "description": "musicloud-common",
-  "name": "@oly_op/musicloud-common",
-  "homepage": "https://github.com/olyop/musicloud",
-  "bugs": "https://github.com/olyop/musicloud/issues",
-  "author": {
-    "name": "Oliver Plummer",
-    "email": "oliver.plummer@outlook.com"
-  },
-  "repository": {
-    "type": "git",
-    "directory": "src/common",
-    "url": "https://github.com/olyop/musicloud.git"
-  },
-  "engines": {
-    "npm": ">=8.18",
-    "node": ">=16.7"
-  },
-  "files": [
-    "build"
-  ],
-  "type": "module",
-  "exports": {
-    "./build/globals": {
-      "types": "./build/globals.d.ts",
-      "import": "./build/globals.js"
-    },
-    "./build/metadata": {
-      "types": "./build/metadata.d.ts",
-      "import": "./build/metadata.js"
-    },
-    "./build/types": {
-      "types": "./build/types/index.d.ts",
-      "import": "./build/types/index.js"
-    },
-    "./build/server-options": {
-      "types": "./build/server-options.d.ts",
-      "import": "./build/server-options.js"
-    },
-    "./build/create-fastify": {
-      "types": "./build/create-fastify.d.ts",
-      "import": "./build/create-fastify.js"
-    },
-    "./build/determine-service-url": {
-      "types": "./build/determine-service-url.d.ts",
-      "import": "./build/determine-service-url.js"
-    },
-    "./build/create-fastify-cors-options": {
-      "types": "./build/create-fastify-cors-options.d.ts",
-      "import": "./build/create-fastify-cors-options.js"
-    }
-  },
-  "peerDependencies": {
-    "pg": "*",
-    "ms": "*",
-    "fastify": "*",
-    "pino-pretty": "*",
-    "@fastify/cors": "*",
-    "@fastify/static": "*",
-    "@fastify/helmet": "*",
-    "@aws-sdk/client-s3": "*"
-  }
+	"license": "MIT",
+	"version": "1.1.141",
+	"description": "musicloud-common",
+	"name": "@oly_op/musicloud-common",
+	"homepage": "https://github.com/olyop/musicloud",
+	"bugs": "https://github.com/olyop/musicloud/issues",
+	"author": {
+		"name": "Oliver Plummer",
+		"email": "oliver.plummer@outlook.com"
+	},
+	"repository": {
+		"type": "git",
+		"directory": "src/common",
+		"url": "https://github.com/olyop/musicloud.git"
+	},
+	"engines": {
+		"npm": ">=8.18",
+		"node": ">=16.7"
+	},
+	"files": [
+		"build"
+	],
+	"exports": {
+		"./build/globals": {
+			"types": "./build/globals.d.ts",
+			"import": "./build/globals.js"
+		},
+		"./build/metadata": {
+			"types": "./build/metadata.d.ts",
+			"import": "./build/metadata.js"
+		},
+		"./build/types": {
+			"types": "./build/types/index.d.ts",
+			"import": "./build/types/index.js"
+		},
+		"./build/server-options": {
+			"types": "./build/server-options.d.ts",
+			"import": "./build/server-options.js"
+		},
+		"./build/create-fastify": {
+			"types": "./build/create-fastify.d.ts",
+			"import": "./build/create-fastify.js"
+		},
+		"./build/determine-service-url": {
+			"types": "./build/determine-service-url.d.ts",
+			"import": "./build/determine-service-url.js"
+		},
+		"./build/create-fastify-cors-options": {
+			"types": "./build/create-fastify-cors-options.d.ts",
+			"import": "./build/create-fastify-cors-options.js"
+		}
+	},
+	"peerDependencies": {
+		"pg": "*",
+		"ms": "*",
+		"fastify": "*",
+		"pino-pretty": "*",
+		"@fastify/cors": "*",
+		"@fastify/static": "*",
+		"@fastify/helmet": "*",
+		"@aws-sdk/client-s3": "*"
+	}
 }

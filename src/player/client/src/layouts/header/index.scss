@@ -5,11 +5,19 @@
 	background-color: var(--elevated-color);
 	height: calc(var(--header-height) + env(safe-area-inset-top));
 	&__left {
-		@media (min-width: 700px) {
-			margin-left: calc(var(--space-half) + 2rem); }
+		gap: var(--space-half);
 		@media (max-width: 700px) {
-			--button-dimension: var(--header-height);
-			border-radius: 0; } }
+			gap: var(--space-quart); }
+		&-icon {
+			@media (min-width: 700px) {
+				margin-left: calc(var(--space-half) + 2rem); }
+			@media (max-width: 700px) {
+				--button-dimension: var(--header-height);
+				border-radius: 0; } }
+		&-title {
+			margin-top: 1rem;
+			@media (max-width: 700px) {
+				margin-top: 2rem; } } }
 	&__offline {
 		--color: #f44336;
 		cursor: default;

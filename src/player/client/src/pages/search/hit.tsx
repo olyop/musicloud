@@ -95,6 +95,7 @@ const SearchHit: FC<PropTypes> = ({ hit }) => {
 		return (
 			<Artist
 				showIcon
+				hidePlay
 				hideModal
 				alwaysList
 				hideInLibrary
@@ -108,6 +109,8 @@ const SearchHit: FC<PropTypes> = ({ hit }) => {
 	} else if (isPlaylist(hit)) {
 		return (
 			<Playlist
+				hidePlay
+				hidePlays
 				hideModal
 				hideInLibrary
 				playlist={({

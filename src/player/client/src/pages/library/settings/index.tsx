@@ -1,12 +1,10 @@
 import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
 import { useNavigate } from "react-router-dom"
-import { useApolloClient } from "@apollo/client"
 import { createElement, FC, Fragment, useState } from "react"
 
-import { useMutation } from "../../../hooks"
-import { cachePersistor } from "../../../apollo"
 import Buttons from "../../../components/buttons"
+import { useClearCache, useMutation } from "../../../hooks"
 import Modal, { ModalButton, ModalHeader, ModalButtons } from "../../../components/modal"
 
 import DELETE_LIBRARY from "./delete-library.gql"
@@ -14,17 +12,19 @@ import ADD_CATALOG_TO_LIBRARY from "./add-catalog-to-library.gql"
 
 const LibrarySettings: FC = () => {
 	const navigate = useNavigate()
-	const client = useApolloClient()
+	const clearCache = useClearCache()
 
 	const [ deleteLibraryModal, setDeleteLibraryModal ] =
 		useState(false)
 
 	const [ deleteLibrary, { loading: deleteLibraryLoading } ] =
-		useMutation(DELETE_LIBRARY)
+		useMutation(DELETE_LIBRARY, {
+			fetchPolicy: "no-cache",
+		})
 
 	const [ addCatalogToLibrary, { loading: addCatalogToLibraryLoading } ] =
 		useMutation(ADD_CATALOG_TO_LIBRARY, {
-			fetchPolicy: "network-only",
+			fetchPolicy: "no-cache",
 		})
 
 	const handleDeleteLibraryModalOpen =
@@ -37,8 +37,7 @@ const LibrarySettings: FC = () => {
 		() => {
 			if (!deleteLibraryLoading) {
 				handleDeleteLibraryModalClose()
-				cachePersistor.purge()
-					.then(() => client.resetStore())
+				clearCache()
 					.then(() => deleteLibrary())
 					.then(() => navigate("/"))
 					.catch(console.error)
@@ -48,8 +47,7 @@ const LibrarySettings: FC = () => {
 	const handleCatalogToLibrary =
 		() => {
 			if (!addCatalogToLibraryLoading) {
-				cachePersistor.purge()
-					.then(() => client.resetStore())
+				clearCache()
 					.then(() => addCatalogToLibrary())
 					.then(() => navigate("/library"))
 					.catch(console.error)

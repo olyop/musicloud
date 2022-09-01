@@ -1,9 +1,9 @@
 import isNull from "lodash-es/isNull"
 import toLower from "lodash-es/toLower"
 import isEmpty from "lodash-es/isEmpty"
-import startCase from "lodash-es/startCase"
 import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
+import startCase from "lodash-es/startCase"
 import { useParams } from "react-router-dom"
 import { createElement, FC, Fragment } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
@@ -20,6 +20,7 @@ import {
 
 import Page from "../../layouts/page"
 import Song from "../../components/song"
+import Chip from "../../components/chip"
 import DeleteButton from "./delete-button"
 import RenameButton from "./rename-button"
 import Songs from "../../components/songs"
@@ -27,7 +28,6 @@ import { useStatePlay } from "../../redux"
 import PrivacyButton from "./privacy-button"
 import Buttons from "../../components/buttons"
 import InLibraryButton from "./in-library-button"
-import ObjectLink from "../../components/object-link"
 import { Playlist, SongPlaylistIndex } from "../../types"
 import { determinePlural, createObjectPath } from "../../helpers"
 
@@ -40,8 +40,8 @@ const PlaylistPage: FC = () => {
 	const params = useParams<keyof PlaylistID>()
 	const playlistID = addDashesToUUID(params.playlistID!)
 
-	const [ share, shareText ] =
-		useShare("Share")
+	const [ share, { shareIcon, shareText } ] =
+		useShare()
 
 	const variables: PlaylistID = { playlistID }
 
@@ -102,8 +102,8 @@ const PlaylistPage: FC = () => {
 			<Head pageTitle={title}>
 				<Page>
 					<div className="ContentPaddingTopBottom FlexColumnGap">
-						<div className="FlexColumnGapHalf">
-							<div className="FlexRowGapHalf">
+						<div>
+							<div key={1} className="FlexRowGapHalf MarginBottomHalf">
 								<h1 className="HeadingFour">
 									{title}
 								</h1>
@@ -115,19 +115,19 @@ const PlaylistPage: FC = () => {
 									icon={play && isPlaying ? "pause" : "play_arrow"}
 								/>
 							</div>
-							<h2 className="ParagraphOne">
-								<ObjectLink
-									link={{
-										text: user.name,
-										path: createObjectPath("user", user.userID),
-									}}
+							<div className="FlexRowGapHalf MarginBottomThreeQuart">
+								<Chip
+									name={user.name}
+									key={user.userID}
+									objectID={user.userID}
 								/>
-								<Fragment> - </Fragment>
-								{startCase(toLower(privacy))}
-							</h2>
-							<p className="ParagraphOne LightColor">
+							</div>
+							<p className="ParagraphOne LightColor MarginBottomThreeQuart">
 								{(new Date(dateCreated)).toLocaleDateString()}
 							</p>
+							<h2 className="ParagraphOne">
+								{startCase(toLower(privacy))}
+							</h2>
 						</div>
 						{isEmpty(songs) ? (
 							<p className="ParagraphOneBold">
@@ -167,7 +167,7 @@ const PlaylistPage: FC = () => {
 								/>
 							)}
 							<Button
-								icon="share"
+								icon={shareIcon}
 								text={shareText}
 								onClick={handleShare}
 							/>

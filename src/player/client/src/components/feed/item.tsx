@@ -3,7 +3,7 @@ import isNull from "lodash-es/isNull"
 import uniqueID from "lodash-es/uniqueId"
 import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
 import { DocumentNode, useApolloClient } from "@apollo/client"
-import { createElement, Fragment, ReactNode, Ref, useCallback, useEffect, useRef, useState } from "react"
+import { Ref, useCallback, useEffect, useRef, useState } from "react"
 
 import { OrderBy, SettingsOrderBy } from "../../types"
 import { useHasMounted, useInView, UseInViewOptionsOnChange } from "../../hooks"
@@ -79,6 +79,7 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 
 	const [ ref, inView ] =
 		useInView({
+			delay: 100,
 			onChange: handleInViewChange,
 		})
 
@@ -88,11 +89,7 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 		}
 	}, [orderBy.field, orderBy.direction])
 
-	return (
-		<Fragment>
-			{renderItem(ref, item)}
-		</Fragment>
-	)
+	return renderItem(ref, item)
 }
 
 export type FeedItemVars =
@@ -106,7 +103,7 @@ interface PropTypes<Item, ItemData> {
 	itemQuery: DocumentNode,
 	settingsOrderBy: keyof SettingsOrderBy,
 	itemDataToValue: (data: ItemData) => Item | null,
-	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => ReactNode,
+	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => JSX.Element,
 }
 
 export default FeedItem

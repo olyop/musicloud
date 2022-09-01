@@ -17,6 +17,7 @@ import PlayButton from "./play-button"
 
 import "./index.scss"
 import ItemInfo from "./info"
+import { useShare } from "../../hooks"
 
 const bem =
 	createBEM("Item")
@@ -30,14 +31,17 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		onRemove,
 		leftIcon,
 		className,
+		shareData,
 		playOptions,
 		infoOptions,
 		imageOptions,
 		infoClassName,
 		iconClassName,
-		shareIcon = false,
 		infoFadeInFromRight = false,
 	} = propTypes
+
+	const [ share, { shareIcon } ] =
+		useShare()
 
 	const [ showModal, setShowModal ] =
 		useState(false)
@@ -47,6 +51,13 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 
 	const handleModalClose =
 		() => setShowModal(false)
+
+	const handleShare =
+		() => {
+			if (shareData) {
+				void share(shareData)
+			}
+		}
 
 	return (
 		<div
@@ -128,12 +139,12 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					className={iconClassName}
 				/>
 			)}
-			{shareIcon && (
+			{shareData && (
 				<Button
 					transparent
-					icon="share"
 					title="Share"
-					onClick={() => {}}
+					icon={shareIcon}
+					onClick={handleShare}
 					className={iconClassName}
 				/>
 			)}

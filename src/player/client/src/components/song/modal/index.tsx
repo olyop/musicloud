@@ -28,7 +28,10 @@ const SongModal: FC<PropTypes> = ({
 		() => setAddToPlayPlaylist(true)
 
 	const handleAddToPlaylistClose =
-		() => setAddToPlayPlaylist(false)
+		() => {
+			onClose()
+			setAddToPlayPlaylist(false)
+		}
 
 	useEffect(() => () => {
 		if (addToPlaylist) {

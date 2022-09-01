@@ -1,5 +1,5 @@
 import { createElement, FC } from "react"
-import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
+// import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import PlayButton from "./play"
@@ -8,7 +8,7 @@ import { Album } from "../../../types"
 import InLibraryButton from "./in-library"
 import AlbumTitle from "../../album-title"
 import { createCatalogImageURL, createObjectPath } from "../../../helpers"
-import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../../modal"
+import Modal, { ModalButtons, ModalHeader, ModalOnClose } from "../../modal"
 
 const AlbumModal: FC<PropTypes> = ({
 	open,
@@ -49,11 +49,11 @@ const AlbumModal: FC<PropTypes> = ({
 					albumID={album.albumID}
 				/>
 			)}
-			<ModalButton
+			{/* <ModalButton
 				text="Playlist"
 				icon="playlist_add"
 				link={`/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`}
-			/>
+			/> */}
 			<ShuffleButton
 				onClose={onClose}
 				albumID={album.albumID}

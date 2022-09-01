@@ -107,6 +107,7 @@ const AddAlbumToPlaylistPage: FC = () => {
 						playlist => (
 							<Playlist
 								hideModal
+								hidePlays
 								hideInLibrary
 								playlist={playlist}
 								key={playlist.playlistID}

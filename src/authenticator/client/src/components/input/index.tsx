@@ -11,11 +11,10 @@ import isString from "lodash-es/isString"
 import { BEMInput, createBEM } from "@oly_op/bem"
 
 import "@oly_op/css-utilities/index.css"
-
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import "@oly_op/react-button/index.css"
-
 import "../../index.scss"
+
 import "./index.scss"
 
 const bem =

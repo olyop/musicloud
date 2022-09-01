@@ -31,6 +31,7 @@ const LibraryPlaylists: FC = () => (
 			renderItem={(ref, playlist) => (
 				<Playlist
 					ref={ref}
+					hidePlays
 					playlist={playlist}
 					className="LibraryPlaylist"
 				/>

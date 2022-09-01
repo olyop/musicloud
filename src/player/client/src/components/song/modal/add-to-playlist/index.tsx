@@ -66,6 +66,7 @@ const AddToPlaylist: FC<PropTypes> = ({ song, onClose }) => {
 								playlist => (
 									<Playlist
 										hidePlay
+										hidePlays
 										hideModal
 										hideInLibrary
 										playlist={playlist}

@@ -1,3 +1,4 @@
+import { createBEM } from "@oly_op/bem"
 import { createElement, FC } from "react"
 
 import PageTitle from "./page-title"
@@ -9,9 +10,11 @@ import DownloadsMenu from "./downloads-menu"
 
 import "./index.scss"
 
+const bem = createBEM("Header")
+
 const Header: FC = () => (
-	<header className="Header BorderBottom FlexRowSpaceBetween">
-		<div className="FlexRowGapHalf">
+	<header className={bem("", "BorderBottom FlexRowSpaceBetween")}>
+		<div className={bem("left", "FlexRow")}>
 			<MenuButton/>
 			<PageTitle/>
 		</div>

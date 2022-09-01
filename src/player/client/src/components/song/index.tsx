@@ -51,9 +51,12 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		<Item
 			ref={ref}
 			onRemove={onRemove}
-			shareIcon={shareIcon}
 			className={className}
 			iconClassName={iconClassName}
+			shareData={!isSongNull && shareIcon ? ({
+				title: song.title,
+				url: createObjectPath("song", song.songID),
+			}) : undefined}
 			leftIcon={(
 				showIcon ?
 					leftIcon :

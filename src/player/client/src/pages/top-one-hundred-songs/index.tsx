@@ -18,7 +18,7 @@ import "./index.scss"
 const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer()
 
-	const [ share, shareText ] =
+	const [ share, { shareIcon, shareText } ] =
 		useShare()
 
 	const { data: topOneHundredSongsData } =
@@ -57,7 +57,7 @@ const TopOneHundredSongsPage: FC = () => {
 	const handleShare =
 		() => {
 			share({
-				title: "Top One Hundread",
+				title: "Top #100",
 				url: "/top-one-hundred-songs",
 			})
 		}
@@ -86,7 +86,7 @@ const TopOneHundredSongsPage: FC = () => {
 						</div>
 						<Button
 							transparent
-							icon="share"
+							icon={shareIcon}
 							onClick={handleShare}
 							text={shareText || undefined}
 						/>

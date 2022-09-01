@@ -1,12 +1,12 @@
 import Button from "@oly_op/react-button"
 import { createElement, FC } from "react"
 
+import { Artist } from "../../types"
 import { useShare } from "../../hooks"
 import { createObjectPath } from "../../helpers"
-import { Artist } from "../../types"
 
 const ShareButton: FC<PropTypes> = ({ artist, width }) => {
-	const [ share, shareText ] = useShare()
+	const [ share, { shareIcon, shareText } ] = useShare()
 
 	const handleShare =
 		() => {
@@ -18,9 +18,9 @@ const ShareButton: FC<PropTypes> = ({ artist, width }) => {
 
 	return (
 		<Button
-			icon="share"
+			icon={shareIcon}
 			onClick={handleShare}
-			text={width > 700 ? (shareText || "Share") : undefined}
+			text={width > 700 ? shareText : undefined}
 		/>
 	)
 }

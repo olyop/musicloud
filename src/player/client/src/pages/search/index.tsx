@@ -45,19 +45,10 @@ const SearchPage: FC = () => {
 	const { algoliaKey } = useJWTPayload()
 	const [ searchParams ] = useSearchParams()
 
-	const agClientRef =
+	const algoliaSearchIndex =
 		useRef(
-			algoliasearch(
-				process.env.ALGOLIA_APPLICATION_ID,
-				algoliaKey,
-			),
-		)
-
-	const agIndexRef =
-		useRef(
-			agClientRef.current.initIndex(
-				process.env.ALGOLIA_SEARCH_INDEX_NAME,
-			),
+			algoliasearch(process.env.ALGOLIA_APPLICATION_ID, algoliaKey)
+				.initIndex(process.env.ALGOLIA_SEARCH_INDEX_NAME),
 		)
 
 	const initQuery =
@@ -72,9 +63,15 @@ const SearchPage: FC = () => {
 	const handleChange =
 		async (value: string) => {
 			setInput(value)
-			dispatch(addLoading(loadingID))
-			setHits(await getAlgoliaHits(agIndexRef.current)(input))
-			dispatch(removeLoading(loadingID))
+			try {
+				dispatch(addLoading(loadingID))
+				const newHits = await getAlgoliaHits(algoliaSearchIndex.current)(input)
+				setHits(newHits)
+			} catch (error) {
+				console.error()
+			} finally {
+				dispatch(removeLoading(loadingID))
+			}
 		}
 
 	const handleClear =
@@ -90,7 +87,10 @@ const SearchPage: FC = () => {
 
 	useEffect(() => {
 		if (!isEmpty(initQuery)) {
-			void getAlgoliaHits(agIndexRef.current)(initQuery).then(setHits)
+			getAlgoliaHits(algoliaSearchIndex.current)(initQuery)
+				.then(setHits)
+				.catch(console.error)
+				.finally(console.error)
 		}
 	}, [initQuery])
 

@@ -6,7 +6,7 @@ import { useShare } from "../../hooks"
 import { createObjectPath } from "../../helpers"
 
 const ShareButton: FC<PropTypes> = ({ album }) => {
-	const [ share, shareText ] = useShare()
+	const [ share, { shareIcon, shareText } ] = useShare()
 
 	const handleShare =
 		() => {
@@ -18,9 +18,9 @@ const ShareButton: FC<PropTypes> = ({ album }) => {
 
 	return (
 		<Button
-			icon="share"
+			icon={shareIcon}
+			text={shareText}
 			onClick={handleShare}
-			text={shareText || "Share"}
 		/>
 	)
 }

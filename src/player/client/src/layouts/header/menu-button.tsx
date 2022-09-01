@@ -21,7 +21,7 @@ const MenuButton: FC = () => {
 			transparent
 			title="Menu"
 			onClick={handleMenuClick}
-			className={bem("left", "icon")}
+			className={bem("left-icon", "icon")}
 		/>
 	)
 }

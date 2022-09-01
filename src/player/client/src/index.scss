@@ -1,23 +1,25 @@
 :root {
-	--modal-width: 300rem;
+	// @oly_op/css-utilities overrides
+	--primary-color: #ff5722;
+	--primary-color-dark: #c41c00;
+	--primary-color-light: #ff8a50;
+	--font-family: "Roboto", system-ui;
+
+	// @oly_op/react-button overrides
+	--button-dimension: 36rem;
+
+	--modal-width: 350rem;
 	--select-height: 29rem;
 	--content-width: 100vw;
 	--sidebar-width: 300rem;
 	--progress-height: 15rem;
-	--button-dimension: 36rem;
 	--grid-child-width: unset;
-	--transition-duration: 0.3s;
 	--content-image-width: 330rem;
 	--close-background-color: #333;
 	--grid-image-hover-color: #333;
 	--close-background-opacity: 0.6;
 	--grid-image-hover-opacity: 0.3;
-	--font-family: "Roboto", system-ui;
 	--progress-color: var(--grey-color-300);
-
-	--primary-color: #ff5722;
-	--primary-color-dark: #c41c00;
-	--primary-color-light: #ff8a50;
 
 	--bar-height-base: calc(var(--border-width) + var(--button-dimension) + var(--space-one-quart) + var(--progress-height));
 	--bar-height: var(--bar-height-base);

@@ -44,7 +44,10 @@
 	&__links {
 		display: flex;
 		flex-direction: column;
-		justify-content: stretch; }
+		justify-content: stretch;
+		&-group {
+			padding: var(--space-half) 0;
+			border-bottom: var(--border-width) var(--border-style) var(--border-color); } }
 	&__route {
 		&-button {
 			width: 100%;

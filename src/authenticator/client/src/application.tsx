@@ -1,3 +1,4 @@
+import isNull from "lodash-es/isNull"
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { FC, createElement, useState, Fragment, useRef } from "react"
@@ -21,7 +22,7 @@ const Application: FC = () => {
 		useState<string | null>(null)
 
 	const [ emailAddress, setEmailAddress ] =
-		useState("oly.rbsc@gmail.com")
+		useState("")
 
 	const [ emailAddressExists, setEmailAddressExists ] =
 		useState(false)
@@ -29,8 +30,11 @@ const Application: FC = () => {
 	const [ emailAddressChecked, setEmailAddressChecked ] =
 		useState(false)
 
-	const redirectParam =
-		useRef(new URLSearchParams(document.location.search).get("redirect"))
+	const redirectService =
+		useRef(new URLSearchParams(location.search).get("redirect"))
+
+	const redirectPath =
+		useRef(new URLSearchParams(location.search).get("redirectPath"))
 
 	const handleBack =
 		() => setEmailAddressChecked(false)
@@ -85,12 +89,13 @@ const Application: FC = () => {
 						)}
 					</div>
 				)}
-				{isValidServiceName(redirectParam.current) ? (
+				{isValidServiceName(redirectService.current) ? (
 					<Fragment>
 						{accessToken ? (
 							<LoggedIn
 								accessToken={accessToken}
-								redirectService={redirectParam.current}
+								redirectService={redirectService.current}
+								redirectPath={isNull(redirectPath.current) ? undefined : redirectPath.current}
 							/>
 						) : (
 							<Fragment>

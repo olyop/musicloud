@@ -2,7 +2,7 @@ import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
 import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { useParams, Route, Routes, Link } from "react-router-dom"
+import { useParams, Route, Routes } from "react-router-dom"
 import { ImageSizes, ArtistID, ImageDimensions } from "@oly_op/musicloud-common/build/types"
 
 import routes from "./routes"
@@ -35,9 +35,7 @@ const ArtistPage: FC = () => {
 		return (
 			<Page>
 				<h2 className="Content ParagraphOne PaddingTopBottom">
-					{error.message === "Failed to fetch" ?
-						error.message :
-						"Artist does not exist."}
+					{error.message === "Failed to fetch" ? error.message : "Artist does not exist."}
 				</h2>
 			</Page>
 		)
@@ -104,11 +102,11 @@ const ArtistPage: FC = () => {
 									</a>
 								)}
 								{playsTotal && (
-									<Link to="plays" className="Link ParagraphTwoInverted">
+									<p className="ParagraphTwoInverted">
 										{playsTotal.toLocaleString() ?? 0}
 										<Fragment> play</Fragment>
 										{determinePlural(playsTotal)}
-									</Link>
+									</p>
 								)}
 							</div>
 						)}

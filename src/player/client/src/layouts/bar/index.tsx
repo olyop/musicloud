@@ -30,9 +30,8 @@ const XHR_OPTIONS: NonNullable<Parameters<typeof useAudio>[0]>["xhr"] = {
 
 /**
  *
- * 		WARNING!!
- * 		Spaghetti code ahead
- *
+ *	WARNING!!
+ *	Spaghetti code ahead
  *
  */
 

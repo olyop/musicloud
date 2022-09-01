@@ -8,6 +8,7 @@ import { USE_HTTPS, IS_PRODUCTION, IS_TESTING, FILES_URL } from "./globals"
 
 const GOOGLE_FONTS_FONT_ORIGIN = "https://fonts.gstatic.com"
 const GOOGLE_FONTS_CSS_ORIGIN = "https://fonts.googleapis.com"
+const ALGOLIA_SEARCH_ORIGINS = ["https://*.algolia.net", "https://*.algolianet.com"]
 
 export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 	hsts: USE_HTTPS ? (IS_PRODUCTION && !IS_TESTING) : false,
@@ -17,7 +18,7 @@ export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 			imgSrc: ["'self'", FILES_URL],
 			fontSrc: ["'self'", GOOGLE_FONTS_FONT_ORIGIN],
 			styleSrc: ["'self'", GOOGLE_FONTS_CSS_ORIGIN],
-			connectSrc: ["'self'", FILES_URL, GOOGLE_FONTS_CSS_ORIGIN, GOOGLE_FONTS_FONT_ORIGIN],
+			connectSrc: ["'self'", FILES_URL, ...ALGOLIA_SEARCH_ORIGINS, GOOGLE_FONTS_CSS_ORIGIN, GOOGLE_FONTS_FONT_ORIGIN],
 		},
 	},
 }

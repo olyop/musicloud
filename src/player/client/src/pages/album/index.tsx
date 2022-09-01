@@ -12,10 +12,11 @@ import { createElement, Fragment, FC } from "react"
 import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
 
 import Disc from "./disc"
-import AlbumArtist from "./artist"
 import { Album } from "../../types"
 import Page from "../../layouts/page"
+import ShareButton from "./share-button"
 import createDiscs from "./create-discs"
+import Chip from "../../components/chip"
 import AlbumPlayButton from "./play-button"
 import Buttons from "../../components/buttons"
 import AlbumTitle from "../../components/album-title"
@@ -26,7 +27,6 @@ import { createObjectPath, createCatalogImageURL, determinePlural } from "../../
 import GET_ALBUM_PAGE from "./get-album-page.gql"
 
 import "./index.scss"
-import ShareButton from "./share-button"
 
 const bem =
 	createBEM("AlbumPage")
@@ -96,9 +96,10 @@ const AlbumPage: FC = () => {
 								<div className="FlexRowGapHalf MarginBottomThreeQuart">
 									{artists.map(
 										artist => (
-											<AlbumArtist
-												artist={artist}
+											<Chip
+												name={artist.name}
 												key={artist.artistID}
+												objectID={artist.artistID}
 											/>
 										),
 									)}

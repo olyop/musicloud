@@ -13,7 +13,7 @@ import Item from "../item"
 import Modal from "./modal"
 import ObjectLink from "../object-link"
 import { usePlayPlaylist } from "../../hooks"
-import { createObjectPath } from "../../helpers"
+import { createObjectPath, numberWithCommas } from "../../helpers"
 
 const bem =
 	createBEM("Playlist")
@@ -24,6 +24,7 @@ const Playlist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		playlist,
 		showIcon = false,
 		hidePlay = false,
+		hidePlays = false,
 		hideModal = false,
 		hideInLibrary = false,
 		className = "ItemBorder PaddingHalf",
@@ -59,6 +60,10 @@ const Playlist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							}}
 						/>
 					),
+					rightLeft: (
+						hidePlays || isNull(playlist.playsTotal) ?
+							null : numberWithCommas(playlist.playsTotal)
+					),
 				}
 			)}
 			playOptions={(
@@ -87,6 +92,7 @@ interface PropTypes
 	OnClickPropTypes,
 	ClassNameBEMPropTypes {
 	hidePlay?: boolean,
+	hidePlays?: boolean,
 	hideModal?: boolean,
 	hideInLibrary?: boolean,
 	playlist: PlaylistType | null,
