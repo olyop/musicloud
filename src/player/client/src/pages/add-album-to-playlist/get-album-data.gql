@@ -1,6 +1,0 @@
-query getAlbumData($albumID: UUID!) {
-	getAlbumByID(albumID: $albumID) {
-		albumID
-		title
-	}
-}

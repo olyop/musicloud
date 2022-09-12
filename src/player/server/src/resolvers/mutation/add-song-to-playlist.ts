@@ -9,8 +9,8 @@ import {
 } from "../helpers"
 
 import resolver from "./resolver"
-import { Playlist, PlaylistSong } from "../../types"
 import { COLUMN_NAMES } from "../../globals"
+import { Playlist, PlaylistSong } from "../../types"
 import { SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql"
 
 interface Args

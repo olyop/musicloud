@@ -31,7 +31,7 @@ const Application: FC = () => {
 		useState(false)
 
 	const redirectService =
-		useRef(new URLSearchParams(location.search).get("redirect"))
+		useRef(new URLSearchParams(location.search).get("redirect") || "player")
 
 	const redirectPath =
 		useRef(new URLSearchParams(location.search).get("redirectPath"))

@@ -9,6 +9,7 @@
 		"src/types",
 		"src/player",
 		"src/uploader",
+		"src/accounts",
 		"src/authenticator/client"
 	]
 }

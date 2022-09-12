@@ -58,7 +58,7 @@ export const updateQueueNowPlaying =
 				})
 
 				if (ag) {
-					await incrementPlays(pg, ag)({
+					void incrementPlays(pg, ag)({
 						songID,
 						userID,
 					})

@@ -11,5 +11,4 @@ type User {
 	emailAddress: EmailAddress!
 	playlistsTotal: PositiveInt
 	playlistsFilteredBySong(songID: UUID!): [Playlist!]
-	playlistsFilteredByAlbum(albumID: UUID!): [Playlist!]
 }

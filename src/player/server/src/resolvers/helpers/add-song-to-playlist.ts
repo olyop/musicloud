@@ -1,28 +1,31 @@
+import { GraphQLError } from "graphql"
+import { query, PoolOrClient } from "@oly_op/pg-helpers"
 import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types"
-import { query, getResultExists, PoolOrClient } from "@oly_op/pg-helpers"
 
 import { IndexOptions } from "../../types"
-import { EXISTS_PLAYLIST_SONG, INSERT_PLAYLIST_SONG } from "../../sql"
+import { INSERT_PLAYLIST_SONG } from "../../sql"
+import { isSongInPlaylist } from "./is-song-in-playlist"
 
-interface AddSongToPlaylistOptions
+interface Options
 	extends SongID, PlaylistID, IndexOptions {}
 
 export const addSongToPlaylist =
 	(pg: PoolOrClient) =>
-		async (options: AddSongToPlaylistOptions) => {
+		async (options: Options) => {
 			const { index, songID, playlistID } = options
 
-			const inPlaylist =
-				await query(pg)(EXISTS_PLAYLIST_SONG)({
-					parse: getResultExists,
-					variables: { songID, playlistID },
+			const isInPlaylist =
+				await isSongInPlaylist(pg)({ songID, playlistID })
+
+			if (isInPlaylist) {
+				throw new GraphQLError("Song already in playlist")
+			} else {
+				await query(pg)(INSERT_PLAYLIST_SONG)({
+					variables: {
+						index,
+						songID,
+						playlistID,
+					},
 				})
-
-			if (inPlaylist) {
-				throw new Error("Song already in playlist")
 			}
-
-			await query(pg)(INSERT_PLAYLIST_SONG)({
-				variables: { index, songID, playlistID },
-			})
 		}

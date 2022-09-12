@@ -27,8 +27,10 @@ const EmailAddressForm: FC<PropTypes> = ({
 
 	const handleChange: InputOnChange =
 		value => {
-			setIsValid(isEmailAddress(value))
-			onEmailAddressChange(value)
+			if (!loading) {
+				setIsValid(isEmailAddress(value))
+				onEmailAddressChange(value)
+			}
 		}
 
 	const handleEmailAddressExists =
@@ -81,6 +83,7 @@ const EmailAddressForm: FC<PropTypes> = ({
 				autoFocus
 				name="Email"
 				tabIndex={0}
+				disabled={loading}
 				spellCheck="false"
 				autoComplete="email"
 				value={emailAddress}
@@ -94,10 +97,10 @@ const EmailAddressForm: FC<PropTypes> = ({
 				</p>
 			)}
 			<Button
-				text="Next"
 				type="submit"
 				rightIcon="arrow_forward"
 				disabled={loading || !isValid}
+				text={loading ? "Loading..." : "Next"}
 			/>
 		</form>
 	)

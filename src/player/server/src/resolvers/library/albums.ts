@@ -29,10 +29,10 @@ export const albumAtIndex =
 				parse: convertFirstRowToCamelCaseOrNull(),
 				variables: {
 					atIndex: args.input.atIndex,
-					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					orderByField: args.input.orderBy.field,
 					orderByDirection: args.input.orderBy.direction,
 					columnNames: join(COLUMN_NAMES.ALBUM, "albums"),
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 				},
 			})
 		),

@@ -1,5 +1,4 @@
 import { createElement, FC, useEffect, useState } from "react"
-// import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import PlayButton from "./play"
@@ -8,8 +7,8 @@ import LaterButton from "./later"
 import AfterButton from "./after"
 import SongTitle from "../../song-title"
 import InLibraryButton from "./in-library"
-import AddToPlaylist from "./add-to-playlist"
 import { Handler, Song } from "../../../types"
+import AddToPlaylist from "../../add-song-to-playlist"
 import { createCatalogImageURL, createObjectPath } from "../../../helpers"
 import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../../modal"
 
@@ -29,7 +28,6 @@ const SongModal: FC<PropTypes> = ({
 
 	const handleAddToPlaylistClose =
 		() => {
-			onClose()
 			setAddToPlayPlaylist(false)
 		}
 
@@ -64,7 +62,7 @@ const SongModal: FC<PropTypes> = ({
 			/>
 			{addToPlaylist ? (
 				<AddToPlaylist
-					song={song}
+					songID={song.songID}
 					onClose={handleAddToPlaylistClose}
 				/>
 			) : (
@@ -114,12 +112,6 @@ const SongModal: FC<PropTypes> = ({
 						icon="playlist_add"
 						onClose={handleAddToPlaylistOpen}
 					/>
-					{/* <ModalButton
-						text="Playlist"
-						onClose={onClose}
-						icon="playlist_add"
-						link={`/add-song-to-playlist/${removeDashesFromUUID(song.songID)}`}
-					/> */}
 					{onRemove && (
 						<ModalButton
 							text="Remove"

@@ -1,16 +1,11 @@
-import {
-	join,
-	convertTableToCamelCase,
-	query as pgHelpersQuery,
-	exists as pgHelpersExists,
-} from "@oly_op/pg-helpers"
-
 import { last } from "lodash-es"
 import { AlbumID, PlaylistID } from "@oly_op/musicloud-common/build/types"
+import { join, exists, convertTableToCamelCase, query } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
 import { COLUMN_NAMES } from "../../globals"
 import { Song, Playlist, PlaylistSong } from "../../types"
+import { isSongInPlaylist } from "../helpers/is-song-in-playlist"
 import { addSongToPlaylist, getPlaylist, isNotUsersPlaylist } from "../helpers"
 import { SELECT_ALBUM_SONGS, SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql"
 
@@ -20,13 +15,11 @@ interface Args
 export const addAlbumToPlaylist =
 	resolver<Playlist, Args>(
 		async ({ context, args }) => {
-			const query = pgHelpersQuery(context.pg)
-			const exists = pgHelpersExists(context.pg)
 			const { albumID, playlistID } = args
 			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
 
 			const albumExists =
-				await exists({
+				await exists(context.pg)({
 					value: albumID,
 					table: "albums",
 					column: COLUMN_NAMES.ALBUM[0],
@@ -37,7 +30,7 @@ export const addAlbumToPlaylist =
 			}
 
 			const playlistExists =
-				await exists({
+				await exists(context.pg)({
 					value: playlistID,
 					table: "playlists",
 					column: COLUMN_NAMES.PLAYLIST[0],
@@ -51,8 +44,8 @@ export const addAlbumToPlaylist =
 				throw new Error("Unauthorized to add to playlist")
 			}
 
-			const songs =
-				await query(SELECT_ALBUM_SONGS)({
+			const albumSongs =
+				await query(context.pg)(SELECT_ALBUM_SONGS)({
 					parse: convertTableToCamelCase<Song>(),
 					variables: {
 						albumID,
@@ -61,7 +54,7 @@ export const addAlbumToPlaylist =
 				})
 
 			const playlistSongs =
-				await query(SELECT_PLAYLIST_SONGS_RELATIONS)({
+				await query(context.pg)(SELECT_PLAYLIST_SONGS_RELATIONS)({
 					parse: convertTableToCamelCase<PlaylistSong>(),
 					variables: {
 						playlistID,
@@ -72,22 +65,23 @@ export const addAlbumToPlaylist =
 			const lastPlaylistSong =
 				last(playlistSongs)
 
-			const baseIndex =
+			const startingIndex =
 				lastPlaylistSong ?
 					lastPlaylistSong.index + 1 :
 					0
 
-			await Promise.all(
-				songs.map(
-					({ songID }, index) => (
-						addSongToPlaylist(context.pg)({
-							songID,
-							playlistID,
-							index: baseIndex + index,
-						})
-					),
-				),
-			)
+			let index = 0
+			for (const { songID } of albumSongs) {
+				const isInPlaylist = await isSongInPlaylist(context.pg)({ songID, playlistID })
+				if (!isInPlaylist) {
+					await addSongToPlaylist(context.pg)({
+						songID,
+						playlistID,
+						index: startingIndex + index,
+					})
+					index += 1
+				}
+			}
 
 			return getPlaylist(context.pg)({ playlistID })
 		},

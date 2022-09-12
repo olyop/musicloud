@@ -8,6 +8,7 @@
 		".vscode",
 		"src/types",
 		"src/uploader",
+		"src/accounts",
 		"src/authenticator",
 		"src/player/client"
 	]

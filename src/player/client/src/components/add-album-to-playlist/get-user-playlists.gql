@@ -1,0 +1,10 @@
+#import "../../graphql/fragments/playlist-core.gql";
+
+query getUserPlaylists {
+	getUser {
+		userID
+		playlists {
+			...PlaylistCoreFragment
+		}
+	}
+}

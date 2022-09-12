@@ -13,6 +13,8 @@ declare namespace NodeJS {
 
 		PLAYER_SERVER_PORT: string,
 		PLAYER_CLIENT_PORT: string,
+		ACCOUNTS_SERVER_PORT: string,
+		ACCOUNTS_CLIENT_PORT: string,
 		UPLOADER_SERVER_PORT: string,
 		UPLOADER_CLIENT_PORT: string,
 		AUTHENTICATOR_SERVER_PORT: string,

@@ -1,0 +1,18 @@
+#import "../../graphql/fragments/song-core.gql";
+
+mutation addAlbumToPlaylist(
+	$albumID: UUID!
+	$playlistID: UUID!
+) {
+	addAlbumToPlaylist(
+		albumID: $albumID
+		playlistID: $playlistID
+	) {
+		playlistID
+		songsTotal
+		songs {
+			...SongCoreFragment
+			playlistIndex(playlistID: $playlistID)
+		}
+	}
+}

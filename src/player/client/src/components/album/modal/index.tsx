@@ -1,5 +1,4 @@
-import { createElement, FC } from "react"
-// import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
+import { createElement, FC, useEffect, useState } from "react"
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
 
 import PlayButton from "./play"
@@ -8,59 +7,86 @@ import { Album } from "../../../types"
 import InLibraryButton from "./in-library"
 import AlbumTitle from "../../album-title"
 import { createCatalogImageURL, createObjectPath } from "../../../helpers"
-import Modal, { ModalButtons, ModalHeader, ModalOnClose } from "../../modal"
+import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../../modal"
+import AddAlbumToPlaylist from "../../add-album-to-playlist"
 
 const AlbumModal: FC<PropTypes> = ({
 	open,
 	album,
 	onClose,
 	hideInLibrary,
-}) => (
-	<Modal open={open} onClose={onClose}>
-		<ModalHeader
-			shareData={{
-				title: album.title,
-				url: createObjectPath("album", album.albumID),
-			}}
-			text={(
-				<AlbumTitle
-					hideReleased
-					album={album}
-				/>
-			)}
-			image={{
-				description: album.title,
-				src: createCatalogImageURL(
-					album.albumID,
-					"cover",
-					ImageSizes.MINI,
-					ImageDimensions.SQUARE,
-				),
-			}}
-		/>
-		<ModalButtons>
-			<PlayButton
-				onClose={onClose}
-				albumID={album.albumID}
+}) => {
+	const [ addToPlaylist, setAddToPlayPlaylist ] =
+		useState(false)
+
+	const handleAddToPlaylistOpen =
+		() => setAddToPlayPlaylist(true)
+
+	const handleAddToPlaylistClose =
+		() => {
+			setAddToPlayPlaylist(false)
+		}
+
+	useEffect(() => () => {
+		if (addToPlaylist) {
+			setAddToPlayPlaylist(false)
+		}
+	})
+
+	return (
+		<Modal open={open} onClose={onClose}>
+			<ModalHeader
+				shareData={{
+					title: album.title,
+					url: createObjectPath("album", album.albumID),
+				}}
+				text={(
+					<AlbumTitle
+						hideReleased
+						album={album}
+					/>
+				)}
+				image={{
+					description: album.title,
+					src: createCatalogImageURL(
+						album.albumID,
+						"cover",
+						ImageSizes.MINI,
+						ImageDimensions.SQUARE,
+					),
+				}}
 			/>
-			{hideInLibrary || (
-				<InLibraryButton
-					onClose={onClose}
+			{addToPlaylist ? (
+				<AddAlbumToPlaylist
 					albumID={album.albumID}
+					onClose={handleAddToPlaylistClose}
 				/>
+			) : (
+				<ModalButtons>
+					<PlayButton
+						onClose={onClose}
+						albumID={album.albumID}
+					/>
+					{hideInLibrary || (
+						<InLibraryButton
+							onClose={onClose}
+							albumID={album.albumID}
+						/>
+					)}
+					<ModalButton
+						text="Playlist"
+						icon="playlist_add"
+						onClose={handleAddToPlaylistOpen}
+					/>
+					<ShuffleButton
+						onClose={onClose}
+						albumID={album.albumID}
+					/>
+				</ModalButtons>
 			)}
-			{/* <ModalButton
-				text="Playlist"
-				icon="playlist_add"
-				link={`/add-album-to-playlist/${removeDashesFromUUID(album.albumID)}`}
-			/> */}
-			<ShuffleButton
-				onClose={onClose}
-				albumID={album.albumID}
-			/>
-		</ModalButtons>
-	</Modal>
-)
+		</Modal>
+	)
+}
 
 interface PropTypes extends ModalOnClose {
 	album: Album,

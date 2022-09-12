@@ -15,7 +15,7 @@ export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 	contentSecurityPolicy: {
 		directives: {
 			workerSrc: ["'self'"],
-			imgSrc: ["'self'", FILES_URL],
+			imgSrc: ["'self'", "blob:", FILES_URL],
 			fontSrc: ["'self'", GOOGLE_FONTS_FONT_ORIGIN],
 			styleSrc: ["'self'", GOOGLE_FONTS_CSS_ORIGIN],
 			connectSrc: ["'self'", FILES_URL, ...ALGOLIA_SEARCH_ORIGINS, GOOGLE_FONTS_CSS_ORIGIN, GOOGLE_FONTS_FONT_ORIGIN],

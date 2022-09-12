@@ -10,14 +10,14 @@ import {
 
 import { GraphQLError } from "graphql"
 import { ApolloServerErrorCode } from "@apollo/server/errors"
-import { SongID, AlbumID, UserID } from "@oly_op/musicloud-common/build/types"
+import { SongID, UserID } from "@oly_op/musicloud-common/build/types"
 
 import {
 	SELECT_USER_PLAYS,
 	EXISTS_USER_FOLLOWER,
 	SELECT_USER_FOLLOWERS,
 	SELECT_USER_PLAYLISTS,
-	SELECT_USER_PLAYLISTS_FILTERED,
+	SELECT_USER_PLAYLISTS_FILTERED_BY_SONG,
 } from "../sql"
 
 import { COLUMN_NAMES } from "../globals"
@@ -43,22 +43,10 @@ const resolver =
 
 export const dateJoined =
 	resolver(
-		({ parent }) => (
-			Promise.resolve(
-				timeStampToMilliseconds(parent.dateJoined),
-			)
+		({ parent }) => Promise.resolve(
+			timeStampToMilliseconds(parent.dateJoined),
 		),
 		{ parent: false },
-	)
-
-export const plays =
-	resolver(
-		({ parent, context }) => (
-			query(context.pg)(SELECT_USER_PLAYS)({
-				parse: convertTableToCamelCase<Play>(),
-				variables: { userID: parent.userID },
-			})
-		),
 	)
 
 export const isFollowing =
@@ -103,6 +91,16 @@ export const followers =
 		{ parent: false },
 	)
 
+export const plays =
+	resolver(
+		({ parent, context }) => (
+			query(context.pg)(SELECT_USER_PLAYS)({
+				parse: convertTableToCamelCase<Play>(),
+				variables: { userID: parent.userID },
+			})
+		),
+	)
+
 const getUserPlaylists =
 	(pg: PoolOrClient) =>
 		<T>({ userID, columnNames, parse }: GetUserObjectsOptions<T>) =>
@@ -139,7 +137,7 @@ export const playlistsTotal =
 export const playlistsFilteredBySong =
 	resolver<Playlist[], SongID>(
 		({ parent, args, context }) => (
-			query(context.pg)(SELECT_USER_PLAYLISTS_FILTERED)({
+			query(context.pg)(SELECT_USER_PLAYLISTS_FILTERED_BY_SONG)({
 				parse: convertTableToCamelCase(),
 				variables: {
 					songID: args.songID,
@@ -148,16 +146,4 @@ export const playlistsFilteredBySong =
 				},
 			})
 		),
-	)
-
-export const playlistsFilteredByAlbum =
-	resolver<Playlist[], AlbumID>(
-		() => {
-			throw new Error("Not implemented yet.")
-		},
-		// ({ context }) => (
-		// 	query(context.pg)("SE")({
-		// 		parse: convertTableToCamelCase(),
-		// 	})
-		// ),
 	)

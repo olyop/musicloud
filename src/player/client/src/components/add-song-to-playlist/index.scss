@@ -1,0 +1,10 @@
+.AddSongToPlaylist {
+	&__playlists {
+		display: flex;
+		align-items: center;
+		flex-direction: column; }
+	&__playlist {
+		cursor: pointer;
+		user-select: none; }
+	&__selected {
+		background-color: var(--hover-color); } }

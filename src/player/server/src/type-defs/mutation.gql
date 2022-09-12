@@ -4,7 +4,6 @@ type Mutation {
   followUser(userID: UUID!): User!
   unFollowUser(userID: UUID!): User!
   changePassword(password: NonEmptyString!): Void
-  emailAddressExists(emailAddress: EmailAddress!): Boolean!
 
   # queue
   clearQueues: Queue!

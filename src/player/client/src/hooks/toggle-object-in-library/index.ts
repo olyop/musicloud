@@ -23,7 +23,7 @@ import REMOVE_PLAYLIST from "./remove-playlist-from-library.gql"
 export const useToggleObjectInLibrary =
 	(object?: InLibraryObjects) => {
 		if (isUndefined(object)) {
-			return [ () => {}, false, false ] as const
+			return [ () => {}, true, false ] as const
 		}
 
 		const isOptimistic = useRef(true)

@@ -1,6 +1,11 @@
 {
 	"files.exclude": {
 		"build": true,
-		"src/common/build": true
-	}
+		"src/common/build": true,
+		"src/accounts/server/gradle": true,
+		"src/accounts/server/.gradle": true,
+		"src/accounts/server/.mvn": true
+	},
+	"java.dependency.packagePresentation": "hierarchical",
+	"java.configuration.updateBuildConfiguration": "automatic"
 }

@@ -1,4 +1,5 @@
 featurings
+jdbc
 musicloud
 nexts
 npmrc

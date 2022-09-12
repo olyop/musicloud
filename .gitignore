@@ -3,3 +3,14 @@ dist
 build
 node_modules
 src/common/build
+
+# Java
+src/accounts/server/build
+src/accounts/target
+src/accounts/.apt_generated
+src/accounts/.classpath
+src/accounts/.factorypath
+src/accounts/.project
+src/accounts/.settings
+src/accounts/.springBeans
+src/accounts/.sts4-cache
