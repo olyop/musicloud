@@ -5,8 +5,8 @@ import { createElement, FC, Fragment } from "react"
 import Page from "../../layouts/page"
 import Song from "../../components/song"
 import Songs from "../../components/songs"
-import { updateNowPlayingCache } from "../../helpers"
 import { Song as SongType, Queue } from "../../types"
+import { updateNowPlayingMutationFunction } from "../../helpers"
 import { useQuery, useMutation, useResetPlayer, useShare } from "../../hooks"
 
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
@@ -15,6 +15,11 @@ import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql"
 
 import "./index.scss"
 
+const numberFormatter =
+	new Intl.NumberFormat("en", {
+		notation: "compact",
+	})
+
 const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer()
 
@@ -22,24 +27,18 @@ const TopOneHundredSongsPage: FC = () => {
 		useShare()
 
 	const { data: topOneHundredSongsData } =
-		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS)
+		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS, {
+			fetchPolicy: "cache-and-network",
+		})
 
 	const [ playTopOneHundredSongs ] =
 		useMutation<PlayTopOneHundredSongsData>(PLAY_TOP_ONE_HUNDRED_SONGS, {
-			update: (cache, { data }) => {
-				if (data?.playTopOneHundredSongs.nowPlaying) {
-					updateNowPlayingCache(cache)(data.playTopOneHundredSongs.nowPlaying)
-				}
-			},
+			update: updateNowPlayingMutationFunction(data => data.playTopOneHundredSongs.nowPlaying),
 		})
 
 	const [ shuffleTopOneHundredSongs ] =
 		useMutation<ShuffleTopOneHundredSongsData>(SHUFFLE_TOP_ONE_HUNDRED_SONGS, {
-			update: (cache, { data }) => {
-				if (data?.shuffleTopOneHundredSongs.nowPlaying) {
-					updateNowPlayingCache(cache)(data.shuffleTopOneHundredSongs.nowPlaying)
-				}
-			},
+			update: updateNowPlayingMutationFunction(data => data.shuffleTopOneHundredSongs.nowPlaying),
 		})
 
 	const handlePlay =
@@ -92,9 +91,9 @@ const TopOneHundredSongsPage: FC = () => {
 						/>
 					</Fragment>
 				)}
-				children={(
-					<div className="ContentPaddingTopBottom">
-						<Songs songs={topOneHundredSongsData?.getTopOneHundredSongs}>
+				children={topOneHundredSongsData ? (
+					<div className="ContentPaddingTopBottom FlexColumnGap">
+						<Songs songs={topOneHundredSongsData.getTopOneHundredSongs}>
 							{songs => songs.map(
 								(song, index) => (
 									<Song
@@ -107,14 +106,19 @@ const TopOneHundredSongsPage: FC = () => {
 								),
 							)}
 						</Songs>
+						<p className="ParagraphTwo LightColor">
+							{numberFormatter.format(topOneHundredSongsData.getPlaysTotal)}
+							<Fragment> plays</Fragment>
+						</p>
 					</div>
-				)}
+				) : null}
 			/>
 		</Head>
 	)
 }
 
 interface QueryData {
+	getPlaysTotal: number,
 	getTopOneHundredSongs: SongType[],
 }
 

@@ -9,6 +9,13 @@
 	border-radius: 0;
 	@media (max-width: 800px) {
 		--button-dimension: 70rem; }
+	&__expand {
+		height: 100%;
+		border-radius: unset;
+		padding: var(--space-half);
+		border-left: var(--border-width) var(--border-style) var(--border-color);
+		@media (max-width: 700px) {
+			display: none; } }
 	&__close {
 		position: absolute;
 		right: var(--space-half);

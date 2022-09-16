@@ -1,17 +1,18 @@
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import isNull from "lodash-es/isNull"
 import isUndefined from "lodash-es/isUndefined"
 import { SongID } from "@oly_op/musicloud-common/build/types"
 
 import { Song } from "../../types"
 import { useQuery } from "../query"
-import { updater } from "./updater"
-import PLAY_SONG from "./play-song.gql"
 import { useMutation } from "../mutation"
 import { useResetPlayer } from "../reset-player"
+import useUpdatePlaysTotal from "./use-update-plays-total"
+import { updateNowPlayingMutationFunction } from "../../helpers"
 import { togglePlay, updatePlay, useDispatch } from "../../redux"
-import { Input, GetQueueNowPlayingData, PlaySongData, UpdateIsOptimistic } from "./types"
+import { Input, GetQueueNowPlayingData, PlaySongData } from "./types"
 
+import PLAY_SONG from "./play-song.gql"
 import GET_QUEUE_NOW_PLAYING_SONG_ID from "./get-queue-now-playing-song-id.gql"
 
 const isSong =
@@ -21,22 +22,12 @@ const isSong =
 export const usePlaySong =
 	(song: Input) => {
 		const dispatch = useDispatch()
-		const isOptimistic = useRef(true)
 		const resetPlayer = useResetPlayer()
+		const updatePlaysTotalCache = useUpdatePlaysTotal(song)
 
-		const { data } =
+		const { data: nowPlayingData } =
 			useQuery<GetQueueNowPlayingData>(GET_QUEUE_NOW_PLAYING_SONG_ID, {
-				fetchPolicy: "cache-first",
-			})
-
-		const [ playSong, result ] =
-			useMutation<PlaySongData, SongID>(PLAY_SONG, {
-				optimisticResponse: isSong(song) ? ({
-					playSong: {
-						__typename: "Queue",
-						nowPlaying: song,
-					},
-				}) : undefined,
+				fetchPolicy: "cache-and-network",
 			})
 
 		const isSongNotNull =
@@ -44,15 +35,24 @@ export const usePlaySong =
 
 		const isPlaying = (
 			isSongNotNull &&
-			!isUndefined(data) &&
-			!isNull(data.getQueue.nowPlaying) &&
-			data.getQueue.nowPlaying.songID === song.songID
+			!isUndefined(nowPlayingData) &&
+			!isNull(nowPlayingData.getQueue.nowPlaying) &&
+			nowPlayingData.getQueue.nowPlaying.songID === song.songID
 		)
 
-		const updateIsOptimistic: UpdateIsOptimistic =
-			value => {
-				isOptimistic.current = value
-			}
+		const [ playSong, result ] =
+			useMutation<PlaySongData, SongID>(PLAY_SONG, {
+				errorPolicy: "ignore",
+				fetchPolicy: "network-only",
+				optimisticResponse: isSong(song) ? ({
+					playSong: {
+						__typename: "Queue",
+						nowPlaying: song,
+					},
+				}) : undefined,
+				update: updateNowPlayingMutationFunction(data => data.playSong.nowPlaying),
+				onCompleted: updatePlaysTotalCache,
+			})
 
 		const handler =
 			() => {
@@ -63,7 +63,6 @@ export const usePlaySong =
 						resetPlayer()
 						void playSong({
 							variables: { songID: song.songID },
-							update: updater(isOptimistic.current, updateIsOptimistic),
 						})
 					}
 				}

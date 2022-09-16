@@ -2,13 +2,23 @@ package com.musicloudapp.accounts.rest.model;
 
 import java.util.UUID;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Past;
+
 public class User {
 	
 	private final UUID userID;
 
+	@Min(2)
 	private String name;
+
+	@Email
 	private String emailAddress;
+
+	@Past
 	private long dateJoined;
+
 	private String password;
 
 	public User(UUID userID, String name, String emailAddress, long dateJoined, String password) {

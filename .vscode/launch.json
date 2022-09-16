@@ -8,6 +8,13 @@
 			"type": "java",
 			"name": "Launch RestApplication",
 			"request": "launch",
+			"mainClass": "com.musicloudapp.accounts.RestApplication",
+			"projectName": "rest"
+		},
+		{
+			"type": "java",
+			"name": "Launch RestApplication",
+			"request": "launch",
 			"mainClass": "com.musicloudapp.accounts.rest.RestApplication",
 			"projectName": "rest"
 		},

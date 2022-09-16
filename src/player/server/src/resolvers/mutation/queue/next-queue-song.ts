@@ -53,26 +53,30 @@ export const nextQueueSong =
 							},
 						})
 
-					await Promise.all([
+					const deleteFirstQueueSong =
 						query(DELETE_QUEUE_SONG)({
 							variables: {
 								userID,
 								index: 0,
 								tableName: `queue_${queueToBeEditedName}s`,
 							},
-						}),
-						...queueToBeEdited
-							.filter(({ index }) => index !== 0)
-							.map(({ index }) => (
-								query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
-									variables: {
-										index,
-										userID,
-										crement: "-",
-										tableName: `queue_${queueToBeEditedName}s`,
-									},
-								})
-							)),
+						})
+
+					const queueToBeEditedTail =
+						queueToBeEdited.filter(({ index }) => index !== 0)
+
+					const crementAQueueSong =
+						({ index }: QueueSong) =>
+							query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
+								variables: {
+									index,
+									userID,
+									crement: "-",
+									tableName: `queue_${queueToBeEditedName}s`,
+								},
+							})
+
+					const insertNowPlayingIntoPrevious =
 						query(INSERT_QUEUE_SONG)({
 							variables: {
 								userID,
@@ -80,11 +84,19 @@ export const nextQueueSong =
 								tableName: "queue_previous",
 								index: isNull(previous) ? 0 : previous.length,
 							},
-						}),
+						})
+
+					const updateNowPlaying =
 						updateQueueNowPlaying(client, context.ag.index)({
 							userID,
 							value: newNowPlaying.songID,
-						}),
+						})
+
+					await Promise.all([
+						deleteFirstQueueSong,
+						...queueToBeEditedTail.map(crementAQueueSong),
+						insertNowPlayingIntoPrevious,
+						updateNowPlaying,
 					])
 				}
 

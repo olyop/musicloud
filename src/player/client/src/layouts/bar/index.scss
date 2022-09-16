@@ -39,11 +39,4 @@
 				margin-right: calc(var(--space-quart) * -1 - 1rem); }
 			&-expand {
 				@media (min-width: 700px) {
-					display: none; } } } }
-	&__expand {
-		height: 100%;
-		border-radius: unset;
-		padding: var(--space-half);
-		border-left: var(--border-width) var(--border-style) var(--border-color);
-		@media (max-width: 700px) {
-			display: none; } } }
+					display: none; } } } } }

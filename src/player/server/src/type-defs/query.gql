@@ -5,6 +5,7 @@ type Query {
 	getTopTenSongs: [Song!]!
 	getTrendingSongs: [Song!]!
 	getTrendingAlbums: [Album!]!
+	getPlaysTotal: NonNegativeInt!
 	getTrendingArtists: [Artist!]!
 	getTopOneHundredSongs: [Song!]!
 	getUserByID(userID: UUID!): User!

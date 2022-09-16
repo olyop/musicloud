@@ -1,6 +1,7 @@
 import {
 	join,
 	query,
+	getResultCount,
 	convertTableToCamelCase,
 } from "@oly_op/pg-helpers"
 
@@ -8,7 +9,7 @@ import resolver from "./resolver"
 import { getTopSongs } from "../helpers"
 import { COLUMN_NAMES } from "../../globals"
 import { Album, Playlist } from "../../types"
-import { SELECT_ALBUMS_TRENDING, SELECT_PLAYLISTS_TRENDING } from "../../sql"
+import { COUNT_PLAYS, SELECT_ALBUMS_TRENDING, SELECT_PLAYLISTS_TRENDING } from "../../sql"
 
 export const getTopTenSongs =
 	resolver(
@@ -44,6 +45,15 @@ export const getTrendingPlaylists =
 				variables: {
 					columnNames: join(COLUMN_NAMES.PLAYLIST, "playlists"),
 				},
+			})
+		),
+	)
+
+export const getPlaysTotal =
+	resolver(
+		async ({ context }) => (
+			query(context.pg)(COUNT_PLAYS)({
+				parse: getResultCount,
 			})
 		),
 	)

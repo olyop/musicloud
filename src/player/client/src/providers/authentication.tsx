@@ -3,6 +3,7 @@ import { ServicesNames } from "@oly_op/musicloud-common/build/types"
 import { createElement, FC, Fragment, useEffect, PropsWithChildren } from "react"
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url"
 
+import { verifyJWT } from "../helpers"
 import { useDispatch, updateAccessToken, useStateAccessToken } from "../redux"
 
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -12,18 +13,21 @@ export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	const [ searchParams, setSearchParams ] =
 		useSearchParams()
 
+	const handleRedirect =
+		() => {
+			window.location.href =
+				determineServiceURL({
+					redirect: ServicesNames.PLAYER,
+					service: ServicesNames.AUTHENTICATOR,
+				})
+		}
+
 	useEffect(() => {
 		if (searchParams.has("accessToken")) {
 			dispatch(updateAccessToken(searchParams.get("accessToken")))
-			setSearchParams("")
-		} else {
-			if (!accessToken) {
-				window.location.href =
-					determineServiceURL({
-						redirect: ServicesNames.PLAYER,
-						service: ServicesNames.AUTHENTICATOR,
-					})
-			}
+			setSearchParams([])
+		} else if (!verifyJWT(accessToken)) {
+			handleRedirect()
 		}
 	}, [])
 

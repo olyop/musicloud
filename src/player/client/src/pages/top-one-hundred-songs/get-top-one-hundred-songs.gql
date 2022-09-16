@@ -1,6 +1,7 @@
 #import "../../graphql/fragments/song-core.gql";
 
 query getTopOneHundredSongs {
+	getPlaysTotal
 	getTopOneHundredSongs {
 		...SongCoreFragment
 		playsTotal

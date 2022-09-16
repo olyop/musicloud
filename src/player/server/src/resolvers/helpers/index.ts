@@ -1,6 +1,7 @@
 export * from "./lodash"
 export * from "./shuffle"
 export * from "./get-queue"
+export * from "./transaction"
 export * from "./get-objects"
 export * from "./clear-queue"
 export * from "./get-top-songs"

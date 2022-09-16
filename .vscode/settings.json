@@ -7,5 +7,8 @@
 		"src/accounts/server/.mvn": true
 	},
 	"java.dependency.packagePresentation": "hierarchical",
-	"java.configuration.updateBuildConfiguration": "automatic"
+	"java.configuration.updateBuildConfiguration": "automatic",
+	"workbench.editor.labelFormat": "short",
+	"java.referencesCodeLens.enabled": false,
+	"java.debug.settings.enableRunDebugCodeLens": false
 }
