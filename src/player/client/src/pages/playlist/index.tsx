@@ -117,7 +117,8 @@ const PlaylistPage: FC = () => {
 							</div>
 							<div className="FlexRowGapHalf MarginBottomThreeQuart">
 								<Chip
-									name={user.name}
+									typeName="user"
+									text={user.name}
 									key={user.userID}
 									objectID={user.userID}
 								/>
@@ -126,6 +127,7 @@ const PlaylistPage: FC = () => {
 								{(new Date(dateCreated)).toLocaleDateString()}
 							</p>
 							<h2 className="ParagraphOne">
+								<Fragment>Privacy: </Fragment>
 								{startCase(toLower(privacy))}
 							</h2>
 						</div>

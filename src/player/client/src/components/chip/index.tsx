@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem"
 import { createElement, FC } from "react"
-import { ImageDimensions, ImageSizes, NameBase, ObjectID } from "@oly_op/musicloud-common/build/types"
+import { ImageDimensions, ImageSizes, ObjectID } from "@oly_op/musicloud-common/build/types"
 
 import ObjectLink from "../object-link"
 import { createObjectPath, createCatalogImageURL } from "../../helpers"
@@ -10,10 +10,10 @@ import "./index.scss"
 const bem =
 	createBEM("Chip")
 
-const Chip: FC<PropTypes> = ({ objectID, name }) => (
+const Chip: FC<PropTypes> = ({ objectID, text, typeName }) => (
 	<h2 className={bem("", "HeadingFive FlexRow")}>
 		<img
-			alt={name}
+			alt={text}
 			crossOrigin="anonymous"
 			className={bem("profile", "Elevated")}
 			src={createCatalogImageURL(
@@ -26,13 +26,16 @@ const Chip: FC<PropTypes> = ({ objectID, name }) => (
 		<ObjectLink
 			className={bem("link")}
 			link={{
-				text: name,
-				path: createObjectPath("artist", objectID),
+				text,
+				path: createObjectPath(typeName, objectID),
 			}}
 		/>
 	</h2>
 )
 
-interface PropTypes extends ObjectID, NameBase {}
+interface PropTypes extends ObjectID {
+	text: string,
+	typeName: "artist" | "user",
+}
 
 export default Chip

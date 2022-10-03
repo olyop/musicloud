@@ -7,9 +7,9 @@ import {
 import { createBEM } from "@oly_op/bem"
 import Button from "@oly_op/react-button"
 import { Head } from "@oly_op/react-head"
-import { Link, useParams } from "react-router-dom"
-import { createElement, Fragment, FC } from "react"
-import { addDashesToUUID, removeDashesFromUUID } from "@oly_op/uuid-dashes"
+import { useParams } from "react-router-dom"
+import { createElement, Fragment, FC, useState } from "react"
+import { addDashesToUUID } from "@oly_op/uuid-dashes"
 
 import Disc from "./disc"
 import { Album } from "../../types"
@@ -21,6 +21,8 @@ import AlbumPlayButton from "./play-button"
 import Buttons from "../../components/buttons"
 import AlbumTitle from "../../components/album-title"
 import ObjectLinks from "../../components/object-links"
+import Modal, { ModalHeader } from "../../components/modal"
+import AddAlbumToPlaylist from "../../components/add-album-to-playlist"
 import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
 import { createObjectPath, createCatalogImageURL, determinePlural } from "../../helpers"
 
@@ -35,6 +37,9 @@ const AlbumPage: FC = () => {
 	const params = useParams<keyof AlbumID>()
 	const albumID = addDashesToUUID(params.albumID!)
 
+	const [addToPlaylistModal, setAddToPlaylistModal] =
+		useState(false)
+
 	const { data, error } =
 		useQuery<GetAlbumData, AlbumID>(
 			GET_ALBUM_PAGE,
@@ -46,6 +51,16 @@ const AlbumPage: FC = () => {
 
 	const [ toggleInLibrary, inLibrary ] =
 		useToggleAlbumInLibrary({ albumID })
+
+	const handleAddToPlaylistModalOpen =
+		() => {
+			setAddToPlaylistModal(true)
+		}
+
+	const handleAddToPlaylistModalClose =
+		() => {
+			setAddToPlaylistModal(false)
+		}
 
 	if (error) {
 		return (
@@ -64,7 +79,7 @@ const AlbumPage: FC = () => {
 	} else if (data) {
 		const album = data.getAlbumByID
 		const { title, songs, duration, artists, genres, released, songsTotal } = album
-		const discs =	createDiscs(songs)
+		const discs = createDiscs(songs)
 		return (
 			<Head pageTitle={title}>
 				<Page>
@@ -97,7 +112,8 @@ const AlbumPage: FC = () => {
 									{artists.map(
 										artist => (
 											<Chip
-												name={artist.name}
+												typeName="artist"
+												text={artist.name}
 												key={artist.artistID}
 												objectID={artist.artistID}
 											/>
@@ -136,17 +152,34 @@ const AlbumPage: FC = () => {
 									icon={inLibrary ? "done" : "add"}
 									text={inLibrary ? "Remove" : "Add"}
 								/>
-								<Link
-									className={bem("buttons-link")}
-									style={{ cursor: "not-allowed", pointerEvents: "none" }}
-									to={`/add-album-to-playlist/${removeDashesFromUUID(albumID)}`}
-								>
-									<Button
-										text="Playlist"
-										icon="playlist_add"
-										className={bem("buttons-link-button")}
+								<Button
+									text="Playlist"
+									icon="playlist_add"
+									onClick={handleAddToPlaylistModalOpen}
+								/>
+								<Modal open={addToPlaylistModal} onClose={handleAddToPlaylistModalClose}>
+									<ModalHeader
+										text={(
+											<AlbumTitle
+												hideReleased
+												album={album}
+											/>
+										)}
+										image={{
+											description: `Add ${title} to Playlist`,
+											src: createCatalogImageURL(
+												albumID,
+												"cover",
+												ImageSizes.MINI,
+												ImageDimensions.SQUARE,
+											),
+										}}
 									/>
-								</Link>
+									<AddAlbumToPlaylist
+										albumID={albumID}
+										onClose={handleAddToPlaylistModalClose}
+									/>
+								</Modal>
 								<ShareButton
 									album={album}
 								/>
