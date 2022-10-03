@@ -35,28 +35,30 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const getAndSetItemAtIndex =
 		useCallback(
 			async (atIndex: number) => {
-				dispatch(addLoading(loadingID.current))
+				try {
+					dispatch(addLoading(loadingID.current))
 
-				const { data } =
-					await client.query<ItemData, FeedItemVars>({
-						query: itemQuery,
-						variables: {
-							input: {
-								orderBy,
-								atIndex,
+					const { data } =
+						await client.query<ItemData, FeedItemVars>({
+							query: itemQuery,
+							variables: {
+								input: {
+									orderBy,
+									atIndex,
+								},
 							},
-						},
-					})
+						})
 
-				const tempItem =
-					itemDataToValue(data)
+					const tempItem =
+						itemDataToValue(data)
 
-				if (!isNull(tempItem)) {
-					cachedItem.current = tempItem
-					setItem(tempItem)
+					if (!isNull(tempItem)) {
+						cachedItem.current = tempItem
+						setItem(tempItem)
+					}
+				} finally {
+					dispatch(removeLoading(loadingID.current))
 				}
-
-				dispatch(removeLoading(loadingID.current))
 			},
 			[orderBy.field, orderBy.direction],
 		)

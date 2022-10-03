@@ -30,10 +30,10 @@ export const artistAtIndex =
 				parse: convertFirstRowToCamelCaseOrNull(),
 				variables: {
 					atIndex: args.input.atIndex,
-					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					orderByField: args.input.orderBy.field,
 					orderByDirection: args.input.orderBy.direction,
 					columnNames: join(COLUMN_NAMES.ARTIST, "artists"),
+					userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 					orderByTableName:
 						args.input.orderBy.field === "DATE_ADDED" ?
 							"library_artists" : "artists",

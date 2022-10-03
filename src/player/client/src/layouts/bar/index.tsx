@@ -42,10 +42,6 @@ const Bar: FC = () => {
 		data?.getQueue.nowPlaying || null
 
 	useEffect(() => {
-		console.log(nowPlaying?.title)
-	}, [nowPlaying])
-
-	useEffect(() => {
 		if (nowPlaying) {
 			if (autoLoad.current && play) {
 				audio.load({

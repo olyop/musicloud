@@ -1,10 +1,13 @@
+import limit from "p-limit"
 import { query, convertTableToCamelCase, join } from "@oly_op/pg-helpers"
 
 import resolver from "./resolver"
 import { Artist, Song } from "../../types"
 import { handleInLibrary } from "../helpers"
 import { COLUMN_NAMES } from "../../globals"
-import { SELECT_SONGS, SELECT_ARTISTS, SELECT_ARTIST_BY_ID, SELECT_SONG_BY_ID } from "../../sql"
+import { SELECT_SONGS, SELECT_ARTISTS } from "../../sql"
+
+const pLimitter = limit(25)
 
 export const addCatalogToLibrary =
 	resolver(
@@ -28,34 +31,53 @@ export const addCatalogToLibrary =
 					},
 				})
 
-			for (const { songID } of songs) {
-				await handleInLibrary(context.pg)({
-					userID,
-					inLibrary: true,
-					typeName: "Song",
-					objectID: songID,
-					tableName: "songs",
-					columnKey: "songID",
-					columnNames: COLUMN_NAMES.SONG,
-					returnQuery: SELECT_SONG_BY_ID,
-					columnName: COLUMN_NAMES.SONG[0],
-					libraryTableName: "library_songs",
-				})
-			}
+			const songsPromises =
+				songs.map(({ songID }) => (
+					pLimitter(() => {
+						console.count("addCatalogToLibrary")
+						return (
+							handleInLibrary(context.pg)({
+								userID,
+								inLibrary: true,
+								skipExists: true,
+								typeName: "Song",
+								objectID: songID,
+								tableName: "songs",
+								columnKey: "songID",
+								useTransaction: false,
+								columnNames: COLUMN_NAMES.SONG,
+								columnName: COLUMN_NAMES.SONG[0],
+								libraryTableName: "library_songs",
+							})
+						)
+					})
+				))
 
-			for (const { artistID } of artists) {
-				await handleInLibrary(context.pg)({
-					userID,
-					inLibrary: true,
-					typeName: "Artist",
-					objectID: artistID,
-					tableName: "artists",
-					columnKey: "artistID",
-					columnNames: COLUMN_NAMES.ARTIST,
-					returnQuery: SELECT_ARTIST_BY_ID,
-					columnName: COLUMN_NAMES.ARTIST[0],
-					libraryTableName: "library_artists",
-				})
-			}
+			const artistsPromises =
+				artists.map(({ artistID }) => (
+					pLimitter(() => {
+						console.count("addCatalogToLibrary")
+						return (
+							handleInLibrary(context.pg)({
+								userID,
+								inLibrary: true,
+								skipExists: true,
+								typeName: "Artist",
+								objectID: artistID,
+								tableName: "artists",
+								useTransaction: false,
+								columnKey: "artistID",
+								columnNames: COLUMN_NAMES.ARTIST,
+								columnName: COLUMN_NAMES.ARTIST[0],
+								libraryTableName: "library_artists",
+							})
+						)
+					})
+				))
+
+			await Promise.all([
+				...songsPromises,
+				...artistsPromises,
+			])
 		},
 	)

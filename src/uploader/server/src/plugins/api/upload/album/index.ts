@@ -1,44 +1,27 @@
-// eslint-disable-next-line import/no-unresolved
-import { parseBuffer } from "music-metadata"
-
 import {
-	SongID,
 	AlbumID,
-	GenreIDNameBase,
 	AlbumIDTitleBase,
 	ArtistIDNameBase,
-	AlgoliaRecordSong,
 	AlgoliaRecordAlbum,
 } from "@oly_op/musicloud-common/build/types"
 
-import { random, trim } from "lodash-es"
+import { trim } from "lodash-es"
 import { FastifyPluginAsync } from "fastify"
 import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers"
 
 import {
-	INSERT_SONG,
-	INSERT_ALBUM,
-	INSERT_SONG_GENRE,
-	INSERT_SONG_ARTIST,
-	INSERT_SONG_FEATURE,
-	INSERT_SONG_REMIXER,
-	INSERT_ALBUM_ARTIST,
-} from "./sql"
-
-import {
-	uploadFileToS3,
 	addRecordToSearchIndex,
+	deleteRecordFromSearchIndex,
 	determineCatalogImageURL,
-	determineCatalogAudioPath,
 	normalizeImageAndUploadToS3,
 } from "../helpers"
 
-import { BodyEntry } from "../../types"
-import getGenreID from "./get-genre-id"
+import uploadSong from "./upload-song"
 import coverInputs from "./cover-inputs"
 import getArtistID from "./get-artist-id"
 import { List, Route, Song } from "./types"
 import checkRelationships from "./check-relationships"
+import { INSERT_ALBUM, INSERT_ALBUM_ARTIST } from "./sql"
 
 export const uploadAlbum: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
@@ -59,217 +42,108 @@ export const uploadAlbum: FastifyPluginAsync =
 				const albumArtistsList =
 					JSON.parse(body.artists) as List
 
+				console.log(`Checking ${albumTitle} relationships`)
+
 				await checkRelationships(fastify.pg.pool)(
 					albumArtistsList,
 					songs,
 				)
 
-				const { albumID } =
-					await query(fastify.pg.pool)(INSERT_ALBUM)({
-						parse: convertFirstRowToCamelCase<AlbumID>(),
-						variables: [{
-							key: "released",
-							value: released,
-							parameterized: true,
-						},{
-							key: "title",
-							value: albumTitle,
-							parameterized: true,
-						}],
-					})
+				console.log(`Start Album Upload: ${albumTitle}`)
 
-				await normalizeImageAndUploadToS3(fastify.s3)({
-					objectID: albumID,
-					images: coverInputs,
-					buffer: cover[0]!.data,
-				})
+				let albumID: string | null = null
+				const client = await fastify.pg.pool.connect()
 
-				const album: AlbumIDTitleBase = {
-					albumID,
-					title: albumTitle,
-				}
+				try {
+					await client.query("BEGIN")
 
-				const albumCoverURL =
-					determineCatalogImageURL(albumID, coverInputs[2]!)
-
-				const albumArtists: ArtistIDNameBase[] = []
-
-				for (const artistItem of albumArtistsList) {
-					const { index } = artistItem
-					const name = trim(artistItem.value)
-
-					const artistID =
-						await getArtistID(fastify.pg.pool)(name)
-
-					await query(fastify.pg.pool)(INSERT_ALBUM_ARTIST)({
-						variables: {
-							index,
-							albumID,
-							artistID,
-						},
-					})
-
-					albumArtists.push({ artistID, name })
-				}
-
-				await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordAlbum>({
-					plays: 0,
-					remixers: [],
-					title: albumTitle,
-					typeName: "Album",
-					objectID: albumID,
-					image: albumCoverURL,
-					artists: albumArtists,
-				})
-
-				for (const song of songs) {
-					const mix = trim(song.mix)
-					const songTitle = trim(song.title)
-
-					const audio =
-						// @ts-ignore
-						(body[`${song.trackNumber}-audio`] as BodyEntry[])[0]!.data
-
-					const duration =
-						(await parseBuffer(audio)).format.duration!
-
-					const { songID } =
-						await query(fastify.pg.pool)(INSERT_SONG)({
-							parse: convertFirstRowToCamelCase<SongID>(),
+					const result =
+						await query(client)(INSERT_ALBUM)({
+							parse: convertFirstRowToCamelCase<AlbumID>(),
 							variables: [{
-								key: "albumID",
-								value: albumID,
-							},{
-								key: "duration",
-								value: duration,
-							},{
-								key: "mix",
-								value: mix,
+								key: "released",
+								value: released,
 								parameterized: true,
 							},{
 								key: "title",
-								value: songTitle,
+								value: albumTitle,
 								parameterized: true,
-							},{
-								key: "bpm",
-								value: random(85, 130),
-							},{
-								key: "discNumber",
-								value: song.discNumber,
-							},{
-								key: "trackNumber",
-								value: song.trackNumber,
-							},{
-								key: "keyID",
-								value: "13e9c04a-a1e5-4405-870c-8520fbc2854f",
 							}],
 						})
 
-					const songGenreList = song.genres
-					const songArtistList = song.artists
-					const songRemixerList = song.remixers
-					const songFeatureList = song.featuring
-					const songGenres: GenreIDNameBase[] = []
-					const songArtists: ArtistIDNameBase[] = []
-					const songRemixers: ArtistIDNameBase[] = []
-					const songFeaturing: ArtistIDNameBase[] = []
+					albumID = result.albumID
 
-					for (const genreItem of songGenreList) {
-						const { index } = genreItem
-						const name = trim(genreItem.value)
-
-						const genreID =
-							await getGenreID(fastify.pg.pool)(name)
-
-						await query(fastify.pg.pool)(INSERT_SONG_GENRE)({
-							variables: {
-								index,
-								songID,
-								genreID,
-							},
-						})
-
-						songGenres.push({ genreID, name })
-					}
-
-					for (const songArtistItem of songArtistList) {
-						const { index } = songArtistItem
-						const name = trim(songArtistItem.value)
-
-						const artistID =
-							await getArtistID(fastify.pg.pool)(name)
-
-						await query(fastify.pg.pool)(INSERT_SONG_ARTIST)({
-							variables: {
-								index,
-								songID,
-								artistID,
-							},
-						})
-
-						songArtists.push({ artistID, name })
-					}
-
-					for (const songRemixerItem of songRemixerList) {
-						const { index } = songRemixerItem
-						const name = trim(songRemixerItem.value)
-
-						const artistID =
-							await getArtistID(fastify.pg.pool)(name)
-
-						await query(fastify.pg.pool)(INSERT_SONG_REMIXER)({
-							variables: {
-								index,
-								songID,
-								artistID,
-							},
-						})
-
-						songRemixers.push({ artistID, name })
-					}
-
-					for (const songFeatureItem of songFeatureList) {
-						const { index } = songFeatureItem
-						const name = trim(songFeatureItem.value)
-
-						const artistID =
-							await getArtistID(fastify.pg.pool)(name)
-
-						await query(fastify.pg.pool)(INSERT_SONG_FEATURE)({
-							variables: {
-								index,
-								songID,
-								artistID,
-							},
-						})
-
-						songFeaturing.push({ artistID, name })
-					}
-
-					await uploadFileToS3(fastify.s3)(
-						determineCatalogAudioPath(songID),
-						audio,
-					)
-
-					await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordSong>({
-						mix,
-						album,
-						plays: 0,
-						title: songTitle,
-						typeName: "Song",
-						objectID: songID,
-						genres: songGenres,
-						artists: songArtists,
-						image: albumCoverURL,
-						remixers: songRemixers,
-						featuring: songFeaturing,
+					await normalizeImageAndUploadToS3(fastify.s3)({
+						objectID: albumID,
+						images: coverInputs,
+						buffer: cover[0]!.data,
 					})
-				}
 
-				void reply.code(201)
+					const album: AlbumIDTitleBase = {
+						albumID,
+						title: albumTitle,
+					}
 
-				return {
-					albumID,
+					const albumCoverURL =
+						determineCatalogImageURL(albumID, coverInputs[2]!)
+
+					const albumArtists: ArtistIDNameBase[] = []
+
+					for (const artistItem of albumArtistsList) {
+						const { index } = artistItem
+						const name = trim(artistItem.value)
+
+						const artistID =
+							await getArtistID(client)(name)
+
+						await query(client)(INSERT_ALBUM_ARTIST)({
+							variables: {
+								index,
+								albumID,
+								artistID,
+							},
+						})
+
+						albumArtists.push({ artistID, name })
+					}
+
+					await addRecordToSearchIndex(fastify.ag.index)<AlgoliaRecordAlbum>({
+						plays: 0,
+						remixers: [],
+						title: albumTitle,
+						typeName: "Album",
+						objectID: albumID,
+						image: albumCoverURL,
+						artists: albumArtists,
+					})
+
+					for (const song of songs) {
+						await uploadSong(client, fastify.s3, fastify.ag.index)({
+							album,
+							albumCoverURL,
+							albumID,
+							body,
+							song,
+						})
+					}
+
+					await client.query("COMMIT")
+
+					console.log(`Finish Album Upload: ${albumTitle}`)
+
+					void reply.code(201)
+
+					return { albumID }
+				} catch (error) {
+					await client.query("ROLLBACK")
+
+					if (albumID) {
+						await deleteRecordFromSearchIndex(fastify.ag.index)({
+							objectID: albumID,
+						})
+					}
+
+					throw new Error(`Error uploading album: ${(error as Error).message}`)
 				}
 			},
 		)

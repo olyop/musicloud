@@ -26,7 +26,7 @@ const checkRelationships =
 							value: trim(genre.value),
 						})
 					if (!genreExists) {
-						throw new Error(`Genre ${genre.value} does not exist`)
+						throw new Error(`Genre ${genre.value} on ${song.title} does not exist`)
 					}
 				}
 				for (const artist of song.artists) {

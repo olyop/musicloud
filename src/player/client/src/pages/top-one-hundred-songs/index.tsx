@@ -4,10 +4,11 @@ import { createElement, FC, Fragment } from "react"
 
 import Page from "../../layouts/page"
 import Song from "../../components/song"
+import ShareButton from "./share-button"
 import Songs from "../../components/songs"
 import { Song as SongType, Queue } from "../../types"
 import { updateNowPlayingMutationFunction } from "../../helpers"
-import { useQuery, useMutation, useResetPlayer, useShare } from "../../hooks"
+import { useQuery, useMutation, useResetPlayer } from "../../hooks"
 
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
 import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
@@ -22,9 +23,6 @@ const numberFormatter =
 
 const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer()
-
-	const [ share, { shareIcon, shareText } ] =
-		useShare()
 
 	const { data: topOneHundredSongsData } =
 		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS, {
@@ -53,14 +51,6 @@ const TopOneHundredSongsPage: FC = () => {
 			void shuffleTopOneHundredSongs()
 		}
 
-	const handleShare =
-		() => {
-			share({
-				title: "Top #100",
-				url: "/top-one-hundred-songs",
-			})
-		}
-
 	return (
 		<Head pageTitle="Top #100">
 			<Page
@@ -83,12 +73,7 @@ const TopOneHundredSongsPage: FC = () => {
 								onClick={handleShuffle}
 							/>
 						</div>
-						<Button
-							transparent
-							icon={shareIcon}
-							onClick={handleShare}
-							text={shareText || undefined}
-						/>
+						<ShareButton/>
 					</Fragment>
 				)}
 				children={topOneHundredSongsData ? (

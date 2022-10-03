@@ -2,15 +2,15 @@ import algolia from "algoliasearch"
 import { GraphQLError } from "graphql"
 import { S3 } from "@aws-sdk/client-s3"
 import { isUndefined } from "lodash-es"
-import { Http2SecureServer } from "node:http2"
 import { IncomingHttpHeaders } from "node:http"
 import { RandomOrgClient } from "@randomorg/core"
 import { createVerifier, TokenError } from "fast-jwt"
 import { exists, PoolOrClient } from "@oly_op/pg-helpers"
 import { ApolloServerErrorCode } from "@apollo/server/errors"
 import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals"
+import { ApolloFastifyContextFunction } from "@as-integrations/fastify"
 import { JWTPayload, UserID } from "@oly_op/musicloud-common/build/types"
-import { ApolloFastifyContextFunction } from "@oly_op/apollo-server-fastify"
+import { CustomServer } from "@oly_op/musicloud-common/build/create-fastify"
 import { ALGOLIA_OPTIONS, AWS_S3_OPTIONS } from "@oly_op/musicloud-common/build/server-options"
 
 import { COLUMN_NAMES } from "./globals"
@@ -69,7 +69,7 @@ const determineAuthorization: DetermineAuthorization =
 	}
 
 const createContext =
-	(): ApolloFastifyContextFunction<Context, Http2SecureServer> => {
+	(): ApolloFastifyContextFunction<Context, CustomServer> => {
 		const s3 = new S3(AWS_S3_OPTIONS)
 		const agClient = algolia(...ALGOLIA_OPTIONS)
 		const randomDotOrg = new RandomOrgClient(process.env.RANDOM_ORG_API_KEY)

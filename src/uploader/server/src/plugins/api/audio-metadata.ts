@@ -48,7 +48,7 @@ export const audioMetadata: FastifyPluginAsync =
 						genres: (genre && genre[0]) ? (isEmpty(toList(genre[0])) ? null : toList(genre[0])) : null,
 					}
 				} else {
-					throw new Error("Audio value not provided in body")
+					throw new Error("`body.audio` not provided.")
 				}
 			},
 		)

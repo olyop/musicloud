@@ -5,6 +5,7 @@ import { FastifyStaticOptions } from "@fastify/static"
 import { FastifyMultipartOptions } from "@fastify/multipart"
 import { JWTPayload } from "@oly_op/musicloud-common/build/types"
 import { FASTIFY_STATIC_OPTIONS as FASTIFY_STATIC_BASE_OPTIONS } from "@oly_op/musicloud-common/build/server-options"
+import bytes from "bytes"
 
 export const FASTIFY_JWT_OPTIONS: FastifyJWTOptions = {
 	secret: process.env.JWT_TOKEN_SECRET,
@@ -31,7 +32,7 @@ export const FASTIFY_MULTIPART_OPTIONS: FastifyMultipartOptions = {
 	addToBody: true,
 	throwFileSizeLimit: false,
 	limits: {
-		fileSize: 30000000,
+		fileSize: bytes("50mb"),
 	},
 }
 

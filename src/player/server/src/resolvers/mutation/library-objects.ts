@@ -77,7 +77,7 @@ const createPlaylistConfig: CreateConfig =
 	})
 
 export const addSongToLibrary =
-	resolver<Song, SongID>(
+	resolver<Song | null, SongID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createSongConfig({
@@ -90,7 +90,7 @@ export const addSongToLibrary =
 	)
 
 export const removeSongFromLibrary =
-	resolver<Song, SongID>(
+	resolver<Song | null, SongID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createSongConfig({
@@ -103,7 +103,7 @@ export const removeSongFromLibrary =
 	)
 
 export const addArtistToLibrary =
-	resolver<Artist, ArtistID>(
+	resolver<Artist | null, ArtistID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createArtistConfig({
@@ -116,7 +116,7 @@ export const addArtistToLibrary =
 	)
 
 export const removeArtistFromLibrary =
-	resolver<Artist, ArtistID>(
+	resolver<Artist | null, ArtistID>(
 		({ args, context }) => (
 			handleInLibrary(context.pg)(
 				createArtistConfig({
@@ -129,7 +129,7 @@ export const removeArtistFromLibrary =
 	)
 
 export const addPlaylistToLibrary =
-	resolver<Playlist, PlaylistID>(
+	resolver<Playlist | null, PlaylistID>(
 		async ({ args, context }) => {
 			const { playlistID } = args
 
@@ -151,7 +151,7 @@ export const addPlaylistToLibrary =
 	)
 
 export const removePlaylistFromLibrary =
-	resolver<Playlist, PlaylistID>(
+	resolver<Playlist | null, PlaylistID>(
 		async ({ args, context }) => {
 			const { playlistID } = args
 
@@ -173,7 +173,7 @@ export const removePlaylistFromLibrary =
 	)
 
 export const addAlbumToLibrary =
-	resolver<Album, AlbumID>(
+	resolver<Album | null, AlbumID>(
 		async ({ args, context }) => {
 			const { albumID } = args
 
@@ -218,7 +218,7 @@ export const addAlbumToLibrary =
 	)
 
 export const removeAlbumFromLibrary =
-	resolver<Album, AlbumID>(
+	resolver<Album | null, AlbumID>(
 		async ({ args, context }) => {
 			const { albumID } = args
 

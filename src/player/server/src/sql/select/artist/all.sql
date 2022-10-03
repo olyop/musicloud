@@ -1,4 +1,6 @@
 SELECT
 	{{ columnNames }}
 FROM
-	artists;
+	artists
+ORDER BY
+	name ASC;

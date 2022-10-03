@@ -2,7 +2,7 @@ import { AlbumBase, SongBase } from "@oly_op/musicloud-common/build/types"
 
 import { BodyEntry } from "../../types"
 
-interface Body extends Pick<AlbumBase, "title"> {
+export interface Body extends Pick<AlbumBase, "title"> {
 	songs: string,
 	artists: string,
 	released: string,

@@ -65,10 +65,12 @@ export const addAlbumToPlaylist =
 			const lastPlaylistSong =
 				last(playlistSongs)
 
-			const startingIndex =
-				lastPlaylistSong ?
-					lastPlaylistSong.index + 1 :
-					0
+			let startingIndex: number
+			if (lastPlaylistSong) {
+				startingIndex = lastPlaylistSong.index + 1
+			} else {
+				throw new Error("No songs in album")
+			}
 
 			let index = 0
 			for (const { songID } of albumSongs) {

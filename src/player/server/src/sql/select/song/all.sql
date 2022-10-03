@@ -1,4 +1,6 @@
 SELECT
 	{{ columnNames }}
 FROM
-	songs;
+	songs
+ORDER BY
+	title ASC;

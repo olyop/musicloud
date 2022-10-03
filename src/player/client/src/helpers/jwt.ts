@@ -36,7 +36,6 @@ export const verifyJWT =
 				}
 			}
 		} catch (error) {
-			console.log("7")
 			return false
 		}
 	}

@@ -8,6 +8,9 @@
 			"*": ["src/types/*"]
 		}
 	},
+	"include": [
+		"src"
+	],
 	"ts-node": {
 		"esm": true,
 		"swc": true,
