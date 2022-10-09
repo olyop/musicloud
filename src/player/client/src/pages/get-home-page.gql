@@ -8,7 +8,7 @@ query getHomePage {
 		playsTotal
 	}
 	getTrendingAlbums {
-    ...AlbumCoreFragment
+		...AlbumCoreFragment
 		playsTotal
 	}
 	getTrendingPlaylists {

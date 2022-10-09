@@ -1,20 +1,17 @@
-import { createElement, Fragment, FC } from "react"
+import { createElement, Fragment, FC } from "react";
 
-import ObjectLink from "../object-link"
-import { Artist, Handler } from "../../types"
-import { createObjectPath, determinePlural } from "../../helpers"
+import ObjectLink from "../object-link";
+import { Artist, Handler } from "../../types";
+import { createObjectPath, determinePlural } from "../../helpers";
 
-import "./index.scss"
+import "./index.scss";
 
-const ArtistLower: FC<PropTypes> = ({
-	onClick,
-	artist: { artistID, songsTotal, albumsTotal },
-}) => {
+const ArtistLower: FC<PropTypes> = ({ onClick, artist: { artistID, songsTotal, albumsTotal } }) => {
 	if (typeof albumsTotal === undefined && typeof songsTotal === undefined) {
-		return null
+		return null;
 	} else {
-		const albumsText = `${albumsTotal} album${determinePlural(albumsTotal)}`
-		const songsText = `${songsTotal} song${determinePlural(songsTotal)}`
+		const albumsText = `${albumsTotal} album${determinePlural(albumsTotal)}`;
+		const songsText = `${songsTotal} song${determinePlural(songsTotal)}`;
 		return (
 			<Fragment>
 				<ObjectLink
@@ -33,13 +30,13 @@ const ArtistLower: FC<PropTypes> = ({
 					}}
 				/>
 			</Fragment>
-		)
+		);
 	}
-}
+};
 
 interface PropTypes {
-	onClick?: Handler,
-	artist: Pick<Artist, "artistID" | "songsTotal" | "albumsTotal">,
+	onClick?: Handler;
+	artist: Pick<Artist, "artistID" | "songsTotal" | "albumsTotal">;
 }
 
-export default ArtistLower
+export default ArtistLower;

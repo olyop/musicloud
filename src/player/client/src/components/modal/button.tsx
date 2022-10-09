@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom"
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { createElement, FC, Fragment, AnchorHTMLAttributes } from "react"
+import { Link } from "react-router-dom";
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { createElement, FC, Fragment, AnchorHTMLAttributes } from "react";
 
-import { ClassNameBEMPropTypes, Handler } from "../../types"
+import { ClassNameBEMPropTypes, Handler } from "../../types";
 
-const bem =
-	createBEM("ModalButton")
+const bem = createBEM("ModalButton");
 
 const ModalButton: FC<ModalButtonPropTypes> = ({
 	text,
@@ -18,15 +17,14 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 	externalLinkProps,
 	externalLink = false,
 }) => {
-	const handleOnClick =
-		() => {
-			if (!externalLink && onClick) {
-				void onClick()
-			}
-			if (onClose) {
-				void onClose()
-			}
+	const handleOnClick = () => {
+		if (!externalLink && onClick) {
+			void onClick();
 		}
+		if (onClose) {
+			void onClose();
+		}
+	};
 
 	const jsx = (
 		<Button
@@ -41,7 +39,7 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 				flexGrow: link ? 1 : undefined,
 			}}
 		/>
-	)
+	);
 
 	return link ? (
 		<Fragment>
@@ -61,17 +59,19 @@ const ModalButton: FC<ModalButtonPropTypes> = ({
 				/>
 			)}
 		</Fragment>
-	) : jsx
-}
+	) : (
+		jsx
+	);
+};
 
 export interface ModalButtonPropTypes extends ClassNameBEMPropTypes {
-	text: string,
-	icon?: string,
-	link?: string,
-	onClick?: Handler,
-	onClose?: Handler,
-	externalLink?: boolean,
-	externalLinkProps?: AnchorHTMLAttributes<HTMLAnchorElement>,
+	text: string;
+	icon?: string;
+	link?: string;
+	onClick?: Handler;
+	onClose?: Handler;
+	externalLink?: boolean;
+	externalLinkProps?: AnchorHTMLAttributes<HTMLAnchorElement>;
 }
 
-export default ModalButton
+export default ModalButton;

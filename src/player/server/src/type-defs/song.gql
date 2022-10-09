@@ -25,7 +25,7 @@ type Song {
 	# library
 	inLibrary: Boolean!
 	dateAddedToLibrary: TimeStamp
-	
+
 	# queue
 	queueIndex: NonNegativeInt
 

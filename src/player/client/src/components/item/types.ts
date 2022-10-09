@@ -1,58 +1,53 @@
-import { BEMInput } from "@oly_op/bem"
-import { ReactNode, CSSProperties } from "react"
+import { BEMInput } from "@oly_op/bem";
+import { ReactNode, CSSProperties } from "react";
 
-import { ClassNameBEMPropTypes, Handler, OnClickPropTypes } from "../../types"
+import { ClassNameBEMPropTypes, Handler, OnClickPropTypes } from "../../types";
 
 export interface ImageOptions {
-	url: string,
-	path?: string,
-	title: string,
+	url: string;
+	path?: string;
+	title: string;
 }
 
 export interface PlayOptions {
-	onClick?: Handler,
-	isPlaying: boolean,
+	onClick?: Handler;
+	isPlaying: boolean;
 }
 
 export interface InfoOptions {
-	upperLeft?: ReactNode,
-	lowerLeft?: ReactNode,
-	rightLeft?: ReactNode,
-	rightRight?: ReactNode,
+	upperLeft?: ReactNode;
+	lowerLeft?: ReactNode;
+	rightLeft?: ReactNode;
+	rightRight?: ReactNode;
 }
 
 interface ClassNames extends ClassNameBEMPropTypes {
-	infoClassName?: BEMInput,
-	iconClassName?: BEMInput,
+	infoClassName?: BEMInput;
+	iconClassName?: BEMInput;
 }
 
 interface Options {
-	infoOptions?: InfoOptions,
-	playOptions?: PlayOptions,
-	imageOptions?: ImageOptions,
+	infoOptions?: InfoOptions;
+	playOptions?: PlayOptions;
+	imageOptions?: ImageOptions;
 }
 
 interface ModalOptions {
-	open: boolean,
-	onOpen: Handler,
-	onClose: Handler,
+	open: boolean;
+	onOpen: Handler;
+	onClose: Handler;
 }
 
-export type Modal =
-	(options: ModalOptions) => ReactNode
+export type Modal = (options: ModalOptions) => ReactNode;
 
 interface Other {
-	modal?: Modal,
-	left?: ReactNode,
-	leftIcon?: string,
-	onRemove?: Handler,
-	shareData?: ShareData,
-	style?: CSSProperties,
-	infoFadeInFromRight?: boolean,
+	modal?: Modal;
+	left?: ReactNode;
+	leftIcon?: string;
+	onRemove?: Handler;
+	shareData?: ShareData;
+	style?: CSSProperties;
+	infoFadeInFromRight?: boolean;
 }
 
-export interface PropTypes extends
-	OnClickPropTypes,
-	ClassNames,
-	Options,
-	Other {}
+export interface PropTypes extends OnClickPropTypes, ClassNames, Options, Other {}

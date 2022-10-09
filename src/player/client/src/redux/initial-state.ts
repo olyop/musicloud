@@ -13,7 +13,7 @@ import {
 	LibrarySongsOrderByField,
 	LibraryArtistsOrderByField,
 	LibraryPlaylistsOrderByField,
-} from "../types"
+} from "../types";
 
 export const initialSettings: Settings = {
 	volume: 75,
@@ -63,7 +63,7 @@ export const initialSettings: Settings = {
 			field: LibraryPlaylistsOrderByField.DATE_ADDED,
 		},
 	},
-}
+};
 
 export const initialState: State = {
 	errors: [],
@@ -74,4 +74,4 @@ export const initialState: State = {
 	pageTitle: null,
 	accessToken: null,
 	settings: initialSettings,
-}
+};

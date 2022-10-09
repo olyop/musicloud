@@ -1,7 +1,6 @@
 export interface Item {
-	value: string,
-	index: number,
+	value: string;
+	index: number;
 }
 
-export type Image =
-	File | null
+export type Image = File | null;

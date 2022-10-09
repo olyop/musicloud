@@ -1,9 +1,13 @@
 .AlbumSongs {
 	position: relative;
 	&__label {
-		padding-left: 0; }
+		padding-left: 0;
+	}
 	&__content {
 		gap: 12rem;
-		padding: 18rem 14rem; }
+		padding: 18rem 14rem;
+	}
 	&__no-songs {
-		color: rgb(117 117 117); } }
+		color: rgb(117 117 117);
+	}
+}

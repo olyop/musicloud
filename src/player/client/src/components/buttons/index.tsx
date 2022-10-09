@@ -1,17 +1,14 @@
-import { createBEM } from "@oly_op/bem"
-import { createElement, FC, PropsWithChildren } from "react"
+import { createBEM } from "@oly_op/bem";
+import { createElement, FC, PropsWithChildren } from "react";
 
-import { ClassNameBEMPropTypes } from "../../types"
+import { ClassNameBEMPropTypes } from "../../types";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Buttons")
+const bem = createBEM("Buttons");
 
 const Buttons: FC<PropsWithChildren<ClassNameBEMPropTypes>> = ({ className, children }) => (
-	<div className={bem(className, "")}>
-		{children}
-	</div>
-)
+	<div className={bem(className, "")}>{children}</div>
+);
 
-export default Buttons
+export default Buttons;

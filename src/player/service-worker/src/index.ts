@@ -4,26 +4,26 @@ import {
 	offlineFallback,
 	googleFontsCache,
 	staticResourceCache,
-} from "workbox-recipes"
+} from "workbox-recipes";
 
-import { clientsClaim } from "workbox-core"
-import { registerRoute } from "workbox-routing"
-import { ExpirationPlugin } from "workbox-expiration"
-import { RangeRequestsPlugin } from "workbox-range-requests"
-import { CacheFirst, NetworkOnly } from "workbox-strategies"
+import { clientsClaim } from "workbox-core";
+import { registerRoute } from "workbox-routing";
+import { ExpirationPlugin } from "workbox-expiration";
+import { RangeRequestsPlugin } from "workbox-range-requests";
+import { CacheFirst, NetworkOnly } from "workbox-strategies";
 
-declare const self: ServiceWorkerGlobalScope
+declare const self: ServiceWorkerGlobalScope;
 
 // eslint-disable-next-line no-underscore-dangle
-self.__WB_DISABLE_DEV_LOGS = true
+self.__WB_DISABLE_DEV_LOGS = true;
 
-clientsClaim()
+clientsClaim();
 
-await self.skipWaiting()
+await self.skipWaiting();
 
-pageCache()
+pageCache();
 
-googleFontsCache()
+googleFontsCache();
 
 registerRoute(
 	({ url }) => url.pathname.endsWith(".mp3"),
@@ -37,20 +37,17 @@ registerRoute(
 			}),
 		],
 	}),
-)
+);
 
-registerRoute(
-	({ url }) => url.pathname === "/ping.txt",
-	new NetworkOnly(),
-)
+registerRoute(({ url }) => url.pathname === "/ping.txt", new NetworkOnly());
 
-staticResourceCache()
+staticResourceCache();
 
 imageCache({
 	maxEntries: Infinity,
 	maxAgeSeconds: Infinity,
-})
+});
 
 offlineFallback({
 	pageFallback: "index.html",
-})
+});

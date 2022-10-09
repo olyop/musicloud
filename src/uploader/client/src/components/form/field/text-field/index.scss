@@ -10,7 +10,8 @@
 		background-color: transparent;
 		border: 2rem solid var(--primary-color);
 		transition: var(--transition-duration) opacity;
-		transition: var(--transition-duration) border-radius; }
+		transition: var(--transition-duration) border-radius;
+	}
 	&__label {
 		top: -8rem;
 		z-index: 10;
@@ -22,7 +23,8 @@
 		border-radius: 5rem;
 		background-color: #fff;
 		text-transform: uppercase;
-		transition: var(--transition-duration) color; }
+		transition: var(--transition-duration) color;
+	}
 	&__input {
 		width: 100%;
 		outline: none;
@@ -32,6 +34,9 @@
 		border: 1rem solid var(--border-color);
 		background-color: var(--elevated-color);
 		transition: var(--transition-duration) border-color;
-		transition: var(--transition-duration) border-radius; }
+		transition: var(--transition-duration) border-radius;
+	}
 	&:hover &__label {
-		color: var(--primary-color); } }
+		color: var(--primary-color);
+	}
+}

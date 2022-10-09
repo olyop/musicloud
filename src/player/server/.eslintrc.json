@@ -13,10 +13,7 @@
 		},
 		{
 			"files": ["*.gql"],
-			"extends": [
-				"plugin:@graphql-eslint/schema-all",
-				"@oly_op/eslint-config-graphql"
-			],
+			"extends": ["plugin:@graphql-eslint/schema-all", "@oly_op/eslint-config-graphql"],
 			"parserOptions": {
 				"operations": "src/player/client/src/**/*.gql",
 				"schema": "src/player/server/src/type-defs/*.gql"

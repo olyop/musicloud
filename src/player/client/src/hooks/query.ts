@@ -4,53 +4,51 @@ import {
 	QueryHookOptions,
 	OperationVariables,
 	useQuery as useBaseQuery,
-} from "@apollo/client"
+} from "@apollo/client";
 
-import uniqueID from "lodash-es/uniqueId"
-import { useRef, useEffect } from "react"
+import uniqueID from "lodash-es/uniqueId";
+import { useRef, useEffect } from "react";
 
-import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../redux"
+import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../redux";
 
 export const useQuery = <Data, Vars extends OperationVariables = OperationVariables>(
 	query: DocumentNode,
 	{ queryID, hideLoading = false, ...options }: Options<Data, Vars> = {},
 ): QueryResult<Data, Vars> => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
-	const id =
-		useRef(queryID || uniqueID())
+	const id = useRef(queryID || uniqueID());
 
-	const { loading, ...result } =
-		useBaseQuery<Data, Vars>(query, options)
+	const { loading, ...result } = useBaseQuery<Data, Vars>(query, options);
 
 	useEffect(() => {
 		if (!hideLoading) {
 			if (loading) {
-				dispatch(addLoading(id.current))
+				dispatch(addLoading(id.current));
 			} else {
-				dispatch(removeLoading(id.current))
+				dispatch(removeLoading(id.current));
 			}
 		}
 		return () => {
 			if (!hideLoading) {
-				dispatch(removeLoading(id.current))
+				dispatch(removeLoading(id.current));
 			}
-		}
-	}, [loading])
+		};
+	}, [loading]);
 
 	useEffect(() => {
 		if (result.error?.message === "Token expired") {
-			dispatch(updateAccessToken(null))
+			dispatch(updateAccessToken(null));
 		}
-	}, [result.error])
+	}, [result.error]);
 
 	return {
 		...result,
 		loading,
-	}
-}
+	};
+};
 
 interface Options<Data, Vars> extends QueryHookOptions<Data, Vars> {
-	queryID?: string,
-	hideLoading?: boolean,
+	queryID?: string;
+	hideLoading?: boolean;
 }

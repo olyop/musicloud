@@ -1,7 +1,4 @@
 {
 	"extends": "@oly_op/stylelint-config",
-	"ignoreFiles": [
-		"build",
-		"node_modules"
-	]
+	"ignoreFiles": ["build", "node_modules"]
 }

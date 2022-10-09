@@ -3,6 +3,7 @@ dist
 build
 node_modules
 src/common/build
+src/player/server/src/public/service-worker.js
 
 # Java
 src/accounts/server/build

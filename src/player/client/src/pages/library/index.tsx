@@ -1,78 +1,63 @@
-import inRange from "lodash-es/inRange"
-import { createBEM } from "@oly_op/bem"
-import { Head } from "@oly_op/react-head"
-import Button from "@oly_op/react-button"
-import { createElement, FC, Fragment } from "react"
-import { Route, Routes, NavLink } from "react-router-dom"
+import inRange from "lodash-es/inRange";
+import { createBEM } from "@oly_op/bem";
+import { Head } from "@oly_op/react-head";
+import Button from "@oly_op/react-button";
+import { createElement, FC, Fragment } from "react";
+import { Route, Routes, NavLink } from "react-router-dom";
 
-import routes from "./routes"
-import Page from "../../layouts/page"
-import Window from "../../components/window"
-import ShuffleButton from "./shuffle-button"
-import Navigation from "../../layouts/navigation"
-import CreatePlaylistButton from "./create-playlist-button"
+import routes from "./routes";
+import Page from "../../layouts/page";
+import Window from "../../components/window";
+import ShuffleButton from "./shuffle-button";
+import Navigation from "../../layouts/navigation";
+import CreatePlaylistButton from "./create-playlist-button";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Library")
+const bem = createBEM("Library");
 
 const Header: FC = () => (
 	<Navigation
 		routes={routes}
 		linkClassName={bem("header-link")}
-		right={(
+		right={
 			<Fragment>
 				<NavLink to="settings">
 					{({ isActive }) => (
-						<Button
-							icon="settings"
-							transparent={!isActive}
-							title="Library Settings"
-						/>
+						<Button icon="settings" transparent={!isActive} title="Library Settings" />
 					)}
 				</NavLink>
 				<Window>
 					{({ width }) => {
-						const hideButtonText = inRange(width, 0, 575) || inRange(width, 800, 950)
+						const hideButtonText = inRange(width, 0, 575) || inRange(width, 800, 950);
 						return (
 							<Fragment>
-								<CreatePlaylistButton
-									hideButtonText={hideButtonText}
-								/>
-								<ShuffleButton
-									hideButtonText={hideButtonText}
-								/>
+								<CreatePlaylistButton hideButtonText={hideButtonText} />
+								<ShuffleButton hideButtonText={hideButtonText} />
 							</Fragment>
-						)
+						);
 					}}
 				</Window>
 			</Fragment>
-		)}
+		}
 	/>
-)
+);
 
 const Library: FC = () => (
 	<Head pageTitle="Library">
 		<Page
-			header={<Header/>}
+			header={<Header />}
 			headerClassName={bem("header")}
 			childrenClassName="PaddingTopBottom"
-			children={(
+			children={
 				<Routes>
-					{routes.map(
-						({ routeID, path, element }) => (
-							<Route
-								path={path}
-								key={routeID}
-								element={element}
-							/>
-						),
-					)}
+					{routes.map(({ routeID, path, element }) => (
+						<Route path={path} key={routeID} element={element} />
+					))}
 				</Routes>
-			)}
+			}
 		/>
 	</Head>
-)
+);
 
-export default Library
+export default Library;

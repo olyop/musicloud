@@ -1,10 +1,6 @@
-import knownLinks from "./known-links"
-import generateAlbumLinks from "./generate-album-links"
+import knownLinks from "./known-links";
+import generateAlbumLinks from "./generate-album-links";
 
-const generateLinks =
-	async () => [
-		...(await generateAlbumLinks()),
-		...knownLinks,
-	]
+const generateLinks = async () => [...(await generateAlbumLinks()), ...knownLinks];
 
-export default generateLinks
+export default generateLinks;

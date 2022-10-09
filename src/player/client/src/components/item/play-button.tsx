@@ -1,11 +1,11 @@
-import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
+import Button from "@oly_op/react-button";
+import { createElement, FC } from "react";
 
-import { useStatePlay } from "../../redux"
-import { OnClickPropTypes } from "../../types"
+import { useStatePlay } from "../../redux";
+import { OnClickPropTypes } from "../../types";
 
 const PlayButton: FC<PropTypes> = ({ isPlaying, onClick, className }) => {
-	const play = useStatePlay()
+	const play = useStatePlay();
 	return (
 		<Button
 			transparent
@@ -14,12 +14,12 @@ const PlayButton: FC<PropTypes> = ({ isPlaying, onClick, className }) => {
 			className={className}
 			icon={isPlaying && play ? "pause" : "play_arrow"}
 		/>
-	)
-}
+	);
+};
 
 interface PropTypes extends OnClickPropTypes {
-	isPlaying: boolean,
-	className?: string,
+	isPlaying: boolean;
+	className?: string;
 }
 
-export default PlayButton
+export default PlayButton;

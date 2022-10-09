@@ -1,24 +1,17 @@
-import { createElement, FC } from "react"
-import { ArtistID } from "@oly_op/musicloud-common/build/types"
+import { createElement, FC } from "react";
+import { ArtistID } from "@oly_op/musicloud-common/build/types";
 
-import { Handler } from "../../../types"
-import { ModalButton } from "../../modal"
-import { useShuffleArtist } from "../../../hooks"
+import { Handler } from "../../../types";
+import { ModalButton } from "../../modal";
+import { useShuffleArtist } from "../../../hooks";
 
 const ShuffleButton: FC<PropTypes> = ({ onClose, artistID }) => {
-	const [ shuffle ] = useShuffleArtist({ artistID })
-	return (
-		<ModalButton
-			icon="shuffle"
-			text="Shuffle"
-			onClose={onClose}
-			onClick={shuffle}
-		/>
-	)
-}
+	const [shuffle] = useShuffleArtist({ artistID });
+	return <ModalButton icon="shuffle" text="Shuffle" onClose={onClose} onClick={shuffle} />;
+};
 
 interface PropTypes extends ArtistID {
-	onClose: Handler,
+	onClose: Handler;
 }
 
-export default ShuffleButton
+export default ShuffleButton;

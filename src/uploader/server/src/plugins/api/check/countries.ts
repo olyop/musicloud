@@ -240,6 +240,6 @@ const countries = {
 	"UA": "Ukraine",
 	"QA": "Qatar",
 	"MZ": "Mozambique",
-} as Record<string, string>
+} as Record<string, string>;
 
-export default countries
+export default countries;

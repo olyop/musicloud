@@ -1,24 +1,24 @@
-import isNull from "lodash-es/isNull"
-import { createBEM } from "@oly_op/bem"
-import uniqueID from "lodash-es/uniqueId"
-import { useAudioPlayer as useAudio } from "react-use-audio-player"
-import { useState, useEffect, useRef, createElement, FC } from "react"
+import isNull from "lodash-es/isNull";
+import { createBEM } from "@oly_op/bem";
+import uniqueID from "lodash-es/uniqueId";
+import { useAudioPlayer as useAudio } from "react-use-audio-player";
+import { useState, useEffect, useRef, createElement, FC } from "react";
 
-import Main from "./main"
-import Controls from "./controls"
-import { NowPlaying } from "./types"
-import Fullscreen from "./fullscreen"
-import XHR_OPTIONS from "./xhr-options"
-import { QueueNowPlaying } from "../../types"
-import { createCatalogMP3URL } from "../../helpers"
-import { useNextQueueSong, useQuery } from "../../hooks"
-import { addError, useDispatch, useStatePlay, useStateVolume } from "../../redux"
+import Main from "./main";
+import Controls from "./controls";
+import { NowPlaying } from "./types";
+import Fullscreen from "./fullscreen";
+import XHR_OPTIONS from "./xhr-options";
+import { QueueNowPlaying } from "../../types";
+import { createCatalogMP3URL } from "../../helpers";
+import { useNextQueueSong, useQuery } from "../../hooks";
+import { addError, useDispatch, useStatePlay, useStateVolume } from "../../redux";
 
-import GET_NOW_PLAYING from "./get-now-playing.gql"
+import GET_NOW_PLAYING from "./get-now-playing.gql";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem = createBEM("Bar")
+const bem = createBEM("Bar");
 
 /*
  *	WARNING!!
@@ -26,20 +26,18 @@ const bem = createBEM("Bar")
  */
 
 const Bar: FC = () => {
-	const audio =	useAudio()
-	const play = useStatePlay()
-	const dispatch = useDispatch()
-	const autoLoad = useRef(false)
-	const volume = useStateVolume()
+	const audio = useAudio();
+	const play = useStatePlay();
+	const dispatch = useDispatch();
+	const autoLoad = useRef(false);
+	const volume = useStateVolume();
 
-	const { data } =
-		useQuery<QueryData>(GET_NOW_PLAYING, {
-			errorPolicy: "all",
-			fetchPolicy: "cache-only",
-		})
+	const { data } = useQuery<QueryData>(GET_NOW_PLAYING, {
+		errorPolicy: "all",
+		fetchPolicy: "cache-only",
+	});
 
-	const nowPlaying: NowPlaying =
-		data?.getQueue.nowPlaying || null
+	const nowPlaying: NowPlaying = data?.getQueue.nowPlaying || null;
 
 	useEffect(() => {
 		if (nowPlaying) {
@@ -48,68 +46,66 @@ const Bar: FC = () => {
 					xhr: XHR_OPTIONS,
 					volume: volume / 100,
 					src: createCatalogMP3URL(nowPlaying.songID),
-				})
+				});
 			} else if (!autoLoad.current) {
-				autoLoad.current = true
+				autoLoad.current = true;
 			}
 		}
-	}, [nowPlaying, play, autoLoad.current])
+	}, [nowPlaying, play, autoLoad.current]);
 
 	useEffect(() => {
 		if (nowPlaying) {
 			if (audio.ready) {
 				if (play) {
-					audio.play()
+					audio.play();
 				} else {
-					audio.pause()
+					audio.pause();
 				}
 			}
 		}
-	}, [audio.ready, play])
+	}, [audio.ready, play]);
 
 	useEffect(() => {
 		if (isNull(data?.getQueue.nowPlaying) && !autoLoad.current) {
-			autoLoad.current = true
+			autoLoad.current = true;
 		}
-	}, [data])
+	}, [data]);
 
 	useEffect(() => {
 		if (nowPlaying) {
-			audio.volume(volume / 100)
+			audio.volume(volume / 100);
 		}
-	}, [volume])
+	}, [volume]);
 
-	const [ nextQueueSong ] =
-		useNextQueueSong()
+	const [nextQueueSong] = useNextQueueSong();
 
 	useEffect(() => {
 		if (nowPlaying) {
 			if (audio.ended) {
-				void nextQueueSong()
+				void nextQueueSong();
 			}
 		}
-	}, [audio.ended])
+	}, [audio.ended]);
 
 	useEffect(() => {
 		if (nowPlaying) {
 			if (audio.error) {
-				dispatch(addError({
-					errorID: uniqueID(),
-					location: "useSongAudio",
-					message: audio.error.message,
-				}))
+				dispatch(
+					addError({
+						errorID: uniqueID(),
+						location: "useSongAudio",
+						message: audio.error.message,
+					}),
+				);
 			}
 		}
-	}, [audio.error])
+	}, [audio.error]);
 
-	const [ expand, setExpand ] =
-		useState(false)
+	const [expand, setExpand] = useState(false);
 
-	const handleExpandOpen =
-		() => setExpand(true)
+	const handleExpandOpen = () => setExpand(true);
 
-	const handleExpandClose =
-		() => setExpand(false)
+	const handleExpandClose = () => setExpand(false);
 
 	return (
 		<footer className={bem("", "BorderTop")}>
@@ -120,11 +116,7 @@ const Bar: FC = () => {
 				buttonClassName={bem("controls-button")}
 				buttonIconClassName={bem("controls-button-icon")}
 			/>
-			<Main
-				audio={audio}
-				nowPlaying={nowPlaying}
-				onExpandOpen={handleExpandOpen}
-			/>
+			<Main audio={audio} nowPlaying={nowPlaying} onExpandOpen={handleExpandOpen} />
 			<Fullscreen
 				open={expand}
 				audio={audio}
@@ -133,11 +125,11 @@ const Bar: FC = () => {
 				onClose={handleExpandClose}
 			/>
 		</footer>
-	)
-}
+	);
+};
 
 interface QueryData {
-	getQueue: QueueNowPlaying,
+	getQueue: QueueNowPlaying;
 }
 
-export default Bar
+export default Bar;

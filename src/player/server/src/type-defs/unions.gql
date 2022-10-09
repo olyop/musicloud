@@ -1,2 +1,1 @@
-union Search =
-	User | Song | Genre | Album | Artist | Playlist
+union Search = User | Song | Genre | Album | Artist | Playlist

@@ -1,65 +1,78 @@
-import { ArtistID } from "@oly_op/musicloud-common/build/types"
-import { join, query as pgHelpersQuery, convertTableToCamelCase } from "@oly_op/pg-helpers"
+import { isEmpty } from "lodash-es";
+import { ArtistID } from "@oly_op/musicloud-common/build/types";
+import { join, query, convertTableToCamelCase, exists } from "@oly_op/pg-helpers";
 
-import resolver from "../../resolver"
-import { Song } from "../../../../types"
-import { COLUMN_NAMES } from "../../../../globals"
-import { INSERT_QUEUE_SONG, SELECT_ARTIST_SONGS } from "../../../../sql"
-import { shuffle, clearQueue, updateQueueNowPlaying } from "../../../helpers"
+import resolver from "../../resolver";
+import { Song } from "../../../../types";
+import { COLUMN_NAMES } from "../../../../globals";
+import { INSERT_QUEUE_SONG, SELECT_ARTIST_SONGS } from "../../../../sql";
+import { shuffle, clearQueue, updateQueueNowPlaying } from "../../../helpers";
 
-export const shuffleArtist =
-	resolver<Record<string, never>, ArtistID>(
-		async ({ args, context }) => {
-			const { artistID } = args
-			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
-			const client = await context.pg.connect()
-			const query = pgHelpersQuery(client)
+export const shuffleArtist = resolver<Record<string, never>, ArtistID>(
+	async ({ args, context }) => {
+		const { artistID } = args;
+		const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-			try {
-				await query("BEGIN")()
+		const artistExists = await exists(context.pg)({
+			value: artistID,
+			table: "artists",
+			column: COLUMN_NAMES.ARTIST[0],
+		});
 
-				await clearQueue(client)({ userID })
+		if (!artistExists) {
+			throw new Error("Artist does not exist");
+		}
 
-				const artistSongs =
-					await query(SELECT_ARTIST_SONGS)({
-						parse: convertTableToCamelCase<Song>(),
-						variables: {
-							artistID,
-							columnNames: join(COLUMN_NAMES.SONG, "songs"),
-						},
-					})
+		const artistSongs = await query(context.pg)(SELECT_ARTIST_SONGS)({
+			parse: convertTableToCamelCase<Song>(),
+			variables: {
+				artistID,
+				columnNames: join(COLUMN_NAMES.SONG, "songs"),
+			},
+		});
 
-				const [ nowPlaying, ...shuffled ] =
-					await shuffle(context.randomDotOrg)(artistSongs)
+		if (isEmpty(artistSongs)) {
+			throw new Error("Artist has no songs");
+		}
 
-				await updateQueueNowPlaying(client, context.ag.index)({
-					userID,
-					value: nowPlaying!.songID,
-				})
+		const [nowPlaying, ...shuffled] = await shuffle(context.randomDotOrg)(artistSongs);
 
-				await Promise.all(
-					shuffled.map(
-						({ songID }, index) => (
-							query(INSERT_QUEUE_SONG)({
-								variables: {
-									index,
-									songID,
-									userID,
-									tableName: "queue_laters",
-								},
-							})
-						),
-					),
-				)
+		const client = await context.pg.connect();
 
-				await query("COMMIT")()
-			} catch (error) {
-				await query("ROLLBACK")()
-				throw error
-			} finally {
-				client.release()
-			}
+		try {
+			await query(client)("BEGIN")();
 
-			return {}
-		},
-	)
+			await clearQueue(client)({ userID });
+
+			const updateNowPlaying = updateQueueNowPlaying(
+				client,
+				context.ag.index,
+			)({
+				userID,
+				value: nowPlaying!.songID,
+			});
+
+			const updateQueueLaters = shuffled.map(({ songID }, index) =>
+				query(client)(INSERT_QUEUE_SONG)({
+					variables: {
+						index,
+						songID,
+						userID,
+						tableName: "queue_laters",
+					},
+				}),
+			);
+
+			await Promise.all([updateNowPlaying, ...updateQueueLaters]);
+
+			await query(client)("COMMIT")();
+		} catch (error) {
+			await query(client)("ROLLBACK")();
+			throw error;
+		} finally {
+			client.release();
+		}
+
+		return {};
+	},
+);

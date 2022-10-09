@@ -1,14 +1,16 @@
-import { PoolOrClient } from "@oly_op/pg-helpers"
-import { UserID } from "@oly_op/musicloud-common/build/types"
+import { PoolOrClient } from "@oly_op/pg-helpers";
+import { UserID } from "@oly_op/musicloud-common/build/types";
 
-import { clearQueueNext } from "./clear-queue-next"
-import { clearQueueLater } from "./clear-queue-later"
-import { clearQueuePrevious } from "./clear-queue-previous"
+import { clearQueueNext } from "./clear-queue-next";
+import { clearQueueLater } from "./clear-queue-later";
+import { clearQueuePrevious } from "./clear-queue-previous";
 
 export const clearQueuePreviousNextLater =
 	(client: PoolOrClient) =>
-		async ({ userID }: UserID) => {
-			await clearQueueNext(client)({ userID })
-			await clearQueueLater(client)({ userID })
-			await clearQueuePrevious(client)({ userID })
-		}
+	async ({ userID }: UserID) => {
+		await Promise.all([
+			clearQueueNext(client)({ userID }),
+			clearQueueLater(client)({ userID }),
+			clearQueuePrevious(client)({ userID }),
+		]);
+	};

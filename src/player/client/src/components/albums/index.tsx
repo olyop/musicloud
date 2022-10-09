@@ -1,7 +1,7 @@
-import { createBEM } from "@oly_op/bem"
-import isFunction from "lodash-es/isFunction"
-import isUndefined from "lodash-es/isUndefined"
-import { createElement, FC, ReactNode } from "react"
+import { createBEM } from "@oly_op/bem";
+import isFunction from "lodash-es/isFunction";
+import isUndefined from "lodash-es/isUndefined";
+import { createElement, FC, ReactNode } from "react";
 
 import {
 	Album,
@@ -9,14 +9,13 @@ import {
 	Album as AlbumType,
 	AlbumsOrderByField,
 	ClassNameBEMPropTypes,
-} from "../../types"
+} from "../../types";
 
-import List from "../list"
-import SelectOrderBy from "../select-order-by"
-import { useStateListStyle } from "../../redux"
+import List from "../list";
+import SelectOrderBy from "../select-order-by";
+import { useStateListStyle } from "../../redux";
 
-const bem =
-	createBEM("Albums")
+const bem = createBEM("Albums");
 
 const Albums: FC<AlbumsPropTypes> = ({
 	albums,
@@ -25,8 +24,8 @@ const Albums: FC<AlbumsPropTypes> = ({
 	alwaysList = false,
 	hideOrderBy = false,
 }) => {
-	const listStyle = useStateListStyle()
-	const isList = alwaysList || (listStyle === SettingsListStyle.LIST)
+	const listStyle = useStateListStyle();
+	const isList = alwaysList || listStyle === SettingsListStyle.LIST;
 	return (
 		<div className={bem(className, isList && "Elevated")}>
 			{hideOrderBy || (
@@ -43,22 +42,17 @@ const Albums: FC<AlbumsPropTypes> = ({
 				/>
 			)}
 			<List alwaysList={alwaysList}>
-				{(isFunction(children) ?
-					(isUndefined(albums) ?
-						albums :
-						children(albums)) :
-					children
-				)}
+				{isFunction(children) ? (isUndefined(albums) ? albums : children(albums)) : children}
 			</List>
 		</div>
-	)
-}
+	);
+};
 
 export interface AlbumsPropTypes extends ClassNameBEMPropTypes {
-	albums?: AlbumType[],
-	alwaysList?: boolean,
-	hideOrderBy?: boolean,
-	children: ((albums: Album[]) => ReactNode) | ReactNode,
+	albums?: AlbumType[];
+	alwaysList?: boolean;
+	hideOrderBy?: boolean;
+	children: ((albums: Album[]) => ReactNode) | ReactNode;
 }
 
-export default Albums
+export default Albums;

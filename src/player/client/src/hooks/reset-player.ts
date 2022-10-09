@@ -1,9 +1,8 @@
-import { useDispatch, updatePlay } from "../redux"
+import { useDispatch, updatePlay } from "../redux";
 
-export const useResetPlayer =
-	() => {
-		const dispatch = useDispatch()
-		return () => {
-			dispatch(updatePlay(false))
-		}
-	}
+export const useResetPlayer = () => {
+	const dispatch = useDispatch();
+	return () => {
+		dispatch(updatePlay(false));
+	};
+};

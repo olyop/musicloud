@@ -3,11 +3,5 @@
 	"compilerOptions": {
 		"lib": ["ESNext"]
 	},
-	"include": [
-		"base.ts",
-		"player",
-		"uploader",
-		"authenticator",
-		"../src/types"
-	]
+	"include": ["base.ts", "player", "uploader", "authenticator", "../src/types"]
 }

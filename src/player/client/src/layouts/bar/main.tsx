@@ -1,15 +1,15 @@
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { NavLink } from "react-router-dom"
-import { createElement, FC, Fragment } from "react"
-import { AudioPlayerControls } from "react-use-audio-player"
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { NavLink } from "react-router-dom";
+import { createElement, FC, Fragment } from "react";
+import { AudioPlayerControls } from "react-use-audio-player";
 
-import Volume from "./volume"
-import Progress from "./progress"
-import Song from "../../components/song"
-import { Handler, Song as SongType } from "../../types"
+import Volume from "./volume";
+import Progress from "./progress";
+import Song from "../../components/song";
+import { Handler, Song as SongType } from "../../types";
 
-const bem = createBEM("Bar")
+const bem = createBEM("Bar");
 
 const BarMain: FC<PropTypes> = ({ audio, nowPlaying, onExpandOpen }) => (
 	<div className={bem("main", "PaddingHalf")}>
@@ -28,14 +28,10 @@ const BarMain: FC<PropTypes> = ({ audio, nowPlaying, onExpandOpen }) => (
 						<div className="FlexRowRight">
 							<NavLink to="/queues">
 								{({ isActive }) => (
-									<Button
-										title="Queue"
-										icon="queue_music"
-										transparent={!isActive}
-									/>
+									<Button title="Queue" icon="queue_music" transparent={!isActive} />
 								)}
 							</NavLink>
-							<Volume/>
+							<Volume />
 							<Button
 								transparent
 								title="Player"
@@ -47,23 +43,20 @@ const BarMain: FC<PropTypes> = ({ audio, nowPlaying, onExpandOpen }) => (
 					</Fragment>
 				) : (
 					<Fragment>
-						<div/>
-						<div/>
+						<div />
+						<div />
 					</Fragment>
 				)}
 			</div>
 		</div>
-		<Progress
-			audio={audio}
-			nowPlaying={nowPlaying}
-		/>
+		<Progress audio={audio} nowPlaying={nowPlaying} />
 	</div>
-)
+);
 
 interface PropTypes {
-	onExpandOpen: Handler,
-	audio: AudioPlayerControls,
-	nowPlaying: SongType | null,
+	onExpandOpen: Handler;
+	audio: AudioPlayerControls;
+	nowPlaying: SongType | null;
 }
 
-export default BarMain
+export default BarMain;

@@ -1,8 +1,8 @@
-import path from "node:path"
-import { merge } from "webpack-merge"
-import { Configuration } from "webpack"
-import HTMLWebpackPlugin from "html-webpack-plugin"
-import { TITLE } from "@oly_op/musicloud-common/build/metadata"
+import path from "node:path";
+import { merge } from "webpack-merge";
+import { Configuration } from "webpack";
+import HTMLWebpackPlugin from "html-webpack-plugin";
+import { TITLE } from "@oly_op/musicloud-common/build/metadata";
 
 import baseConfiguration, {
 	BASE_SRC_PATH,
@@ -10,25 +10,19 @@ import baseConfiguration, {
 	createTSLoaderRule,
 	createDevServerProxy,
 	createHTMLPluginOptions,
-} from "../base"
+} from "../base";
 
-const ROOT_PATH =
-	path.join(BASE_SRC_PATH, "player", "client")
+const ROOT_PATH = path.join(BASE_SRC_PATH, "player", "client");
 
-const SRC_PATH =
-	path.join(ROOT_PATH, "src")
+const SRC_PATH = path.join(ROOT_PATH, "src");
 
-const SRC_ENTRY_PATH =
-	path.join(SRC_PATH, "index.tsx")
+const SRC_ENTRY_PATH = path.join(SRC_PATH, "index.tsx");
 
-const SRC_INDEX_PATH =
-	path.join(SRC_PATH, "index.html")
+const SRC_INDEX_PATH = path.join(SRC_PATH, "index.html");
 
-const TSCONFIG_PATH =
-	path.join(ROOT_PATH, "tsconfig.json")
+const TSCONFIG_PATH = path.join(ROOT_PATH, "tsconfig.json");
 
-const BUILD_PATH =
-	path.join(BASE_BUILD_PATH, "player", "public")
+const BUILD_PATH = path.join(BASE_BUILD_PATH, "player", "public");
 
 const configuration: Configuration = {
 	entry: SRC_ENTRY_PATH,
@@ -49,7 +43,9 @@ const configuration: Configuration = {
 				logLevel: "silent",
 				context: "/logo/**",
 				secure: process.env.HTTPS ? false : undefined,
-				target: `${process.env.HTTPS ? "https" : "http"}://${process.env.HOST}:${process.env.PLAYER_SERVER_PORT}`,
+				target: `${process.env.HTTPS ? "https" : "http"}://${process.env.HOST}:${
+					process.env.PLAYER_SERVER_PORT
+				}`,
 			},
 		],
 	},
@@ -70,6 +66,6 @@ const configuration: Configuration = {
 			}),
 		),
 	],
-}
+};
 
-export default merge(baseConfiguration, configuration)
+export default merge(baseConfiguration, configuration);

@@ -1,174 +1,161 @@
-import { useFormik } from "formik"
-import isEmpty from "lodash-es/isEmpty"
-import { ArtistBase } from "@oly_op/musicloud-common/build/types"
-import { ChangeEventHandler, createElement, FC, useEffect, useState } from "react"
+import { useFormik } from "formik";
+import isEmpty from "lodash-es/isEmpty";
+import { ArtistBase } from "@oly_op/musicloud-common/build/types";
+import { ChangeEventHandler, createElement, FC, useEffect, useState } from "react";
 
-import Form from "../form"
-import { createGoogleSearchURL } from "../../helpers"
-import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field"
+import Form from "../form";
+import { createGoogleSearchURL } from "../../helpers";
+import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field";
 
 interface ArtistImages {
-	cover: File | null,
-	profile: File | null,
+	cover: File | null;
+	profile: File | null;
 }
 
-interface Artist
-	extends ArtistImages, Omit<ArtistBase, "artistID"> {
-	city: string,
-	country: string,
+interface Artist extends ArtistImages, Omit<ArtistBase, "artistID"> {
+	city: string;
+	country: string;
 }
 
 const ArtistForm: FC = () => {
-	const [ loading, setLoading ] =	useState(false)
+	const [loading, setLoading] = useState(false);
 
-	const [ checkNameLoading, setCheckNameLoading ] = useState(false)
-	const [ checkNameText, setCheckNameText ] = useState<CheckOptionsText>(null)
-	const [ checkNameValue, setCheckNameValue ] = useState<CheckOptionsValue>(null)
+	const [checkNameLoading, setCheckNameLoading] = useState(false);
+	const [checkNameText, setCheckNameText] = useState<CheckOptionsText>(null);
+	const [checkNameValue, setCheckNameValue] = useState<CheckOptionsValue>(null);
 
-	const [ checkCountryLoading, setCheckCountryLoading ] = useState(false)
-	const [ checkCountryValue, setCheckCountryValue ] = useState<CheckOptionsValue>(null)
+	const [checkCountryLoading, setCheckCountryLoading] = useState(false);
+	const [checkCountryValue, setCheckCountryValue] = useState<CheckOptionsValue>(null);
 
-	const formik =
-		useFormik<Artist>({
-			initialValues: {
-				city: "",
-				name: "",
-				country: "",
-				cover: null,
-				profile: null,
-			},
-			onSubmit: async (artist, { resetForm }) => {
-				if (artist.cover && artist.profile) {
-					setLoading(true)
-					const body = new FormData()
-					body.append("name", artist.name)
-					body.append("cover", artist.cover)
-					body.append("profile", artist.profile)
-					if (!isEmpty(artist.city) && !isEmpty(artist.country)) {
-						body.append("city", artist.city)
-						body.append("country", artist.country)
-					}
-					try {
-						await fetch("/api/upload/artist", {
-							method: "POST",
-							body,
-							headers: {
-								Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
-							},
-						})
-					} finally {
-						resetForm()
-						setLoading(false)
-					}
+	const formik = useFormik<Artist>({
+		initialValues: {
+			city: "",
+			name: "",
+			country: "",
+			cover: null,
+			profile: null,
+		},
+		onSubmit: async (artist, { resetForm }) => {
+			if (artist.cover && artist.profile) {
+				setLoading(true);
+				const body = new FormData();
+				body.append("name", artist.name);
+				body.append("cover", artist.cover);
+				body.append("profile", artist.profile);
+				if (!isEmpty(artist.city) && !isEmpty(artist.country)) {
+					body.append("city", artist.city);
+					body.append("country", artist.country);
 				}
-			},
-		})
+				try {
+					await fetch("/api/upload/artist", {
+						method: "POST",
+						body,
+						headers: {
+							Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+						},
+					});
+				} finally {
+					resetForm();
+					setLoading(false);
+				}
+			}
+		},
+	});
 
 	const handlePhotoChange =
 		(key: keyof ArtistImages): ChangeEventHandler<HTMLInputElement> =>
-			({ target: { files } }) => {
-				if (files) {
-					void formik.setFieldValue(key, files.item(0))
-				}
+		({ target: { files } }) => {
+			if (files) {
+				void formik.setFieldValue(key, files.item(0));
+			}
+		};
+
+	const { values, errors, handleChange, handleSubmit } = formik;
+	const { name, city, country, cover, profile } = values;
+
+	const isNameEmpty = isEmpty(name);
+
+	const handleCheckNameExists = async () => {
+		setCheckNameLoading(true);
+
+		const url = new URL("/api/check/artist-name-exists", location.href);
+		url.searchParams.append("name", name);
+
+		const requestInit: RequestInit = {
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+			},
+		};
+
+		const response = await fetch(url, requestInit);
+
+		if (response.ok) {
+			const { exists } = (await response.json()) as { exists: boolean };
+
+			if (exists) {
+				setCheckNameText("Already exists");
 			}
 
-	const { values, errors, handleChange, handleSubmit } = formik
-	const { name, city, country, cover, profile } = values
-
-	const isNameEmpty = isEmpty(name)
-
-	const handleCheckNameExists =
-		async () => {
-			setCheckNameLoading(true)
-
-			const url = new URL("/api/check/artist-name-exists", location.href)
-			url.searchParams.append("name", name)
-
-			const requestInit: RequestInit = {
-				method: "GET",
-				headers: {
-					Accept: "application/json",
-					Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
-				},
-			}
-
-			const response =
-				await fetch(url, requestInit)
-
-			if (response.ok) {
-				const { exists } =
-					await response.json() as { exists: boolean }
-
-				if (exists) {
-					setCheckNameText("Already exists")
-				}
-
-				setCheckNameValue(!exists)
-			} else {
-				setCheckNameValue(null)
-			}
-
-			setCheckNameLoading(false)
+			setCheckNameValue(!exists);
+		} else {
+			setCheckNameValue(null);
 		}
+
+		setCheckNameLoading(false);
+	};
 
 	useEffect(() => {
 		if (!isEmpty(name)) {
-			void handleCheckNameExists()
+			void handleCheckNameExists();
 		}
 		return () => {
-			setCheckNameText(null)
-			setCheckNameValue(null)
-			setCheckNameLoading(false)
+			setCheckNameText(null);
+			setCheckNameValue(null);
+			setCheckNameLoading(false);
+		};
+	}, [name]);
+
+	const handleCheckCountryExists = async () => {
+		setCheckCountryLoading(true);
+
+		const url = new URL("/api/check/country-exists", location.href);
+		url.searchParams.append("name", country);
+
+		const requestInit: RequestInit = {
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+			},
+		};
+
+		const response = await fetch(url, requestInit);
+
+		if (response.ok) {
+			const { exists } = (await response.json()) as { exists: boolean };
+
+			setCheckCountryValue(exists);
+		} else {
+			setCheckCountryValue(null);
 		}
-	}, [name])
 
-	const handleCheckCountryExists =
-		async () => {
-			setCheckCountryLoading(true)
-
-			const url = new URL("/api/check/country-exists", location.href)
-			url.searchParams.append("name", country)
-
-			const requestInit: RequestInit = {
-				method: "GET",
-				headers: {
-					Accept: "application/json",
-					Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
-				},
-			}
-
-			const response =
-				await fetch(url, requestInit)
-
-			if (response.ok) {
-				const { exists } =
-					await response.json() as { exists: boolean }
-
-				setCheckCountryValue(exists)
-			} else {
-				setCheckCountryValue(null)
-			}
-
-			setCheckCountryLoading(false)
-		}
+		setCheckCountryLoading(false);
+	};
 
 	useEffect(() => {
 		if (!isEmpty(country)) {
-			void handleCheckCountryExists()
+			void handleCheckCountryExists();
 		}
 		return () => {
-			setCheckCountryValue(null)
-			setCheckCountryLoading(false)
-		}
-	}, [country])
+			setCheckCountryValue(null);
+			setCheckCountryLoading(false);
+		};
+	}, [country]);
 
 	return (
-		<Form
-			title="Artist"
-			errors={errors}
-			loading={loading}
-			onSubmit={handleSubmit}
-		>
+		<Form title="Artist" errors={errors} loading={loading} onSubmit={handleSubmit}>
 			<TextField
 				id="name"
 				name="Name"
@@ -225,12 +212,19 @@ const ArtistForm: FC = () => {
 				accept="image/*"
 				image={profile || undefined}
 				onChange={handlePhotoChange("profile")}
-				action={profile ? undefined : {
-					icon: "search",
-					text: "Profile",
-					disabled: isEmpty(name),
-					url: createGoogleSearchURL({ isImage: true, query: `${name} artist profile image` }),
-				}}
+				action={
+					profile
+						? undefined
+						: {
+								icon: "search",
+								text: "Profile",
+								disabled: isEmpty(name),
+								url: createGoogleSearchURL({
+									isImage: true,
+									query: `${name} artist profile image`,
+								}),
+						  }
+				}
 			/>
 			<TextField
 				id="cover"
@@ -241,15 +235,19 @@ const ArtistForm: FC = () => {
 				image={cover || undefined}
 				imageOrientation="landscape"
 				onChange={handlePhotoChange("cover")}
-				action={cover ? undefined : {
-					text: "Cover",
-					icon: "search",
-					disabled: isNameEmpty,
-					url: createGoogleSearchURL({ isImage: true, query: `${name} artist cover image` }),
-				}}
+				action={
+					cover
+						? undefined
+						: {
+								text: "Cover",
+								icon: "search",
+								disabled: isNameEmpty,
+								url: createGoogleSearchURL({ isImage: true, query: `${name} artist cover image` }),
+						  }
+				}
 			/>
 		</Form>
-	)
-}
+	);
+};
 
-export default ArtistForm
+export default ArtistForm;

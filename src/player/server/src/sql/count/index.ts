@@ -1,5 +1,5 @@
-import importSql from "../import-sql"
+import importSql from "../import-sql";
 
-const importFile = importSql("count")()
+const importFile = importSql("count")();
 
-export const COUNT_PLAYS = importFile("plays")
+export const COUNT_PLAYS = importFile("plays");

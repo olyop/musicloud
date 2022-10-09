@@ -1,19 +1,19 @@
-import isEmpty from "lodash-es/isEmpty"
-import { createElement, Fragment, FC } from "react"
-import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types"
+import isEmpty from "lodash-es/isEmpty";
+import { createElement, Fragment, FC } from "react";
+import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types";
 
-import ObjectLink from "../object-link"
-import ObjectLinks from "../object-links"
-import { Handler, Album } from "../../types"
-import { createObjectPath } from "../../helpers"
-import { useStateShowReleased } from "../../redux"
+import ObjectLink from "../object-link";
+import ObjectLinks from "../object-links";
+import { Handler, Album } from "../../types";
+import { createObjectPath } from "../../helpers";
+import { useStateShowReleased } from "../../redux";
 
 const AlbumTitle: FC<PropTypes> = ({
 	onClick,
 	hideReleased = false,
 	album: { title, albumID, remixers, released },
 }) => {
-	const showReleased = useStateShowReleased()
+	const showReleased = useStateShowReleased();
 	return (
 		<Fragment>
 			<ObjectLink
@@ -50,18 +50,17 @@ const AlbumTitle: FC<PropTypes> = ({
 				</Fragment>
 			)}
 		</Fragment>
-	)
-}
+	);
+};
 
-interface PropTypesAlbum
-	extends Pick<Album, "title" | "albumID" | "released"> {
-	remixers: ArtistIDNameBase[],
+interface PropTypesAlbum extends Pick<Album, "title" | "albumID" | "released"> {
+	remixers: ArtistIDNameBase[];
 }
 
 interface PropTypes {
-	onClick?: Handler,
-	album: PropTypesAlbum,
-	hideReleased?: boolean,
+	onClick?: Handler;
+	album: PropTypesAlbum;
+	hideReleased?: boolean;
 }
 
-export default AlbumTitle
+export default AlbumTitle;

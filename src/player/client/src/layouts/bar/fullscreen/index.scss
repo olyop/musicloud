@@ -8,18 +8,22 @@
 	box-shadow: none;
 	border-radius: 0;
 	@media (max-width: 800px) {
-		--button-dimension: 70rem; }
+		--button-dimension: 70rem;
+	}
 	&__expand {
 		height: 100%;
 		border-radius: unset;
 		padding: var(--space-half);
 		border-left: var(--border-width) var(--border-style) var(--border-color);
 		@media (max-width: 700px) {
-			display: none; } }
+			display: none;
+		}
+	}
 	&__close {
 		position: absolute;
 		right: var(--space-half);
-		top: calc(var(--space-half) + env(safe-area-inset-top)); }
+		top: calc(var(--space-half) + env(safe-area-inset-top));
+	}
 	&__content {
 		top: 50%;
 		position: absolute;
@@ -27,29 +31,42 @@
 		@media (min-width: 800px) {
 			left: 50%;
 			width: 600px;
-			transform: translate(-50%, -50%); }
+			transform: translate(-50%, -50%);
+		}
 		@media (max-width: 800px) {
 			width: 100%;
 			transform: translateY(-50%);
-			padding: var(--space-double); }
+			padding: var(--space-double);
+		}
 		&-cover {
 			width: 100%;
-			border-radius: calc(var(--border-radius) * 2); }
+			border-radius: calc(var(--border-radius) * 2);
+		}
 		&-text {
-			text-align: center; }
+			text-align: center;
+		}
 		&-title {
 			font-size: 30rem;
-			font-weight: 700; }
+			font-weight: 700;
+		}
 		&-artists {
 			font-size: 20rem;
-			font-weight: 400; }
+			font-weight: 400;
+		}
 		&-genres {
 			font-size: 20rem;
-			font-weight: 500; }
+			font-weight: 500;
+		}
 		&-progress {
 			@media (max-width: 700px) {
-				--progress-height: 30rem; } }
+				--progress-height: 30rem;
+			}
+		}
 		&-controls {
 			gap: var(--space-three-quart);
 			&-play {
-				--button-dimension: 80rem; } } } }
+				--button-dimension: 80rem;
+			}
+		}
+	}
+}

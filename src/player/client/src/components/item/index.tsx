@@ -1,26 +1,19 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Link } from "react-router-dom"
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import isUndefined from "lodash-es/isUndefined"
-import { useState, createElement, Fragment, forwardRef } from "react"
+import { Link } from "react-router-dom";
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import isUndefined from "lodash-es/isUndefined";
+import { useState, createElement, Fragment, forwardRef } from "react";
 
-import {
-	PropTypes,
-	InfoOptions,
-	PlayOptions,
-	ImageOptions,
-	Modal as ItemModal,
-} from "./types"
+import { PropTypes, InfoOptions, PlayOptions, ImageOptions, Modal as ItemModal } from "./types";
 
-import PlayButton from "./play-button"
+import PlayButton from "./play-button";
 
-import "./index.scss"
-import ItemInfo from "./info"
-import { useShare } from "../../hooks"
+import "./index.scss";
+import ItemInfo from "./info";
+import { useShare } from "../../hooks";
 
-const bem =
-	createBEM("Item")
+const bem = createBEM("Item");
 
 const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 	const {
@@ -38,26 +31,21 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		infoClassName,
 		iconClassName,
 		infoFadeInFromRight = false,
-	} = propTypes
+	} = propTypes;
 
-	const [ share, { shareIcon } ] =
-		useShare()
+	const [share, { shareIcon }] = useShare();
 
-	const [ showModal, setShowModal ] =
-		useState(false)
+	const [showModal, setShowModal] = useState(false);
 
-	const handleModalOpen =
-		() => setShowModal(true)
+	const handleModalOpen = () => setShowModal(true);
 
-	const handleModalClose =
-		() => setShowModal(false)
+	const handleModalClose = () => setShowModal(false);
 
-	const handleShare =
-		() => {
-			if (shareData) {
-				void share(shareData)
-			}
+	const handleShare = () => {
+		if (shareData) {
+			void share(shareData);
 		}
+	};
 
 	return (
 		<div
@@ -76,10 +64,7 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 				/>
 			)}
 			{!isUndefined(left) && !isUndefined(left) && (
-				<p
-					children={left}
-					className={bem("left", "ParagraphOne")}
-				/>
+				<p children={left} className={bem("left", "ParagraphOne")} />
 			)}
 			{playOptions && (
 				<PlayButton
@@ -95,14 +80,14 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							to={imageOptions.path}
 							title={imageOptions.title}
 							className={bem("img-link")}
-							children={(
+							children={
 								<img
 									src={imageOptions.url}
 									crossOrigin="anonymous"
 									alt={imageOptions.title}
 									className={bem("img", "Card")}
 								/>
-							)}
+							}
 						/>
 					) : (
 						<img
@@ -148,22 +133,16 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					className={iconClassName}
 				/>
 			)}
-			{modal && (
+			{modal &&
 				modal({
 					open: showModal,
 					onOpen: handleModalOpen,
 					onClose: handleModalClose,
-				})
-			)}
+				})}
 		</div>
-	)
-})
+	);
+});
 
-export {
-	ItemModal,
-	InfoOptions,
-	PlayOptions,
-	ImageOptions,
-}
+export { ItemModal, InfoOptions, PlayOptions, ImageOptions };
 
-export default Item
+export default Item;

@@ -1,23 +1,17 @@
-import { createBEM } from "@oly_op/bem"
-import startCase from "lodash-es/startCase"
-import { createElement, FC, ChangeEventHandler, SelectHTMLAttributes } from "react"
+import { createBEM } from "@oly_op/bem";
+import startCase from "lodash-es/startCase";
+import { createElement, FC, ChangeEventHandler, SelectHTMLAttributes } from "react";
 
-import { ClassNameBEMPropTypes } from "../../types"
+import { ClassNameBEMPropTypes } from "../../types";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Select")
+const bem = createBEM("Select");
 
-const Select: FC<PropTypes> = ({
-	value,
-	options,
-	onChange,
-	tabIndex,
-	className,
-}) => {
-	const handleChange: ChangeEventHandler<HTMLSelectElement> =
-		event => { void onChange(event.target.value) }
+const Select: FC<PropTypes> = ({ value, options, onChange, tabIndex, className }) => {
+	const handleChange: ChangeEventHandler<HTMLSelectElement> = event => {
+		void onChange(event.target.value);
+	};
 	return (
 		<select
 			value={value}
@@ -25,29 +19,21 @@ const Select: FC<PropTypes> = ({
 			onChange={handleChange}
 			className={bem(className, "", "ParagraphTwo Border Rounded PaddingFifth")}
 		>
-			{options.map(
-				option => (
-					<option
-						key={option}
-						value={option}
-						children={startCase(option.toLowerCase())}
-					/>
-				),
-			)}
+			{options.map(option => (
+				<option key={option} value={option} children={startCase(option.toLowerCase())} />
+			))}
 		</select>
-	)
-}
+	);
+};
 
-export type SelectOnChange =
-	(value: string) => void
+export type SelectOnChange = (value: string) => void;
 
 interface PropTypes
-	extends
-	ClassNameBEMPropTypes,
-	Pick<SelectHTMLAttributes<HTMLSelectElement>, "tabIndex"> {
-	value: string,
-	options: string[],
-	onChange: SelectOnChange,
+	extends ClassNameBEMPropTypes,
+		Pick<SelectHTMLAttributes<HTMLSelectElement>, "tabIndex"> {
+	value: string;
+	options: string[];
+	onChange: SelectOnChange;
 }
 
-export default Select
+export default Select;

@@ -1,11 +1,5 @@
-mutation removeSongFromPlaylist(
-	$playlistID: UUID!
-	$index: NonNegativeInt!
-) {
-	removeSongFromPlaylist(
-		index: $index
-		playlistID: $playlistID
-	) {
+mutation removeSongFromPlaylist($playlistID: UUID!, $index: NonNegativeInt!) {
+	removeSongFromPlaylist(index: $index, playlistID: $playlistID) {
 		playlistID
 		songsTotal
 		songs {

@@ -1,5 +1,4 @@
-import { determineCatalogPath } from "./determine-catalog-path"
+import { determineCatalogPath } from "./determine-catalog-path";
 
-export const determineCatalogAudioPath =
-	(objectID: string) =>
-		determineCatalogPath(objectID, "/audio/index.mp3")
+export const determineCatalogAudioPath = (objectID: string) =>
+	determineCatalogPath(objectID, "/audio/index.mp3");

@@ -1,1 +1,1 @@
-export * from "./create-google-search-url"
+export * from "./create-google-search-url";

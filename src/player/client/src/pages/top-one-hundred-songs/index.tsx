@@ -1,61 +1,61 @@
-import Button from "@oly_op/react-button"
-import { Head } from "@oly_op/react-head"
-import { createElement, FC, Fragment } from "react"
+import Button from "@oly_op/react-button";
+import { Head } from "@oly_op/react-head";
+import { createElement, FC, Fragment } from "react";
 
-import Page from "../../layouts/page"
-import Song from "../../components/song"
-import ShareButton from "./share-button"
-import Songs from "../../components/songs"
-import { Song as SongType, Queue } from "../../types"
-import { updateNowPlayingMutationFunction } from "../../helpers"
-import { useQuery, useMutation, useResetPlayer } from "../../hooks"
+import Page from "../../layouts/page";
+import Song from "../../components/song";
+import ShareButton from "./share-button";
+import Songs from "../../components/songs";
+import { Song as SongType, Queue } from "../../types";
+import { updateNowPlayingMutationFunction } from "../../helpers";
+import { useQuery, useMutation, useResetPlayer } from "../../hooks";
 
-import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql"
-import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql"
-import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql"
+import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql";
+import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql";
+import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql";
 
-import "./index.scss"
+import "./index.scss";
 
-const numberFormatter =
-	new Intl.NumberFormat("en", {
-		notation: "compact",
-	})
+const numberFormatter = new Intl.NumberFormat("en", {
+	notation: "compact",
+});
 
 const TopOneHundredSongsPage: FC = () => {
-	const resetPlayer = useResetPlayer()
+	const resetPlayer = useResetPlayer();
 
-	const { data: topOneHundredSongsData } =
-		useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS, {
-			fetchPolicy: "cache-and-network",
-		})
+	const { data: topOneHundredSongsData } = useQuery<QueryData>(GET_TOP_ONE_HUNDRED_SONGS, {
+		fetchPolicy: "cache-and-network",
+	});
 
-	const [ playTopOneHundredSongs ] =
-		useMutation<PlayTopOneHundredSongsData>(PLAY_TOP_ONE_HUNDRED_SONGS, {
+	const [playTopOneHundredSongs] = useMutation<PlayTopOneHundredSongsData>(
+		PLAY_TOP_ONE_HUNDRED_SONGS,
+		{
 			update: updateNowPlayingMutationFunction(data => data.playTopOneHundredSongs.nowPlaying),
-		})
+		},
+	);
 
-	const [ shuffleTopOneHundredSongs ] =
-		useMutation<ShuffleTopOneHundredSongsData>(SHUFFLE_TOP_ONE_HUNDRED_SONGS, {
+	const [shuffleTopOneHundredSongs] = useMutation<ShuffleTopOneHundredSongsData>(
+		SHUFFLE_TOP_ONE_HUNDRED_SONGS,
+		{
 			update: updateNowPlayingMutationFunction(data => data.shuffleTopOneHundredSongs.nowPlaying),
-		})
+		},
+	);
 
-	const handlePlay =
-		() => {
-			resetPlayer()
-			void playTopOneHundredSongs()
-		}
+	const handlePlay = () => {
+		resetPlayer();
+		void playTopOneHundredSongs();
+	};
 
-	const handleShuffle =
-		() => {
-			resetPlayer()
-			void shuffleTopOneHundredSongs()
-		}
+	const handleShuffle = () => {
+		resetPlayer();
+		void shuffleTopOneHundredSongs();
+	};
 
 	return (
 		<Head pageTitle="Top #100">
 			<Page
 				headerClassName="TopOneHundredSongsPage FlexRow"
-				header={(
+				header={
 					<Fragment>
 						<div className="FlexRowGapHalf">
 							<Button
@@ -73,46 +73,48 @@ const TopOneHundredSongsPage: FC = () => {
 								onClick={handleShuffle}
 							/>
 						</div>
-						<ShareButton/>
+						<ShareButton />
 					</Fragment>
-				)}
-				children={topOneHundredSongsData ? (
-					<div className="ContentPaddingTopBottom FlexColumnGap">
-						<Songs songs={topOneHundredSongsData.getTopOneHundredSongs}>
-							{songs => songs.map(
-								(song, index) => (
-									<Song
-										song={song}
-										hideDuration
-										hideTrackNumber
-										index={index + 1}
-										key={song.songID}
-									/>
-								),
-							)}
-						</Songs>
-						<p className="ParagraphTwo LightColor">
-							{numberFormatter.format(topOneHundredSongsData.getPlaysTotal)}
-							<Fragment> plays</Fragment>
-						</p>
-					</div>
-				) : null}
+				}
+				children={
+					topOneHundredSongsData ? (
+						<div className="ContentPaddingTopBottom FlexColumnGap">
+							<Songs songs={topOneHundredSongsData.getTopOneHundredSongs}>
+								{songs =>
+									songs.map((song, index) => (
+										<Song
+											song={song}
+											hideDuration
+											hideTrackNumber
+											index={index + 1}
+											key={song.songID}
+										/>
+									))
+								}
+							</Songs>
+							<p className="ParagraphTwo LightColor">
+								{numberFormatter.format(topOneHundredSongsData.getPlaysTotal)}
+								<Fragment> plays</Fragment>
+							</p>
+						</div>
+					) : null
+				}
 			/>
 		</Head>
-	)
-}
+	);
+};
 
 interface QueryData {
-	getPlaysTotal: number,
-	getTopOneHundredSongs: SongType[],
+	getPlaysTotal: number;
+	getTopOneHundredSongs: SongType[];
 }
 
 interface PlayTopOneHundredSongsData {
-	playTopOneHundredSongs: Queue,
+	playTopOneHundredSongs: Queue;
 }
 
 interface ShuffleTopOneHundredSongsData {
-	shuffleTopOneHundredSongs: Queue,
+	shuffleTopOneHundredSongs: Queue;
 }
 
-export default TopOneHundredSongsPage
+export default TopOneHundredSongsPage;

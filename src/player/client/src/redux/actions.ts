@@ -1,6 +1,4 @@
-import {
-	createAction,
-} from "@reduxjs/toolkit"
+import { createAction } from "@reduxjs/toolkit";
 
 import type {
 	OrderBy,
@@ -11,125 +9,72 @@ import type {
 	SettingsListStyle,
 	SettingsTransitions,
 	SettingsQueuesDisclosure,
-} from "../types"
+} from "../types";
 
-export const togglePlay =
-	createAction("TOGGLE_PLAY")
+export const togglePlay = createAction("TOGGLE_PLAY");
 
-export const toggleSidebar =
-	createAction("TOGGLE_SIDEBAR")
+export const toggleSidebar = createAction("TOGGLE_SIDEBAR");
 
-export const toggleShowGenres =
-	createAction("TOGGLE_SHOW_GENRES")
+export const toggleShowGenres = createAction("TOGGLE_SHOW_GENRES");
 
-export const toggleShowReleased =
-	createAction("TOGGLE_SHOW_RELEASED")
+export const toggleShowReleased = createAction("TOGGLE_SHOW_RELEASED");
 
-export const toggleShowDuration =
-	createAction("TOGGLE_SHOW_DURATION")
+export const toggleShowDuration = createAction("TOGGLE_SHOW_DURATION");
 
-export const expandQueuesDisclosure =
-	createAction("EXPAND_QUEUES_DISCLOSURE")
+export const expandQueuesDisclosure = createAction("EXPAND_QUEUES_DISCLOSURE");
 
-export const collapseQueuesDisclosure =
-	createAction("COLLAPSE_QUEUES_DISCLOSURE")
+export const collapseQueuesDisclosure = createAction("COLLAPSE_QUEUES_DISCLOSURE");
 
 const withPayloadType =
 	<T>() =>
-		(payload: T) =>
-			({ payload })
+	(payload: T) => ({ payload });
 
-export const updateVolume =
-	createAction(
-		"UPDATE_VOLUME",
-		withPayloadType<number>(),
-	)
+export const updateVolume = createAction("UPDATE_VOLUME", withPayloadType<number>());
 
-export const addError =
-	createAction(
-		"ADD_ERROR",
-		withPayloadType<StateError>(),
-	)
+export const addError = createAction("ADD_ERROR", withPayloadType<StateError>());
 
-export const removeError =
-	createAction(
-		"REMOVE_ERROR",
-		withPayloadType<string>(),
-	)
+export const removeError = createAction("REMOVE_ERROR", withPayloadType<string>());
 
-export const addLoading =
-	createAction(
-		"ADD_LOADING",
-		withPayloadType<string>(),
-	)
+export const addLoading = createAction("ADD_LOADING", withPayloadType<string>());
 
-export const removeLoading =
-	createAction(
-		"REMOVE_LOADING",
-		withPayloadType<string>(),
-	)
+export const removeLoading = createAction("REMOVE_LOADING", withPayloadType<string>());
 
-export const updatePlay =
-	createAction(
-		"UPDATE_PLAY",
-		withPayloadType<boolean>(),
-	)
-export const updateIsOnline =
-	createAction(
-		"UPDATE_IS_ONLINE",
-		withPayloadType<boolean>(),
-	)
+export const updatePlay = createAction("UPDATE_PLAY", withPayloadType<boolean>());
+export const updateIsOnline = createAction("UPDATE_IS_ONLINE", withPayloadType<boolean>());
 
-export const updateGridChildWidth =
-	createAction(
-		"UPDATE_GRID_CHILD_WIDTH",
-		withPayloadType<number>(),
-	)
+export const updateGridChildWidth = createAction(
+	"UPDATE_GRID_CHILD_WIDTH",
+	withPayloadType<number>(),
+);
 
-export const updatePageTitle =
-	createAction(
-		"UPDATE_PAGE_TITLE",
-		withPayloadType<StatePageTitle>(),
-	)
+export const updatePageTitle = createAction("UPDATE_PAGE_TITLE", withPayloadType<StatePageTitle>());
 
-export const updateAccessToken =
-	createAction(
-		"UPDATE_ACCESS_TOKEN",
-		withPayloadType<string | null>(),
-	)
+export const updateAccessToken = createAction(
+	"UPDATE_ACCESS_TOKEN",
+	withPayloadType<string | null>(),
+);
 
-export const updateTheme =
-	createAction(
-		"UPDATE_THEME",
-		withPayloadType<SettingsTheme>(),
-	)
+export const updateTheme = createAction("UPDATE_THEME", withPayloadType<SettingsTheme>());
 
 interface OrderByPayload {
-	value: string,
-	key: keyof OrderBy,
-	settingsKey: keyof SettingsOrderBy,
+	value: string;
+	key: keyof OrderBy;
+	settingsKey: keyof SettingsOrderBy;
 }
 
-export const updateOrderBy =
-	createAction(
-		"UPDATE_ORDER_BY",
-		withPayloadType<OrderByPayload>(),
-	)
+export const updateOrderBy = createAction("UPDATE_ORDER_BY", withPayloadType<OrderByPayload>());
 
-export const updateListStyle =
-	createAction(
-		"UPDATE_LIST_STYLE",
-		withPayloadType<SettingsListStyle>(),
-	)
+export const updateListStyle = createAction(
+	"UPDATE_LIST_STYLE",
+	withPayloadType<SettingsListStyle>(),
+);
 
-export const updateTransitions =
-	createAction(
-		"UPDATE_TRANSITIONS",
-		withPayloadType<SettingsTransitions>(),
-	)
+export const updateTransitions = createAction(
+	"UPDATE_TRANSITIONS",
+	withPayloadType<SettingsTransitions>(),
+);
 
-export const toggleQueueDisclosure =
-	createAction(
-		"TOGGLE_QUEUE_DISCLOSURE",
-		withPayloadType<keyof SettingsQueuesDisclosure>(),
-	)
+export const toggleQueueDisclosure = createAction(
+	"TOGGLE_QUEUE_DISCLOSURE",
+	withPayloadType<keyof SettingsQueuesDisclosure>(),
+);

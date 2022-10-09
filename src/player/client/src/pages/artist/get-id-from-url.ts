@@ -1,7 +1,5 @@
-import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { addDashesToUUID } from "@oly_op/uuid-dashes";
 
-const getArtistIDFromURL =
-	(url: string) =>
-		addDashesToUUID(url.slice(8, 40))
+const getArtistIDFromURL = (url: string) => addDashesToUUID(url.slice(8, 40));
 
-export default getArtistIDFromURL
+export default getArtistIDFromURL;

@@ -1,7 +1,7 @@
-import { createBEM } from "@oly_op/bem"
-import { Head } from "@oly_op/react-head"
-import toNumber from "lodash-es/toNumber"
-import { ChangeEventHandler, createElement, FC } from "react"
+import { createBEM } from "@oly_op/bem";
+import { Head } from "@oly_op/react-head";
+import toNumber from "lodash-es/toNumber";
+import { ChangeEventHandler, createElement, FC } from "react";
 
 import {
 	useDispatch,
@@ -19,75 +19,63 @@ import {
 	useStateShowReleased,
 	updateGridChildWidth,
 	useStateGridChildWidth,
-} from "../../redux"
+} from "../../redux";
 
-import Page from "../../layouts/page"
-import Select from "../../components/select"
-import { SettingsTheme, SettingsListStyle, SettingsTransitions } from "../../types"
+import Page from "../../layouts/page";
+import Select from "../../components/select";
+import { SettingsTheme, SettingsListStyle, SettingsTransitions } from "../../types";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("SettingsPage")
+const bem = createBEM("SettingsPage");
 
 const SettingsPage: FC = () => {
-	const theme = useStateTheme()
-	const dispatch = useDispatch()
-	const listStyle = useStateListStyle()
-	const showGenres = useStateShowGenres()
-	const transitions = useStateTransitions()
-	const showDuration = useStateShowDuration()
-	const showReleased = useStateShowReleased()
-	const gridChildWidth = useStateGridChildWidth()
+	const theme = useStateTheme();
+	const dispatch = useDispatch();
+	const listStyle = useStateListStyle();
+	const showGenres = useStateShowGenres();
+	const transitions = useStateTransitions();
+	const showDuration = useStateShowDuration();
+	const showReleased = useStateShowReleased();
+	const gridChildWidth = useStateGridChildWidth();
 
-	const handleToggleShowGenres =
-		() => {
-			dispatch(toggleShowGenres())
-		}
+	const handleToggleShowGenres = () => {
+		dispatch(toggleShowGenres());
+	};
 
-	const handleToggleShowReleased =
-		() => {
-			dispatch(toggleShowReleased())
-		}
+	const handleToggleShowReleased = () => {
+		dispatch(toggleShowReleased());
+	};
 
-	const handleToggleShowDuration =
-		() => {
-			dispatch(toggleShowDuration())
-		}
+	const handleToggleShowDuration = () => {
+		dispatch(toggleShowDuration());
+	};
 
-	const handleThemeChange =
-		(value: string) => {
-			dispatch(updateTheme(value as SettingsTheme))
-		}
+	const handleThemeChange = (value: string) => {
+		dispatch(updateTheme(value as SettingsTheme));
+	};
 
-	const handleListStyleChange =
-		(value: string) => {
-			dispatch(updateListStyle(value as SettingsListStyle))
-		}
+	const handleListStyleChange = (value: string) => {
+		dispatch(updateListStyle(value as SettingsListStyle));
+	};
 
-	const handleTransitionsChange =
-		(value: string) => {
-			dispatch(updateTransitions(value as SettingsTransitions))
-		}
+	const handleTransitionsChange = (value: string) => {
+		dispatch(updateTransitions(value as SettingsTransitions));
+	};
 
-	const handleGridChildWidthChange: ChangeEventHandler<HTMLInputElement> =
-		event => {
-			dispatch(updateGridChildWidth(toNumber(event.target.value)))
-		}
+	const handleGridChildWidthChange: ChangeEventHandler<HTMLInputElement> = event => {
+		dispatch(updateGridChildWidth(toNumber(event.target.value)));
+	};
 
 	return (
 		<Head pageTitle="Settings">
 			<Page>
 				<div className="ContentPaddingTopBottom FlexColumnGap">
 					<details open className={bem("details")}>
-						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
-							Appearance
-						</summary>
+						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>Appearance</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="ParagraphTwoBold">
-									Theme:
-								</p>
+								<p className="ParagraphTwoBold">Theme:</p>
 								<Select
 									value={theme}
 									className="ParagraphTwo"
@@ -96,9 +84,7 @@ const SettingsPage: FC = () => {
 								/>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="ParagraphTwoBold">
-									List Style:
-								</p>
+								<p className="ParagraphTwoBold">List Style:</p>
 								<Select
 									value={listStyle}
 									className="ParagraphTwo"
@@ -107,9 +93,7 @@ const SettingsPage: FC = () => {
 								/>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="ParagraphTwoBold">
-									Transitions:
-								</p>
+								<p className="ParagraphTwoBold">Transitions:</p>
 								<Select
 									value={transitions}
 									className="ParagraphTwo"
@@ -118,13 +102,9 @@ const SettingsPage: FC = () => {
 								/>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="ParagraphTwoBold">
-									Grid Child Width:
-								</p>
+								<p className="ParagraphTwoBold">Grid Child Width:</p>
 								<div className="FlexRowGapQuart">
-									<p className="ParagraphTwo">
-										{gridChildWidth}
-									</p>
+									<p className="ParagraphTwo">{gridChildWidth}</p>
 									<input
 										min="100"
 										max="300"
@@ -138,14 +118,10 @@ const SettingsPage: FC = () => {
 						</div>
 					</details>
 					<details open className={bem("details")}>
-						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>
-							View
-						</summary>
+						<summary className={bem("summary", "HeadingSix MarginBottomHalf")}>View</summary>
 						<div className={bem("details-content", "FlexColumnGapHalf")}>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="ParagraphTwoBold">
-									Song Genres:
-								</p>
+								<p className="ParagraphTwoBold">Song Genres:</p>
 								<div className="FlexRowGapFifth">
 									<input
 										type="checkbox"
@@ -153,15 +129,11 @@ const SettingsPage: FC = () => {
 										onChange={handleToggleShowGenres}
 										className={bem("checkbox", "ParagraphTwo")}
 									/>
-									<p className="ParagraphTwo LightWeight">
-										{showGenres ? "Show" : "Hide"}
-									</p>
+									<p className="ParagraphTwo LightWeight">{showGenres ? "Show" : "Hide"}</p>
 								</div>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="ParagraphTwoBold">
-									Song Duration:
-								</p>
+								<p className="ParagraphTwoBold">Song Duration:</p>
 								<div className="FlexRowGapFifth">
 									<input
 										type="checkbox"
@@ -169,15 +141,11 @@ const SettingsPage: FC = () => {
 										onChange={handleToggleShowDuration}
 										className={bem("checkbox", "ParagraphTwo")}
 									/>
-									<p className="ParagraphTwo LightWeight">
-										{showDuration ? "Show" : "Hide"}
-									</p>
+									<p className="ParagraphTwo LightWeight">{showDuration ? "Show" : "Hide"}</p>
 								</div>
 							</div>
 							<div className={bem("details-content-setting", "FlexColumnGapQuart")}>
-								<p className="ParagraphTwoBold">
-									Album Released:
-								</p>
+								<p className="ParagraphTwoBold">Album Released:</p>
 								<div className="FlexRowGapFifth">
 									<input
 										type="checkbox"
@@ -185,9 +153,7 @@ const SettingsPage: FC = () => {
 										checked={showReleased}
 										onChange={handleToggleShowReleased}
 									/>
-									<p className="ParagraphTwo LightWeight">
-										{showReleased ? "Show" : "Hide"}
-									</p>
+									<p className="ParagraphTwo LightWeight">{showReleased ? "Show" : "Hide"}</p>
 								</div>
 							</div>
 						</div>
@@ -195,7 +161,7 @@ const SettingsPage: FC = () => {
 				</div>
 			</Page>
 		</Head>
-	)
-}
+	);
+};
 
-export default SettingsPage
+export default SettingsPage;

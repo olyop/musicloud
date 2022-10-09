@@ -1,23 +1,18 @@
-import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
+import { query as pgHelpersQuery } from "@oly_op/pg-helpers";
 
-import {
-	DELETE_LIBRARY_SONGS,
-	DELETE_LIBRARY_ARTISTS,
-	DELETE_LIBRARY_PLAYLISTS,
-} from "../../sql"
+import { DELETE_LIBRARY_SONGS, DELETE_LIBRARY_ARTISTS, DELETE_LIBRARY_PLAYLISTS } from "../../sql";
 
-import resolver from "./resolver"
+import resolver from "./resolver";
 
-export const deleteLibrary =
-	resolver(
-		async ({ context }) => {
-			const query = pgHelpersQuery(context.pg)
-			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
+export const deleteLibrary = resolver(async ({ context }) => {
+	const query = pgHelpersQuery(context.pg);
+	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-			const variables = { userID }
+	const variables = { userID };
 
-			await query(DELETE_LIBRARY_SONGS)({ variables })
-			await query(DELETE_LIBRARY_ARTISTS)({ variables })
-			await query(DELETE_LIBRARY_PLAYLISTS)({ variables })
-		},
-	)
+	await Promise.all([
+		query(DELETE_LIBRARY_SONGS)({ variables }),
+		query(DELETE_LIBRARY_ARTISTS)({ variables }),
+		query(DELETE_LIBRARY_PLAYLISTS)({ variables }),
+	]);
+});

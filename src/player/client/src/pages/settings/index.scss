@@ -1,6 +1,7 @@
 .SettingsPage {
 	&__name {
-		font-size: 30rem; }
+		font-size: 30rem;
+	}
 	&__details {
 		display: flex;
 		flex-direction: column;
@@ -8,13 +9,20 @@
 		&-content {
 			padding-left: 22rem;
 			&-setting {
-				align-items: flex-start; } } }
+				align-items: flex-start;
+			}
+		}
+	}
 	&__summary {
 		outline: none;
 		cursor: pointer;
 		user-select: none;
-		font-weight: var(--bold); }
+		font-weight: var(--bold);
+	}
 	&__controls {
-		align-items: flex-start; }
+		align-items: flex-start;
+	}
 	&__checkbox {
-		margin-top: -3rem; } }
+		margin-top: -3rem;
+	}
+}

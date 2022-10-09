@@ -3,7 +3,7 @@
 
 mutation removeSongFromQueueNext($index: NonNegativeInt!) {
 	removeSongFromQueueNext(index: $index) {
-    ...QueueNextFragment
-    ...QueueLaterFragment
+		...QueueNextFragment
+		...QueueLaterFragment
 	}
 }

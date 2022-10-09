@@ -3,6 +3,9 @@
 	gap: var(--space);
 	grid-template-columns: 1fr;
 	@media (min-width: 1000px) {
-		grid-template-columns: 1fr 400rem; }
+		grid-template-columns: 1fr 400rem;
+	}
 	&__trending {
-		gap: var(--space); } }
+		gap: var(--space);
+	}
+}

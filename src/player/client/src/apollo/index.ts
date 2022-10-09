@@ -1,17 +1,19 @@
-import { useApolloClient as useBaseApolloClient, ApolloClient, NormalizedCacheObject } from "@apollo/client"
+import {
+	useApolloClient as useBaseApolloClient,
+	ApolloClient,
+	NormalizedCacheObject,
+} from "@apollo/client";
 
-import link from "./link"
-import { cache, cachePersistor } from "./cache"
+import link from "./link";
+import { cache, cachePersistor } from "./cache";
 
-const apollo =
-	new ApolloClient({
-		link,
-		cache,
-	})
+const apollo = new ApolloClient({
+	link,
+	cache,
+});
 
-const useApolloClient =
-	() => useBaseApolloClient() as ApolloClient<NormalizedCacheObject>
+const useApolloClient = () => useBaseApolloClient() as ApolloClient<NormalizedCacheObject>;
 
-export { useApolloClient, cachePersistor }
+export { useApolloClient, cachePersistor };
 
-export default apollo
+export default apollo;

@@ -10,28 +10,39 @@
 		opacity: 0.4;
 		height: 5rem;
 		position: absolute;
-		background: #4a8df8; }
+		background: #4a8df8;
+	}
 	&__subline {
 		height: 5rem;
 		position: absolute;
-		background: #4a8df8; }
+		background: #4a8df8;
+	}
 	&__asc {
-		animation: increase 2s infinite; }
+		animation: increase 2s infinite;
+	}
 	&__desc {
-		animation: decrease 2s 0.5s infinite; } }
+		animation: decrease 2s 0.5s infinite;
+	}
+}
 
 @keyframes increase {
 	from {
 		left: -5%;
-		width: 5%; }
+		width: 5%;
+	}
 	to {
 		left: 130%;
-		width: 100%; } }
+		width: 100%;
+	}
+}
 
 @keyframes decrease {
 	from {
 		left: -80%;
-		width: 80%; }
+		width: 80%;
+	}
 	to {
 		left: 110%;
-		width: 10%; } }
+		width: 10%;
+	}
+}

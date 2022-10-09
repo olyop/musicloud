@@ -1,7 +1,6 @@
-import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
+import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 
-const determineCatalogPath =
-	(objectID: string, path: string) =>
-		`catalog/${removeDashesFromUUID(objectID)}${path}`
+const determineCatalogPath = (objectID: string, path: string) =>
+	`catalog/${removeDashesFromUUID(objectID)}${path}`;
 
-export default determineCatalogPath
+export default determineCatalogPath;

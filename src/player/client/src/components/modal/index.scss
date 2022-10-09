@@ -8,13 +8,14 @@
 	&__visible {
 		opacity: 1;
 		visibility: visible;
-		transition: opacity var(--transition-duration) linear; }
+		transition: opacity var(--transition-duration) linear;
+	}
 	&__hidden {
 		opacity: 0;
 		visibility: hidden;
-		transition:
-			visibility var(--transition-duration) linear,
-			opacity var(--transition-duration) linear; }
+		transition: visibility var(--transition-duration) linear,
+			opacity var(--transition-duration) linear;
+	}
 	&__background {
 		top: 0;
 		left: 0;
@@ -26,13 +27,15 @@
 		&-visible {
 			visibility: visible;
 			opacity: var(--close-background-opacity);
-			transition: opacity var(--transition-duration) linear; }
+			transition: opacity var(--transition-duration) linear;
+		}
 		&-hidden {
 			opacity: 0;
 			visibility: hidden;
-			transition:
-				visibility var(--transition-duration) linear,
-				opacity var(--transition-duration) linear; } }
+			transition: visibility var(--transition-duration) linear,
+				opacity var(--transition-duration) linear;
+		}
+	}
 	&__content {
 		top: 50%;
 		left: 50%;
@@ -40,4 +43,6 @@
 		cursor: text;
 		position: absolute;
 		width: var(--modal-width);
-		transform: translate(-50%, -50%); } }
+		transform: translate(-50%, -50%);
+	}
+}

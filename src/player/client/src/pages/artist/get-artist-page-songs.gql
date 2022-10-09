@@ -1,9 +1,6 @@
 #import "../../graphql/fragments/song-core.gql";
 
-query getArtistPageSongs(
-	$artistID: UUID!
-	$songsOrderBy: SongsOrderByInput!
-) {
+query getArtistPageSongs($artistID: UUID!, $songsOrderBy: SongsOrderByInput!) {
 	getArtistByID(artistID: $artistID) {
 		artistID
 		songs(orderBy: $songsOrderBy) {

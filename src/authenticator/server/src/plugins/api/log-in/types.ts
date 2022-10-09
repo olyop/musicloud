@@ -1,9 +1,12 @@
-import { AccessToken, UserEmailAddressBase, UserPasswordBase } from "@oly_op/musicloud-common/build/types"
+import {
+	AccessToken,
+	UserEmailAddressBase,
+	UserPasswordBase,
+} from "@oly_op/musicloud-common/build/types";
 
-interface Body
-	extends UserEmailAddressBase, UserPasswordBase {}
+interface Body extends UserEmailAddressBase, UserPasswordBase {}
 
 export interface Route {
-	Body: Body,
-	Reply: AccessToken,
+	Body: Body;
+	Reply: AccessToken;
 }

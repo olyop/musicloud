@@ -5,7 +5,7 @@ type Playlist {
 	title: NonEmptyString!
 	dateCreated: TimeStamp!
 	privacy: PlaylistPrivacy!
-	
+
 	# relationships
 	user: User!
 	songs: [Song!]

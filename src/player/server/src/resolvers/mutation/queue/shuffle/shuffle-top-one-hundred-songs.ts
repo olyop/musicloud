@@ -1,59 +1,55 @@
-import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
+import { isEmpty } from "lodash-es";
+import { query } from "@oly_op/pg-helpers";
 
-import {
-	shuffle,
-	clearQueue,
-	getTopSongs,
-	updateQueueNowPlaying,
-} from "../../../helpers"
+import { shuffle, clearQueue, getTopSongs, updateQueueNowPlaying } from "../../../helpers";
 
-import resolver from "../../resolver"
-import { INSERT_QUEUE_SONG } from "../../../../sql"
+import resolver from "../../resolver";
+import { INSERT_QUEUE_SONG } from "../../../../sql";
 
-export const shuffleTopOneHundredSongs =
-	resolver<Record<string, never>>(
-		async ({ context }) => {
-			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
-			const client = await context.pg.connect()
-			const query = pgHelpersQuery(client)
+export const shuffleTopOneHundredSongs = resolver<Record<string, never>>(async ({ context }) => {
+	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-			try {
-				await query("BEGIN")()
+	const topOneHundredSongs = await getTopSongs(context.pg)(100);
 
-				await clearQueue(client)({ userID })
+	if (!isEmpty(topOneHundredSongs)) {
+		const [nowPlaying, ...songs] = await shuffle(context.randomDotOrg)(topOneHundredSongs);
 
-				const topOneHundredSongs =
-					await getTopSongs(context.pg)(100)
+		const client = await context.pg.connect();
 
-				const [ nowPlaying, ...songs ] =
-					await shuffle(context.randomDotOrg)(topOneHundredSongs)
+		try {
+			await query(client)("BEGIN")();
 
-				await updateQueueNowPlaying(client, context.ag.index)({
-					userID,
-					value: nowPlaying!.songID,
-				})
+			await clearQueue(client)({ userID });
 
-				let index = 0
-				for (const { songID } of songs) {
-					await query(INSERT_QUEUE_SONG)({
-						variables: {
-							index,
-							userID,
-							songID,
-							tableName: "queue_laters",
-						},
-					})
-					index += 1
-				}
+			const updateNowPlaying = updateQueueNowPlaying(
+				client,
+				context.ag.index,
+			)({
+				userID,
+				value: nowPlaying!.songID,
+			});
 
-				await query("COMMIT")()
-			} catch (error) {
-				await query("ROLLBACK")()
-				throw error
-			} finally {
-				client.release()
-			}
+			const updateQueueLaters = songs.map(({ songID }, index) =>
+				query(client)(INSERT_QUEUE_SONG)({
+					variables: {
+						index,
+						userID,
+						songID,
+						tableName: "queue_laters",
+					},
+				}),
+			);
 
-			return {}
-		},
-	)
+			await Promise.all([updateNowPlaying, ...updateQueueLaters]);
+
+			await query(client)("COMMIT")();
+		} catch (error) {
+			await query(client)("ROLLBACK")();
+			throw error;
+		} finally {
+			client.release();
+		}
+	}
+
+	return {};
+});

@@ -1,14 +1,10 @@
-import { createElement, FC, Fragment } from "react"
+import { createElement, FC, Fragment } from "react";
 
-import Song from "../../components/song"
-import Songs from "../../components/songs"
-import { Disc as DiscType } from "../../types"
+import Song from "../../components/song";
+import Songs from "../../components/songs";
+import { Disc as DiscType } from "../../types";
 
-const Disc: FC<PropTypes> = ({
-	isSingle,
-	className,
-	disc: { index, songs, hideLabel },
-}) => (
+const Disc: FC<PropTypes> = ({ isSingle, className, disc: { index, songs, hideLabel } }) => (
 	<div className={className}>
 		{hideLabel || (
 			<h4 className="ParagraphTwo MarginBottomHalf UpperCase">
@@ -28,12 +24,12 @@ const Disc: FC<PropTypes> = ({
 			))}
 		</Songs>
 	</div>
-)
+);
 
 interface PropTypes {
-	disc: DiscType,
-	isSingle: boolean,
-	className?: string,
+	disc: DiscType;
+	isSingle: boolean;
+	className?: string;
 }
 
-export default Disc
+export default Disc;

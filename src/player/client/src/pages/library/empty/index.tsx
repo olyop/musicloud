@@ -1,11 +1,10 @@
-import { Link } from "react-router-dom"
-import { createBEM } from "@oly_op/bem"
-import { createElement, FC, Fragment, ReactNode } from "react"
+import { Link } from "react-router-dom";
+import { createBEM } from "@oly_op/bem";
+import { createElement, FC, Fragment, ReactNode } from "react";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("LibraryEmpty")
+const bem = createBEM("LibraryEmpty");
 
 const LibraryEmpty: FC<PropTypes> = ({ name, content }) => (
 	<div className="ContentPaddingTopBottom FlexColumnGapHalf">
@@ -15,26 +14,18 @@ const LibraryEmpty: FC<PropTypes> = ({ name, content }) => (
 			<Fragment>.</Fragment>
 		</h2>
 		<h3 className="ParagraphOne">
-			<Link
-				to="/"
-				children="Browse"
-				className={bem("link")}
-			/>
+			<Link to="/" children="Browse" className={bem("link")} />
 			<Fragment> or </Fragment>
-			<Link
-				children="search"
-				to="/search?query="
-				className={bem("link")}
-			/>
+			<Link children="search" to="/search?query=" className={bem("link")} />
 			<Fragment> to add music.</Fragment>
 		</h3>
 		{content}
 	</div>
-)
+);
 
 interface PropTypes {
-	name: string,
-	content?: ReactNode,
+	name: string;
+	content?: ReactNode;
 }
 
-export default LibraryEmpty
+export default LibraryEmpty;

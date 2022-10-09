@@ -8,30 +8,25 @@ import {
 	AlgoliaRecordAlbum,
 	AlgoliaRecordArtist,
 	AlgoliaRecordPlaylist,
-} from "@oly_op/musicloud-common/build/types"
+} from "@oly_op/musicloud-common/build/types";
 
-import { SearchIndex } from "algoliasearch"
+import { SearchIndex } from "algoliasearch";
 
-type AlgoliaHit<T> =
-	T & Parameters<Extract<Parameters<ReturnType<SearchIndex["search"]>["then"]>[0], Function>>[0]["hits"][0]
+type AlgoliaHit<T> = T &
+	Parameters<
+		Extract<Parameters<ReturnType<SearchIndex["search"]>["then"]>[0], Function>
+	>[0]["hits"][0];
 
-export type Hit =
-	AlgoliaHit<AlgoliaRecord>
+export type Hit = AlgoliaHit<AlgoliaRecord>;
 
-export type HitUser =
-	AlgoliaHit<AlgoliaRecordUser>
+export type HitUser = AlgoliaHit<AlgoliaRecordUser>;
 
-export type HitSong =
-	AlgoliaHit<AlgoliaRecordSong>
+export type HitSong = AlgoliaHit<AlgoliaRecordSong>;
 
-export type HitGenre =
-	AlgoliaHit<AlgoliaRecordGenre>
+export type HitGenre = AlgoliaHit<AlgoliaRecordGenre>;
 
-export type HitAlbum =
-	AlgoliaHit<AlgoliaRecordAlbum>
+export type HitAlbum = AlgoliaHit<AlgoliaRecordAlbum>;
 
-export type HitArtist =
-	AlgoliaHit<AlgoliaRecordArtist>
+export type HitArtist = AlgoliaHit<AlgoliaRecordArtist>;
 
-export type HitPlaylist =
-	AlgoliaHit<AlgoliaRecordPlaylist>
+export type HitPlaylist = AlgoliaHit<AlgoliaRecordPlaylist>;

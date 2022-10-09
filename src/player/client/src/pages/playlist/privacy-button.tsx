@@ -1,42 +1,29 @@
-import Button from "@oly_op/react-button"
-import { PlaylistPrivacy } from "@oly_op/musicloud-common/build/types"
-import { createElement, Fragment, useState, FC } from "react"
+import Button from "@oly_op/react-button";
+import { PlaylistPrivacy } from "@oly_op/musicloud-common/build/types";
+import { createElement, Fragment, useState, FC } from "react";
 
-import { Playlist } from "../../types"
-import { useUpdatePlaylistPrivacy } from "../../hooks"
-import Modal, { ModalButton, ModalButtons, ModalHeader } from "../../components/modal"
+import { Playlist } from "../../types";
+import { useUpdatePlaylistPrivacy } from "../../hooks";
+import Modal, { ModalButton, ModalButtons, ModalHeader } from "../../components/modal";
 
 const PlaylistPagePrivacyButton: FC<PropTypes> = ({ playlist }) => {
-	const [ modal, setModal ] =
-		useState(false)
+	const [modal, setModal] = useState(false);
 
-	const [ updatePlaylistPrivacy ] =
-		useUpdatePlaylistPrivacy(playlist)
+	const [updatePlaylistPrivacy] = useUpdatePlaylistPrivacy(playlist);
 
-	const handleModalClose =
-		() => setModal(false)
+	const handleModalClose = () => setModal(false);
 
-	const handleModalOpen =
-		() => setModal(true)
+	const handleModalOpen = () => setModal(true);
 
-	const handleChange =
-		(privacy: PlaylistPrivacy) =>
-			() => updatePlaylistPrivacy(privacy)
+	const handleChange = (privacy: PlaylistPrivacy) => () => updatePlaylistPrivacy(privacy);
 
 	return (
 		<Fragment>
-			<Button
-				text="Privacy"
-				icon="security"
-				onClick={handleModalOpen}
-			/>
+			<Button text="Privacy" icon="security" onClick={handleModalOpen} />
 			<Modal open={modal} onClose={handleModalClose}>
 				{onClose => (
 					<Fragment>
-						<ModalHeader
-							hideShare
-							text="Change playlist privacy"
-						/>
+						<ModalHeader hideShare text="Change playlist privacy" />
 						<ModalButtons>
 							<ModalButton
 								icon="public"
@@ -56,21 +43,17 @@ const PlaylistPagePrivacyButton: FC<PropTypes> = ({ playlist }) => {
 								onClose={onClose}
 								onClick={handleChange(PlaylistPrivacy.PRIVATE)}
 							/>
-							<ModalButton
-								icon="close"
-								text="Cancel"
-								onClick={onClose}
-							/>
+							<ModalButton icon="close" text="Cancel" onClick={onClose} />
 						</ModalButtons>
 					</Fragment>
 				)}
 			</Modal>
 		</Fragment>
-	)
-}
+	);
+};
 
 interface PropTypes {
-	playlist: Pick<Playlist, "__typename" | "playlistID" | "privacy">,
+	playlist: Pick<Playlist, "__typename" | "playlistID" | "privacy">;
 }
 
-export default PlaylistPagePrivacyButton
+export default PlaylistPagePrivacyButton;

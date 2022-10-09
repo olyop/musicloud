@@ -2,11 +2,15 @@
 	&__input {
 		width: 150rem;
 		min-width: var(--dimension);
-		min-height: var(--dimension); }
+		min-height: var(--dimension);
+	}
 	&__add {
 		--button-dimension: 26rem;
 		width: var(--button-dimension);
-		height: var(--button-dimension); }
+		height: var(--button-dimension);
+	}
 	&__remove {
 		--button-dimension: 26rem;
-		border-radius: 0 var(--border-radius) var(--border-radius) 0; } }
+		border-radius: 0 var(--border-radius) var(--border-radius) 0;
+	}
+}

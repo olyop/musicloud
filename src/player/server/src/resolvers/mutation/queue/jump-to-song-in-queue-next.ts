@@ -1,9 +1,6 @@
-import resolver from "../resolver"
-import { IndexOptions } from "../../../types"
+import resolver from "../resolver";
+import { IndexOptions } from "../../../types";
 
-export const jumpToSongInQueueNext =
-	resolver<Record<string, never>, IndexOptions>(
-		() => (
-			Promise.resolve({})
-		),
-	)
+export const jumpToSongInQueueNext = resolver<Record<string, never>, IndexOptions>(() =>
+	Promise.resolve({}),
+);

@@ -7,7 +7,8 @@
 		height: var(--h);
 		align-items: center;
 		flex-direction: column;
-		justify-content: space-between; }
+		justify-content: space-between;
+	}
 	&__slider {
 		--slider-w: calc(var(--button-dimension) - var(--space-half));
 		appearance: none;
@@ -16,14 +17,16 @@
 		background-color: transparent;
 		width: calc(var(--h) - var(--button-dimension) * 2 - var(--space-double));
 		&:focus {
-			outline: none; }
+			outline: none;
+		}
 		&::-webkit-slider-runnable-track {
 			border: 0;
 			width: 100%;
 			height: 100%;
 			cursor: pointer;
 			background-color: var(--hover-color);
-			border-radius: calc(var(--slider-w) / 2); }
+			border-radius: calc(var(--slider-w) / 2);
+		}
 		&::-webkit-slider-thumb {
 			border: 0;
 			height: 100%;
@@ -32,4 +35,7 @@
 			position: relative;
 			border-radius: 100%;
 			width: var(--slider-w);
-			background-color: var(--text-color); } } }
+			background-color: var(--text-color);
+		}
+	}
+}

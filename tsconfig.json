@@ -8,13 +8,11 @@
 			"*": ["src/types/*"]
 		}
 	},
-	"include": [
-		"src"
-	],
+	"include": ["src"],
 	"ts-node": {
 		"esm": true,
 		"swc": true,
 		"files": true,
-    "require": ["tsconfig-paths/register"]
-  }
+		"require": ["tsconfig-paths/register"]
+	}
 }

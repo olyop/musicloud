@@ -1,15 +1,12 @@
 #import "../../graphql/fragments/song-core.gql";
 #import "../../graphql/fragments/genre-core.gql";
 
-query getGenrePage(
-  $genreID: UUID!
-  $songsOrderBy: SongsOrderByInput!
-) {
-  getGenreByID(genreID: $genreID) {
-    ...GenreCoreFragment
-    songs(orderBy: $songsOrderBy) {
-      ...SongCoreFragment
-      playsTotal
-    }
-  }
+query getGenrePage($genreID: UUID!, $songsOrderBy: SongsOrderByInput!) {
+	getGenreByID(genreID: $genreID) {
+		...GenreCoreFragment
+		songs(orderBy: $songsOrderBy) {
+			...SongCoreFragment
+			playsTotal
+		}
+	}
 }

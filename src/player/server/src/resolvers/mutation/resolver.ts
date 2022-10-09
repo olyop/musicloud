@@ -1,6 +1,5 @@
-import createParentResolver from "../create-parent-resolver"
+import createParentResolver from "../create-parent-resolver";
 
-const resolver =
-	createParentResolver()
+const resolver = createParentResolver();
 
-export default resolver
+export default resolver;

@@ -3,7 +3,7 @@
 
 mutation jumpToSongInQueueNext($index: NonNegativeInt!) {
 	jumpToSongInQueueNext(index: $index) {
-    ...QueueNowPlayingFragment
-    ...QueueNextFragment
-  }
+		...QueueNowPlayingFragment
+		...QueueNextFragment
+	}
 }

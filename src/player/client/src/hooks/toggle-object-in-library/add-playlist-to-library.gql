@@ -1,6 +1,6 @@
 mutation addPlaylistToLibrary($playlistID: UUID!) {
 	addPlaylistToLibrary(playlistID: $playlistID) {
-    inLibrary
+		inLibrary
 		playlistID
 	}
 }

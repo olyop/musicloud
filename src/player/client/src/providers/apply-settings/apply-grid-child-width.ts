@@ -1,9 +1,8 @@
-const applyGridChildWidth =
-	(gridChildWidth: number) => {
-		document.documentElement.style.setProperty(
-			"--grid-child-width",
-			`${gridChildWidth.toString()}rem`,
-		)
-	}
+const applyGridChildWidth = (gridChildWidth: number) => {
+	document.documentElement.style.setProperty(
+		"--grid-child-width",
+		`${gridChildWidth.toString()}rem`,
+	);
+};
 
-export default applyGridChildWidth
+export default applyGridChildWidth;

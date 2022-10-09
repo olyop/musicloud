@@ -1,35 +1,35 @@
 export interface ObjectID {
-	objectID: string,
+	objectID: string;
 }
 
 export interface KeyID {
-	keyID: string,
+	keyID: string;
 }
 
 export interface UserID {
-	userID: string,
+	userID: string;
 }
 
 export interface SongID {
-	songID: string,
+	songID: string;
 }
 
 export interface PlayID {
-	playID: string,
+	playID: string;
 }
 
 export interface AlbumID {
-	albumID: string,
+	albumID: string;
 }
 
 export interface GenreID {
-	genreID: string,
+	genreID: string;
 }
 
 export interface ArtistID {
-	artistID: string,
+	artistID: string;
 }
 
 export interface PlaylistID {
-	playlistID: string,
+	playlistID: string;
 }

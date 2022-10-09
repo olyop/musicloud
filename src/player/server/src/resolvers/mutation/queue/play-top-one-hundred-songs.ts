@@ -1,55 +1,55 @@
-import { query as pgHelpersQuery } from "@oly_op/pg-helpers"
+import { isEmpty } from "lodash-es";
+import { query } from "@oly_op/pg-helpers";
 
-import {
-	clearQueue,
-	getTopSongs,
-	updateQueueNowPlaying,
-} from "../../helpers"
+import { clearQueue, getTopSongs, updateQueueNowPlaying } from "../../helpers";
 
-import resolver from "../resolver"
-import { INSERT_QUEUE_SONG } from "../../../sql"
+import resolver from "../resolver";
+import { INSERT_QUEUE_SONG } from "../../../sql";
 
-export const playTopOneHundredSongs =
-	resolver<Record<string, never>>(
-		async ({ context }) => {
-			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
-			const client = await context.pg.connect()
-			const query = pgHelpersQuery(client)
+export const playTopOneHundredSongs = resolver<Record<string, never>>(async ({ context }) => {
+	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-			try {
-				await query("BEGIN")()
+	const topOneHundredSongs = await getTopSongs(context.pg)(100);
 
-				await clearQueue(client)({ userID })
+	if (!isEmpty(topOneHundredSongs)) {
+		const [nowPlaying, ...songs] = topOneHundredSongs;
 
-				const [ nowPlaying, ...songs ] =
-					await getTopSongs(context.pg)(100)
+		const client = await context.pg.connect();
 
-				await updateQueueNowPlaying(client, context.ag.index)({
-					userID,
-					value: nowPlaying!.songID,
-				})
+		try {
+			await query(client)("BEGIN")();
 
-				let index = 0
-				for (const { songID } of songs) {
-					await query(INSERT_QUEUE_SONG)({
-						variables: {
-							index,
-							userID,
-							songID,
-							tableName: "queue_laters",
-						},
-					})
-					index += 1
-				}
+			await clearQueue(client)({ userID });
 
-				await query("COMMIT")()
-			} catch (error) {
-				await query("ROLLBACK")()
-				throw error
-			} finally {
-				client.release()
-			}
+			const updateNowPlaying = updateQueueNowPlaying(
+				client,
+				context.ag.index,
+			)({
+				userID,
+				value: nowPlaying!.songID,
+			});
 
-			return {}
-		},
-	)
+			const updateQueueLaters = songs.map(({ songID }, index) =>
+				query(client)(INSERT_QUEUE_SONG)({
+					variables: {
+						index,
+						userID,
+						songID,
+						tableName: "queue_laters",
+					},
+				}),
+			);
+
+			await Promise.all([updateNowPlaying, ...updateQueueLaters]);
+
+			await query(client)("COMMIT")();
+		} catch (error) {
+			await query(client)("ROLLBACK")();
+			throw error;
+		} finally {
+			client.release();
+		}
+	}
+
+	return {};
+});

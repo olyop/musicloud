@@ -1,22 +1,14 @@
 /* eslint-disable react/no-array-index-key */
 
-import {
-	FC,
-	Ref,
-	useRef,
-	useState,
-	Fragment,
-	useEffect,
-	createElement,
-} from "react"
+import { FC, Ref, useRef, useState, Fragment, useEffect, createElement } from "react";
 
-import uniqueID from "lodash-es/uniqueId"
-import type { DocumentNode } from "@apollo/client"
+import uniqueID from "lodash-es/uniqueId";
+import type { DocumentNode } from "@apollo/client";
 
-import { SettingsOrderBy } from "../../types"
-import { useApolloClient } from "../../apollo"
-import FeedItem, { FeedItemVars } from "./item"
-import { useDispatch, addLoading, removeLoading } from "../../redux"
+import { SettingsOrderBy } from "../../types";
+import { useApolloClient } from "../../apollo";
+import FeedItem, { FeedItemVars } from "./item";
+import { useDispatch, addLoading, removeLoading } from "../../redux";
 
 const Feed = <ItemsTotalData, Item, ItemData>(
 	propTypes: PropTypes<ItemsTotalData, Item, ItemData>,
@@ -28,69 +20,65 @@ const Feed = <ItemsTotalData, Item, ItemData>(
 		itemsTotalQuery,
 		itemDataToValue,
 		itemsTotalDataToValue,
-	} = propTypes
+	} = propTypes;
 
-	const dispatch = useDispatch()
-	const client = useApolloClient()
-	const loadingID = useRef(uniqueID())
+	const dispatch = useDispatch();
+	const client = useApolloClient();
+	const loadingID = useRef(uniqueID());
 
-	const [ itemsTotal, setItemsTotal ] =
-		useState<Total>(null)
+	const [itemsTotal, setItemsTotal] = useState<Total>(null);
 
-	const getAndSetItemsTotal =
-		async () => {
-			dispatch(addLoading(loadingID.current))
+	const getAndSetItemsTotal = async () => {
+		dispatch(addLoading(loadingID.current));
 
-			const { data } =
-				await client.query<ItemsTotalData>({
-					query: itemsTotalQuery,
-				})
+		const { data } = await client.query<ItemsTotalData>({
+			query: itemsTotalQuery,
+			fetchPolicy: "cache-first",
+		});
 
-			if (itemsTotalDataToValue(data)) {
-				setItemsTotal(itemsTotalDataToValue(data))
-			}
-
-			dispatch(removeLoading(loadingID.current))
+		const total = itemsTotalDataToValue(data);
+		if (total) {
+			setItemsTotal(total);
 		}
 
+		dispatch(removeLoading(loadingID.current));
+	};
+
 	useEffect(() => {
-		void getAndSetItemsTotal()
-	}, [])
+		void getAndSetItemsTotal();
+	}, []);
 
 	if (itemsTotal && itemsTotal !== 0) {
-		const nullArray = new Array<null>(itemsTotal).fill(null)
+		const nullArray = new Array<null>(itemsTotal).fill(null);
 		return (
 			<Fragment>
-				{nullArray.map(
-					(song, index) => (
-						<FeedItem<Item, ItemData>
-							key={index}
-							index={index}
-							itemQuery={itemQuery}
-							renderItem={renderItem}
-							itemDataToValue={itemDataToValue}
-							settingsOrderBy={settingsOrderBy}
-						/>
-					),
-				)}
+				{nullArray.map((song, index) => (
+					<FeedItem<Item, ItemData>
+						key={index}
+						index={index}
+						itemQuery={itemQuery}
+						renderItem={renderItem}
+						itemDataToValue={itemDataToValue}
+						settingsOrderBy={settingsOrderBy}
+					/>
+				))}
 			</Fragment>
-		)
+		);
 	} else {
-		return null
+		return null;
 	}
-}
+};
 
-type Total =
-	number | null
+type Total = number | null;
 
 interface PropTypes<ItemsTotalData, Item, ItemData> {
-	itemQuery: DocumentNode,
-	itemsTotalQuery: DocumentNode,
-	settingsOrderBy: keyof SettingsOrderBy,
-	itemDataToValue: (data: ItemData) => Item | null,
-	itemsTotalDataToValue: (data: ItemsTotalData) => Total,
-	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => JSX.Element,
+	itemQuery: DocumentNode;
+	itemsTotalQuery: DocumentNode;
+	settingsOrderBy: keyof SettingsOrderBy;
+	itemDataToValue: (data: ItemData) => Item | null;
+	itemsTotalDataToValue: (data: ItemsTotalData) => Total;
+	renderItem: (ref: Ref<HTMLDivElement>, item: Item | null) => JSX.Element;
 }
 
-export { FeedItemVars }
-export default Feed
+export { FeedItemVars };
+export default Feed;

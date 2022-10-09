@@ -1,50 +1,37 @@
-import {
-	FC,
-	useState,
-	Fragment,
-	createElement,
-	ChangeEventHandler,
-} from "react"
+import { FC, useState, Fragment, createElement, ChangeEventHandler } from "react";
 
-import Button from "@oly_op/react-button"
-import { BEMInput, createBEM } from "@oly_op/bem"
+import Button from "@oly_op/react-button";
+import { BEMInput, createBEM } from "@oly_op/bem";
 
-import Modal from "../../../components/modal"
-import { ClassNameBEMPropTypes } from "../../../types"
-import { useDispatch, updateVolume, useStateVolume } from "../../../redux"
+import Modal from "../../../components/modal";
+import { ClassNameBEMPropTypes } from "../../../types";
+import { useDispatch, updateVolume, useStateVolume } from "../../../redux";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("BarVolume")
+const bem = createBEM("BarVolume");
 
 const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
-	const dispatch = useDispatch()
-	const volume = useStateVolume()
+	const dispatch = useDispatch();
+	const volume = useStateVolume();
 
-	const [ modal, setModal ] =
-		useState(false)
+	const [modal, setModal] = useState(false);
 
-	const handleModalOpen =
-		() => setModal(true)
+	const handleModalOpen = () => setModal(true);
 
-	const handleModalClose =
-		() => setModal(false)
+	const handleModalClose = () => setModal(false);
 
-	const handleVolumeMute =
-		() => {
-			dispatch(updateVolume(0))
-		}
+	const handleVolumeMute = () => {
+		dispatch(updateVolume(0));
+	};
 
-	const handleVolumeFull =
-		() => {
-			dispatch(updateVolume(100))
-		}
+	const handleVolumeFull = () => {
+		dispatch(updateVolume(100));
+	};
 
-	const handleChange: ChangeEventHandler<HTMLInputElement> =
-		({ target: { value } }) => {
-			dispatch(updateVolume(parseInt(value)))
-		}
+	const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => {
+		dispatch(updateVolume(parseInt(value)));
+	};
 
 	return (
 		<Fragment>
@@ -60,13 +47,9 @@ const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
 				open={modal}
 				onClose={handleModalClose}
 				contentClassName={bem("content", "PaddingHalf")}
-				children={(
+				children={
 					<Fragment>
-						<Button
-							transparent
-							icon="volume_up"
-							onClick={handleVolumeFull}
-						/>
+						<Button transparent icon="volume_up" onClick={handleVolumeFull} />
 						<input
 							min={0}
 							step={1}
@@ -76,20 +59,16 @@ const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
 							onChange={handleChange}
 							className={bem("slider", "OverflowHidden")}
 						/>
-						<Button
-							transparent
-							icon="volume_off"
-							onClick={handleVolumeMute}
-						/>
+						<Button transparent icon="volume_off" onClick={handleVolumeMute} />
 					</Fragment>
-				)}
+				}
 			/>
 		</Fragment>
-	)
-}
+	);
+};
 
 interface PropTypes extends ClassNameBEMPropTypes {
-	iconClassName?: BEMInput,
+	iconClassName?: BEMInput;
 }
 
-export default BarVolume
+export default BarVolume;

@@ -1,41 +1,32 @@
-import { createElement, FC, useEffect, useState } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
+import { createElement, FC, useEffect, useState } from "react";
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 
-import PlayButton from "./play"
-import NextButton from "./next"
-import LaterButton from "./later"
-import AfterButton from "./after"
-import SongTitle from "../../song-title"
-import InLibraryButton from "./in-library"
-import { Handler, Song } from "../../../types"
-import AddToPlaylist from "../../add-song-to-playlist"
-import { createCatalogImageURL, createObjectPath } from "../../../helpers"
-import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../../modal"
+import PlayButton from "./play";
+import NextButton from "./next";
+import LaterButton from "./later";
+import AfterButton from "./after";
+import SongTitle from "../../song-title";
+import InLibraryButton from "./in-library";
+import { Handler, Song } from "../../../types";
+import AddToPlaylist from "../../add-song-to-playlist";
+import { createCatalogImageURL, createObjectPath } from "../../../helpers";
+import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../../modal";
 
-const SongModal: FC<PropTypes> = ({
-	open,
-	song,
-	onClose,
-	hidePlay,
-	onRemove,
-	hideInLibrary,
-}) => {
-	const [ addToPlaylist, setAddToPlayPlaylist ] =
-		useState(false)
+const SongModal: FC<PropTypes> = ({ open, song, onClose, hidePlay, onRemove, hideInLibrary }) => {
+	const [addToPlaylist, setAddToPlayPlaylist] = useState(false);
 
-	const handleAddToPlaylistOpen =
-		() => setAddToPlayPlaylist(true)
+	const handleAddToPlaylistOpen = () => setAddToPlayPlaylist(true);
 
-	const handleAddToPlaylistClose =
-		() => {
-			setAddToPlayPlaylist(false)
-		}
+	const handleAddToPlaylistClose = () => {
+		setAddToPlayPlaylist(false);
+		onClose();
+	};
 
 	useEffect(() => () => {
 		if (addToPlaylist) {
-			setAddToPlayPlaylist(false)
+			setAddToPlayPlaylist(false);
 		}
-	})
+	});
 
 	return (
 		<Modal open={open} onClose={onClose}>
@@ -44,12 +35,7 @@ const SongModal: FC<PropTypes> = ({
 					title: song.title,
 					url: createObjectPath("song", song.songID),
 				}}
-				text={(
-					<SongTitle
-						song={song}
-						onClick={onClose}
-					/>
-				)}
+				text={<SongTitle song={song} onClick={onClose} />}
 				image={{
 					description: song.title,
 					src: createCatalogImageURL(
@@ -61,34 +47,13 @@ const SongModal: FC<PropTypes> = ({
 				}}
 			/>
 			{addToPlaylist ? (
-				<AddToPlaylist
-					songID={song.songID}
-					onClose={handleAddToPlaylistClose}
-				/>
+				<AddToPlaylist songID={song.songID} onClose={handleAddToPlaylistClose} />
 			) : (
 				<ModalButtons>
-					{hidePlay || (
-						<PlayButton
-							song={song}
-							onClose={onClose}
-							hidePlay={hidePlay}
-						/>
-					)}
-					<NextButton
-						onClose={onClose}
-						hidePlay={hidePlay}
-						songID={song.songID}
-					/>
-					<AfterButton
-						onClose={onClose}
-						hidePlay={hidePlay}
-						songID={song.songID}
-					/>
-					<LaterButton
-						onClose={onClose}
-						hidePlay={hidePlay}
-						songID={song.songID}
-					/>
+					{hidePlay || <PlayButton song={song} onClose={onClose} hidePlay={hidePlay} />}
+					<NextButton onClose={onClose} hidePlay={hidePlay} songID={song.songID} />
+					<AfterButton onClose={onClose} hidePlay={hidePlay} songID={song.songID} />
+					<LaterButton onClose={onClose} hidePlay={hidePlay} songID={song.songID} />
 					<ModalButton
 						icon="album"
 						text="Album"
@@ -101,37 +66,23 @@ const SongModal: FC<PropTypes> = ({
 						onClose={onClose}
 						link={createObjectPath("artist", song.artists[0]!.artistID)}
 					/>
-					{hideInLibrary || (
-						<InLibraryButton
-							song={song}
-							onClose={onClose}
-						/>
-					)}
-					<ModalButton
-						text="Playlist"
-						icon="playlist_add"
-						onClose={handleAddToPlaylistOpen}
-					/>
+					{hideInLibrary || <InLibraryButton song={song} onClose={onClose} />}
+					<ModalButton text="Playlist" icon="playlist_add" onClose={handleAddToPlaylistOpen} />
 					{onRemove && (
-						<ModalButton
-							text="Remove"
-							onClose={onClose}
-							icon="queue_music"
-							onClick={onRemove}
-						/>
+						<ModalButton text="Remove" onClose={onClose} icon="queue_music" onClick={onRemove} />
 					)}
 				</ModalButtons>
 			)}
 		</Modal>
-	)
-}
+	);
+};
 
 interface PropTypes extends ModalOnClose {
-	song: Song,
-	open: boolean,
-	onRemove?: Handler,
-	hidePlay?: boolean,
-	hideInLibrary?: boolean,
+	song: Song;
+	open: boolean;
+	onRemove?: Handler;
+	hidePlay?: boolean;
+	hideInLibrary?: boolean;
 }
 
-export default SongModal
+export default SongModal;

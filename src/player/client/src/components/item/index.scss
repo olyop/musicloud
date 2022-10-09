@@ -4,27 +4,36 @@
 	align-items: center;
 	justify-content: flex-start;
 	@media (max-width: 800px) {
-		--gap: calc(var(--space) * 0.3); }
+		--gap: calc(var(--space) * 0.3);
+	}
 	&:hover &__in-lib {
-		display: block; }
+		display: block;
+	}
 	&__icon {
 		margin-left: -3rem;
 		margin-right: -1rem;
 		&:hover {
-			background-color: transparent; } }
+			background-color: transparent;
+		}
+	}
 	&__left {
 		width: 18rem;
 		text-align: center;
 		white-space: nowrap;
 		color: var(--text-color-light);
-		margin: 2rem var(--gap) 0 calc(var(--gap) - 5rem); }
+		margin: 2rem var(--gap) 0 calc(var(--gap) - 5rem);
+	}
 	&__left-icon {
 		--fix: -3px;
 		margin-left: var(--fix);
-		margin-right: calc(var(--gap) + var(--fix)); }
+		margin-right: calc(var(--gap) + var(--fix));
+	}
 	&__img {
 		width: var(--button-dimension);
 		height: var(--button-dimension);
 		&-link {
 			height: 100%;
-			margin-right: var(--gap); } } }
+			margin-right: var(--gap);
+		}
+	}
+}

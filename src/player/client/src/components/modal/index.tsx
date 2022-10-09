@@ -1,17 +1,16 @@
-import isFunction from "lodash-es/isFunction"
-import { createBEM, BEMInput } from "@oly_op/bem"
-import { createElement, FC, ReactNode } from "react"
+import isFunction from "lodash-es/isFunction";
+import { createBEM, BEMInput } from "@oly_op/bem";
+import { createElement, FC, ReactNode } from "react";
 
-import { ClassNameBEMPropTypes, Handler } from "../../types"
+import { ClassNameBEMPropTypes, Handler } from "../../types";
 
-import ModalButtons from "./buttons"
-import ModalHeader, { ModalHeaderPropTypes } from "./header"
-import ModalButton, { ModalButtonPropTypes } from "./button"
+import ModalButtons from "./buttons";
+import ModalHeader, { ModalHeaderPropTypes } from "./header";
+import ModalButton, { ModalButtonPropTypes } from "./button";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Modal")
+const bem = createBEM("Modal");
 
 const Modal: FC<PropTypes> = ({
 	open,
@@ -34,34 +33,25 @@ const Modal: FC<PropTypes> = ({
 		/>
 		{open && (
 			<div
-				className={bem(
-					className,
-					contentClassName,
-					"content",
-					"Elevated Rounded OverflowHidden",
-				)}
-				children={(
-					isFunction(children) ?
-						children(onClose) :
-						children
-				)}
+				className={bem(className, contentClassName, "content", "Elevated Rounded OverflowHidden")}
+				children={isFunction(children) ? children(onClose) : children}
 			/>
 		)}
 	</div>
-)
+);
 
 export interface ModalOnClose {
-	onClose: Handler,
+	onClose: Handler;
 }
 
 export interface PropTypes extends ModalOnClose, ClassNameBEMPropTypes {
-	open: boolean,
-	contentClassName?: BEMInput,
-	backgroundClassName?: BEMInput,
-	children: ReactNode | ((onClose: Handler) => ReactNode),
+	open: boolean;
+	contentClassName?: BEMInput;
+	backgroundClassName?: BEMInput;
+	children: ReactNode | ((onClose: Handler) => ReactNode);
 }
 
-export { ModalHeader, ModalButtons, ModalButton }
-export { ModalHeaderPropTypes, ModalButtonPropTypes }
+export { ModalHeader, ModalButtons, ModalButton };
+export { ModalHeaderPropTypes, ModalButtonPropTypes };
 
-export default Modal
+export default Modal;

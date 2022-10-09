@@ -1,43 +1,34 @@
-import { BEMInput, createBEM } from "@oly_op/bem"
-import { createElement, FC, ReactElement, ReactNode, useEffect } from "react"
+import { BEMInput, createBEM } from "@oly_op/bem";
+import { createElement, FC, ReactElement, ReactNode, useEffect } from "react";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Page")
+const bem = createBEM("Page");
 
 const Page: FC<PropTypes> = ({ header, children, headerClassName, childrenClassName }) => {
 	useEffect(() => {
-		const pageElement = document.querySelector<HTMLDivElement>(".Page")
+		const pageElement = document.querySelector<HTMLDivElement>(".Page");
 		if (pageElement && !header) {
-			pageElement.style.setProperty("--content-height", "100%")
+			pageElement.style.setProperty("--content-height", "100%");
 		}
-	}, [])
+	}, []);
 	return (
 		<main className={bem("")}>
 			{header && (
-				<div className={bem(headerClassName, "header", "PaddingHalf BorderBottom")}>
-					{header}
-				</div>
+				<div className={bem(headerClassName, "header", "PaddingHalf BorderBottom")}>{header}</div>
 			)}
-			{children && (
-				<div className={bem(childrenClassName, "content")}>
-					{children}
-				</div>
-			)}
+			{children && <div className={bem(childrenClassName, "content")}>{children}</div>}
 		</main>
-	)
-}
+	);
+};
 
 interface PropTypes {
-	children?: ReactNode,
-	header?: ReactElement,
-	headerClassName?: BEMInput,
-	childrenClassName?: BEMInput,
+	children?: ReactNode;
+	header?: ReactElement;
+	headerClassName?: BEMInput;
+	childrenClassName?: BEMInput;
 }
 
-export {
-	PropTypes as PagePropTypes,
-}
+export { PropTypes as PagePropTypes };
 
-export default Page
+export default Page;

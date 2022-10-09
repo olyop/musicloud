@@ -1,10 +1,9 @@
-import { SettingsTheme } from "../../types"
+import { SettingsTheme } from "../../types";
 
-type ThemeTemplate =
-	Record<
-		Parameters<CSSStyleDeclaration["setProperty"]>[0],
-		Parameters<CSSStyleDeclaration["setProperty"]>[1]
-	>
+type ThemeTemplate = Record<
+	Parameters<CSSStyleDeclaration["setProperty"]>[0],
+	Parameters<CSSStyleDeclaration["setProperty"]>[1]
+>;
 
 const lightTheme: ThemeTemplate = {
 	"--text-color": "var(--grey-color-900)",
@@ -16,7 +15,7 @@ const lightTheme: ThemeTemplate = {
 	"--background-color": "var(--grey-color-50)",
 	"--close-background-opacity": "0.6",
 	"--grid-image-hover-opacity": "0.3",
-}
+};
 
 const darkTheme: ThemeTemplate = {
 	"--text-color": "var(--grey-color-50)",
@@ -28,37 +27,31 @@ const darkTheme: ThemeTemplate = {
 	"--background-color": "var(--grey-color-800)",
 	"--close-background-opacity": "0.5",
 	"--grid-image-hover-opacity": "0.3",
-}
+};
 
-const applyThemeToDocument =
-	(theme: ThemeTemplate) =>
-		Object.entries(theme).forEach(
-			([ property, value ]) => (
-				document.documentElement.style.setProperty(property, value)
-			),
-		)
+const applyThemeToDocument = (theme: ThemeTemplate) =>
+	Object.entries(theme).forEach(([property, value]) =>
+		document.documentElement.style.setProperty(property, value),
+	);
 
-const applyLightTheme =
-	() => applyThemeToDocument(lightTheme)
+const applyLightTheme = () => applyThemeToDocument(lightTheme);
 
-const applyDarkTheme =
-	() => applyThemeToDocument(darkTheme)
+const applyDarkTheme = () => applyThemeToDocument(darkTheme);
 
-const applyTheme =
-	(theme: SettingsTheme) => {
-		if (theme === SettingsTheme.DARK) {
-			applyDarkTheme()
-		} else if (theme === SettingsTheme.LIGHT) {
-			applyLightTheme()
-		} else if (theme === SettingsTheme.SYSTEM) {
-			if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-				applyDarkTheme()
-			} else {
-				applyLightTheme()
-			}
+const applyTheme = (theme: SettingsTheme) => {
+	if (theme === SettingsTheme.DARK) {
+		applyDarkTheme();
+	} else if (theme === SettingsTheme.LIGHT) {
+		applyLightTheme();
+	} else if (theme === SettingsTheme.SYSTEM) {
+		if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+			applyDarkTheme();
 		} else {
-			applyLightTheme()
+			applyLightTheme();
 		}
+	} else {
+		applyLightTheme();
 	}
+};
 
-export default applyTheme
+export default applyTheme;

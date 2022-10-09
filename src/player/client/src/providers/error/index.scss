@@ -8,10 +8,15 @@
 	border-radius: var(--border-radius);
 	top: calc(var(--space-half) + env(safe-area-inset-top));
 	&__text {
-		color: var(--text-color-inverted); }
+		color: var(--text-color-inverted);
+	}
 	&__close {
 		--button-dimension: 14rem;
 		&:hover {
-			background-color: #ff867c; }
+			background-color: #ff867c;
+		}
 		& &-text {
-			color: var(--text-color-inverted); } } }
+			color: var(--text-color-inverted);
+		}
+	}
+}

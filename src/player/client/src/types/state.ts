@@ -12,105 +12,91 @@ import {
 	LibrarySongsOrderByField,
 	LibraryArtistsOrderByField,
 	LibraryPlaylistsOrderByField,
-} from "./enums"
+} from "./enums";
 
-import { QueuePreviousNextLater } from "./objects"
+import { QueuePreviousNextLater } from "./objects";
 
 export interface OrderBy<F = string> {
-	field: F,
-	direction: OrderByDirection,
+	field: F;
+	direction: OrderByDirection;
 }
 
-export type SongsOrderBy =
-	OrderBy<SongsOrderByField>
-export type GenresOrderBy =
-	OrderBy<GenresOrderByField>
-export type AlbumsOrderBy =
-	OrderBy<AlbumsOrderByField>
-export type ArtistsOrderBy =
-	OrderBy<ArtistsOrderByField>
-export type PlaylistsOrderBy =
-	OrderBy<PlaylistsOrderByField>
-export type LibrarySongsOrderBy =
-	OrderBy<LibrarySongsOrderByField>
-export type LibraryArtistsOrderBy =
-	OrderBy<LibraryArtistsOrderByField>
-export type LibraryPlaylistsOrderBy =
-	OrderBy<LibraryPlaylistsOrderByField>
+export type SongsOrderBy = OrderBy<SongsOrderByField>;
+export type GenresOrderBy = OrderBy<GenresOrderByField>;
+export type AlbumsOrderBy = OrderBy<AlbumsOrderByField>;
+export type ArtistsOrderBy = OrderBy<ArtistsOrderByField>;
+export type PlaylistsOrderBy = OrderBy<PlaylistsOrderByField>;
+export type LibrarySongsOrderBy = OrderBy<LibrarySongsOrderByField>;
+export type LibraryArtistsOrderBy = OrderBy<LibraryArtistsOrderByField>;
+export type LibraryPlaylistsOrderBy = OrderBy<LibraryPlaylistsOrderByField>;
 
-export type SettingsQueuesDisclosureKeys =
-	keyof Omit<QueuePreviousNextLater, "__typename">
+export type SettingsQueuesDisclosureKeys = keyof Omit<QueuePreviousNextLater, "__typename">;
 
-export type SettingsQueuesDisclosure =
-	Record<SettingsQueuesDisclosureKeys, boolean>
+export type SettingsQueuesDisclosure = Record<SettingsQueuesDisclosureKeys, boolean>;
 
 export interface SettingsOrderBySongs {
-	songs: SongsOrderBy,
-	librarySongs: LibrarySongsOrderBy,
+	songs: SongsOrderBy;
+	librarySongs: LibrarySongsOrderBy;
 }
 
 export interface SettingsOrderByGenres {
-	genres: GenresOrderBy,
+	genres: GenresOrderBy;
 }
 
 export interface SettingsOrderByAlbums {
-	albums: AlbumsOrderBy,
+	albums: AlbumsOrderBy;
 }
 
 export interface SettingsOrderByArtists {
-	artists: ArtistsOrderBy,
-	libraryArtists: LibraryArtistsOrderBy,
+	artists: ArtistsOrderBy;
+	libraryArtists: LibraryArtistsOrderBy;
 }
 
 export interface SettingsOrderByPlaylists {
-	playlists: PlaylistsOrderBy,
-	libraryPlaylists: LibraryPlaylistsOrderBy,
+	playlists: PlaylistsOrderBy;
+	libraryPlaylists: LibraryPlaylistsOrderBy;
 }
 
 export interface SettingsOrderBy
-	extends
-		SettingsOrderBySongs,
+	extends SettingsOrderBySongs,
 		SettingsOrderByGenres,
 		SettingsOrderByAlbums,
 		SettingsOrderByArtists,
 		SettingsOrderByPlaylists {}
 
 export interface Settings {
-	volume: number,
-	showGenres: boolean,
-	theme: SettingsTheme,
-	showReleased: boolean,
-	showDuration: boolean,
-	gridChildWidth: number,
-	orderBy: SettingsOrderBy,
-	listStyle: SettingsListStyle,
-	transitions: SettingsTransitions,
-	queuesDisclosure: SettingsQueuesDisclosure,
+	volume: number;
+	showGenres: boolean;
+	theme: SettingsTheme;
+	showReleased: boolean;
+	showDuration: boolean;
+	gridChildWidth: number;
+	orderBy: SettingsOrderBy;
+	listStyle: SettingsListStyle;
+	transitions: SettingsTransitions;
+	queuesDisclosure: SettingsQueuesDisclosure;
 }
 
-export type StatePageTitle =
-	string | null
+export type StatePageTitle = string | null;
 
-export type StateAccessToken =
-	string | null
+export type StateAccessToken = string | null;
 
 export interface StateErrorID {
-	errorID: string,
+	errorID: string;
 }
 
-export interface StateError
-	extends StateErrorID {
-	message: string,
-	location: string,
+export interface StateError extends StateErrorID {
+	message: string;
+	location: string;
 }
 
 export interface State {
-	play: boolean,
-	sidebar: boolean,
-	loading: string[],
-	isOnline: boolean,
-	settings: Settings,
-	errors: StateError[],
-	pageTitle: StatePageTitle,
-	accessToken: StateAccessToken,
+	play: boolean;
+	sidebar: boolean;
+	loading: string[];
+	isOnline: boolean;
+	settings: Settings;
+	errors: StateError[];
+	pageTitle: StatePageTitle;
+	accessToken: StateAccessToken;
 }

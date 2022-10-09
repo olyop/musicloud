@@ -1,25 +1,29 @@
 package com.musicloudapp.accounts.rest.dao;
 
+import com.musicloudapp.accounts.rest.exception.UserNotFoundException;
+import com.musicloudapp.accounts.rest.model.User;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.function.Predicate;
-
 import org.springframework.stereotype.Component;
-
-import com.musicloudapp.accounts.rest.exception.UserNotFoundException;
-import com.musicloudapp.accounts.rest.model.User;
 
 @Component
 public class UserDAO {
-	
+
 	private static ArrayList<User> users = new ArrayList<>();
 
 	static {
-		users.add(new User(UUID.randomUUID(), "Foo", "foo@example.com", Instant.now().getEpochSecond(), "foo"));
-		users.add(new User(UUID.randomUUID(), "Bar", "bar@example.com", Instant.now().getEpochSecond(), "bar"));
-		users.add(new User(UUID.randomUUID(), "Baz", "baz@example.com", Instant.now().getEpochSecond(), "baz"));
+		users.add(
+			new User(UUID.randomUUID(), "Foo", "foo@example.com", Instant.now().getEpochSecond(), "foo")
+		);
+		users.add(
+			new User(UUID.randomUUID(), "Bar", "bar@example.com", Instant.now().getEpochSecond(), "bar")
+		);
+		users.add(
+			new User(UUID.randomUUID(), "Baz", "baz@example.com", Instant.now().getEpochSecond(), "baz")
+		);
 	}
 
 	private static final Predicate<User> userIdFilter(UUID userID) {
@@ -49,6 +53,6 @@ public class UserDAO {
 			users.removeIf(userIdFilter(userID));
 		} catch (NullPointerException npe) {
 			throw new UserNotFoundException(userID);
-		};
+		}
 	}
 }

@@ -13,7 +13,8 @@
 		border-radius: 5rem;
 		text-transform: uppercase;
 		background-color: var(--elevated-color);
-		transition: var(--transition-duration) color; }
+		transition: var(--transition-duration) color;
+	}
 	&__image {
 		left: 50%;
 		top: 18rem;
@@ -22,10 +23,13 @@
 		transform: translateX(-50%);
 		&-portrait {
 			height: var(--image-width);
-			aspect-ratio: 1; }
+			aspect-ratio: 1;
+		}
 		&-landscape {
 			height: auto;
-			aspect-ratio: 16 / 9; } }
+			aspect-ratio: 16 / 9;
+		}
+	}
 	&__input {
 		width: 100%;
 		outline: none;
@@ -36,19 +40,27 @@
 		background-color: var(--elevated-color);
 		transition: var(--transition-duration) border-color, border-radius;
 		&::placeholder {
-			transition: var(--transition-duration) opacity; }
+			transition: var(--transition-duration) opacity;
+		}
 		&:hover,
 		&:focus {
 			border-radius: 10rem;
-			border-color: var(--primary-color); }
+			border-color: var(--primary-color);
+		}
 		&-image {
 			padding-bottom: 14rem;
 			padding-top: calc(var(--image-width) + 29rem);
 			&-landscape {
-				padding-top: calc(var(--image-width) + -94rem); } } }
+				padding-top: calc(var(--image-width) + -94rem);
+			}
+		}
+	}
 	&:hover &__label,
 	&__input:focus &__label {
-		color: var(--primary-color); }
+		color: var(--primary-color);
+	}
 	&:hover &__outline,
 	&:hover &__input::placeholder {
-		opacity: 1; } }
+		opacity: 1;
+	}
+}

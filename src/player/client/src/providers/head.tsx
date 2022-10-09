@@ -3,31 +3,26 @@ import {
 	HeadOnPageTitleChange,
 	defaultParseTitleFunction,
 	HeadProvider as HeadBaseProvider,
-} from "@oly_op/react-head"
+} from "@oly_op/react-head";
 
-import { createElement, FC, PropsWithChildren } from "react"
-import { TITLE } from "@oly_op/musicloud-common/build/metadata"
+import { createElement, FC, PropsWithChildren } from "react";
+import { TITLE } from "@oly_op/musicloud-common/build/metadata";
 
-import { updatePageTitle, useDispatch } from "../redux"
+import { updatePageTitle, useDispatch } from "../redux";
 
 export const HeadProvider: FC<PropsWithChildren> = ({ children }) => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
-	const handlePageTitleChange: HeadOnPageTitleChange =
-		({ pageTitle }) => {
-			dispatch(updatePageTitle(pageTitle))
-		}
+	const handlePageTitleChange: HeadOnPageTitleChange = ({ pageTitle }) => {
+		dispatch(updatePageTitle(pageTitle));
+	};
 
 	const configuration: HeadConfiguration = {
 		title: TITLE,
 		description: TITLE,
 		parseTitle: defaultParseTitleFunction,
 		onPageTitleChange: handlePageTitleChange,
-	}
+	};
 
-	return (
-		<HeadBaseProvider configuration={configuration}>
-			{children}
-		</HeadBaseProvider>
-	)
-}
+	return <HeadBaseProvider configuration={configuration}>{children}</HeadBaseProvider>;
+};

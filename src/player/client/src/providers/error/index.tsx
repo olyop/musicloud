@@ -1,32 +1,31 @@
-import isEmpty from "lodash-es/isEmpty"
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { createElement, FC, Fragment, PropsWithChildren } from "react"
+import isEmpty from "lodash-es/isEmpty";
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { createElement, FC, Fragment, PropsWithChildren } from "react";
 
-import { StateErrorID } from "../../types"
-import { removeError, useDispatch, useStateErrors } from "../../redux"
+import { StateErrorID } from "../../types";
+import { removeError, useDispatch, useStateErrors } from "../../redux";
 
-import "@oly_op/css-utilities/index.css"
+import "@oly_op/css-utilities/index.css";
 
 // eslint-disable-next-line import/extensions, import/no-unresolved
-import "@oly_op/react-button/index.css"
+import "@oly_op/react-button/index.css";
 
-import "../../index.scss"
+import "../../index.scss";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Errors")
+const bem = createBEM("Errors");
 
 export const ErrorProvider: FC<PropsWithChildren> = ({ children }) => {
-	const dispatch = useDispatch()
-	const errors = useStateErrors()
+	const dispatch = useDispatch();
+	const errors = useStateErrors();
 
 	const handleRemove =
 		({ errorID }: StateErrorID) =>
-			() => {
-				dispatch(removeError(errorID))
-			}
+		() => {
+			dispatch(removeError(errorID));
+		};
 
 	return (
 		<Fragment>
@@ -52,5 +51,5 @@ export const ErrorProvider: FC<PropsWithChildren> = ({ children }) => {
 			)}
 			{children}
 		</Fragment>
-	)
-}
+	);
+};

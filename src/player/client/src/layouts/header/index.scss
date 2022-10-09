@@ -7,17 +7,24 @@
 	&__left {
 		gap: var(--space-half);
 		@media (max-width: 700px) {
-			gap: var(--space-quart); }
+			gap: var(--space-quart);
+		}
 		&-icon {
 			@media (min-width: 700px) {
-				margin-left: calc(var(--space-half) + 2rem); }
+				margin-left: calc(var(--space-half) + 2rem);
+			}
 			@media (max-width: 700px) {
 				--button-dimension: var(--header-height);
-				border-radius: 0; } }
+				border-radius: 0;
+			}
+		}
 		&-title {
 			margin-top: 1rem;
 			@media (max-width: 700px) {
-				margin-top: 2rem; } } }
+				margin-top: 2rem;
+			}
+		}
+	}
 	&__offline {
 		--color: #f44336;
 		cursor: default;
@@ -27,12 +34,16 @@
 		border-radius: var(--border-radius);
 		&:hover,
 		&:focus {
-			background-color: transparent !important; }
+			background-color: transparent !important;
+		}
 		&-span {
-			color: var(--color) !important; } }
+			color: var(--color) !important;
+		}
+	}
 	&__account {
 		&-button-image {
-			border-radius: 100%; }
+			border-radius: 100%;
+		}
 		&-modal {
 			&-content {
 				--width: 133rem;
@@ -47,6 +58,13 @@
 					justify-content: flex-start;
 					&-image {
 						--fix: -1rem;
-						margin-top: -2rem; }
+						margin-top: -2rem;
+					}
 					&-text {
-						margin-top: -1rem; } } } } } }
+						margin-top: -1rem;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,33 +1,13 @@
-import {
-	Hit,
-	HitUser,
-	HitSong,
-	HitAlbum,
-	HitGenre,
-	HitArtist,
-	HitPlaylist,
-} from "./types"
+import { Hit, HitUser, HitSong, HitAlbum, HitGenre, HitArtist, HitPlaylist } from "./types";
 
-export const isUser =
-	(hit: Hit): hit is HitUser =>
-		hit.typeName === "User"
+export const isUser = (hit: Hit): hit is HitUser => hit.typeName === "User";
 
-export const isSong =
-	(hit: Hit): hit is HitSong =>
-		hit.typeName === "Song"
+export const isSong = (hit: Hit): hit is HitSong => hit.typeName === "Song";
 
-export const isGenre =
-	(hit: Hit): hit is HitGenre =>
-		hit.typeName === "Genre"
+export const isGenre = (hit: Hit): hit is HitGenre => hit.typeName === "Genre";
 
-export const isAlbum =
-	(hit: Hit): hit is HitAlbum =>
-		hit.typeName === "Album"
+export const isAlbum = (hit: Hit): hit is HitAlbum => hit.typeName === "Album";
 
-export const isArtist =
-	(hit: Hit): hit is HitArtist =>
-		hit.typeName === "Artist"
+export const isArtist = (hit: Hit): hit is HitArtist => hit.typeName === "Artist";
 
-export const isPlaylist =
-	(hit: Hit): hit is HitPlaylist =>
-		hit.typeName === "Playlist"
+export const isPlaylist = (hit: Hit): hit is HitPlaylist => hit.typeName === "Playlist";

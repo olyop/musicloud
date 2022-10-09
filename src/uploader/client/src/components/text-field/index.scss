@@ -12,7 +12,8 @@
 		border-radius: 5rem;
 		background-color: #fff;
 		text-transform: uppercase;
-		transition: var(--transition-duration) color; }
+		transition: var(--transition-duration) color;
+	}
 	&__outline {
 		opacity: 0;
 		width: 100%;
@@ -22,31 +23,41 @@
 		background-color: transparent;
 		border: 2rem solid var(--primary-color);
 		transition: var(--transition-duration) opacity;
-		transition: var(--transition-duration) border-radius; }
+		transition: var(--transition-duration) border-radius;
+	}
 	&__image {
 		left: 14rem;
 		bottom: 14rem;
 		position: absolute;
 		height: var(--content-image-height);
 		&-portrait {
-			width: var(--content-image-height); }
+			width: var(--content-image-height);
+		}
 		&-landscape {
-			width: var(--content-image-width); } }
+			width: var(--content-image-width);
+		}
+	}
 	&__right {
 		top: 50%;
 		position: absolute;
 		right: var(--space-half);
-		transform: translateY(-50%); }
+		transform: translateY(-50%);
+	}
 	&__check {
 		&:hover,
 		&:focus {
-			background-color: transparent !important; }
+			background-color: transparent !important;
+		}
 		&-valid {
-			color: #4caf50 !important; }
+			color: #4caf50 !important;
+		}
 		&-invalid {
-			color: #f44336 !important; }
+			color: #f44336 !important;
+		}
 		&-loading {
-			animation: spin 1s infinite linear; } }
+			animation: spin 1s infinite linear;
+		}
+	}
 	&__list {
 		top: 18rem;
 		left: 14rem;
@@ -61,7 +72,8 @@
 			bottom: 7rem;
 			position: absolute;
 			gap: var(--space-quart);
-			padding: var(--space-quart); }
+			padding: var(--space-quart);
+		}
 		&-close {
 			--dim: 16rem;
 			margin-top: 1rem;
@@ -71,7 +83,10 @@
 			&-icon {
 				width: var(--dim);
 				height: var(--dim);
-				font-size: var(--dim); } } }
+				font-size: var(--dim);
+			}
+		}
+	}
 	&__input {
 		width: 100%;
 		outline: none;
@@ -83,18 +98,28 @@
 		transition: var(--transition-duration) border-color;
 		transition: var(--transition-duration) border-radius;
 		&-image {
-			height: calc(var(--content-image-height) + var(--space-half) + 61rem); }
+			height: calc(var(--content-image-height) + var(--space-half) + 61rem);
+		}
 		&-list {
 			padding-top: 54rem;
 			&-add {
-				padding-bottom: 45rem; } }
+				padding-bottom: 45rem;
+			}
+		}
 		&::-webkit-calendar-picker-indicator {
-			display: none; } }
+			display: none;
+		}
+	}
 	&:hover &__label {
-		color: var(--primary-color); } }
+		color: var(--primary-color);
+	}
+}
 
 @keyframes spin {
 	from {
-		transform: rotate(360deg); }
+		transform: rotate(360deg);
+	}
 	to {
-		transform: rotate(0deg); } }
+		transform: rotate(0deg);
+	}
+}

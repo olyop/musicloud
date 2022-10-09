@@ -1,17 +1,16 @@
-import { createElement, FC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
+import { createElement, FC } from "react";
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 
-import ObjectLink from "../object-link"
-import { User as UserType } from "../../types"
-import { useToggleUserFollowing } from "../../hooks"
-import { createCatalogImageURL, createObjectPath } from "../../helpers"
-import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../modal"
+import ObjectLink from "../object-link";
+import { User as UserType } from "../../types";
+import { useToggleUserFollowing } from "../../hooks";
+import { createCatalogImageURL, createObjectPath } from "../../helpers";
+import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../modal";
 
 const UserModal: FC<PropTypes> = ({ open, user, onClose }) => {
-	const { userID , name } = user
+	const { userID, name } = user;
 
-	const [ toggleUserFollowing, isFollowing, isUser ] =
-		useToggleUserFollowing({ userID })
+	const [toggleUserFollowing, isFollowing, isUser] = useToggleUserFollowing({ userID });
 
 	return (
 		<Modal open={open} onClose={onClose}>
@@ -22,21 +21,16 @@ const UserModal: FC<PropTypes> = ({ open, user, onClose }) => {
 				}}
 				image={{
 					description: name,
-					src: createCatalogImageURL(
-						userID,
-						"profile",
-						ImageSizes.MINI,
-						ImageDimensions.SQUARE,
-					),
+					src: createCatalogImageURL(userID, "profile", ImageSizes.MINI, ImageDimensions.SQUARE),
 				}}
-				text={(
+				text={
 					<ObjectLink
 						link={{
 							text: name,
 							path: createObjectPath("user", userID),
 						}}
 					/>
-				)}
+				}
 			/>
 			{isUser || (
 				<ModalButtons>
@@ -49,12 +43,12 @@ const UserModal: FC<PropTypes> = ({ open, user, onClose }) => {
 				</ModalButtons>
 			)}
 		</Modal>
-	)
-}
+	);
+};
 
 interface PropTypes extends ModalOnClose {
-	open: boolean,
-	user: Pick<UserType, "userID" | "name">,
+	open: boolean;
+	user: Pick<UserType, "userID" | "name">;
 }
 
-export default UserModal
+export default UserModal;

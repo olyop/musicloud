@@ -1,4 +1,4 @@
-import COLUMN_NAMES from "./column-names"
+import COLUMN_NAMES from "./column-names";
 
-export { COLUMN_NAMES }
-export * from "./options"
+export { COLUMN_NAMES };
+export * from "./options";

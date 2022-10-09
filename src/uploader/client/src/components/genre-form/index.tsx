@@ -1,97 +1,87 @@
-import { useFormik } from "formik"
-import isEmpty from "lodash-es/isEmpty"
-import { createElement, FC, useEffect, useState } from "react"
-import { GenreBase } from "@oly_op/musicloud-common/build/types"
+import { useFormik } from "formik";
+import isEmpty from "lodash-es/isEmpty";
+import { createElement, FC, useEffect, useState } from "react";
+import { GenreBase } from "@oly_op/musicloud-common/build/types";
 
-import Form from "../form"
-import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field"
+import Form from "../form";
+import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field";
 
-type Genre =
-	Pick<GenreBase, "name">
+type Genre = Pick<GenreBase, "name">;
 
 const GenreForm: FC = () => {
-	const [ loading, setLoading ] =	useState(false)
+	const [loading, setLoading] = useState(false);
 
-	const [ checkNameLoading, setCheckNameLoading ] = useState(false)
-	const [ checkNameText, setCheckNameText ] = useState<CheckOptionsText>(null)
-	const [ checkNameValue, setCheckNameValue ] = useState<CheckOptionsValue>(null)
+	const [checkNameLoading, setCheckNameLoading] = useState(false);
+	const [checkNameText, setCheckNameText] = useState<CheckOptionsText>(null);
+	const [checkNameValue, setCheckNameValue] = useState<CheckOptionsValue>(null);
 
-	const formik =
-		useFormik<Genre>({
-			initialValues: {
-				name: "",
+	const formik = useFormik<Genre>({
+		initialValues: {
+			name: "",
+		},
+		onSubmit: async genre => {
+			setLoading(true);
+			const body = new FormData();
+			body.append("name", genre.name);
+			try {
+				await fetch("/api/upload/genre", {
+					method: "POST",
+					body,
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+					},
+				});
+			} finally {
+				formik.resetForm();
+				setLoading(false);
+			}
+		},
+	});
+
+	const handleCheckNameExists = async () => {
+		setCheckNameLoading(true);
+
+		const url = new URL("/api/check/genre-name-exists", location.href);
+		url.searchParams.append("name", formik.values.name);
+
+		const requestInit: RequestInit = {
+			method: "GET",
+			headers: {
+				Accept: "application/json",
+				Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
 			},
-			onSubmit: async genre => {
-				setLoading(true)
-				const body = new FormData()
-				body.append("name", genre.name)
-				try {
-					await fetch("/api/upload/genre", {
-						method: "POST",
-						body,
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
-						},
-					})
-				} finally {
-					formik.resetForm()
-					setLoading(false)
-				}
-			},
-		})
+		};
 
-	const handleCheckNameExists =
-		async () => {
-			setCheckNameLoading(true)
+		const response = await fetch(url, requestInit);
 
-			const url = new URL("/api/check/genre-name-exists", location.href)
-			url.searchParams.append("name", formik.values.name)
+		if (response.ok) {
+			const { exists } = (await response.json()) as { exists: boolean };
 
-			const requestInit: RequestInit = {
-				method: "GET",
-				headers: {
-					Accept: "application/json",
-					Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
-				},
+			if (exists) {
+				setCheckNameText("Already exists");
 			}
 
-			const response =
-				await fetch(url, requestInit)
-
-			if (response.ok) {
-				const { exists } =
-					await response.json() as { exists: boolean }
-
-				if (exists) {
-					setCheckNameText("Already exists")
-				}
-
-				setCheckNameValue(!exists)
-			} else {
-				setCheckNameValue(null)
-			}
-
-			setCheckNameLoading(false)
+			setCheckNameValue(!exists);
+		} else {
+			setCheckNameValue(null);
 		}
+
+		setCheckNameLoading(false);
+	};
 
 	useEffect(() => {
 		if (!isEmpty(formik.values.name)) {
-			void handleCheckNameExists()
+			void handleCheckNameExists();
 		}
 		return () => {
-			setCheckNameText(null)
-			setCheckNameValue(null)
-			setCheckNameLoading(false)
-		}
-	}, [formik.values.name])
+			setCheckNameText(null);
+			setCheckNameValue(null);
+			setCheckNameLoading(false);
+		};
+	}, [formik.values.name]);
 
 	return (
-		<Form
-			title="Genre"
-			loading={loading}
-			errors={formik.errors}
-			onSubmit={formik.handleSubmit}
-		>
+		<Form title="Genre" loading={loading} errors={formik.errors} onSubmit={formik.handleSubmit}>
 			<TextField
 				id="name"
 				name="Name"
@@ -107,7 +97,7 @@ const GenreForm: FC = () => {
 				}}
 			/>
 		</Form>
-	)
-}
+	);
+};
 
-export default GenreForm
+export default GenreForm;

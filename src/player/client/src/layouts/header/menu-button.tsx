@@ -1,19 +1,17 @@
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { createElement, FC } from "react";
 
-import { toggleSidebar, useDispatch } from "../../redux"
+import { toggleSidebar, useDispatch } from "../../redux";
 
-const bem =
-	createBEM("Header")
+const bem = createBEM("Header");
 
 const MenuButton: FC = () => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 
-	const handleMenuClick =
-		() => {
-			dispatch(toggleSidebar())
-		}
+	const handleMenuClick = () => {
+		dispatch(toggleSidebar());
+	};
 
 	return (
 		<Button
@@ -23,7 +21,7 @@ const MenuButton: FC = () => {
 			onClick={handleMenuClick}
 			className={bem("left-icon", "icon")}
 		/>
-	)
-}
+	);
+};
 
-export default MenuButton
+export default MenuButton;

@@ -1,6 +1,6 @@
 mutation removeArtistFromLibrary($artistID: UUID!) {
-  removeArtistFromLibrary(artistID: $artistID) {
-    artistID
-    inLibrary
-  }
+	removeArtistFromLibrary(artistID: $artistID) {
+		artistID
+		inLibrary
+	}
 }

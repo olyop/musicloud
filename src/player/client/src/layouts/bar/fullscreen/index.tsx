@@ -1,37 +1,31 @@
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { createElement, useEffect, FC, Fragment } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { createElement, useEffect, FC, Fragment } from "react";
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 
-import Progress from "../progress"
-import Controls from "../controls"
-import { Handler } from "../../../types"
-import { useKeyPress } from "../../../hooks"
-import Modal from "../../../components/modal"
-import { BarCommonPropTypes } from "../types"
-import SongTitle from "../../../components/song-title"
-import ObjectLinks from "../../../components/object-links"
-import FeaturingArtists from "../../../components/featuring-artists"
-import { createObjectPath, createCatalogImageURL } from "../../../helpers"
+import Progress from "../progress";
+import Controls from "../controls";
+import { Handler } from "../../../types";
+import { useKeyPress } from "../../../hooks";
+import Modal from "../../../components/modal";
+import { BarCommonPropTypes } from "../types";
+import SongTitle from "../../../components/song-title";
+import ObjectLinks from "../../../components/object-links";
+import FeaturingArtists from "../../../components/featuring-artists";
+import { createObjectPath, createCatalogImageURL } from "../../../helpers";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =	createBEM("BarFullscreen")
+const bem = createBEM("BarFullscreen");
 
-const BarFullscreen: FC<PropTypes> = ({
-	open,
-	audio,
-	onOpen,
-	onClose,
-	nowPlaying,
-}) => {
-	const escapePress = useKeyPress("Escape")
+const BarFullscreen: FC<PropTypes> = ({ open, audio, onOpen, onClose, nowPlaying }) => {
+	const escapePress = useKeyPress("Escape");
 
 	useEffect(() => {
 		if (escapePress) {
-			void onClose()
+			void onClose();
 		}
-	}, [escapePress])
+	}, [escapePress]);
 
 	return (
 		<Fragment>
@@ -44,11 +38,7 @@ const BarFullscreen: FC<PropTypes> = ({
 					className={bem("expand")}
 				/>
 			)}
-			<Modal
-				open={open}
-				onClose={onClose}
-				contentClassName={bem("")}
-			>
+			<Modal open={open} onClose={onClose} contentClassName={bem("")}>
 				<Button
 					transparent
 					icon="close"
@@ -71,16 +61,10 @@ const BarFullscreen: FC<PropTypes> = ({
 						/>
 						<div className="FlexColumnGapHalf">
 							<h1 className={bem("content-title", "content-text")}>
-								<SongTitle
-									song={nowPlaying}
-									onClick={onClose}
-								/>
+								<SongTitle song={nowPlaying} onClick={onClose} />
 							</h1>
 							<h3 className={bem("content-artists", "content-text")}>
-								<FeaturingArtists
-									song={nowPlaying}
-									onClick={onClose}
-								/>
+								<FeaturingArtists song={nowPlaying} onClick={onClose} />
 							</h3>
 							<h2 className={bem("content-genres", "content-text")}>
 								<ObjectLinks
@@ -92,11 +76,7 @@ const BarFullscreen: FC<PropTypes> = ({
 								/>
 							</h2>
 						</div>
-						<Progress
-							audio={audio}
-							nowPlaying={nowPlaying}
-							className={bem("content-progress")}
-						/>
+						<Progress audio={audio} nowPlaying={nowPlaying} className={bem("content-progress")} />
 						<Controls
 							audio={audio}
 							nowPlaying={nowPlaying}
@@ -107,13 +87,13 @@ const BarFullscreen: FC<PropTypes> = ({
 				)}
 			</Modal>
 		</Fragment>
-	)
-}
+	);
+};
 
 interface PropTypes extends BarCommonPropTypes {
-	open: boolean,
-	onOpen: Handler,
-	onClose: Handler,
+	open: boolean;
+	onOpen: Handler;
+	onClose: Handler;
 }
 
-export default BarFullscreen
+export default BarFullscreen;

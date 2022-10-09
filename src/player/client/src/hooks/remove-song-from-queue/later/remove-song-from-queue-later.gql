@@ -2,6 +2,6 @@
 
 mutation removeSongFromQueueLater($index: NonNegativeInt!) {
 	removeSongFromQueueLater(index: $index) {
-    ...QueueLaterFragment
+		...QueueLaterFragment
 	}
 }

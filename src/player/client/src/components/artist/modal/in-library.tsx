@@ -1,11 +1,11 @@
-import { createElement, FC } from "react"
+import { createElement, FC } from "react";
 
-import { ModalButton } from "../../modal"
-import { Handler, Artist } from "../../../types"
-import { useToggleObjectInLibrary } from "../../../hooks"
+import { ModalButton } from "../../modal";
+import { Handler, Artist } from "../../../types";
+import { useToggleObjectInLibrary } from "../../../hooks";
 
 const InLibraryButton: FC<PropTypes> = ({ artist, onClose }) => {
-	const [ toggleInLibrary, inLibrary ] = useToggleObjectInLibrary(artist)
+	const [toggleInLibrary, inLibrary] = useToggleObjectInLibrary(artist);
 	return (
 		<ModalButton
 			onClose={onClose}
@@ -13,12 +13,12 @@ const InLibraryButton: FC<PropTypes> = ({ artist, onClose }) => {
 			icon={inLibrary ? "done" : "add"}
 			text={inLibrary ? "Remove" : "Add"}
 		/>
-	)
-}
+	);
+};
 
 interface PropTypes {
-	artist: Artist,
-	onClose: Handler,
+	artist: Artist;
+	onClose: Handler;
 }
 
-export default InLibraryButton
+export default InLibraryButton;

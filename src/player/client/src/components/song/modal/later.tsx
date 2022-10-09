@@ -1,38 +1,27 @@
-import { createElement, FC } from "react"
-import { SongID } from "@oly_op/musicloud-common/build/types"
+import { createElement, FC } from "react";
+import { SongID } from "@oly_op/musicloud-common/build/types";
 
-import { useMutation } from "../../../hooks"
-import { ModalButton, ModalOnClose } from "../../modal"
+import { useMutation } from "../../../hooks";
+import { ModalButton, ModalOnClose } from "../../modal";
 
-import QUEUE_SONG_LATER from "./queue-song-later.gql"
+import QUEUE_SONG_LATER from "./queue-song-later.gql";
 
 const LaterButton: FC<PropTypes> = ({ songID, onClose }) => {
-	const [ later, { loading } ] =
-		useMutation<unknown, SongID>(
-			QUEUE_SONG_LATER,
-			{ variables: { songID } },
-		)
+	const [later, { loading }] = useMutation<unknown, SongID>(QUEUE_SONG_LATER, {
+		variables: { songID },
+	});
 
-	const handleClick =
-		() => {
-			if (!loading) {
-				void later()
-			}
+	const handleClick = () => {
+		if (!loading) {
+			void later();
 		}
+	};
 
-	return (
-		<ModalButton
-			icon="queue"
-			text="Later"
-			onClose={onClose}
-			onClick={handleClick}
-		/>
-	)
+	return <ModalButton icon="queue" text="Later" onClose={onClose} onClick={handleClick} />;
+};
+
+interface PropTypes extends SongID, ModalOnClose {
+	hidePlay?: boolean;
 }
 
-interface PropTypes
-	extends SongID, ModalOnClose {
-	hidePlay?: boolean,
-}
-
-export default LaterButton
+export default LaterButton;

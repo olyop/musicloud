@@ -1,7 +1,7 @@
 declare module "*.gql" {
-	import { DocumentNode } from "@apollo/client"
+	import { DocumentNode } from "@apollo/client";
 
-	const value: DocumentNode
+	const value: DocumentNode;
 
-	export default value
+	export default value;
 }

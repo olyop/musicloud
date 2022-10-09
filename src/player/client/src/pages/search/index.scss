@@ -12,7 +12,8 @@
 			padding-left: calc(var(--space-quart) + var(--button-dimension));
 			border-bottom: calc(var(--border-width) * 2) solid var(--border-color);
 			&:focus {
-				border-bottom-color: var(--grey-color-500); }
+				border-bottom-color: var(--grey-color-500);
+			}
 			&-search {
 				left: 0;
 				top: 50%;
@@ -21,11 +22,18 @@
 				transform: translateY(-50%);
 				&:hover,
 				&:focus {
-					background-color: transparent; } }
+					background-color: transparent;
+				}
+			}
 			&-right {
 				top: 0;
 				height: 100%;
 				position: absolute;
 				right: var(--space-half);
 				&-algolia {
-					height: calc(100% - var(--space) - var(--border-width) * 2 - var(--space-fifth)); } } } } }
+					height: calc(100% - var(--space) - var(--border-width) * 2 - var(--space-fifth));
+				}
+			}
+		}
+	}
+}

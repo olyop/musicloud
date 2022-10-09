@@ -1,13 +1,12 @@
-import { Field } from "./field"
+import { Field } from "./field";
 
-const getInitialValues =
-	<T>(fields: Field[]) =>
-		fields.reduce(
-			(values, field) => ({
-				...values,
-				[field.fieldID]: field.initialValue,
-			}),
-			{} as T,
-		)
+const getInitialValues = <T>(fields: Field[]) =>
+	fields.reduce(
+		(values, field) => ({
+			...values,
+			[field.fieldID]: field.initialValue,
+		}),
+		{} as T,
+	);
 
-export default getInitialValues
+export default getInitialValues;

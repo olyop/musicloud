@@ -1,60 +1,49 @@
-import isNull from "lodash-es/isNull"
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { FC, createElement, useState, Fragment, useRef } from "react"
+import isNull from "lodash-es/isNull";
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { FC, createElement, useState, Fragment, useRef } from "react";
 
-import LoggedIn from "./components/logged-in"
-import LogInForm from "./components/log-in-form"
-import SignUpForm from "./components/sign-up-form"
-import { InputOnChange } from "./components/input"
-import { determineTitle, isValidServiceName } from "./helpers"
-import EmailAddressForm, { EmailAddressFormOnExists } from "./components/email-address-form"
+import LoggedIn from "./components/logged-in";
+import LogInForm from "./components/log-in-form";
+import SignUpForm from "./components/sign-up-form";
+import { InputOnChange } from "./components/input";
+import { determineTitle, isValidServiceName } from "./helpers";
+import EmailAddressForm, { EmailAddressFormOnExists } from "./components/email-address-form";
 
-import packageDotJSON from "../../../../package.json"
+import packageDotJSON from "../../../../package.json";
 
-import "./application.scss"
+import "./application.scss";
 
-const bem =
-	createBEM("Application")
+const bem = createBEM("Application");
 
 const Application: FC = () => {
-	const [ accessToken, setAccessToken ] =
-		useState<string | null>(null)
+	const [accessToken, setAccessToken] = useState<string | null>(null);
 
-	const [ emailAddress, setEmailAddress ] =
-		useState("")
+	const [emailAddress, setEmailAddress] = useState("");
 
-	const [ emailAddressExists, setEmailAddressExists ] =
-		useState(false)
+	const [emailAddressExists, setEmailAddressExists] = useState(false);
 
-	const [ emailAddressChecked, setEmailAddressChecked ] =
-		useState(false)
+	const [emailAddressChecked, setEmailAddressChecked] = useState(false);
 
-	const redirectService =
-		useRef(new URLSearchParams(location.search).get("redirect") || "player")
+	const redirectService = useRef(new URLSearchParams(location.search).get("redirect") || "player");
 
-	const redirectPath =
-		useRef(new URLSearchParams(location.search).get("redirectPath"))
+	const redirectPath = useRef(new URLSearchParams(location.search).get("redirectPath"));
 
-	const handleBack =
-		() => setEmailAddressChecked(false)
+	const handleBack = () => setEmailAddressChecked(false);
 
-	const handleEmailAddressChange: InputOnChange =
-		value => setEmailAddress(value)
+	const handleEmailAddressChange: InputOnChange = value => setEmailAddress(value);
 
-	const handleEmailAddressExists: EmailAddressFormOnExists =
-		exists => {
-			setEmailAddressChecked(true)
-			setEmailAddressExists(exists)
-		}
+	const handleEmailAddressExists: EmailAddressFormOnExists = exists => {
+		setEmailAddressChecked(true);
+		setEmailAddressExists(exists);
+	};
 
-	const handleSubmit =
-		(value: string) => {
-			setAccessToken(value)
-			setEmailAddressExists(false)
-			setEmailAddressChecked(false)
-			setEmailAddress("")
-		}
+	const handleSubmit = (value: string) => {
+		setAccessToken(value);
+		setEmailAddressExists(false);
+		setEmailAddressChecked(false);
+		setEmailAddress("");
+	};
 
 	return (
 		<div className={bem("", "PaddingTopBottom FullWidthAndHeight")}>
@@ -124,13 +113,11 @@ const Application: FC = () => {
 						)}
 					</Fragment>
 				) : (
-					<p className="ParagraphOne Error">
-						Invalid redirect url paramater
-					</p>
+					<p className="ParagraphOne Error">Invalid redirect url paramater</p>
 				)}
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Application
+export default Application;

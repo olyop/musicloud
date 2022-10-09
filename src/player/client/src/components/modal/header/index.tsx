@@ -1,16 +1,14 @@
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { createElement, ReactNode, FC } from "react"
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { createElement, ReactNode, FC } from "react";
 
-import { Handler } from "../../../types"
+import { Handler } from "../../../types";
 
-import "./index.scss"
+import "./index.scss";
 
-const canShare =
-	() => "share" in navigator
+const canShare = () => "share" in navigator;
 
-const bem =
-	createBEM("ModalHeader")
+const bem = createBEM("ModalHeader");
 
 const Header: FC<ModalHeaderPropTypes> = ({
 	text,
@@ -20,23 +18,16 @@ const Header: FC<ModalHeaderPropTypes> = ({
 	shareData,
 	hideShare = false,
 }) => {
-	const handleShare =
-		() => {
-			if (!hideShare && onClose && "share" in navigator) {
-				void navigator.share(shareData)
-				onClose()
-			}
+	const handleShare = () => {
+		if (!hideShare && onClose && "share" in navigator) {
+			void navigator.share(shareData);
+			onClose();
 		}
+	};
 
 	return (
 		<div className={bem("", "FlexRowGapHalfCenter ItemBorder PaddingLeftRightHalf")}>
-			{icon && (
-				<Button
-					transparent
-					icon={icon}
-					className={bem("icon-left", "icon")}
-				/>
-			)}
+			{icon && <Button transparent icon={icon} className={bem("icon-left", "icon")} />}
 			{image && (
 				<img
 					src={image.src}
@@ -45,9 +36,7 @@ const Header: FC<ModalHeaderPropTypes> = ({
 					className={bem("img", "Rounded")}
 				/>
 			)}
-			<p className={bem("text", "ParagraphOne")}>
-				{text}
-			</p>
+			<p className={bem("text", "ParagraphOne")}>{text}</p>
 			{canShare() && !hideShare && shareData && (
 				<Button
 					transparent
@@ -58,21 +47,21 @@ const Header: FC<ModalHeaderPropTypes> = ({
 				/>
 			)}
 		</div>
-	)
-}
+	);
+};
 
 interface ImageOptions {
-	src: string,
-	description: string,
+	src: string;
+	description: string;
 }
 
 export interface ModalHeaderPropTypes {
-	icon?: string,
-	text?: ReactNode,
-	onClose?: Handler,
-	hideShare?: boolean,
-	image?: ImageOptions,
-	shareData?: ShareData,
+	icon?: string;
+	text?: ReactNode;
+	onClose?: Handler;
+	hideShare?: boolean;
+	image?: ImageOptions;
+	shareData?: ShareData;
 }
 
-export default Header
+export default Header;

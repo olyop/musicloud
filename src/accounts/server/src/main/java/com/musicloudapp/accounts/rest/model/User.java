@@ -1,13 +1,12 @@
 package com.musicloudapp.accounts.rest.model;
 
-import java.util.UUID;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Past;
+import java.util.UUID;
 
 public class User {
-	
+
 	private final UUID userID;
 
 	@Min(2)
@@ -67,7 +66,18 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [dateJoined=" + dateJoined + ", emailAddress=" + emailAddress + ", name=" + name + ", password="
-				+ password + ", userID=" + userID + "]";
+		return (
+			"User [dateJoined=" +
+			dateJoined +
+			", emailAddress=" +
+			emailAddress +
+			", name=" +
+			name +
+			", password=" +
+			password +
+			", userID=" +
+			userID +
+			"]"
+		);
 	}
 }

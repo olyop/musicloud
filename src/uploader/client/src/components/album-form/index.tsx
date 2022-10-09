@@ -1,83 +1,83 @@
-import { useFormik } from "formik"
-import orderBy from "lodash-es/orderBy"
-import isEmpty from "lodash-es/isEmpty"
-import isUndefined from "lodash-es/isUndefined"
-import { useState, createElement, FC, ChangeEventHandler } from "react"
+import { useFormik } from "formik";
+import orderBy from "lodash-es/orderBy";
+import isEmpty from "lodash-es/isEmpty";
+import isUndefined from "lodash-es/isUndefined";
+import { useState, createElement, FC, ChangeEventHandler } from "react";
 
-import Form from "../form"
-import AlbumFormSong from "./song"
-import { Item } from "../../types"
-import TextField from "../text-field"
-import AlbumSongs, { OnAddSong } from "./songs"
-import createFormData from "./create-form-data"
-import { Album, Song, SongLists } from "./types"
-import getAudioMetadata from "./get-audio-metadata"
-import { createGoogleSearchURL } from "../../helpers"
+import Form from "../form";
+import AlbumFormSong from "./song";
+import { Item } from "../../types";
+import TextField from "../text-field";
+import AlbumSongs, { OnAddSong } from "./songs";
+import createFormData from "./create-form-data";
+import { Album, Song, SongLists } from "./types";
+import getAudioMetadata from "./get-audio-metadata";
+import { createGoogleSearchURL } from "../../helpers";
 
 const AlbumForm: FC = () => {
-	const [ loading, setLoading ] = useState(false)
-	const [ songs, setSongs ] = useState<Song[]>([])
+	const [loading, setLoading] = useState(false);
+	const [songs, setSongs] = useState<Song[]>([]);
 
-	const formik =
-		useFormik<Album>({
-			initialValues: {
-				title: "",
-				artists: [],
-				remixers: [],
-				released: "",
-				cover: undefined,
-			},
-			onSubmit: async (album, { resetForm }) => {
-				let reset = true
-				try {
-					setLoading(true)
-					await fetch("/api/upload/album", {
-						method: "POST",
-						body: createFormData(album, songs),
-						headers: {
-							Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
-						},
-					})
-				} catch (error) {
-					console.error(error)
-					reset = false
-				} finally {
-					if (reset) {
-						setSongs([])
-						resetForm()
-					}
-					setLoading(false)
+	const formik = useFormik<Album>({
+		initialValues: {
+			title: "",
+			artists: [],
+			remixers: [],
+			released: "",
+			cover: undefined,
+		},
+		onSubmit: async (album, { resetForm }) => {
+			let reset = true;
+			try {
+				setLoading(true);
+				await fetch("/api/upload/album", {
+					method: "POST",
+					body: createFormData(album, songs),
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
+					},
+				});
+			} catch (error) {
+				console.error(error);
+				reset = false;
+			} finally {
+				if (reset) {
+					setSongs([]);
+					resetForm();
 				}
-			},
-		})
+				setLoading(false);
+			}
+		},
+	});
 
-	const { values, errors, handleChange, handleSubmit, setFieldValue } = formik
-	const { title, released, artists, remixers, cover } = values
+	const { values, errors, handleChange, handleSubmit, setFieldValue } = formik;
+	const { title, released, artists, remixers, cover } = values;
 
-	const handleSongAdd: OnAddSong =
-		async files => {
-			for (const audio of files) {
-				const metadata = await getAudioMetadata(audio)
+	const handleSongAdd: OnAddSong = async files => {
+		for (const audio of files) {
+			const metadata = await getAudioMetadata(audio);
 
-				if (isEmpty(title) && metadata.album) {
-					await setFieldValue("title", metadata.album)
-				}
+			if (isEmpty(title) && metadata.album) {
+				await setFieldValue("title", metadata.album);
+			}
 
-				if (isEmpty(released) && metadata.year) {
-					await setFieldValue("released", `${metadata.year}-01-01`)
-				}
+			if (isEmpty(released) && metadata.year) {
+				await setFieldValue("released", `${metadata.year}-01-01`);
+			}
 
-				if (isEmpty(artists) && metadata.artists) {
-					await setFieldValue("artists", metadata.artists.map<Item>(
-						(value, index) => ({ index, value }),
-					))
-				}
+			if (isEmpty(artists) && metadata.artists) {
+				await setFieldValue(
+					"artists",
+					metadata.artists.map<Item>((value, index) => ({ index, value })),
+				);
+			}
 
-				if (isUndefined(cover) && metadata.cover) {
-					await setFieldValue("cover", new Blob([new Uint8Array(metadata.cover.data)]))
-				}
+			if (isUndefined(cover) && metadata.cover) {
+				await setFieldValue("cover", new Blob([new Uint8Array(metadata.cover.data)]));
+			}
 
-				setSongs(prevState => orderBy(
+			setSongs(prevState =>
+				orderBy(
 					[
 						...prevState,
 						{
@@ -88,147 +88,117 @@ const AlbumForm: FC = () => {
 							title: metadata.title || "",
 							discNumber: metadata.discNumber || 1,
 							trackNumber: metadata.trackNumber || 1,
-							genres: metadata.genres?.map<Item>(
-								(value, index) => ({ index, value }),
-							) || [],
-							artists: metadata.artists?.map<Item>(
-								(value, index) => ({ index, value }),
-							) || [],
+							genres: metadata.genres?.map<Item>((value, index) => ({ index, value })) || [],
+							artists: metadata.artists?.map<Item>((value, index) => ({ index, value })) || [],
 						},
 					],
 					"trackNumber",
-				))
-			}
+				),
+			);
 		}
+	};
 
-	const handleSongRemove =
-		(trackNumber: number) => () =>
-			setSongs(prevState => prevState.filter(
-				song => song.trackNumber !== trackNumber,
-			))
+	const handleSongRemove = (trackNumber: number) => () =>
+		setSongs(prevState => prevState.filter(song => song.trackNumber !== trackNumber));
 
-	const handleSongMixChange =
-		(trackNumber: number) =>
-			(mix: string) =>
-				setSongs(prevState => prevState.map(
-					song => (
-						song.trackNumber === trackNumber ? ({
+	const handleSongMixChange = (trackNumber: number) => (mix: string) =>
+		setSongs(prevState =>
+			prevState.map(song =>
+				song.trackNumber === trackNumber
+					? {
 							...song,
 							mix,
-						}) : song
-					),
-				))
+					  }
+					: song,
+			),
+		);
 
-	const handleSongTitleChange =
-		(trackNumber: number) =>
-			(value: string) =>
-				setSongs(prevState => prevState.map(
-					song => (
-						song.trackNumber === trackNumber ? ({
+	const handleSongTitleChange = (trackNumber: number) => (value: string) =>
+		setSongs(prevState =>
+			prevState.map(song =>
+				song.trackNumber === trackNumber
+					? {
 							...song,
 							title: value,
-						}) : song
-					),
-				))
+					  }
+					: song,
+			),
+		);
 
-	const handleSongListAdd =
-		(trackNumber: number) =>
-			(key: keyof SongLists) =>
-				() =>
-					setSongs(prevState => prevState.map(
-						song => (
-							song.trackNumber === trackNumber ? ({
-								...song,
-								[key]: [
-									...song[key],
-									{ index: song[key].length, value: "" },
-								],
-							}) : song
-						),
-					))
+	const handleSongListAdd = (trackNumber: number) => (key: keyof SongLists) => () =>
+		setSongs(prevState =>
+			prevState.map(song =>
+				song.trackNumber === trackNumber
+					? {
+							...song,
+							[key]: [...song[key], { index: song[key].length, value: "" }],
+					  }
+					: song,
+			),
+		);
 
 	const handleSongListChange =
-		(trackNumber: number) =>
-			(key: keyof SongLists) =>
-				(index: number) =>
-					(value: string) =>
-						setSongs(prevState => prevState.map(
-							song => (
-								song.trackNumber === trackNumber ? ({
-									...song,
-									[key]: song[key].map(
-										(item => (item.index === index ? { index, value } : item)),
-									),
-								}) : song
-							),
-						))
+		(trackNumber: number) => (key: keyof SongLists) => (index: number) => (value: string) =>
+			setSongs(prevState =>
+				prevState.map(song =>
+					song.trackNumber === trackNumber
+						? {
+								...song,
+								[key]: song[key].map(item => (item.index === index ? { index, value } : item)),
+						  }
+						: song,
+				),
+			);
 
 	const handleSongListRemove =
-		(trackNumber: number) =>
-			(key: keyof SongLists) =>
-				(index: number) =>
-					() =>
-						setSongs(prevState => prevState.map(
-							song => (
-								song.trackNumber === trackNumber ? ({
-									...song,
-									[key]: song[key].filter(
-										(item => item.index !== index),
-									),
-								}) : song
-							),
-						))
-
-	const handleArtistAdd =
-		(value: string) => () =>
-			setFieldValue(
-				"artists",
-				[...artists, {
-					value,
-					index: artists.length,
-				}],
-			)
-
-	const handleArtistRemove =
-		(index: number) => () =>
-			setFieldValue(
-				"artists",
-				artists.filter(
-					artist => index !== artist.index,
+		(trackNumber: number) => (key: keyof SongLists) => (index: number) => () =>
+			setSongs(prevState =>
+				prevState.map(song =>
+					song.trackNumber === trackNumber
+						? {
+								...song,
+								[key]: song[key].filter(item => item.index !== index),
+						  }
+						: song,
 				),
-			)
+			);
 
-	const handleRemixerAdd =
-		(value: string) => () =>
-			setFieldValue(
-				"remixers",
-				[...remixers, {
-					value,
-					index: remixers.length,
-				}],
-			)
+	const handleArtistAdd = (value: string) => () =>
+		setFieldValue("artists", [
+			...artists,
+			{
+				value,
+				index: artists.length,
+			},
+		]);
 
-	const handleRemixerRemove =
-		(index: number) => () =>
-			setFieldValue(
-				"remixers",
-				remixers.filter(
-					remixer => index !== remixer.index,
-				),
-			)
+	const handleArtistRemove = (index: number) => () =>
+		setFieldValue(
+			"artists",
+			artists.filter(artist => index !== artist.index),
+		);
 
-	const handleCoverChange: ChangeEventHandler<HTMLInputElement> =
-		({ target: { files } }) => {
-			void setFieldValue("cover", files!.item(0))
-		}
+	const handleRemixerAdd = (value: string) => () =>
+		setFieldValue("remixers", [
+			...remixers,
+			{
+				value,
+				index: remixers.length,
+			},
+		]);
+
+	const handleRemixerRemove = (index: number) => () =>
+		setFieldValue(
+			"remixers",
+			remixers.filter(remixer => index !== remixer.index),
+		);
+
+	const handleCoverChange: ChangeEventHandler<HTMLInputElement> = ({ target: { files } }) => {
+		void setFieldValue("cover", files!.item(0));
+	};
 
 	return (
-		<Form
-			title="Album"
-			errors={errors}
-			loading={loading}
-			onSubmit={handleSubmit}
-		>
+		<Form title="Album" errors={errors} loading={loading} onSubmit={handleSubmit}>
 			<TextField
 				id="title"
 				type="text"
@@ -277,15 +247,19 @@ const AlbumForm: FC = () => {
 				multiple={false}
 				accept="image/*"
 				onChange={handleCoverChange}
-				action={cover ? undefined : {
-					text: "Cover",
-					icon: "search",
-					disabled: isEmpty(title) || isEmpty(artists),
-					url: createGoogleSearchURL({
-						isImage: true,
-						query: `${title} ${artists[0]?.value || ""} album cover`,
-					}),
-				}}
+				action={
+					cover
+						? undefined
+						: {
+								text: "Cover",
+								icon: "search",
+								disabled: isEmpty(title) || isEmpty(artists),
+								url: createGoogleSearchURL({
+									isImage: true,
+									query: `${title} ${artists[0]?.value || ""} album cover`,
+								}),
+						  }
+				}
 			/>
 			<AlbumSongs onAddSong={handleSongAdd} songs={songs}>
 				{songs.map(song => (
@@ -302,7 +276,7 @@ const AlbumForm: FC = () => {
 				))}
 			</AlbumSongs>
 		</Form>
-	)
-}
+	);
+};
 
-export default AlbumForm
+export default AlbumForm;

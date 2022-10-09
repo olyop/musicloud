@@ -1,15 +1,15 @@
-import Button from "@oly_op/react-button"
-import { createElement, FC } from "react"
-import { createBEM, BEMInput } from "@oly_op/bem"
+import Button from "@oly_op/react-button";
+import { createElement, FC } from "react";
+import { createBEM, BEMInput } from "@oly_op/bem";
 
-import { BarCommonPropTypes } from "../types"
-import { ClassNameBEMPropTypes } from "../../../types"
-import { togglePlay, useDispatch, useStatePlay } from "../../../redux"
-import { useNextQueueSong, usePreviousQueueSong } from "../../../hooks"
+import { BarCommonPropTypes } from "../types";
+import { ClassNameBEMPropTypes } from "../../../types";
+import { togglePlay, useDispatch, useStatePlay } from "../../../redux";
+import { useNextQueueSong, usePreviousQueueSong } from "../../../hooks";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =	createBEM("BarControls")
+const bem = createBEM("BarControls");
 
 const PlayButton: FC<PlayButtonPropTypes> = ({
 	audio,
@@ -19,35 +19,26 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 	playButtonClassName,
 	playButtonIconClassName,
 }) => {
-	const play = useStatePlay()
-	const dispatch = useDispatch()
+	const play = useStatePlay();
+	const dispatch = useDispatch();
 
-	const showLoop =
-		nowPlaying ?
-			(play ?
-				audio.stopped && audio.loading :
-				false) :
-			false
+	const showLoop = nowPlaying ? (play ? audio.stopped && audio.loading : false) : false;
 
-	const icon =
-		audio.error ?
-			"error_outline" : (
-				showLoop ?
-					"loop" : (
-						nowPlaying ?
-							(play ?
-								"pause" :
-								"play_arrow") :
-							"play_arrow"
-					)
-			)
+	const icon = audio.error
+		? "error_outline"
+		: showLoop
+		? "loop"
+		: nowPlaying
+		? play
+			? "pause"
+			: "play_arrow"
+		: "play_arrow";
 
-	const handleTogglePlay =
-		() => {
-			if (nowPlaying) {
-				dispatch(togglePlay())
-			}
+	const handleTogglePlay = () => {
+		if (nowPlaying) {
+			dispatch(togglePlay());
 		}
+	};
 
 	return (
 		<Button
@@ -56,8 +47,8 @@ const PlayButton: FC<PlayButtonPropTypes> = ({
 			className={bem(playButtonClassName, buttonClassName)}
 			iconClassName={bem(playButtonIconClassName, buttonIconClassName, showLoop && "loading")}
 		/>
-	)
-}
+	);
+};
 
 const BarControls: FC<PropTypes> = ({
 	audio,
@@ -68,28 +59,23 @@ const BarControls: FC<PropTypes> = ({
 	playButtonClassName,
 	playButtonIconClassName,
 }) => {
-	const [ nextQueueSong, { loading: nextQueueSongLoading } ] =
-		useNextQueueSong()
+	const [nextQueueSong, { loading: nextQueueSongLoading }] = useNextQueueSong();
 
-	const [ previousQueueSong, { loading: previousQueueSongLoading } ] =
-		usePreviousQueueSong()
+	const [previousQueueSong, { loading: previousQueueSongLoading }] = usePreviousQueueSong();
 
-	const loading =
-		nextQueueSongLoading || previousQueueSongLoading
+	const loading = nextQueueSongLoading || previousQueueSongLoading;
 
-	const handleNextQueueSong =
-		() => {
-			if (!loading) {
-				void nextQueueSong()
-			}
+	const handleNextQueueSong = () => {
+		if (!loading) {
+			void nextQueueSong();
 		}
+	};
 
-	const handlePreviousQueueSong =
-		() => {
-			if (!previousQueueSongLoading) {
-				void previousQueueSong()
-			}
+	const handlePreviousQueueSong = () => {
+		if (!previousQueueSongLoading) {
+			void previousQueueSong();
 		}
+	};
 
 	return (
 		<div className={bem(className, "")}>
@@ -116,20 +102,18 @@ const BarControls: FC<PropTypes> = ({
 				iconClassName={buttonIconClassName}
 			/>
 		</div>
-	)
-}
+	);
+};
 
 interface ClassNamePropTypes {
-	buttonClassName?: BEMInput,
-	buttonIconClassName?: BEMInput,
-	playButtonClassName?: BEMInput,
-	playButtonIconClassName?: BEMInput,
+	buttonClassName?: BEMInput;
+	buttonIconClassName?: BEMInput;
+	playButtonClassName?: BEMInput;
+	playButtonIconClassName?: BEMInput;
 }
 
-interface PlayButtonPropTypes
-	extends BarCommonPropTypes, ClassNamePropTypes {}
+interface PlayButtonPropTypes extends BarCommonPropTypes, ClassNamePropTypes {}
 
-interface PropTypes
-	extends ClassNameBEMPropTypes, BarCommonPropTypes, ClassNamePropTypes {}
+interface PropTypes extends ClassNameBEMPropTypes, BarCommonPropTypes, ClassNamePropTypes {}
 
-export default BarControls
+export default BarControls;

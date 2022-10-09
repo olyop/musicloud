@@ -1,8 +1,10 @@
 .DownloadsMenu {
 	&__downloading {
-		animation: spin 1s infinite linear; }
+		animation: spin 1s infinite linear;
+	}
 	&__background {
-		opacity: 0; }
+		opacity: 0;
+	}
 	&__content {
 		--padding: var(--space-half);
 		left: unset;
@@ -11,10 +13,16 @@
 		right: calc(var(--padding) + 17px);
 		top: calc(var(--header-height) + var(--padding));
 		&-button {
-			align-self: flex-start; } } }
+			align-self: flex-start;
+		}
+	}
+}
 
 @keyframes spin {
 	from {
-		transform: rotate(360deg); }
+		transform: rotate(360deg);
+	}
 	to {
-		transform: rotate(0deg); } }
+		transform: rotate(0deg);
+	}
+}

@@ -1,54 +1,48 @@
-import { Link } from "react-router-dom"
-import { createBEM } from "@oly_op/bem"
-import uniqueID from "lodash-es/uniqueId"
-import Button from "@oly_op/react-button"
-import { createElement, Fragment, useState, FC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
+import { Link } from "react-router-dom";
+import { createBEM } from "@oly_op/bem";
+import uniqueID from "lodash-es/uniqueId";
+import Button from "@oly_op/react-button";
+import { createElement, Fragment, useState, FC } from "react";
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 
-import Modal from "../../components/modal"
-import { addLoading, removeLoading, useDispatch } from "../../redux"
-import { createCatalogImageURL, createObjectPath } from "../../helpers"
-import { useClearCache, useJWTPayload, useResetCache, useSignOut } from "../../hooks"
+import Modal from "../../components/modal";
+import { addLoading, removeLoading, useDispatch } from "../../redux";
+import { createCatalogImageURL, createObjectPath } from "../../helpers";
+import { useClearCache, useJWTPayload, useResetCache, useSignOut } from "../../hooks";
 
-const bem =
-	createBEM("Header")
+const bem = createBEM("Header");
 
-const refreshLoadingID = uniqueID()
-const clearCacheLoadingID = uniqueID()
+const refreshLoadingID = uniqueID();
+const clearCacheLoadingID = uniqueID();
 
 const HeaderAccountButton: FC = () => {
-	const signOut = useSignOut()
-	const dispatch = useDispatch()
-	const clearCache = useClearCache()
-	const resetCache = useResetCache()
-	const { userID, name } = useJWTPayload()
+	const signOut = useSignOut();
+	const dispatch = useDispatch();
+	const clearCache = useClearCache();
+	const resetCache = useResetCache();
+	const { userID, name } = useJWTPayload();
 
-	const [ accountModal, setAccountModal ] =
-		useState(false)
+	const [accountModal, setAccountModal] = useState(false);
 
-	const handleAccountModalOpen =
-		() => setAccountModal(true)
+	const handleAccountModalOpen = () => setAccountModal(true);
 
-	const handleAccountModalClose =
-		() => setAccountModal(false)
+	const handleAccountModalClose = () => setAccountModal(false);
 
-	const handleRefresh =
-		() => {
-			dispatch(addLoading(refreshLoadingID))
-			handleAccountModalClose()
-			resetCache()
-				.catch(console.error)
-				.finally(() => dispatch(removeLoading(refreshLoadingID)))
-		}
+	const handleRefresh = () => {
+		dispatch(addLoading(refreshLoadingID));
+		handleAccountModalClose();
+		resetCache()
+			.catch(console.error)
+			.finally(() => dispatch(removeLoading(refreshLoadingID)));
+	};
 
-	const handleClearCache =
-		() => {
-			dispatch(addLoading(clearCacheLoadingID))
-			handleAccountModalClose()
-			clearCache()
-				.catch(console.error)
-				.finally(() => dispatch(removeLoading(refreshLoadingID)))
-		}
+	const handleClearCache = () => {
+		dispatch(addLoading(clearCacheLoadingID));
+		handleAccountModalClose();
+		clearCache()
+			.catch(console.error)
+			.finally(() => dispatch(removeLoading(refreshLoadingID)));
+	};
 
 	return (
 		<Fragment>
@@ -61,12 +55,7 @@ const HeaderAccountButton: FC = () => {
 				imageClassName={bem("account-button-image")}
 				image={{
 					description: name,
-					src: createCatalogImageURL(
-						userID,
-						"profile",
-						ImageSizes.MINI,
-						ImageDimensions.SQUARE,
-					),
+					src: createCatalogImageURL(userID, "profile", ImageSizes.MINI, ImageDimensions.SQUARE),
 				}}
 			/>
 			<Modal
@@ -77,7 +66,7 @@ const HeaderAccountButton: FC = () => {
 				<Link
 					onClick={handleAccountModalClose}
 					to={createObjectPath("user", userID)}
-					children={(
+					children={
 						<Button
 							transparent
 							text="Account"
@@ -96,7 +85,7 @@ const HeaderAccountButton: FC = () => {
 								),
 							}}
 						/>
-					)}
+					}
 				/>
 				<Button
 					transparent
@@ -115,14 +104,14 @@ const HeaderAccountButton: FC = () => {
 				<Link
 					to="/settings"
 					onClick={handleAccountModalClose}
-					children={(
+					children={
 						<Button
 							transparent
 							icon="settings"
 							text="Settings"
 							className={bem("account-modal-content-button")}
 						/>
-					)}
+					}
 				/>
 				<Button
 					transparent
@@ -133,7 +122,7 @@ const HeaderAccountButton: FC = () => {
 				/>
 			</Modal>
 		</Fragment>
-	)
-}
+	);
+};
 
-export default HeaderAccountButton
+export default HeaderAccountButton;

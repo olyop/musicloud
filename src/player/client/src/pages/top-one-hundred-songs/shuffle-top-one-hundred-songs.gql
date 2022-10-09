@@ -2,6 +2,6 @@
 
 mutation shuffleTopOneHundredSongs {
 	shuffleTopOneHundredSongs {
-    ...QueueNowPlayingFragment
+		...QueueNowPlayingFragment
 	}
 }

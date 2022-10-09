@@ -1,35 +1,23 @@
-import Button from "@oly_op/react-button"
-import { NavLink } from "react-router-dom"
-import { BEMInput, createBEM } from "@oly_op/bem"
-import { createElement, ReactNode, FC } from "react"
+import Button from "@oly_op/react-button";
+import { NavLink } from "react-router-dom";
+import { BEMInput, createBEM } from "@oly_op/bem";
+import { createElement, ReactNode, FC } from "react";
 
-import Window from "../../components/window"
-import { ClassNameBEMPropTypes, ClassNamePropTypes, Route } from "../../types"
+import Window from "../../components/window";
+import { ClassNameBEMPropTypes, ClassNamePropTypes, Route } from "../../types";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =	createBEM("Navigation")
+const bem = createBEM("Navigation");
 
 const NavigationLink: FC<LinkPropTypes> = ({
 	className,
-	route: {
-		end,
-		icon,
-		path,
-		name,
-		underline = true,
-	},
+	route: { end, icon, path, name, underline = true },
 }) => (
 	<NavLink
 		to={path}
 		end={end}
-		className={({ isActive }) => (
-			bem(
-				className,
-				underline && isActive && "link-active",
-				"link",
-			)
-		)}
+		className={({ isActive }) => bem(className, underline && isActive && "link-active", "link")}
 	>
 		{({ isActive }) => (
 			<Window>
@@ -46,45 +34,32 @@ const NavigationLink: FC<LinkPropTypes> = ({
 			</Window>
 		)}
 	</NavLink>
-)
+);
 
 interface LinkPropTypes extends ClassNameBEMPropTypes {
-	route: Route,
+	route: Route;
 }
 
-const Navigation: FC<PropTypes> = ({
-	right,
-	routes,
-	className,
-	linkClassName,
-}) => (
+const Navigation: FC<PropTypes> = ({ right, routes, className, linkClassName }) => (
 	<nav className={bem(className, "", "FlexRowSpaceBetween")}>
 		<div className="FlexRowGapHalf">
 			<div className={bem("links", "FlexRow")}>
-				{routes.map(route => (
-					route.ignore || (
-						<NavigationLink
-							route={route}
-							key={route.routeID}
-							className={linkClassName}
-						/>
-					)
-				))}
+				{routes.map(
+					route =>
+						route.ignore || (
+							<NavigationLink route={route} key={route.routeID} className={linkClassName} />
+						),
+				)}
 			</div>
 		</div>
-		{right && (
-			<div
-				children={right}
-				className="FlexRowGapHalf"
-			/>
-		)}
+		{right && <div children={right} className="FlexRowGapHalf" />}
 	</nav>
-)
+);
 
 interface PropTypes extends ClassNamePropTypes {
-	routes: Route[],
-	right?: ReactNode,
-	linkClassName?: BEMInput,
+	routes: Route[];
+	right?: ReactNode;
+	linkClassName?: BEMInput;
 }
 
-export default Navigation
+export default Navigation;

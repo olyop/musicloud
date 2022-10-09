@@ -1,19 +1,17 @@
-import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
+import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 
-import { OrderBy } from "./other"
+import { OrderBy } from "./other";
 
 export interface PageArgs {
-	page: number | null,
+	page: number | null;
 }
 
 export interface OrderByArgs {
-	orderBy: OrderBy,
+	orderBy: OrderBy;
 }
 
-interface LibraryObjectAtIndexInput
-	extends OrderByArgs {
-	atIndex: number,
+interface LibraryObjectAtIndexInput extends OrderByArgs {
+	atIndex: number;
 }
 
-export type LibraryObjectAtIndexArgs =
-	InterfaceWithInput<LibraryObjectAtIndexInput>
+export type LibraryObjectAtIndexArgs = InterfaceWithInput<LibraryObjectAtIndexInput>;

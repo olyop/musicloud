@@ -1,14 +1,14 @@
-import { exists } from "@oly_op/pg-helpers"
-import { FastifyPluginAsync, RouteShorthandOptions } from "fastify"
-import { UserEmailAddressBase } from "@oly_op/musicloud-common/build/types"
+import { exists } from "@oly_op/pg-helpers";
+import { FastifyPluginAsync, RouteShorthandOptions } from "fastify";
+import { UserEmailAddressBase } from "@oly_op/musicloud-common/build/types";
 
 interface Reply {
-	exists: boolean,
+	exists: boolean;
 }
 
 interface Route {
-	Body: UserEmailAddressBase,
-	Reply: Reply,
+	Body: UserEmailAddressBase;
+	Reply: Reply;
 }
 
 const options: RouteShorthandOptions = {
@@ -16,47 +16,36 @@ const options: RouteShorthandOptions = {
 		body: {
 			type: "object",
 			properties: {
-				emailAddress:
-					{ type: "string" },
+				emailAddress: { type: "string" },
 			},
-			required: [
-				"emailAddress",
-			],
+			required: ["emailAddress"],
 		},
 		response: {
 			200: {
 				type: "object",
 				properties: {
-					exists:
-						{ type: "boolean" },
+					exists: { type: "boolean" },
 				},
-				required: [
-					"exists",
-				],
+				required: ["exists"],
 			},
 		},
 	},
-}
+};
 
 export const checkEmailAddressExists: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
 	async fastify => {
-		fastify.post<Route>(
-			"/check-email-address-exists",
-			options,
-			async request => {
-				const { emailAddress } = request.body
+		fastify.post<Route>("/check-email-address-exists", options, async request => {
+			const { emailAddress } = request.body;
 
-				const emailAddressExists =
-					await exists(fastify.pg.pool)({
-						table: "users",
-						value: emailAddress,
-						column: "email_address",
-					})
+			const emailAddressExists = await exists(fastify.pg.pool)({
+				table: "users",
+				value: emailAddress,
+				column: "email_address",
+			});
 
-				return {
-					exists: emailAddressExists,
-				}
-			},
-		)
-	}
+			return {
+				exists: emailAddressExists,
+			};
+		});
+	};

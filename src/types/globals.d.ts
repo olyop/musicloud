@@ -1,1 +1,1 @@
-declare const VERSION: string
+declare const VERSION: string;

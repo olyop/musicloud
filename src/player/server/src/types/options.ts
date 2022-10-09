@@ -1,18 +1,17 @@
-import { QueryOptionsParse } from "@oly_op/pg-helpers"
+import { QueryOptionsParse } from "@oly_op/pg-helpers";
 
 export interface IndexOptions {
-	index: number,
+	index: number;
 }
 
 export interface TableNameOptions {
-	tableName: string,
+	tableName: string;
 }
 
 export interface ColumnNameOptions {
-	columnName: string,
+	columnName: string;
 }
 
-export interface GetObjectsOptions<T>
-	extends QueryOptionsParse<T> {
-	columnNames: string,
+export interface GetObjectsOptions<T> extends QueryOptionsParse<T> {
+	columnNames: string;
 }

@@ -2,9 +2,13 @@
 	&__playlists {
 		display: flex;
 		align-items: center;
-		flex-direction: column; }
+		flex-direction: column;
+	}
 	&__playlist {
 		cursor: pointer;
-		user-select: none; }
+		user-select: none;
+	}
 	&__selected {
-		background-color: var(--hover-color); } }
+		background-color: var(--hover-color);
+	}
+}

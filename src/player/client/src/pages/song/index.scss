@@ -7,7 +7,10 @@
 		display: grid;
 		grid-template-columns:
 			var(--content-image-width)
-			minmax(0, 1fr); }
+			minmax(0, 1fr);
+	}
 	&__img {
 		width: 100%;
-		height: auto; } }
+		height: auto;
+	}
+}

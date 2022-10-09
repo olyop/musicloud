@@ -4,6 +4,12 @@
 		"project": "./tsconfig.json"
 	},
 	"rules": {
+		"unicorn/checkArrowFunctions": [
+			"error",
+			{
+				"checkArrowFunctions": false
+			}
+		],
 		"@typescript-eslint/no-non-null-assertion": "off"
 	}
 }

@@ -5,24 +5,32 @@
 	align-items: flex-start;
 	@media (min-width: 875px) {
 		display: grid;
-		grid-template-columns: var(--content-image-width) minmax(0, 1fr); }
+		grid-template-columns: var(--content-image-width) minmax(0, 1fr);
+	}
 	&__content {
-		width: 100%; }
+		width: 100%;
+	}
 	&__cover {
-		aspect-ratio: 1; }
+		aspect-ratio: 1;
+	}
 	&__title {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: var(--space-half); }
+		gap: var(--space-half);
+	}
 	&__sum {
 		outline: none;
 		cursor: pointer;
-		user-select: none; }
+		user-select: none;
+	}
 	&__footer-text {
 		font-size: 14rem;
 		text-transform: uppercase;
 		color: var(--text-color-light);
 		margin-bottom: var(--space-fifth);
 		&:last-child {
-			margin-bottom: 0; } } }
+			margin-bottom: 0;
+		}
+	}
+}

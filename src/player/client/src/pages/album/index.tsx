@@ -1,66 +1,54 @@
-import {
-	AlbumID,
-	ImageSizes,
-	ImageDimensions,
-} from "@oly_op/musicloud-common/build/types"
+import { AlbumID, ImageSizes, ImageDimensions } from "@oly_op/musicloud-common/build/types";
 
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { Head } from "@oly_op/react-head"
-import { useParams } from "react-router-dom"
-import { createElement, Fragment, FC, useState } from "react"
-import { addDashesToUUID } from "@oly_op/uuid-dashes"
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { Head } from "@oly_op/react-head";
+import { useParams } from "react-router-dom";
+import { createElement, Fragment, FC, useState } from "react";
+import { addDashesToUUID } from "@oly_op/uuid-dashes";
 
-import Disc from "./disc"
-import { Album } from "../../types"
-import Page from "../../layouts/page"
-import ShareButton from "./share-button"
-import createDiscs from "./create-discs"
-import Chip from "../../components/chip"
-import AlbumPlayButton from "./play-button"
-import Buttons from "../../components/buttons"
-import AlbumTitle from "../../components/album-title"
-import ObjectLinks from "../../components/object-links"
-import Modal, { ModalHeader } from "../../components/modal"
-import AddAlbumToPlaylist from "../../components/add-album-to-playlist"
-import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks"
-import { createObjectPath, createCatalogImageURL, determinePlural } from "../../helpers"
+import Disc from "./disc";
+import { Album } from "../../types";
+import Page from "../../layouts/page";
+import ShareButton from "./share-button";
+import createDiscs from "./create-discs";
+import Chip from "../../components/chip";
+import AlbumPlayButton from "./play-button";
+import Buttons from "../../components/buttons";
+import AlbumTitle from "../../components/album-title";
+import ObjectLinks from "../../components/object-links";
+import Modal, { ModalHeader } from "../../components/modal";
+import AddAlbumToPlaylist from "../../components/add-album-to-playlist";
+import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks";
+import { createObjectPath, createCatalogImageURL, determinePlural } from "../../helpers";
 
-import GET_ALBUM_PAGE from "./get-album-page.gql"
+import GET_ALBUM_PAGE from "./get-album-page.gql";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("AlbumPage")
+const bem = createBEM("AlbumPage");
 
 const AlbumPage: FC = () => {
-	const params = useParams<keyof AlbumID>()
-	const albumID = addDashesToUUID(params.albumID!)
+	const params = useParams<keyof AlbumID>();
+	const albumID = addDashesToUUID(params.albumID!);
 
-	const [addToPlaylistModal, setAddToPlaylistModal] =
-		useState(false)
+	const [addToPlaylistModal, setAddToPlaylistModal] = useState(false);
 
-	const { data, error } =
-		useQuery<GetAlbumData, AlbumID>(
-			GET_ALBUM_PAGE,
-			{ variables: { albumID } },
-		)
+	const { data, error } = useQuery<GetAlbumData, AlbumID>(GET_ALBUM_PAGE, {
+		variables: { albumID },
+	});
 
-	const [ shuffleAlbum ] =
-		useShuffleAlbum({ albumID })
+	const [shuffleAlbum] = useShuffleAlbum({ albumID });
 
-	const [ toggleInLibrary, inLibrary ] =
-		useToggleAlbumInLibrary({ albumID })
+	const [toggleInLibrary, inLibrary] = useToggleAlbumInLibrary({ albumID });
 
-	const handleAddToPlaylistModalOpen =
-		() => {
-			setAddToPlaylistModal(true)
-		}
+	const handleAddToPlaylistModalOpen = () => {
+		setAddToPlaylistModal(true);
+	};
 
-	const handleAddToPlaylistModalClose =
-		() => {
-			setAddToPlaylistModal(false)
-		}
+	const handleAddToPlaylistModalClose = () => {
+		setAddToPlaylistModal(false);
+	};
 
 	if (error) {
 		return (
@@ -68,18 +56,16 @@ const AlbumPage: FC = () => {
 				<Page>
 					<div className="ContentPaddingTopBottom">
 						<h2 className="ParagraphOne">
-							{error.message === "Failed to fetch" ?
-								error.message :
-								"Album does not exist."}
+							{error.message === "Failed to fetch" ? error.message : "Album does not exist."}
 						</h2>
 					</div>
 				</Page>
 			</Head>
-		)
+		);
 	} else if (data) {
-		const album = data.getAlbumByID
-		const { title, songs, duration, artists, genres, released, songsTotal } = album
-		const discs = createDiscs(songs)
+		const album = data.getAlbumByID;
+		const { title, songs, duration, artists, genres, released, songsTotal } = album;
+		const discs = createDiscs(songs);
 		return (
 			<Head pageTitle={title}>
 				<Page>
@@ -88,41 +74,27 @@ const AlbumPage: FC = () => {
 							alt={title}
 							crossOrigin="anonymous"
 							className={bem("cover", "content", "Elevated")}
-							src={createCatalogImageURL(
-								albumID,
-								"cover",
-								ImageSizes.FULL,
-								ImageDimensions.SQUARE,
-							)}
+							src={createCatalogImageURL(albumID, "cover", ImageSizes.FULL, ImageDimensions.SQUARE)}
 						/>
 						<div className={bem("content", "FlexColumnGap")}>
 							<div>
 								<div className={bem("title", "MarginBottomHalf")}>
 									<h1 className="HeadingFour">
-										<AlbumTitle
-											hideReleased
-											album={album}
-										/>
+										<AlbumTitle hideReleased album={album} />
 									</h1>
-									<AlbumPlayButton
-										albumID={albumID}
-									/>
+									<AlbumPlayButton albumID={albumID} />
 								</div>
 								<div className="FlexRowGapHalf MarginBottomThreeQuart">
-									{artists.map(
-										artist => (
-											<Chip
-												typeName="artist"
-												text={artist.name}
-												key={artist.artistID}
-												objectID={artist.artistID}
-											/>
-										),
-									)}
+									{artists.map(artist => (
+										<Chip
+											typeName="artist"
+											text={artist.name}
+											key={artist.artistID}
+											objectID={artist.artistID}
+										/>
+									))}
 								</div>
-								<h3 className="ParagraphOne LightColor MarginBottomHalf LightWeight">
-									{released}
-								</h3>
+								<h3 className="ParagraphOne LightColor MarginBottomHalf LightWeight">{released}</h3>
 								<h3 className="ParagraphTwo LightColor LightWeight">
 									<ObjectLinks
 										links={genres.map(({ genreID, name }) => ({
@@ -132,21 +104,11 @@ const AlbumPage: FC = () => {
 									/>
 								</h3>
 							</div>
-							{discs.map(
-								disc => (
-									<Disc
-										disc={disc}
-										key={disc.index}
-										isSingle={disc.songs.length === 1}
-									/>
-								),
-							)}
+							{discs.map(disc => (
+								<Disc disc={disc} key={disc.index} isSingle={disc.songs.length === 1} />
+							))}
 							<Buttons>
-								<Button
-									icon="shuffle"
-									text="Shuffle"
-									onClick={shuffleAlbum}
-								/>
+								<Button icon="shuffle" text="Shuffle" onClick={shuffleAlbum} />
 								<Button
 									onClick={toggleInLibrary}
 									icon={inLibrary ? "done" : "add"}
@@ -159,12 +121,7 @@ const AlbumPage: FC = () => {
 								/>
 								<Modal open={addToPlaylistModal} onClose={handleAddToPlaylistModalClose}>
 									<ModalHeader
-										text={(
-											<AlbumTitle
-												hideReleased
-												album={album}
-											/>
-										)}
+										text={<AlbumTitle hideReleased album={album} />}
 										image={{
 											description: `Add ${title} to Playlist`,
 											src: createCatalogImageURL(
@@ -175,14 +132,9 @@ const AlbumPage: FC = () => {
 											),
 										}}
 									/>
-									<AddAlbumToPlaylist
-										albumID={albumID}
-										onClose={handleAddToPlaylistModalClose}
-									/>
+									<AddAlbumToPlaylist albumID={albumID} onClose={handleAddToPlaylistModalClose} />
 								</Modal>
-								<ShareButton
-									album={album}
-								/>
+								<ShareButton album={album} />
 							</Buttons>
 							<div className="FlexColumnGapQuart">
 								<p className="ParagraphTwo LightColor">
@@ -213,14 +165,14 @@ const AlbumPage: FC = () => {
 					</div>
 				</Page>
 			</Head>
-		)
+		);
 	} else {
-		return <Page/>
+		return <Page />;
 	}
-}
+};
 
 interface GetAlbumData {
-	getAlbumByID: Album,
+	getAlbumByID: Album;
 }
 
-export default AlbumPage
+export default AlbumPage;

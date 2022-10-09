@@ -1,19 +1,14 @@
-import { createElement, FC } from "react"
-import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types"
+import { createElement, FC } from "react";
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 
-import ShuffleButton from "./shuffle"
-import ObjectLink from "../../object-link"
-import InLibraryButton from "./in-library"
-import { Artist, Handler } from "../../../types"
-import Modal, { ModalButtons, ModalHeader } from "../../modal"
-import { createCatalogImageURL, createObjectPath } from "../../../helpers"
+import ShuffleButton from "./shuffle";
+import ObjectLink from "../../object-link";
+import InLibraryButton from "./in-library";
+import { Artist, Handler } from "../../../types";
+import Modal, { ModalButtons, ModalHeader } from "../../modal";
+import { createCatalogImageURL, createObjectPath } from "../../../helpers";
 
-const ArtistModal: FC<PropTypes> = ({
-	open,
-	artist,
-	onClose,
-	hideInLibrary,
-}) => (
+const ArtistModal: FC<PropTypes> = ({ open, artist, onClose, hideInLibrary }) => (
 	<Modal open={open} onClose={onClose}>
 		<ModalHeader
 			shareData={{
@@ -29,35 +24,27 @@ const ArtistModal: FC<PropTypes> = ({
 					ImageDimensions.SQUARE,
 				),
 			}}
-			text={(
+			text={
 				<ObjectLink
 					link={{
 						text: artist.name,
 						path: createObjectPath("artist", artist.artistID),
 					}}
 				/>
-			)}
+			}
 		/>
 		<ModalButtons>
-			{hideInLibrary || (
-				<InLibraryButton
-					artist={artist}
-					onClose={onClose}
-				/>
-			)}
-			<ShuffleButton
-				onClose={onClose}
-				artistID={artist.artistID}
-			/>
+			{hideInLibrary || <InLibraryButton artist={artist} onClose={onClose} />}
+			<ShuffleButton onClose={onClose} artistID={artist.artistID} />
 		</ModalButtons>
 	</Modal>
-)
+);
 
 interface PropTypes {
-	open: boolean,
-	artist: Artist,
-	onClose: Handler,
-	hideInLibrary?: boolean,
+	open: boolean;
+	artist: Artist;
+	onClose: Handler;
+	hideInLibrary?: boolean;
 }
 
-export default ArtistModal
+export default ArtistModal;

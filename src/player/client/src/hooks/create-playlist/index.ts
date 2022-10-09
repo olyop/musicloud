@@ -1,41 +1,36 @@
-import { useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types"
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
+import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 
-import { Playlist } from "../../types"
-import { useMutation } from "../mutation"
+import { Playlist } from "../../types";
+import { useMutation } from "../mutation";
 
-import CREATE_PLAYLIST from "./create-playlist.gql"
+import CREATE_PLAYLIST from "./create-playlist.gql";
 
-export const useCreatePlaylist =
-	() => {
-		const navigate = useNavigate()
+export const useCreatePlaylist = () => {
+	const navigate = useNavigate();
 
-		const [ createPlaylist, result ] =
-			useMutation<Data, Vars>(CREATE_PLAYLIST)
+	const [createPlaylist, result] = useMutation<Data, Vars>(CREATE_PLAYLIST);
 
-		const handleCreatePlaylist =
-			(input: Input) => {
-				void createPlaylist({ variables: { input } })
-			}
+	const handleCreatePlaylist = (input: Input) => {
+		void createPlaylist({ variables: { input } });
+	};
 
-		useEffect(() => {
-			if (result.data) {
-				const playlistID = removeDashesFromUUID(result.data.createPlaylist.playlistID)
-				navigate(`/playlist/${playlistID}`)
-			}
-		}, [result.data])
+	useEffect(() => {
+		if (result.data) {
+			const playlistID = removeDashesFromUUID(result.data.createPlaylist.playlistID);
+			navigate(`/playlist/${playlistID}`);
+		}
+	}, [result.data]);
 
-		return [ handleCreatePlaylist, result ] as const
-	}
+	return [handleCreatePlaylist, result] as const;
+};
 
-type Input =
-	Pick<Playlist, "title" | "privacy">
+type Input = Pick<Playlist, "title" | "privacy">;
 
-type Vars =
-	InterfaceWithInput<Input>
+type Vars = InterfaceWithInput<Input>;
 
 interface Data {
-	createPlaylist: Playlist,
+	createPlaylist: Playlist;
 }

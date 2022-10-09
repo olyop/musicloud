@@ -6,7 +6,6 @@
 
 Or use [Volta](https://volta.sh/) (preferred)
 
-
 ## Clone Repository
 
 ```bash

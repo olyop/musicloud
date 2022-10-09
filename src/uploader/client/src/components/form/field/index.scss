@@ -4,16 +4,24 @@
 			font-size: 12rem;
 			font-weight: 600;
 			padding-left: 12rem;
-			text-transform: uppercase; }
+			text-transform: uppercase;
+		}
 		&-image {
 			cursor: default;
 			&-portrait {
 				width: 216rem;
-				height: 216rem; }
+				height: 216rem;
+			}
 			&-landscape {
 				width: 384rem;
-				height: 216rem; } }
+				height: 216rem;
+			}
+		}
 		&-box {
-			cursor: pointer; }
+			cursor: pointer;
+		}
 		&-input {
-			cursor: pointer; } } }
+			cursor: pointer;
+		}
+	}
+}

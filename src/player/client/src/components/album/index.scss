@@ -8,8 +8,13 @@
 			z-index: 1;
 			position: absolute;
 			transition: var(--transition-duration) opacity;
-			background-color: var(--grid-image-hover-color); }
+			background-color: var(--grid-image-hover-color);
+		}
 		&-image {
-			position: absolute; }
+			position: absolute;
+		}
 		&:hover &-black {
-			opacity: var(--grid-image-hover-opacity); } } }
+			opacity: var(--grid-image-hover-opacity);
+		}
+	}
+}

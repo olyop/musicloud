@@ -1,17 +1,15 @@
-import { createElement, FC } from "react"
+import { createElement, FC } from "react";
 
-import { Playlist } from "../../../types"
-import { ModalButton, ModalOnClose } from "../../modal"
-import { useJWTPayload, useToggleObjectInLibrary } from "../../../hooks"
+import { Playlist } from "../../../types";
+import { ModalButton, ModalOnClose } from "../../modal";
+import { useJWTPayload, useToggleObjectInLibrary } from "../../../hooks";
 
 const InLibraryButton: FC<PropTypes> = ({ playlist, onClose }) => {
-	const { userID } = useJWTPayload()
+	const { userID } = useJWTPayload();
 
-	const isOwnPlaylist =
-		userID === playlist.user.userID
+	const isOwnPlaylist = userID === playlist.user.userID;
 
-	const [ toggleInLibrary, inLibrary ] =
-		useToggleObjectInLibrary(playlist)
+	const [toggleInLibrary, inLibrary] = useToggleObjectInLibrary(playlist);
 
 	return isOwnPlaylist ? null : (
 		<ModalButton
@@ -20,12 +18,11 @@ const InLibraryButton: FC<PropTypes> = ({ playlist, onClose }) => {
 			icon={inLibrary ? "done" : "add"}
 			text={inLibrary ? "Remove" : "Add"}
 		/>
-	)
+	);
+};
+
+interface PropTypes extends ModalOnClose {
+	playlist: Playlist;
 }
 
-interface PropTypes
-	extends ModalOnClose {
-	playlist: Playlist,
-}
-
-export default InLibraryButton
+export default InLibraryButton;

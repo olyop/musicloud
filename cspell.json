@@ -1,15 +1,11 @@
 {
-	"import": [
-		"@oly_op/cspell-dict/cspell-ext.json"
-	],
+	"import": ["@oly_op/cspell-dict/cspell-ext.json"],
 	"ignorePaths": [
 		"cspell-dict.txt",
 		"src/uploader/server/src/plugins/api/check/countries.json",
 		"src/authenticator/server/src/plugins/api/sign-up/compromised-passwords.txt"
 	],
-	"dictionaries": [
-		"custom-words"
-	],
+	"dictionaries": ["custom-words"],
 	"dictionaryDefinitions": [
 		{
 			"name": "custom-words",

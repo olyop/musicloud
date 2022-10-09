@@ -1,0 +1,3 @@
+build
+node_modules
+src/player/server/src/public/service-worker.js

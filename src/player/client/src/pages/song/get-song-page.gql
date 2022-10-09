@@ -1,15 +1,15 @@
 #import "../../graphql/fragments/song-core.gql";
 
 query getSongPage($songID: UUID!) {
-  getSongByID(songID: $songID) {
-    ...SongCoreFragment
-    bpm
-    userPlaysTotal
-    key {
-      flat
-      keyID
-      sharp
-      camelot
-    }
-  }
+	getSongByID(songID: $songID) {
+		...SongCoreFragment
+		bpm
+		userPlaysTotal
+		key {
+			flat
+			keyID
+			sharp
+			camelot
+		}
+	}
 }

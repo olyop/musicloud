@@ -1,33 +1,25 @@
-import { RouteShorthandOptions } from "fastify"
+import { RouteShorthandOptions } from "fastify";
 
 const options: RouteShorthandOptions = {
 	schema: {
 		body: {
 			type: "object",
 			properties: {
-				password:
-					{ type: "string" },
-				emailAddress:
-					{ type: "string" },
+				password: { type: "string" },
+				emailAddress: { type: "string" },
 			},
-			required: [
-				"password",
-				"emailAddress",
-			],
+			required: ["password", "emailAddress"],
 		},
 		response: {
 			200: {
 				type: "object",
 				properties: {
-					accessToken:
-						{ type: "string" },
+					accessToken: { type: "string" },
 				},
-				required: [
-					"accessToken",
-				],
+				required: ["accessToken"],
 			},
 		},
 	},
-}
+};
 
-export default options
+export default options;

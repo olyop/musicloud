@@ -3,7 +3,7 @@ package com.musicloudapp.accounts.rest.bean;
 import java.time.LocalDateTime;
 
 public class ErrorBean {
-	
+
 	private LocalDateTime timestamp;
 	private String message;
 	private String details;

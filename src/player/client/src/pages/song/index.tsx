@@ -1,37 +1,35 @@
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { Head } from "@oly_op/react-head"
-import { useParams } from "react-router-dom"
-import { createElement, FC, Fragment } from "react"
-import { addDashesToUUID } from "@oly_op/uuid-dashes"
-import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common/build/types"
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { Head } from "@oly_op/react-head";
+import { useParams } from "react-router-dom";
+import { createElement, FC, Fragment } from "react";
+import { addDashesToUUID } from "@oly_op/uuid-dashes";
+import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common/build/types";
 
 import {
 	numberWithCommas,
 	createObjectPath,
 	deserializeDuration,
 	createCatalogImageURL,
-} from "../../helpers"
+} from "../../helpers";
 
-import { Song } from "../../types"
-import Page from "../../layouts/page"
-import { useStatePlay } from "../../redux"
-import GET_SONG_PAGE from "./get-song-page.gql"
-import { useQuery, usePlaySong } from "../../hooks"
-import ObjectLink from "../../components/object-link"
-import ObjectLinks from "../../components/object-links"
-import FeaturingArtists from "../../components/featuring-artists"
+import { Song } from "../../types";
+import Page from "../../layouts/page";
+import { useStatePlay } from "../../redux";
+import GET_SONG_PAGE from "./get-song-page.gql";
+import { useQuery, usePlaySong } from "../../hooks";
+import ObjectLink from "../../components/object-link";
+import ObjectLinks from "../../components/object-links";
+import FeaturingArtists from "../../components/featuring-artists";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("SongPage")
+const bem = createBEM("SongPage");
 
 const SongPagePlayButton: FC<PropTypes> = ({ song }) => {
-	const play = useStatePlay()
+	const play = useStatePlay();
 
-	const [ playSong, isPlaying ] =
-		usePlaySong(song)
+	const [playSong, isPlaying] = usePlaySong(song);
 
 	return (
 		<Button
@@ -42,8 +40,8 @@ const SongPagePlayButton: FC<PropTypes> = ({ song }) => {
 			text={play && isPlaying ? "Pause" : "Play"}
 			icon={play && isPlaying ? "pause" : "play_arrow"}
 		/>
-	)
-}
+	);
+};
 
 const SongPage: FC<PropTypes> = ({ song }) => (
 	<Head pageTitle={song.title}>
@@ -62,17 +60,11 @@ const SongPage: FC<PropTypes> = ({ song }) => (
 				/>
 				<div>
 					<div className="FlexRowGapHalf MarginBottomHalf">
-						<h1 className="HeadingFour">
-							{song.title}
-						</h1>
-						<SongPagePlayButton
-							song={song}
-						/>
+						<h1 className="HeadingFour">{song.title}</h1>
+						<SongPagePlayButton song={song} />
 					</div>
 					<h2 className="HeadingFive MarginBottomHalf">
-						<FeaturingArtists
-							song={song}
-						/>
+						<FeaturingArtists song={song} />
 					</h2>
 					<h3 className="ParagraphTwo MarginBottomHalf">
 						<ObjectLink
@@ -128,38 +120,35 @@ const SongPage: FC<PropTypes> = ({ song }) => (
 			</div>
 		</Page>
 	</Head>
-)
+);
 
 interface PropTypes {
-	song: Song,
+	song: Song;
 }
 
 const SongPageWrapper: FC = () => {
-	const params = useParams<keyof SongID>()
-	const songID = addDashesToUUID(params.songID!)
+	const params = useParams<keyof SongID>();
+	const songID = addDashesToUUID(params.songID!);
 
-	const { data, error } =
-		useQuery<GetSongPageData, SongID>(GET_SONG_PAGE, {
-			variables: { songID },
-		})
+	const { data, error } = useQuery<GetSongPageData, SongID>(GET_SONG_PAGE, {
+		variables: { songID },
+	});
 
 	if (error) {
 		return (
 			<h2 className="Content ParagraphOne PaddingTopBottom">
-				{error.message === "Failed to fetch" ?
-					error.message :
-					"Song does not exist."}
+				{error.message === "Failed to fetch" ? error.message : "Song does not exist."}
 			</h2>
-		)
+		);
 	} else if (data) {
-		return <SongPage song={data.getSongByID}/>
+		return <SongPage song={data.getSongByID} />;
 	} else {
-		return null
+		return null;
 	}
-}
+};
 
 interface GetSongPageData {
-	getSongByID: Song,
+	getSongByID: Song;
 }
 
-export default SongPageWrapper
+export default SongPageWrapper;

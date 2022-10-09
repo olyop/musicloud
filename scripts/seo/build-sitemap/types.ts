@@ -1,4 +1,3 @@
-import { SitemapItem } from "sitemap"
+import { SitemapItem } from "sitemap";
 
-export type Link =
-	Omit<SitemapItem, "img" | "video" | "links">
+export type Link = Omit<SitemapItem, "img" | "video" | "links">;

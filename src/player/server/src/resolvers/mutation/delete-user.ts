@@ -1,7 +1,7 @@
-import { DeleteObjectCommand } from "@aws-sdk/client-s3"
-import { removeDashesFromUUID } from "@oly_op/uuid-dashes"
-import { NAME } from "@oly_op/musicloud-common/build/metadata"
-import { exists, query as pgHelpersQuery } from "@oly_op/pg-helpers"
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
+import { NAME } from "@oly_op/musicloud-common/build/metadata";
+import { exists, query as pgHelpersQuery } from "@oly_op/pg-helpers";
 
 import {
 	DELETE_USER_BY_ID,
@@ -9,43 +9,39 @@ import {
 	DELETE_USER_PLAYLISTS,
 	DELETE_LIBRARY_ARTISTS,
 	DELETE_LIBRARY_PLAYLISTS,
-} from "../../sql"
+} from "../../sql";
 
-import resolver from "./resolver"
-import { COLUMN_NAMES } from "../../globals"
+import resolver from "./resolver";
+import { COLUMN_NAMES } from "../../globals";
 
-export const deleteUser =
-	resolver(
-		async ({ context }) => {
-			const query = pgHelpersQuery(context.pg)
-			const { userID } = context.getAuthorizationJWTPayload(context.authorization)
+export const deleteUser = resolver(async ({ context }) => {
+	const query = pgHelpersQuery(context.pg);
+	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-			const userExists =
-				await exists(context.pg)({
-					value: userID,
-					table: "users",
-					column: COLUMN_NAMES.USER[0],
-				})
+	const userExists = await exists(context.pg)({
+		value: userID,
+		table: "users",
+		column: COLUMN_NAMES.USER[0],
+	});
 
-			if (!userExists) {
-				throw new Error("User does not exist")
-			}
+	if (!userExists) {
+		throw new Error("User does not exist");
+	}
 
-			const variables = { userID }
+	const variables = { userID };
 
-			await query(DELETE_LIBRARY_SONGS)({ variables })
-			await query(DELETE_LIBRARY_ARTISTS)({ variables })
-			await query(DELETE_LIBRARY_PLAYLISTS)({ variables })
-			await query(DELETE_USER_PLAYLISTS)({ variables })
-			await query(DELETE_USER_BY_ID)({ variables })
+	await query(DELETE_LIBRARY_SONGS)({ variables });
+	await query(DELETE_LIBRARY_ARTISTS)({ variables });
+	await query(DELETE_LIBRARY_PLAYLISTS)({ variables });
+	await query(DELETE_USER_PLAYLISTS)({ variables });
+	await query(DELETE_USER_BY_ID)({ variables });
 
-			await context.s3.send(
-				new DeleteObjectCommand({
-					Bucket: NAME,
-					Key: `catalog/${removeDashesFromUUID(userID)}`,
-				}),
-			)
+	await context.s3.send(
+		new DeleteObjectCommand({
+			Bucket: NAME,
+			Key: `catalog/${removeDashesFromUUID(userID)}`,
+		}),
+	);
 
-			await context.ag.index.deleteObject(userID)
-		},
-	)
+	await context.ag.index.deleteObject(userID);
+});

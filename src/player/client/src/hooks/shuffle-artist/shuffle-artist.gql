@@ -2,6 +2,6 @@
 
 mutation shuffleArtist($artistID: UUID!) {
 	shuffleArtist(artistID: $artistID) {
-    ...QueueNowPlayingFragment
+		...QueueNowPlayingFragment
 	}
 }

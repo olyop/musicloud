@@ -1,24 +1,17 @@
-import {
-	FC,
-	useState,
-	ChangeEvent,
-	createElement,
-	InputHTMLAttributes,
-} from "react"
+import { FC, useState, ChangeEvent, createElement, InputHTMLAttributes } from "react";
 
-import { createBEM, BEMInput } from "@oly_op/bem"
+import { createBEM, BEMInput } from "@oly_op/bem";
 
-import "@oly_op/css-utilities/index.css"
+import "@oly_op/css-utilities/index.css";
 
 // eslint-disable-next-line import/extensions, import/no-unresolved
-import "@oly_op/react-button/index.css"
+import "@oly_op/react-button/index.css";
 
-import "../../../../index.scss"
+import "../../../../index.scss";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("TextField")
+const bem = createBEM("TextField");
 
 const TextField: FC<TextFieldPropTypes> = ({
 	name,
@@ -28,17 +21,14 @@ const TextField: FC<TextFieldPropTypes> = ({
 	placeholder,
 	...inputPropTypes
 }) => {
-	const [ hover, setHover ] = useState(false)
-	const [ focus, setFocus ] = useState(false)
+	const [hover, setHover] = useState(false);
+	const [focus, setFocus] = useState(false);
 
-	const handleRootHover =
-		() => setHover(prevState => !prevState)
+	const handleRootHover = () => setHover(prevState => !prevState);
 
-	const handleInputFocus =
-		() => setFocus(true)
+	const handleInputFocus = () => setFocus(true);
 
-	const handleInputBlur =
-		() => setFocus(false)
+	const handleInputBlur = () => setFocus(false);
 
 	return (
 		<div
@@ -73,18 +63,17 @@ const TextField: FC<TextFieldPropTypes> = ({
 				{...inputPropTypes}
 			/>
 		</div>
-	)
-}
+	);
+};
 
-type InputPropTypes =
-	Omit<InputHTMLAttributes<HTMLInputElement>, "className" | "onChange">
+type InputPropTypes = Omit<InputHTMLAttributes<HTMLInputElement>, "className" | "onChange">;
 
 export interface TextFieldPropTypes extends InputPropTypes {
-	key: string,
-	name: string,
-	fieldID: string,
-	className?: BEMInput,
-	onChange: (event: ChangeEvent<HTMLInputElement>) => void,
+	key: string;
+	name: string;
+	fieldID: string;
+	className?: BEMInput;
+	onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default TextField
+export default TextField;

@@ -1,39 +1,35 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 
-export const useKeyPress =
-	(targetKey: string) => {
-		let prevKey = ""
+export const useKeyPress = (targetKey: string) => {
+	let prevKey = "";
 
-		const [ keyPressed, setKeyPressed ] =
-			useState(false)
+	const [keyPressed, setKeyPressed] = useState(false);
 
-		const downHandler =
-			(event: KeyboardEvent) => {
-				if (prevKey === targetKey) return
-				if (event.key === targetKey) {
-					event.preventDefault()
-					setKeyPressed(true)
-					prevKey = event.key
-				}
-			}
+	const downHandler = (event: KeyboardEvent) => {
+		if (prevKey === targetKey) return;
+		if (event.key === targetKey) {
+			event.preventDefault();
+			setKeyPressed(true);
+			prevKey = event.key;
+		}
+	};
 
-		const upHandler =
-			(event: KeyboardEvent) => {
-				if (event.key === targetKey) {
-					event.preventDefault()
-					setKeyPressed(false)
-					prevKey = ""
-				}
-			}
+	const upHandler = (event: KeyboardEvent) => {
+		if (event.key === targetKey) {
+			event.preventDefault();
+			setKeyPressed(false);
+			prevKey = "";
+		}
+	};
 
-		useEffect(() => {
-			window.addEventListener("keydown", downHandler)
-			window.addEventListener("keyup", upHandler)
-			return () => {
-				window.removeEventListener("keydown", downHandler)
-				window.removeEventListener("keyup", upHandler)
-			}
-		}, [])
+	useEffect(() => {
+		window.addEventListener("keydown", downHandler);
+		window.addEventListener("keyup", upHandler);
+		return () => {
+			window.removeEventListener("keydown", downHandler);
+			window.removeEventListener("keyup", upHandler);
+		};
+	}, []);
 
-		return keyPressed
-	}
+	return keyPressed;
+};

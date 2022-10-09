@@ -1,10 +1,10 @@
-import isEmpty from "lodash-es/isEmpty"
-import { createElement, Fragment, FC } from "react"
-import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types"
+import isEmpty from "lodash-es/isEmpty";
+import { createElement, Fragment, FC } from "react";
+import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types";
 
-import ObjectLinks from "../object-links"
-import { OnClickPropTypes } from "../../types"
-import { createObjectPath } from "../../helpers"
+import ObjectLinks from "../object-links";
+import { OnClickPropTypes } from "../../types";
+import { createObjectPath } from "../../helpers";
 
 const FeaturingArtists: FC<PropTypes> = ({ song, onClick }) => (
 	<Fragment>
@@ -33,15 +33,15 @@ const FeaturingArtists: FC<PropTypes> = ({ song, onClick }) => (
 			</Fragment>
 		)}
 	</Fragment>
-)
+);
 
 interface PropTypesSong {
-	artists: ArtistIDNameBase[],
-	featuring: ArtistIDNameBase[],
+	artists: ArtistIDNameBase[];
+	featuring: ArtistIDNameBase[];
 }
 
 interface PropTypes extends OnClickPropTypes {
-	song: PropTypesSong,
+	song: PropTypesSong;
 }
 
-export default FeaturingArtists
+export default FeaturingArtists;

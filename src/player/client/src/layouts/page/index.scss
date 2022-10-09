@@ -3,7 +3,10 @@
 	height: calc(100% - var(--header-height) - var(--bar-height));
 	&__header {
 		height: var(--header-height);
-		background-color: var(--elevated-color); }
+		background-color: var(--elevated-color);
+	}
 	&__content {
 		overflow-y: scroll;
-		height: var(--content-height); } }
+		height: var(--content-height);
+	}
+}

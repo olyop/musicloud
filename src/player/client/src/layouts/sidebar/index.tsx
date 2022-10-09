@@ -1,34 +1,28 @@
-import { createBEM } from "@oly_op/bem"
-import Button from "@oly_op/react-button"
-import { NavLink } from "react-router-dom"
-import { createElement, FC, Fragment } from "react"
-import { ServicesNames } from "@oly_op/musicloud-common/build/types"
-import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url"
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { NavLink } from "react-router-dom";
+import { createElement, FC, Fragment } from "react";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url";
 
-import { useDispatch, toggleSidebar, useStateSidebar, useStateAccessToken } from "../../redux"
+import { useDispatch, toggleSidebar, useStateSidebar, useStateAccessToken } from "../../redux";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Sidebar")
+const bem = createBEM("Sidebar");
 
 const Sidebar: FC = () => {
-	const dispatch = useDispatch()
-	const sidebar = useStateSidebar()
-	const accessToken = useStateAccessToken()
+	const dispatch = useDispatch();
+	const sidebar = useStateSidebar();
+	const accessToken = useStateAccessToken();
 
-	const handleClose =
-		() => {
-			dispatch(toggleSidebar())
-		}
+	const handleClose = () => {
+		dispatch(toggleSidebar());
+	};
 
 	return sidebar ? (
 		<div className={bem("")}>
-			<div
-				aria-hidden
-				onClick={handleClose}
-				className={bem("background")}
-			/>
+			<div aria-hidden onClick={handleClose} className={bem("background")} />
 			<nav className={bem("content", "Elevated PaddingBottom")}>
 				<div>
 					<div className={bem("content-header", "FlexRow")}>
@@ -158,7 +152,7 @@ const Sidebar: FC = () => {
 								rel="noreferrer"
 								onClick={handleClose}
 								href="https://olyop.com/projects"
-								children={(
+								children={
 									<Button
 										transparent
 										icon="info"
@@ -167,7 +161,7 @@ const Sidebar: FC = () => {
 										className={bem("route-button")}
 										rightIconClassName={bem("route-button-icon-right")}
 									/>
-								)}
+								}
 							/>
 						</div>
 						{accessToken && (
@@ -177,7 +171,7 @@ const Sidebar: FC = () => {
 									onClick={handleClose}
 									className="BorderBottom PaddingTopBottomHalf"
 									href={determineServiceURL({ accessToken, service: ServicesNames.UPLOADER })}
-									children={(
+									children={
 										<Button
 											transparent
 											icon="upload"
@@ -186,7 +180,7 @@ const Sidebar: FC = () => {
 											className={bem("route-button")}
 											rightIconClassName={bem("route-button-icon-right")}
 										/>
-									)}
+									}
 								/>
 							</div>
 						)}
@@ -198,16 +192,16 @@ const Sidebar: FC = () => {
 					title="Source Code"
 					href="https://github.com/olyop/music-app"
 					className="ParagraphOne PaddingLeftRight Link"
-					children={(
+					children={
 						<Fragment>
 							<Fragment>v</Fragment>
 							{VERSION}
 						</Fragment>
-					)}
+					}
 				/>
 			</nav>
 		</div>
-	) : null
-}
+	) : null;
+};
 
-export default Sidebar
+export default Sidebar;

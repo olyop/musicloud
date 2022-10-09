@@ -1,12 +1,9 @@
-import { MutationResult } from "@apollo/client"
+import { MutationResult } from "@apollo/client";
 
-import { Handler, QueueNowPlaying } from "../../types"
+import { Handler, QueueNowPlaying } from "../../types";
 
 export interface Data {
-	previousQueueSong: QueueNowPlaying,
+	previousQueueSong: QueueNowPlaying;
 }
 
-export type Result = [
-	previousQueueSong: Handler,
-	result: MutationResult<Data>,
-]
+export type Result = [previousQueueSong: Handler, result: MutationResult<Data>];

@@ -4,17 +4,24 @@
 	height: calc(var(--space) + var(--content-height));
 	&__img {
 		width: var(--content-height);
-		height: var(--content-height); }
+		height: var(--content-height);
+	}
 	&__text {
 		overflow: hidden;
 		margin-top: 2rem;
-		white-space: nowrap; }
+		white-space: nowrap;
+	}
 	&__icon {
 		--button-dimension: calc(var(--content-height) * 3 / 2);
 		&-left {
 			&:hover,
 			&:focus {
 				cursor: unset;
-				background-color: transparent; } }
+				background-color: transparent;
+			}
+		}
 		&-share {
-			margin-right: -6rem; } } }
+			margin-right: -6rem;
+		}
+	}
+}

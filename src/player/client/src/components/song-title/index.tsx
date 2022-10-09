@@ -1,18 +1,15 @@
-import isEmpty from "lodash-es/isEmpty"
-import { createElement, Fragment, FC } from "react"
-import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types"
+import isEmpty from "lodash-es/isEmpty";
+import { createElement, Fragment, FC } from "react";
+import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types";
 
-import { Handler, Song } from "../../types"
-import ObjectLink from "../object-link"
-import ObjectLinks from "../object-links"
-import { createObjectPath } from "../../helpers"
+import { Handler, Song } from "../../types";
+import ObjectLink from "../object-link";
+import ObjectLinks from "../object-links";
+import { createObjectPath } from "../../helpers";
 
-import "./index.scss"
+import "./index.scss";
 
-const SongTitle: FC<PropTypes> = ({
-	onClick,
-	song: { mix, title, songID, remixers },
-}) => (
+const SongTitle: FC<PropTypes> = ({ onClick, song: { mix, title, songID, remixers } }) => (
 	<Fragment>
 		<ObjectLink
 			onClick={onClick}
@@ -47,16 +44,15 @@ const SongTitle: FC<PropTypes> = ({
 			</span>
 		)}
 	</Fragment>
-)
+);
 
-interface PropTypesSong
-	extends Pick<Song, "mix" | "title" | "songID"> {
-	remixers: ArtistIDNameBase[],
+interface PropTypesSong extends Pick<Song, "mix" | "title" | "songID"> {
+	remixers: ArtistIDNameBase[];
 }
 
 interface PropTypes {
-	onClick?: Handler,
-	song: PropTypesSong,
+	onClick?: Handler;
+	song: PropTypesSong;
 }
 
-export default SongTitle
+export default SongTitle;

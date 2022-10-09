@@ -2,6 +2,6 @@
 
 mutation playTopOneHundredSongs {
 	playTopOneHundredSongs {
-    ...QueueNowPlayingFragment
+		...QueueNowPlayingFragment
 	}
 }

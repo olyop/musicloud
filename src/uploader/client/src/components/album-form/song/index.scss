@@ -7,24 +7,29 @@
 	gap: var(--space-quart);
 	grid-template-columns: 16rem 1fr 0.5fr 1fr 1fr 1fr 1fr var(--dimension);
 	&:first-child {
-		padding-top: 0; }
+		padding-top: 0;
+	}
 	&__index {
 		text-align: left;
 		padding-bottom: 4rem;
-		font-size: var(--font-size); }
+		font-size: var(--font-size);
+	}
 	&__field {
 		&-label {
 			font-size: 12rem;
 			font-weight: 600;
 			text-transform: uppercase;
-			margin-bottom: var(--space-quart); }
+			margin-bottom: var(--space-quart);
+		}
 		&-input {
 			width: 100%;
 			height: var(--dimension);
-			font-size: var(--font-size); }
+			font-size: var(--font-size);
+		}
 		&-title {
 			display: flex;
-			justify-content: space-between; }
+			justify-content: space-between;
+		}
 		&-remove {
 			--dimension: 24rem;
 			width: var(--dimension);
@@ -33,4 +38,8 @@
 			&-icon {
 				width: var(--dimension);
 				height: var(--dimension);
-				font-size: var(--dimension); } } } }
+				font-size: var(--dimension);
+			}
+		}
+	}
+}

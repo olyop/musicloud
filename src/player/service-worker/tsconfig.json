@@ -3,8 +3,5 @@
 	"compilerOptions": {
 		"lib": ["ESNext", "DOM", "WebWorker"]
 	},
-	"include": [
-		"src",
-		"../../types"
-	]
+	"include": ["src", "../../types"]
 }

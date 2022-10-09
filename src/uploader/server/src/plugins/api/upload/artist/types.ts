@@ -1,15 +1,15 @@
-import { ArtistBase, ArtistID } from "@oly_op/musicloud-common/build/types"
+import { ArtistBase, ArtistID } from "@oly_op/musicloud-common/build/types";
 
-import { BodyEntry } from "../../types"
+import { BodyEntry } from "../../types";
 
 interface Body extends Omit<ArtistBase, "artistID"> {
-	city?: string,
-	country?: string,
-	cover: BodyEntry[],
-	profile: BodyEntry[],
+	city?: string;
+	country?: string;
+	cover: BodyEntry[];
+	profile: BodyEntry[];
 }
 
 export interface Route {
-	Body: Body,
-	Reply: ArtistID | string,
+	Body: Body;
+	Reply: ArtistID | string;
 }

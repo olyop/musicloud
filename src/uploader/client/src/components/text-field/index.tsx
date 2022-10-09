@@ -5,20 +5,19 @@ import {
 	createElement,
 	InputHTMLAttributes,
 	ChangeEventHandler,
-} from "react"
+} from "react";
 
-import isNull from "lodash-es/isNull"
-import isEmpty from "lodash-es/isEmpty"
-import Button from "@oly_op/react-button"
-import isUndefined from "lodash-es/isUndefined"
-import { createBEM, BEMInput } from "@oly_op/bem"
+import isNull from "lodash-es/isNull";
+import isEmpty from "lodash-es/isEmpty";
+import Button from "@oly_op/react-button";
+import isUndefined from "lodash-es/isUndefined";
+import { createBEM, BEMInput } from "@oly_op/bem";
 
-import { Item } from "../../types"
+import { Item } from "../../types";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("TextField")
+const bem = createBEM("TextField");
 
 const TextField: FC<PropTypes> = ({
 	id,
@@ -37,59 +36,52 @@ const TextField: FC<PropTypes> = ({
 	imageOrientation = "portrait",
 	...inputPropTypes
 }) => {
-	const [ hover, setHover ] = useState(false)
-	const [ focus, setFocus ] = useState(false)
-	const [ privateValue, setPrivateValue ] = useState(isUndefined(value) ? "" : value)
+	const [hover, setHover] = useState(false);
+	const [focus, setFocus] = useState(false);
+	const [privateValue, setPrivateValue] = useState(isUndefined(value) ? "" : value);
 
-	const [ imageURL, setImageURL ] =
-		useState<string | null>(null)
+	const [imageURL, setImageURL] = useState<string | null>(null);
 
-	const handleInputFocus =
-		() => setFocus(true)
+	const handleInputFocus = () => setFocus(true);
 
-	const handleInputBlur =
-		() => setFocus(false)
+	const handleInputBlur = () => setFocus(false);
 
-	const handleRootHover =
-		() => setHover(prevState => !prevState)
+	const handleRootHover = () => setHover(prevState => !prevState);
 
-	const borderRadius =
-		focus ? undefined : "10rem"
+	const borderRadius = focus ? undefined : "10rem";
 
-	const handleOnChange: ChangeEventHandler<HTMLInputElement> =
-		event => {
-			setPrivateValue(event.target.value)
-			if (onChange) {
-				onChange(event)
-			}
+	const handleOnChange: ChangeEventHandler<HTMLInputElement> = event => {
+		setPrivateValue(event.target.value);
+		if (onChange) {
+			onChange(event);
 		}
+	};
 
-	const handleItemAdd =
-		() => {
-			if (onItemAdd && !isEmpty(privateValue)) {
-				onItemAdd(privateValue)()
-				setPrivateValue("")
-			}
+	const handleItemAdd = () => {
+		if (onItemAdd && !isEmpty(privateValue)) {
+			onItemAdd(privateValue)();
+			setPrivateValue("");
 		}
+	};
 
 	useEffect(() => {
 		if (value) {
-			setPrivateValue(value)
+			setPrivateValue(value);
 		}
-	}, [value])
+	}, [value]);
 
 	useEffect(() => {
-		let url: string
+		let url: string;
 		if (image) {
-			url = URL.createObjectURL(image)
-			setImageURL(url)
+			url = URL.createObjectURL(image);
+			setImageURL(url);
 		}
 		return () => {
 			if (image) {
-				URL.revokeObjectURL(url)
+				URL.revokeObjectURL(url);
 			}
-		}
-	}, [image])
+		};
+	}, [image]);
 
 	return (
 		<div
@@ -121,22 +113,18 @@ const TextField: FC<PropTypes> = ({
 			)}
 			{list && !isEmpty(list) && (
 				<div className={bem("list", "FlexRowGapHalf MarginBottomHalf")}>
-					{list.map(
-						item => (
-							<div key={item.index} className="Elevated FlexRow Rounded PaddingQuart">
-								<p className="ParagraphOne">
-									{item.value}
-								</p>
-								<Button
-									transparent
-									icon="close"
-									className={bem("list-close")}
-									onClick={onItemRemove!(item.index)}
-									iconClassName={bem("list-close-icon")}
-								/>
-							</div>
-						),
-					)}
+					{list.map(item => (
+						<div key={item.index} className="Elevated FlexRow Rounded PaddingQuart">
+							<p className="ParagraphOne">{item.value}</p>
+							<Button
+								transparent
+								icon="close"
+								className={bem("list-close")}
+								onClick={onItemRemove!(item.index)}
+								iconClassName={bem("list-close-icon")}
+							/>
+						</div>
+					))}
 				</div>
 			)}
 			<input
@@ -166,14 +154,7 @@ const TextField: FC<PropTypes> = ({
 							rel="noreferrer"
 							href={action.url}
 							title={action.title}
-							children={(
-								<Button
-									transparent
-									tabIndex={999}
-									icon={action.icon}
-									text={action.text}
-								/>
-							)}
+							children={<Button transparent tabIndex={999} icon={action.icon} text={action.text} />}
 						/>
 					)}
 					{check && !isNull(check.value) && (
@@ -182,8 +163,10 @@ const TextField: FC<PropTypes> = ({
 							tabIndex={999}
 							text={check.text}
 							className={bem("check")}
-							icon={check.loading ? "loop" : (check.value ? "check_circle" : "cancel")}
-							iconClassName={bem(check.loading ? "check-loading" : (check.value ? "check-valid" : "check-invalid"))}
+							icon={check.loading ? "loop" : check.value ? "check_circle" : "cancel"}
+							iconClassName={bem(
+								check.loading ? "check-loading" : check.value ? "check-valid" : "check-invalid",
+							)}
 						/>
 					)}
 				</div>
@@ -198,46 +181,43 @@ const TextField: FC<PropTypes> = ({
 				/>
 			)}
 		</div>
-	)
-}
+	);
+};
 
-type InputPropTypes =
-	Omit<
-		InputHTMLAttributes<HTMLInputElement>,
-		"type" | "value" | "list" | "className"
-	>
+type InputPropTypes = Omit<
+	InputHTMLAttributes<HTMLInputElement>,
+	"type" | "value" | "list" | "className"
+>;
 
-export type CheckOptionsText =
-	string | null
+export type CheckOptionsText = string | null;
 
-export type CheckOptionsValue =
-	boolean | null
+export type CheckOptionsValue = boolean | null;
 
 interface CheckOptions {
-	loading: boolean,
-	text?: CheckOptionsText,
-	value: CheckOptionsValue,
+	loading: boolean;
+	text?: CheckOptionsText;
+	value: CheckOptionsValue;
 }
 
 interface ActionOptions {
-	url: string,
-	icon: string,
-	text: string,
-	title?: string,
-	disabled?: boolean,
+	url: string;
+	icon: string;
+	text: string;
+	title?: string;
+	disabled?: boolean;
 }
 
 interface PropTypes extends InputPropTypes {
-	type: string,
-	image?: File,
-	list?: Item[],
-	value?: string,
-	className?: BEMInput,
-	check?: CheckOptions,
-	action?: ActionOptions,
-	onItemAdd?: (value: string) => () => void,
-	imageOrientation?: "portrait" | "landscape",
-	onItemRemove?: (index: number) => () => void,
+	type: string;
+	image?: File;
+	list?: Item[];
+	value?: string;
+	className?: BEMInput;
+	check?: CheckOptions;
+	action?: ActionOptions;
+	onItemAdd?: (value: string) => () => void;
+	imageOrientation?: "portrait" | "landscape";
+	onItemRemove?: (index: number) => () => void;
 }
 
-export default TextField
+export default TextField;

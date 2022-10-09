@@ -1,10 +1,6 @@
-import { sum, isEmpty } from "lodash-es"
+import { sum, isEmpty } from "lodash-es";
 
-import { Song } from "../../types"
+import { Song } from "../../types";
 
-export const getSongsDurationOrNull =
-	(songs: Song[]) =>
-		(isEmpty(songs) ?
-			null :
-			sum(songs.map(({ duration }) => duration))
-		)
+export const getSongsDurationOrNull = (songs: Song[]) =>
+	isEmpty(songs) ? null : sum(songs.map(({ duration }) => duration));

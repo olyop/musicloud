@@ -1,10 +1,9 @@
-import { SongID } from "@oly_op/musicloud-common/build/types"
+import { SongID } from "@oly_op/musicloud-common/build/types";
 
-import { createCatalogMP3URL } from "../../../../../helpers"
+import { createCatalogMP3URL } from "../../../../../helpers";
 
-const downloadSongMP3 =
-	async ({ songID }: SongID) => {
-		await fetch(createCatalogMP3URL(songID))
-	}
+const downloadSongMP3 = async ({ songID }: SongID) => {
+	await fetch(createCatalogMP3URL(songID));
+};
 
-export default downloadSongMP3
+export default downloadSongMP3;

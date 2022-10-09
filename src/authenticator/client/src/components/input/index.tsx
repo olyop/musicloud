@@ -1,72 +1,50 @@
-import {
-	useState,
-	useEffect,
-	createElement,
-	ChangeEventHandler,
-	InputHTMLAttributes,
-} from "react"
+import { useState, useEffect, createElement, ChangeEventHandler, InputHTMLAttributes } from "react";
 
-import isNull from "lodash-es/isNull"
-import isString from "lodash-es/isString"
-import { BEMInput, createBEM } from "@oly_op/bem"
+import isNull from "lodash-es/isNull";
+import isString from "lodash-es/isString";
+import { BEMInput, createBEM } from "@oly_op/bem";
 
-import "@oly_op/css-utilities/index.css"
+import "@oly_op/css-utilities/index.css";
 // eslint-disable-next-line import/extensions, import/no-unresolved
-import "@oly_op/react-button/index.css"
-import "../../index.scss"
+import "@oly_op/react-button/index.css";
+import "../../index.scss";
 
-import "./index.scss"
+import "./index.scss";
 
-const bem =
-	createBEM("Input")
+const bem = createBEM("Input");
 
 const Input = <T extends InputValue>(propTypes: InputPropTypes<T>) => {
-	const {
-		name,
-		value,
-		inputID,
-		onChange,
-		className,
-		imageOrientation,
-		...inputPropTypes
-	} = propTypes
+	const { name, value, inputID, onChange, className, imageOrientation, ...inputPropTypes } =
+		propTypes;
 
-	const [ imageURL, setImageURL ] =
-		useState<string | null>(null)
+	const [imageURL, setImageURL] = useState<string | null>(null);
 
-	const handleOnChange: ChangeEventHandler<HTMLInputElement> =
-		event => {
-			if (inputPropTypes.type === "file") {
-				if (event.target.files) {
-					onChange(event.target.files.item(0) as T)
-				}
-			} else {
-				onChange(event.target.value as T)
+	const handleOnChange: ChangeEventHandler<HTMLInputElement> = event => {
+		if (inputPropTypes.type === "file") {
+			if (event.target.files) {
+				onChange(event.target.files.item(0) as T);
 			}
+		} else {
+			onChange(event.target.value as T);
 		}
+	};
 
 	useEffect(() => {
-		let url: string
+		let url: string;
 		if (!isNull(value) && !isString(value)) {
-			url = URL.createObjectURL(value)
-			setImageURL(url)
+			url = URL.createObjectURL(value);
+			setImageURL(url);
 		}
 		return () => {
 			if (!isString(value)) {
-				URL.revokeObjectURL(url)
+				URL.revokeObjectURL(url);
 			}
-		}
-	}, [value])
+		};
+	}, [value]);
 
 	return (
-		<div
-			className={bem(className, "")}
-		>
-			<label
-				children={name}
-				htmlFor={inputID}
-				className={bem("label")}
-			/>
+		<div className={bem(className, "")}>
+			<label children={name} htmlFor={inputID} className={bem("label")} />
 			{!isNull(value) && !isString(value) && imageURL && imageOrientation && (
 				<img
 					src={imageURL}
@@ -84,46 +62,35 @@ const Input = <T extends InputValue>(propTypes: InputPropTypes<T>) => {
 					imageURL && "input-image",
 					"input",
 				)}
-				value={(
-					isNull(value) ?
-						undefined :
-						(isString(value) ?
-							value :
-							undefined
-						)
-				)}
+				value={isNull(value) ? undefined : isString(value) ? value : undefined}
 				{...inputPropTypes}
 			/>
 		</div>
-	)
-}
+	);
+};
 
-export type InputValue =
-	File | string
+export type InputValue = File | string;
 
-export type InputImageOrientation =
-	"portrait" | "landscape"
+export type InputImageOrientation = "portrait" | "landscape";
 
-export type InputOnChange<T extends InputValue = string> =
-	(value: T) => void
+export type InputOnChange<T extends InputValue = string> = (value: T) => void;
 
-type HTMLInputPropTypes =
-	Omit<
-		InputHTMLAttributes<HTMLInputElement>,
-		"name" | "value" | "tabIndex" | "onChange" | "className"
-	>
+type HTMLInputPropTypes = Omit<
+	InputHTMLAttributes<HTMLInputElement>,
+	"name" | "value" | "tabIndex" | "onChange" | "className"
+>;
 
 interface InputID {
-	inputID: string,
+	inputID: string;
 }
 
 export interface InputPropTypes<T extends InputValue> extends InputID, HTMLInputPropTypes {
-	name: string,
-	value: T | null,
-	tabIndex: number,
-	className?: BEMInput,
-	onChange: InputOnChange<T>,
-	imageOrientation?: InputImageOrientation,
+	name: string;
+	value: T | null;
+	tabIndex: number;
+	className?: BEMInput;
+	onChange: InputOnChange<T>;
+	imageOrientation?: InputImageOrientation;
 }
 
-export default Input
+export default Input;

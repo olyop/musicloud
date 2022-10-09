@@ -9,13 +9,15 @@
 		z-index: 2;
 		opacity: 0.4;
 		position: absolute;
-		background-color: var(--text-color); }
+		background-color: var(--text-color);
+	}
 	&__background {
 		top: 0;
 		right: 0;
 		filter: blur(1px);
 		object-fit: cover;
-		position: absolute; }
+		position: absolute;
+	}
 	&__content {
 		left: 50%;
 		bottom: 0;
@@ -29,14 +31,20 @@
 		@media (max-width: 1360px) {
 			left: 0;
 			transform: unset;
-			width: calc(100% - var(--space-double)); }
+			width: calc(100% - var(--space-double));
+		}
 		@media (max-width: 700px) {
-			grid-template-columns: 100rem 1fr; }
+			grid-template-columns: 100rem 1fr;
+		}
 		&-profile {
 			width: 100%;
 			aspect-ratio: 1;
-			border-radius: 50%; }
+			border-radius: 50%;
+		}
 		&-title {
 			font-weight: 700;
 			margin-left: -2rem;
-			margin-bottom: -3rem; } } }
+			margin-bottom: -3rem;
+		}
+	}
+}

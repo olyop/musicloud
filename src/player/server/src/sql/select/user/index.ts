@@ -1,14 +1,13 @@
-import importSQL from "../../import-sql"
+import importSQL from "../../import-sql";
 
-const importFile =
-	importSQL("select")("user")
+const importFile = importSQL("select")("user");
 
-export const SELECT_USER_BY_ID = importFile("by-id")
-export const SELECT_USER_PLAYS = importFile("plays")
-export const SELECT_USER_BY_EMAIL = importFile("by-email")
-export const SELECT_USER_PASSWORD = importFile("password")
-export const SELECT_USER_FOLLOWERS = importFile("followers")
-export const SELECT_USER_PLAYLISTS = importFile("playlists")
-export const SELECT_USER_SONG_PLAYS = importFile("song-plays")
-export const SELECT_USER_ALBUM_PLAYS = importFile("album-plays")
-export const SELECT_USER_PLAYLISTS_FILTERED_BY_SONG = importFile("playlists-filtered-by-song")
+export const SELECT_USER_BY_ID = importFile("by-id");
+export const SELECT_USER_PLAYS = importFile("plays");
+export const SELECT_USER_BY_EMAIL = importFile("by-email");
+export const SELECT_USER_PASSWORD = importFile("password");
+export const SELECT_USER_FOLLOWERS = importFile("followers");
+export const SELECT_USER_PLAYLISTS = importFile("playlists");
+export const SELECT_USER_SONG_PLAYS = importFile("song-plays");
+export const SELECT_USER_ALBUM_PLAYS = importFile("album-plays");
+export const SELECT_USER_PLAYLISTS_FILTERED_BY_SONG = importFile("playlists-filtered-by-song");
