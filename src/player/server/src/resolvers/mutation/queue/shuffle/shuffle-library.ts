@@ -1,9 +1,9 @@
 import isEmpty from "lodash-es/isEmpty";
 import { convertTableToCamelCase, join, query } from "@oly_op/pg-helpers";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import resolver from "../../resolver";
 import { Song } from "../../../../types";
-import { COLUMN_NAMES } from "../../../../globals";
 import { INSERT_QUEUE_SONG, SELECT_LIBRARY_SONGS } from "../../../../sql";
 import { shuffle, clearQueue, updateQueueNowPlaying, queuePromiseLimitter } from "../../../helpers";
 

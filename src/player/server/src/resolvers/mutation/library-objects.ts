@@ -6,6 +6,7 @@ import {
 	convertFirstRowToCamelCase,
 } from "@oly_op/pg-helpers";
 
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { SongID, AlbumID, ArtistID, PlaylistID } from "@oly_op/musicloud-common/build/types";
 
 import {
@@ -19,7 +20,6 @@ import {
 import { getPlaylist, handleInLibrary, HandleInLibraryOptions } from "../helpers";
 
 import resolver from "./resolver";
-import { COLUMN_NAMES } from "../../globals";
 import { Song, Artist, Playlist, Album } from "../../types";
 
 type CreateConfig = (
@@ -118,7 +118,7 @@ export const addPlaylistToLibrary = resolver<Playlist | null, PlaylistID>(
 		return handleInLibrary(context.pg)(
 			createPlaylistConfig({
 				inLibrary: true,
-				objectID: args.playlistID,
+				objectID: playlistID,
 				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			}),
 		);
@@ -138,7 +138,7 @@ export const removePlaylistFromLibrary = resolver<Playlist | null, PlaylistID>(
 		return handleInLibrary(context.pg)(
 			createPlaylistConfig({
 				inLibrary: false,
-				objectID: args.playlistID,
+				objectID: playlistID,
 				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 			}),
 		);

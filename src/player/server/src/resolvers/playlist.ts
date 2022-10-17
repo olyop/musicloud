@@ -9,6 +9,7 @@ import {
 
 import { pipe } from "rxjs";
 import { random } from "lodash-es";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/musicloud-common/build/types";
 
 import {
@@ -19,16 +20,16 @@ import {
 	timeStampToMilliseconds,
 } from "./helpers";
 
-import { COLUMN_NAMES } from "../globals";
 import createParentResolver from "./create-parent-resolver";
 import { Song, Play, Playlist, GetObjectsOptions } from "../types";
 import { SELECT_PLAYLIST_SONGS, SELECT_OBJECT_SONG_PLAYS } from "../sql";
 
 const resolver = createParentResolver<Playlist>(({ parent, context }) => {
-	if (parent.privacy === PlaylistPrivacy.PRIVATE) {
-		if (parent.userID !== context.getAuthorizationJWTPayload(context.authorization).userID) {
-			throw new Error("Unauthorized access to this playlist");
-		}
+	if (
+		parent.privacy === PlaylistPrivacy.PRIVATE &&
+		parent.userID !== context.getAuthorizationJWTPayload(context.authorization).userID
+	) {
+		throw new Error("Unauthorized access to this playlist");
 	}
 });
 
@@ -42,7 +43,7 @@ export const user = resolver(({ parent, context }) =>
 	getUser(context.pg)({ userID: parent.userID }),
 );
 
-export const playsTotal = resolver(() => Promise.resolve(random(50, 1_000)));
+export const playsTotal = resolver(() => Promise.resolve(random(50, 1000)));
 
 interface GetPlaylistSongsOptions<T> extends PlaylistID, GetObjectsOptions<T> {}
 

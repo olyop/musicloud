@@ -20,16 +20,14 @@ export const updateNowPlayingCache = (cache: ApolloCache<unknown>) => (song: Son
 };
 
 export const updateNowPlayingMutationFunction =
-	// eslint-disable-next-line max-len
-
-		<Data, Variables, Context>(
-			dataToSong: (data: Data) => Queue["nowPlaying"],
-		): MutationUpdaterFunction<Data, Variables, Context, ApolloCache<unknown>> =>
-		(cache, { data }) => {
-			if (data) {
-				const song = dataToSong(data);
-				if (song) {
-					updateNowPlayingCache(cache)(song);
-				}
+	<Data, Variables, Context>(
+		dataToSong: (data: Data) => Queue["nowPlaying"],
+	): MutationUpdaterFunction<Data, Variables, Context, ApolloCache<unknown>> =>
+	(cache, { data }) => {
+		if (data) {
+			const song = dataToSong(data);
+			if (song) {
+				updateNowPlayingCache(cache)(song);
 			}
-		};
+		}
+	};

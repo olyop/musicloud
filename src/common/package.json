@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"license": "MIT",
-	"version": "1.1.142",
+	"version": "1.2.9",
 	"description": "musicloud-common",
 	"name": "@oly_op/musicloud-common",
 	"homepage": "https://github.com/olyop/musicloud",
@@ -35,6 +35,10 @@
 			"types": "./build/types/index.d.ts",
 			"import": "./build/types/index.js"
 		},
+		"./build/serve-client": {
+			"types": "./build/serve-client.d.ts",
+			"import": "./build/serve-client.js"
+		},
 		"./build/server-options": {
 			"types": "./build/server-options.d.ts",
 			"import": "./build/server-options.js"
@@ -47,14 +51,18 @@
 			"types": "./build/determine-service-url.d.ts",
 			"import": "./build/determine-service-url.js"
 		},
-		"./build/create-fastify-cors-options": {
-			"types": "./build/create-fastify-cors-options.d.ts",
-			"import": "./build/create-fastify-cors-options.js"
+		"./build/create-server-options": {
+			"types": "./build/create-server-options.d.ts",
+			"import": "./build/create-server-options.js"
+		},
+		"./build/tables-column-names": {
+			"types": "./build/tables-column-names.d.ts",
+			"import": "./build/tables-column-names.js"
 		}
 	},
 	"peerDependencies": {
-		"pg": "*",
 		"ms": "*",
+		"pg": "*",
 		"fastify": "*",
 		"pino-pretty": "*",
 		"@fastify/cors": "*",

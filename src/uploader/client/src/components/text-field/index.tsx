@@ -34,7 +34,7 @@ const TextField: FC<PropTypes> = ({
 	placeholder,
 	onItemRemove,
 	imageOrientation = "portrait",
-	...inputPropTypes
+	...propTypes
 }) => {
 	const [hover, setHover] = useState(false);
 	const [focus, setFocus] = useState(false);
@@ -143,7 +143,7 @@ const TextField: FC<PropTypes> = ({
 					!isEmpty(list) && "input-list",
 					imageURL && "input-image",
 				)}
-				{...inputPropTypes}
+				{...propTypes}
 			/>
 			{(action || check) && (
 				<div className={bem("right", "FlexRowGapQuart")}>

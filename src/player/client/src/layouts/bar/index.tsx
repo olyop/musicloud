@@ -54,13 +54,11 @@ const Bar: FC = () => {
 	}, [nowPlaying, play, autoLoad.current]);
 
 	useEffect(() => {
-		if (nowPlaying) {
-			if (audio.ready) {
-				if (play) {
-					audio.play();
-				} else {
-					audio.pause();
-				}
+		if (nowPlaying && audio.ready) {
+			if (play) {
+				audio.play();
+			} else {
+				audio.pause();
 			}
 		}
 	}, [audio.ready, play]);
@@ -80,24 +78,20 @@ const Bar: FC = () => {
 	const [nextQueueSong] = useNextQueueSong();
 
 	useEffect(() => {
-		if (nowPlaying) {
-			if (audio.ended) {
-				void nextQueueSong();
-			}
+		if (nowPlaying && audio.ended) {
+			void nextQueueSong();
 		}
 	}, [audio.ended]);
 
 	useEffect(() => {
-		if (nowPlaying) {
-			if (audio.error) {
-				dispatch(
-					addError({
-						errorID: uniqueID(),
-						location: "useSongAudio",
-						message: audio.error.message,
-					}),
-				);
-			}
+		if (nowPlaying && audio.error) {
+			dispatch(
+				addError({
+					errorID: uniqueID(),
+					location: "useSongAudio",
+					message: audio.error.message,
+				}),
+			);
 		}
 	}, [audio.error]);
 

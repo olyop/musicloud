@@ -17,7 +17,7 @@ const Progress: FC<PropTypes> = ({ audio, nowPlaying, className }) => {
 
 	const handleSeek: HandleChange = event => {
 		if (allowControls) {
-			audioPosition.seek(parseInt(event.target.value));
+			audioPosition.seek(Number.parseInt(event.target.value));
 		}
 	};
 

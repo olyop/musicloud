@@ -8,9 +8,8 @@ import {
 	convertTableToCamelCaseOrNull,
 } from "@oly_op/pg-helpers";
 
-import { GraphQLError } from "graphql";
-import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { SongID, UserID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import {
 	SELECT_USER_PLAYS,
@@ -20,7 +19,7 @@ import {
 	SELECT_USER_PLAYLISTS_FILTERED_BY_SONG,
 } from "../sql";
 
-import { COLUMN_NAMES } from "../globals";
+import { UNAUTHORIZED_ERROR } from "../context";
 import { timeStampToMilliseconds } from "./helpers";
 import createParentResolver from "./create-parent-resolver";
 import { Play, User, Playlist, GetObjectsOptions } from "../types";
@@ -29,11 +28,7 @@ interface GetUserObjectsOptions<T> extends UserID, GetObjectsOptions<T> {}
 
 const resolver = createParentResolver<User>(({ parent, context }) => {
 	if (parent.userID !== context.getAuthorizationJWTPayload(context.authorization).userID) {
-		throw new GraphQLError("Not Authorized", {
-			extensions: {
-				code: ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED,
-			},
-		});
+		throw UNAUTHORIZED_ERROR;
 	}
 });
 

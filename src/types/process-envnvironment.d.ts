@@ -3,6 +3,7 @@ type TrueFalse = "true" | "false";
 type NodeENV = "development" | "production";
 
 declare namespace NodeJS {
+	// eslint-disable-next-line unicorn/prevent-abbreviations
 	interface ProcessEnv {
 		NODE_ENV: NodeENV;
 		HTTPS: TrueFalse;

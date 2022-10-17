@@ -7,10 +7,10 @@ import {
 
 import { isEmpty } from "lodash-es";
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import resolver from "../resolver";
 import { Song } from "../../../types";
-import { COLUMN_NAMES } from "../../../globals";
 import { clearQueue, updateQueueNowPlaying } from "../../helpers";
 import { INSERT_QUEUE_SONG, SELECT_PLAYLIST_SONGS } from "../../../sql";
 
@@ -40,7 +40,7 @@ export const playPlaylist = resolver<Record<string, never>, PlaylistID>(
 			const playlistSongs = await query(SELECT_PLAYLIST_SONGS)({
 				parse: convertTableToCamelCase<Song>(),
 				variables: {
-					playlistID: args.playlistID,
+					playlistID,
 					columnNames: join(COLUMN_NAMES.SONG, "songs"),
 				},
 			});

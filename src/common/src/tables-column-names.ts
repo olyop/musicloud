@@ -1,13 +1,16 @@
+const NAME = "name";
+const TITLE = "title";
+
 // prettier-ignore
 const GENRE = [
 	"genre_id",
-	"name",
+	NAME,
 ] as const;
 
 // prettier-ignore
 const ARTIST = [
 	"artist_id",
-	"name",
+	NAME,
 	"city",
 	"country",
 ] as const;
@@ -21,7 +24,7 @@ const PLAY = [
 // prettier-ignore
 const ALBUM = [
 	"album_id",
-	"title",
+	TITLE,
 	"released",
 ] as const;
 
@@ -39,7 +42,7 @@ const SONG = [
 	"mix",
 	"bpm",
 	KEY[0],
-	"title",
+	TITLE,
 	ALBUM[0],
 	"duration",
 	"disc_number",
@@ -49,7 +52,7 @@ const SONG = [
 // prettier-ignore
 const USER = [
 	"user_id",
-	"name",
+	NAME,
 	"date_joined",
 	"email_address",
 ] as const;
@@ -64,7 +67,7 @@ const USER_FOLLOWERS = [
 // prettier-ignore
 const PLAYLIST = [
 	"playlist_id",
-	"title",
+	TITLE,
 	USER[0],
 	"privacy",
 	"date_created",
@@ -92,7 +95,7 @@ const NOW_PLAYING = [
 ] as const;
 
 // prettier-ignore
-const COLUMN_NAMES = {
+export const COLUMN_NAMES = {
 	KEY,
 	PLAY,
 	SONG,
@@ -106,5 +109,3 @@ const COLUMN_NAMES = {
 	PLAYLIST_SONG,
 	USER_FOLLOWERS,
 };
-
-export default COLUMN_NAMES;

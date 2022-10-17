@@ -1,9 +1,9 @@
 import { isEmpty, last } from "lodash-es";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { AlbumID, PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
 import { exists, convertTableToCamelCase, query, PoolOrClient } from "@oly_op/pg-helpers";
 
 import resolver from "./resolver";
-import { COLUMN_NAMES } from "../../globals";
 import { Song, Playlist, PlaylistSong, IndexOptions } from "../../types";
 import { isSongInPlaylist } from "../helpers/is-song-in-playlist";
 import { addSongToPlaylist, getPlaylist, isNotUsersPlaylist } from "../helpers";

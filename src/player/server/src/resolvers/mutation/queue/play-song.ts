@@ -1,8 +1,8 @@
 import { exists } from "@oly_op/pg-helpers";
 import { SongID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import resolver from "../resolver";
-import { COLUMN_NAMES } from "../../../globals";
 import { updateQueueNowPlaying } from "../../helpers/update-queue-now-playing";
 
 export const playSong = resolver<Record<string, never>, SongID>(async ({ args, context }) => {

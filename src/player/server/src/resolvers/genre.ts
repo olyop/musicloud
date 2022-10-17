@@ -1,4 +1,5 @@
 import { GenreID, UserID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import {
 	join,
@@ -14,7 +15,6 @@ import { Song, Play, Genre, OrderByArgs, GetObjectsOptions } from "../types";
 
 import { SELECT_GENRE_SONGS, SELECT_OBJECT_SONG_PLAYS, SELECT_GENRE_SONGS_ORDER_BY } from "../sql";
 
-import { COLUMN_NAMES } from "../globals";
 import { determineSongsSQLOrderByField } from "./helpers";
 import createParentResolver from "./create-parent-resolver";
 

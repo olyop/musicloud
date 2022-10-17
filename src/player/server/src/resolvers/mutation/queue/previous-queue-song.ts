@@ -1,6 +1,6 @@
-import { join, query as pgHelpersQuery, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
-
 import { isNull } from "lodash-es";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
+import { join, query as pgHelpersQuery, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
 
 import {
 	INSERT_QUEUE_SONG,
@@ -11,7 +11,6 @@ import {
 
 import resolver from "../resolver";
 import { QueueSong } from "../../../types";
-import { COLUMN_NAMES } from "../../../globals";
 import { getQueue, updateQueueNowPlaying } from "../../helpers";
 
 export const previousQueueSong = resolver<Record<string, never>>(async ({ context }) => {

@@ -5,8 +5,9 @@ import {
 	convertFirstRowToCamelCaseOrNull,
 } from "@oly_op/pg-helpers";
 
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
+
 import resolver from "./resolver";
-import { COLUMN_NAMES } from "../../globals";
 import { Playlist, LibraryObjectAtIndexArgs } from "../../types";
 import { SELECT_LIBRARY_PLAYLISTS, SELECT_LIBRARY_PLAYLIST_AT_INDEX } from "../../sql";
 

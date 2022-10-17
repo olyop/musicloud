@@ -27,7 +27,7 @@ export const verifyJWT = (value: StateAccessToken) => {
 				return false;
 			}
 		}
-	} catch (error) {
+	} catch {
 		return false;
 	}
 };

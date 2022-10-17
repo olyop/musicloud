@@ -1,7 +1,7 @@
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { join, query, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers";
 
 import { Song } from "../types";
-import { COLUMN_NAMES } from "../globals";
 import { getQueueSongs } from "./helpers";
 import { SELECT_QUEUE_NOW_PLAYING_SONG } from "../sql";
 import createParentResolver from "./create-parent-resolver";

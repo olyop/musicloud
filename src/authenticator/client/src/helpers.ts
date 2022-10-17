@@ -38,6 +38,7 @@ export const isEmailAddress = (value: string) =>
 	// eslint-disable-next-line max-len
 	!isNull(
 		value.match(
+			// eslint-disable-next-line unicorn/better-regex
 			/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
 		),
 	);

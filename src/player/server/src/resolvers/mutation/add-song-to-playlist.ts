@@ -1,5 +1,6 @@
 import { last } from "lodash-es";
 import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { convertTableToCamelCase, exists, join, query } from "@oly_op/pg-helpers";
 
 import {
@@ -9,7 +10,6 @@ import {
 } from "../helpers";
 
 import resolver from "./resolver";
-import { COLUMN_NAMES } from "../../globals";
 import { Playlist, PlaylistSong } from "../../types";
 import { SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql";
 

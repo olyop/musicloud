@@ -11,6 +11,7 @@ import {
 import { pipe } from "rxjs";
 import { head } from "lodash-es";
 import { ArtistID, UserID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import { Song, Play, Album, Artist, OrderByArgs, GetObjectsOptions } from "../types";
 
@@ -30,7 +31,6 @@ import {
 	SELECT_ARTIST_ALBUMS_ORDER_BY,
 } from "../sql";
 
-import { COLUMN_NAMES } from "../globals";
 import createParentResolver from "./create-parent-resolver";
 
 const resolver = createParentResolver<Artist>();

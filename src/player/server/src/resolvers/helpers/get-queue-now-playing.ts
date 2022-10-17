@@ -1,9 +1,9 @@
 import { join, query, PoolOrClient, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers";
 
 import { UserID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import { NowPlaying } from "../../types";
-import { COLUMN_NAMES } from "../../globals";
 import { SELECT_QUEUE_NOW_PLAYING } from "../../sql";
 
 export const getQueueNowPlaying =

@@ -13,6 +13,7 @@ import { pipe } from "rxjs";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 import { NAME } from "@oly_op/musicloud-common/build/metadata";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { PlaylistID, SongID, UserID } from "@oly_op/musicloud-common/build/types";
 
 import { Song, Play, Genre, Artist, PlaylistSong, GetObjectsOptions } from "../types";
@@ -35,7 +36,6 @@ import {
 	SELECT_OBJECT_SONG_PLAYS,
 } from "../sql";
 
-import { COLUMN_NAMES } from "../globals";
 import createParentResolver from "./create-parent-resolver";
 
 const resolver = createParentResolver<Song>();

@@ -1,42 +1,39 @@
-import { NAME as Bucket } from "@oly_op/musicloud-common/build/metadata";
 import {
+	S3Client,
 	CreateBucketCommand,
 	PutBucketCorsCommand,
-	S3Client,
 	CORSConfiguration as CORSConfigurationType,
 } from "@aws-sdk/client-s3";
+import { NAME as Bucket } from "@oly_op/musicloud-common/build/metadata";
+import { AWS_S3_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
 
 const CORSConfiguration: CORSConfigurationType = {
 	CORSRules: [
 		{
+			ExposeHeaders: [],
+			MaxAgeSeconds: 3000,
 			AllowedHeaders: ["*"],
 			AllowedMethods: ["GET"],
 			AllowedOrigins: [
-				"http://localhost:3000",
-				"http://localhost:3001",
 				"https://localhost:3000",
 				"https://localhost:3001",
 				"https://player.musicloud-app.com",
-				"https://uploader.musicloud-app.com",
-				"https://authenticator.musicloud-app.com",
 			],
-			ExposeHeaders: [],
-			MaxAgeSeconds: 3000,
 		},
 	],
 };
 
-const s3Client = new S3Client({});
+const s3 = new S3Client(AWS_S3_OPTIONS);
 
 console.log(
-	await s3Client.send(
+	await s3.send(
 		new CreateBucketCommand({
 			Bucket,
 		}),
 	),
 );
 console.log(
-	await s3Client.send(
+	await s3.send(
 		new PutBucketCorsCommand({
 			Bucket,
 			CORSConfiguration,

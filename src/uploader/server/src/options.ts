@@ -1,10 +1,7 @@
 import { exists } from "@oly_op/pg-helpers";
-import { FastifyListenOptions } from "fastify";
 import { FastifyJWTOptions } from "@fastify/jwt";
-import { FastifyStaticOptions } from "@fastify/static";
 import { FastifyMultipartOptions } from "@fastify/multipart";
 import { JWTPayload } from "@oly_op/musicloud-common/build/types";
-import { FASTIFY_STATIC_OPTIONS as FASTIFY_STATIC_BASE_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
 import bytes from "bytes";
 
 export const FASTIFY_JWT_OPTIONS: FastifyJWTOptions = {
@@ -33,14 +30,4 @@ export const FASTIFY_MULTIPART_OPTIONS: FastifyMultipartOptions = {
 	limits: {
 		fileSize: bytes("50mb"),
 	},
-};
-
-export const FASTIFY_STATIC_OPTIONS: FastifyStaticOptions = {
-	...FASTIFY_STATIC_BASE_OPTIONS,
-	root: new URL("public", import.meta.url).pathname,
-};
-
-export const FASTIFY_LISTEN_OPTIONS: FastifyListenOptions = {
-	host: process.env.HOST,
-	port: parseInt(process.env.UPLOADER_SERVER_PORT),
 };

@@ -1,9 +1,9 @@
 import { pipe } from "rxjs";
 import { PlaylistID, UserID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { query, PoolOrClient, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
 
 import { Playlist } from "../../types";
-import { COLUMN_NAMES } from "../../globals";
 import { SELECT_PLAYLIST_BY_ID } from "../../sql";
 
 export interface IsNotUsersPlaylistOptions extends UserID, PlaylistID {}

@@ -2,7 +2,6 @@ import ms from "ms";
 import type { PoolConfig } from "pg";
 import type { S3ClientConfig } from "@aws-sdk/client-s3";
 import type { FastifyHelmetOptions } from "@fastify/helmet";
-import type { FastifyStaticOptions } from "@fastify/static";
 
 import { USE_HTTPS, IS_PRODUCTION, IS_TESTING, FILES_URL } from "./globals";
 
@@ -29,15 +28,11 @@ export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 	},
 };
 
-export const FASTIFY_STATIC_OPTIONS: Partial<FastifyStaticOptions> = {
-	index: false,
-};
-
 export const PG_POOL_OPTIONS: PoolConfig = {
 	max: 60,
 	parseInputDatesAsUTC: true,
-	idleTimeoutMillis: ms("15s"),
-	connectionTimeoutMillis: ms("15s"),
+	idleTimeoutMillis: ms("30s"),
+	connectionTimeoutMillis: ms("30s"),
 	host: process.env.POSTGRESQL_HOSTNAME,
 	user: process.env.POSTGRESQL_USERNAME,
 	database: process.env.POSTGRESQL_DATABASE,

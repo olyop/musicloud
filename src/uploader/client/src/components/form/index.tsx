@@ -7,12 +7,12 @@ import Button from "@oly_op/react-button";
 import getInitialValues from "./get-initial-values";
 import FormField, { Field, FieldValue, FieldTypeEnum } from "./field";
 
-const Form: FC<PropTypes> = ({ title, errors, loading, onSubmit, children, ...formProps }) => {
+const Form: FC<PropTypes> = ({ title, errors, loading, onSubmit, children, ...props }) => {
 	if (loading) {
 		return <p className="HeadingFive">Loading...</p>;
 	} else {
 		return (
-			<form onSubmit={onSubmit} className="FlexColumnGap" {...formProps}>
+			<form onSubmit={onSubmit} className="FlexColumnGap" {...props}>
 				<h1 className="HeadingFive">
 					<Fragment>Upload </Fragment>
 					{title}

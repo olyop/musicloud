@@ -1,6 +1,9 @@
 import { Album, Song } from "./types";
 
-const omitAudioFromSong = ({ audio, ...song }: Song): Omit<Song, "audio"> => song;
+const omitAudioFromSong: Parameters<Array<Song>["map"]>[0] = ({
+	audio,
+	...song
+}): Omit<Song, "audio"> => song;
 
 const createFormData = (album: Album, songs: Song[]) => {
 	const body = new FormData();

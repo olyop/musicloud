@@ -11,6 +11,7 @@ import {
 import { pipe } from "rxjs";
 import { sum } from "lodash-es";
 import { UserID, AlbumID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import { Song, Play, Album, Genre, Artist, GetObjectsOptions } from "../types";
 
@@ -23,7 +24,6 @@ import {
 	SELECT_USER_ALBUM_PLAYS,
 } from "../sql";
 
-import { COLUMN_NAMES } from "../globals";
 import { map, getObjectInLibrary } from "./helpers";
 import createParentResolver from "./create-parent-resolver";
 

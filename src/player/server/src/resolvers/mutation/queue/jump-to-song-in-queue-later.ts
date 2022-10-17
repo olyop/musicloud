@@ -6,6 +6,7 @@ import {
 } from "@oly_op/pg-helpers";
 
 import { find, isEmpty } from "lodash-es";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import {
 	SELECT_QUEUE,
@@ -15,7 +16,6 @@ import {
 } from "../../../sql";
 
 import resolver from "../resolver";
-import { COLUMN_NAMES } from "../../../globals";
 import { updateQueueNowPlaying } from "../../helpers";
 import { IndexOptions, QueueSong } from "../../../types";
 

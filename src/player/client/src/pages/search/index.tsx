@@ -53,7 +53,7 @@ const SearchPage: FC = () => {
 			const newHits = await getAlgoliaHits(algoliaSearchIndex.current)(input);
 			setHits(newHits);
 		} catch (error) {
-			console.error();
+			console.error(error);
 		} finally {
 			dispatch(removeLoading(loadingID));
 		}

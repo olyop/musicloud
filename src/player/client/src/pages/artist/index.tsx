@@ -38,7 +38,7 @@ const ArtistPage: FC = () => {
 			</Page>
 		);
 	} else if (data) {
-		const { name, city, country, playsTotal } = data.getArtistByID;
+		const { name, city, since, country, playsTotal } = data.getArtistByID;
 		return (
 			<Head pageTitle={name}>
 				<Page>
@@ -78,7 +78,7 @@ const ArtistPage: FC = () => {
 							<div className="FlexColumnGapQuart" style={{ alignItems: "flex-start" }}>
 								<p className="ParagraphTwoInverted">
 									<Fragment>Formed in </Fragment>
-									{data.getArtistByID.since.slice(0, -6)}
+									{since.slice(0, -6)}
 								</p>
 								{city && country && (
 									<a

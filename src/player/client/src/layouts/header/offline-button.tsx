@@ -14,19 +14,19 @@ const HeaderOfflineButton: FC = () => {
 
 	const checkStatus = async () => dispatch(updateIsOnline(await checkOnlineStatus()));
 
+	const handleOnOffline = () => {
+		dispatch(updateIsOnline(false));
+	};
+
 	useEffect(() => {
-		window.addEventListener("offline", () => {
-			dispatch(updateIsOnline(false));
-		});
+		window.addEventListener("offline", handleOnOffline);
 
 		const id = setInterval(() => {
 			void checkStatus();
 		}, ms("10s"));
 
 		return () => {
-			window.removeEventListener("offline", () => {
-				dispatch(updateIsOnline(false));
-			});
+			window.removeEventListener("offline", handleOnOffline);
 			clearInterval(id);
 		};
 	}, []);

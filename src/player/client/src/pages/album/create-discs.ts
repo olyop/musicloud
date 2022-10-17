@@ -8,6 +8,7 @@ const createDiscs = (songs: Song[]) => {
 	} else {
 		const numberOfDiscs = songs[songs.length - 1]!.discNumber || 1;
 
+		// eslint-disable-next-line unicorn/new-for-builtins
 		const discsEmpty = [...Array<Disc>(numberOfDiscs)];
 
 		const discs = discsEmpty.map((disc, index) => ({

@@ -44,8 +44,8 @@ const EmailAddressForm: FC<PropTypes> = ({
 			const { exists } = (await response.json()) as { exists: boolean };
 
 			onEmailAddressExists(exists);
-		} catch (e) {
-			setError(e as Error);
+		} catch (emailAddressExistsError) {
+			setError(emailAddressExistsError as Error);
 		} finally {
 			setLoading(false);
 		}

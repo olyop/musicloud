@@ -1,4 +1,5 @@
 import { SearchIndex } from "algoliasearch";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { convertTableToCamelCase, PoolOrClient, query } from "@oly_op/pg-helpers";
 import { ArtistID, GenreID, SongID, UserID } from "@oly_op/musicloud-common/build/types";
 
@@ -11,7 +12,6 @@ import {
 } from "../../../sql";
 
 import { getSong } from "../get-objects";
-import { COLUMN_NAMES } from "../../../globals";
 
 const incrementOne = {
 	value: 1,

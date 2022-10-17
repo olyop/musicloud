@@ -2,6 +2,7 @@ import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 import { NAME } from "@oly_op/musicloud-common/build/metadata";
 import { exists, query as pgHelpersQuery } from "@oly_op/pg-helpers";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import {
 	DELETE_USER_BY_ID,
@@ -12,7 +13,6 @@ import {
 } from "../../sql";
 
 import resolver from "./resolver";
-import { COLUMN_NAMES } from "../../globals";
 
 export const deleteUser = resolver(async ({ context }) => {
 	const query = pgHelpersQuery(context.pg);

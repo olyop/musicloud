@@ -30,7 +30,7 @@ const BarVolume: FC<PropTypes> = ({ className, iconClassName }) => {
 	};
 
 	const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => {
-		dispatch(updateVolume(parseInt(value)));
+		dispatch(updateVolume(Number.parseInt(value)));
 	};
 
 	return (

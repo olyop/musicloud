@@ -4,22 +4,32 @@ import compress from "@fastify/compress";
 import serveStatic from "@fastify/static";
 import rateLimit from "@fastify/rate-limit";
 import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import { serveClient } from "@oly_op/musicloud-common/build/serve-client";
 import { createFastify } from "@oly_op/musicloud-common/build/create-fastify";
 import { FASTIFY_HELMET_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
-import { createFastifyCORSOptions } from "@oly_op/musicloud-common/build/create-fastify-cors-options";
 
-import { api, serveClient, services } from "./plugins";
-import { FASTIFY_LISTEN_OPTIONS, FASTIFY_STATIC_OPTIONS } from "./options";
+import {
+	createFastifyCORSOptions,
+	createFastifyStaticOptions,
+} from "@oly_op/musicloud-common/build/create-server-options";
+
+import { api, services } from "./plugins";
+
+const STATIC_ROOT = new URL("public", import.meta.url).pathname;
+const INDEX_DOT_HTML_PATH = new URL("public/index.html", import.meta.url).pathname;
 
 const fastify = await createFastify();
 
 await fastify.register(rateLimit);
 await fastify.register(helmet, FASTIFY_HELMET_OPTIONS);
 await fastify.register(cors, createFastifyCORSOptions({ service: ServicesNames.AUTHENTICATOR }));
+await fastify.register(serveStatic, createFastifyStaticOptions({ root: STATIC_ROOT }));
 await fastify.register(compress);
 await fastify.register(services);
-await fastify.register(serveStatic, FASTIFY_STATIC_OPTIONS);
 await fastify.register(api);
-await fastify.register(serveClient);
+await fastify.register(serveClient, { indexPath: INDEX_DOT_HTML_PATH });
 
-await fastify.listen(FASTIFY_LISTEN_OPTIONS);
+await fastify.listen({
+	host: process.env.HOST,
+	port: Number.parseInt(process.env.AUTHENTICATOR_SERVER_PORT),
+});

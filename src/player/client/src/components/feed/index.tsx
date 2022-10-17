@@ -49,6 +49,7 @@ const Feed = <ItemsTotalData, Item, ItemData>(
 	}, []);
 
 	if (itemsTotal && itemsTotal !== 0) {
+		// eslint-disable-next-line unicorn/no-new-array
 		const nullArray = new Array<null>(itemsTotal).fill(null);
 		return (
 			<Fragment>

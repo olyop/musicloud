@@ -7,12 +7,12 @@ import {
 
 import isEmpty from "lodash-es/isEmpty";
 import { SongID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import { SELECT_QUEUE, INSERT_QUEUE_SONG, UPDATE_QUEUE_SONG_CREMENT_INDEX } from "../../../sql";
 
 import resolver from "../resolver";
 import { QueueSong } from "../../../types";
-import { COLUMN_NAMES } from "../../../globals";
 
 export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ args, context }) => {
 	const { songID } = args;
@@ -60,8 +60,8 @@ export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ ar
 		await query(INSERT_QUEUE_SONG)({
 			variables: {
 				userID,
+				songID,
 				index: 0,
-				songID: args.songID,
 				tableName: "queue_nexts",
 			},
 		});

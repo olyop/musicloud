@@ -6,18 +6,18 @@ import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-se
 import { verifyJWT } from "../helpers";
 import { useDispatch, updateAccessToken, useStateAccessToken } from "../redux";
 
+const handleRedirect = () => {
+	window.location.href = determineServiceURL({
+		redirect: ServicesNames.PLAYER,
+		service: ServicesNames.AUTHENTICATOR,
+	});
+};
+
 export const AuthenticationProvider: FC<PropsWithChildren> = ({ children }) => {
 	const dispatch = useDispatch();
 	const accessToken = useStateAccessToken();
 
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	const handleRedirect = () => {
-		window.location.href = determineServiceURL({
-			redirect: ServicesNames.PLAYER,
-			service: ServicesNames.AUTHENTICATOR,
-		});
-	};
 
 	useEffect(() => {
 		if (searchParams.has("accessToken")) {

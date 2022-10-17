@@ -1,10 +1,10 @@
 import limit from "p-limit";
 import { query, convertTableToCamelCase, join } from "@oly_op/pg-helpers";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import resolver from "./resolver";
 import { Artist, Song } from "../../types";
 import { handleInLibrary } from "../helpers";
-import { COLUMN_NAMES } from "../../globals";
 import { SELECT_SONGS, SELECT_ARTISTS } from "../../sql";
 
 const pLimitter = limit(50);

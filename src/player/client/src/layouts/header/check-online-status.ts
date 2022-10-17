@@ -21,7 +21,7 @@ const checkOnlineStatus = async () => {
 				}),
 			);
 			return true;
-		} catch (error) {
+		} catch {
 			controller.abort();
 			return false;
 		}

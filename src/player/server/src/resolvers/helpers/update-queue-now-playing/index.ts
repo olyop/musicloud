@@ -1,3 +1,4 @@
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { exists, PoolOrClient, query as pgHelpersQuery } from "@oly_op/pg-helpers";
 
 import { isNull } from "lodash-es";
@@ -11,7 +12,6 @@ import {
 	UPDATE_QUEUE_NOW_PLAYING,
 } from "../../../sql";
 
-import { COLUMN_NAMES } from "../../../globals";
 import incrementPlays from "./increment-plays";
 
 export interface UpdateQueueNowPlayingOptions extends UserID {

@@ -2,8 +2,8 @@ import { join, query, PoolOrClient, convertTableToCamelCaseOrNull } from "@oly_o
 
 import { pipe } from "rxjs";
 import { UserID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
-import { COLUMN_NAMES } from "../../globals";
 import { SELECT_QUEUE_SONGS } from "../../sql";
 import { Song, TableNameOptions } from "../../types";
 

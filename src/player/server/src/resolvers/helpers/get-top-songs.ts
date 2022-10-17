@@ -1,7 +1,7 @@
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { join, query, PoolOrClient, convertTableToCamelCase } from "@oly_op/pg-helpers";
 
 import { Song } from "../../types";
-import { COLUMN_NAMES } from "../../globals";
 import { SELECT_SONGS_TOP_PLAYED } from "../../sql";
 
 export const getTopSongs = (client: PoolOrClient) => (limit: number) =>

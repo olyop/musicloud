@@ -1,10 +1,10 @@
 import { isEmpty } from "lodash-es";
 import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { join, query, convertTableToCamelCase, exists } from "@oly_op/pg-helpers";
 
 import resolver from "../resolver";
 import { Song } from "../../../types";
-import { COLUMN_NAMES } from "../../../globals";
 import { clearQueue, updateQueueNowPlaying } from "../../helpers";
 import { INSERT_QUEUE_SONG, SELECT_ALBUM_SONGS } from "../../../sql";
 

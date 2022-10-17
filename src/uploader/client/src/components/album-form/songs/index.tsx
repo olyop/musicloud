@@ -19,6 +19,7 @@ const AlbumSongs: FC<PropsWithChildren<PropTypes>> = ({ onAddSong, songs, childr
 				multiple
 				type="file"
 				onChange={({ target: { files } }) => {
+					// eslint-disable-next-line unicorn/prefer-spread
 					void onAddSong(Array.from(files!));
 				}}
 			/>

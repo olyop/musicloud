@@ -6,7 +6,7 @@ import { JWTPayload, JWTPayloadUser, UserID } from "@oly_op/musicloud-common/bui
 
 const signer = createSigner({
 	algorithm: JWT_ALGORITHM,
-	expiresIn: IS_DEVELOPMENT ? ms("1d") : ms("5d"),
+	expiresIn: IS_DEVELOPMENT ? ms("24h") : ms("5d"),
 	key: () => Promise.resolve(process.env.JWT_TOKEN_SECRET),
 });
 

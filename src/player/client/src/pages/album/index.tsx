@@ -64,7 +64,7 @@ const AlbumPage: FC = () => {
 		);
 	} else if (data) {
 		const album = data.getAlbumByID;
-		const { title, songs, duration, artists, genres, released, songsTotal } = album;
+		const { title, songs, duration, artists, genres, released, songsTotal, playsTotal } = album;
 		const discs = createDiscs(songs);
 		return (
 			<Head pageTitle={title}>
@@ -153,11 +153,11 @@ const AlbumPage: FC = () => {
 									{Math.floor(duration % 60)}
 									<Fragment> seconds</Fragment>
 								</p>
-								{album.playsTotal && (
+								{playsTotal && (
 									<p className="ParagraphTwo LightColor">
-										{album.playsTotal}
+										{playsTotal}
 										<Fragment> play</Fragment>
-										{determinePlural(album.playsTotal)}
+										{determinePlural(playsTotal)}
 									</p>
 								)}
 							</div>

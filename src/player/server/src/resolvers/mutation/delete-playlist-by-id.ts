@@ -1,8 +1,8 @@
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { query as pgHelpersQuery, exists as pgHelpersExists } from "@oly_op/pg-helpers";
 
 import resolver from "./resolver";
-import { COLUMN_NAMES } from "../../globals";
 import { isNotUsersPlaylist } from "../helpers";
 import { DELETE_PLAYLIST_BY_ID } from "../../sql";
 

@@ -7,6 +7,7 @@ import {
 
 import { Pool } from "pg";
 import { UserID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import {
 	SELECT_QUEUE,
@@ -15,7 +16,6 @@ import {
 	UPDATE_QUEUE_SONG_CREMENT_INDEX,
 } from "../../sql";
 
-import { COLUMN_NAMES } from "../../globals";
 import { QueueSong, IndexOptions, TableNameOptions } from "../../types";
 
 export interface RemoveSongFromQueueOptions extends UserID, IndexOptions, TableNameOptions {}

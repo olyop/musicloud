@@ -1,9 +1,9 @@
-import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { join, query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
+import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 
 import resolver from "./resolver";
 import { Playlist } from "../../types";
-import { COLUMN_NAMES } from "../../globals";
 import { isNotUsersPlaylist } from "../helpers";
 import { UPDATE_PLAYLIST_TITLE } from "../../sql";
 

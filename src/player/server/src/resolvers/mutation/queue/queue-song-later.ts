@@ -6,10 +6,10 @@ import {
 } from "@oly_op/pg-helpers";
 
 import { SongID } from "@oly_op/musicloud-common/build/types";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import resolver from "../resolver";
 import { QueueSong } from "../../../types";
-import { COLUMN_NAMES } from "../../../globals";
 import { SELECT_QUEUE, INSERT_QUEUE_SONG } from "../../../sql";
 
 export const queueSongLater = resolver<Record<string, never>, SongID>(async ({ args, context }) => {

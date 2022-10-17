@@ -1,17 +1,14 @@
 import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
-import { getResultExists, PoolOrClient, query } from "@oly_op/pg-helpers/build";
+import { getResultExists, query } from "@oly_op/pg-helpers/build";
 
 import { EXISTS_PLAYLIST_SONG } from "../../sql";
+import { Database } from "../../types";
 
 export const isSongInPlaylist =
-	(pg: PoolOrClient) =>
-	({ songID, playlistID }: Options) =>
-		query(pg)(EXISTS_PLAYLIST_SONG)({
-			parse: getResultExists,
-			variables: {
-				songID,
-				playlistID,
-			},
-		});
+	(pg: Database) =>
+	async ({ songID, playlistID }: Options) => {
+		const result = await pg.result(EXISTS_PLAYLIST_SONG, { songID, playlistID });
+		result.command;
+	};
 
 interface Options extends SongID, PlaylistID {}

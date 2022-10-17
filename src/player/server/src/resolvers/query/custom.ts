@@ -1,8 +1,8 @@
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { join, query, getResultCount, convertTableToCamelCase } from "@oly_op/pg-helpers";
 
 import resolver from "./resolver";
 import { getTopSongs } from "../helpers";
-import { COLUMN_NAMES } from "../../globals";
 import { Album, Playlist } from "../../types";
 import { COUNT_PLAYS, SELECT_ALBUMS_TRENDING, SELECT_PLAYLISTS_TRENDING } from "../../sql";
 

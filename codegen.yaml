@@ -1,0 +1,28 @@
+overwrite: true
+documents: src/player/client/src
+schema: src/player/server/src/type-defs/*.gql
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+generates:
+  src/player/client/src/generated-graphql-types.ts:
+    config:
+      scalars:
+        UUID: string
+        Date: string
+        Void: void
+        TimeStamp: number
+        PositiveInt: number
+        EmailAddress: string
+        NonNegativeInt: number
+        NonEmptyString: number
+    plugins:
+      - typescript
+      - typescript-resolvers
+      - add:
+          content: |
+            /* eslint-disable @typescript-eslint/no-explicit-any */
+            /* eslint-disable unicorn/prevent-abbreviations */
+            /* eslint-disable import/newline-after-import */
+            /* eslint-disable @typescript-eslint/ban-types */
+            /* eslint-disable @typescript-eslint/no-invalid-void-type */

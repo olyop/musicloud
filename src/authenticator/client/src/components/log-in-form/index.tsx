@@ -36,8 +36,8 @@ const LogInForm: FC<PropTypes> = ({ onSubmit, emailAddress, onEmailAddressChange
 			const { accessToken } = (await response.json()) as AccessToken;
 
 			onSubmit(accessToken);
-		} catch (e) {
-			setError(e as Error);
+		} catch (logInError) {
+			setError(logInError as Error);
 		} finally {
 			setLoading(false);
 		}

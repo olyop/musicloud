@@ -1,7 +1,7 @@
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { join, query, getResultCount, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers";
 
 import resolver from "./resolver";
-import { COLUMN_NAMES } from "../../globals";
 import { Genre, LibraryObjectAtIndexArgs } from "../../types";
 import { SELECT_LIBRARY_GENRES_TOTAL, SELECT_LIBRARY_GENRE_AT_INDEX } from "../../sql";
 

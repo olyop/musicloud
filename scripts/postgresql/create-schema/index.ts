@@ -1,16 +1,18 @@
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
 import { Pool } from "pg";
+import path from "node:path";
 import { PG_POOL_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
 
-const SQL_PATH = path.join(process.cwd(), "src", "sql");
+const database = new Pool(PG_POOL_OPTIONS);
+
+const SQL_PATH = new URL("sql", import.meta.url).pathname;
 
 const importSQL = (folderName: string, fileName: string) =>
 	fs.readFileSync(path.join(SQL_PATH, folderName, `${fileName}.sql`)).toString();
 
 const files = [
-	importSQL("types", "playlist-privacy"),
-	importSQL("functions", "get-now"),
+	// importSQL("types", "playlist-privacy"),
+	// importSQL("functions", "get-now"),
 	importSQL("tables", "keys"),
 	importSQL("tables", "users"),
 	importSQL("tables", "users-followers"),
@@ -36,8 +38,8 @@ const files = [
 	importSQL("tables", "library-playlists"),
 ];
 
-const pool = new Pool(PG_POOL_OPTIONS);
-
-for (const file of files) {
-	console.log(await pool.query(file));
-}
+await database.tx(async client => {
+	for (const file of files) {
+		await client.none(file);
+	}
+});

@@ -23,14 +23,16 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
 		applyTheme(theme);
 	}, [theme]);
 
+	const handleApplyTheme = () => {
+		applyTheme(theme);
+	};
+
 	useEffect(() => {
-		window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-			applyTheme(theme);
-		});
+		window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", handleApplyTheme);
 
 		return window
 			.matchMedia("(prefers-color-scheme: dark)")
-			.removeEventListener("change", () => applyTheme(theme));
+			.removeEventListener("change", handleApplyTheme);
 	}, []);
 
 	return <Fragment>{children}</Fragment>;

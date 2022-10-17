@@ -24,10 +24,8 @@ const checkNetworkError = onError(({ networkError }) => {
 });
 
 const checkExpiredToken = onError(({ graphQLErrors }) => {
-	if (graphQLErrors) {
-		if (graphQLErrors[0]?.message === "Access Token Expired") {
-			dispatch(updateAccessToken(null));
-		}
+	if (graphQLErrors && graphQLErrors[0]?.message === "Unauthorized") {
+		dispatch(updateAccessToken(null));
 	}
 });
 

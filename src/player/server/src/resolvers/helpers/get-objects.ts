@@ -10,6 +10,7 @@ import {
 	PlaylistPrivacy,
 } from "@oly_op/musicloud-common/build/types";
 
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { join, query, PoolOrClient, convertFirstRowToCamelCaseOrNull } from "@oly_op/pg-helpers";
 
 import { isNull } from "lodash-es";
@@ -26,8 +27,6 @@ import {
 	SELECT_ARTIST_BY_ID,
 	SELECT_PLAYLIST_BY_ID,
 } from "../../sql";
-
-import { COLUMN_NAMES } from "../../globals";
 
 export const getKey =
 	(client: PoolOrClient) =>
