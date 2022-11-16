@@ -260,6 +260,7 @@ export type Mutation = {
 	shuffleNext: Queue;
 	shufflePlaylist: Queue;
 	shuffleTopOneHundredSongs: Queue;
+	test?: Maybe<Scalars["Void"]>;
 	unFollowUser: User;
 	updatePlaylistPrivacy: Playlist;
 	updatePlaylistTitle: Playlist;
@@ -1094,6 +1095,7 @@ export type MutationResolvers<
 		RequireFields<MutationShufflePlaylistArgs, "playlistID">
 	>;
 	shuffleTopOneHundredSongs?: Resolver<ResolversTypes["Queue"], ParentType, ContextType>;
+	test?: Resolver<Maybe<ResolversTypes["Void"]>, ParentType, ContextType>;
 	unFollowUser?: Resolver<
 		ResolversTypes["User"],
 		ParentType,

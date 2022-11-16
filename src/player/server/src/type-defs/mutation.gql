@@ -50,4 +50,6 @@ type Mutation {
 	updatePlaylistTitle(input: UpdatePlaylistTitleInput!): Playlist!
 	updatePlaylistPrivacy(input: UpdatePlaylistPrivacyInput!): Playlist!
 	removeSongFromPlaylist(playlistID: UUID!, index: NonNegativeInt!): Playlist!
+
+	test: Void
 }

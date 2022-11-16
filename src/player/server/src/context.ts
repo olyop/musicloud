@@ -1,5 +1,3 @@
-import { AWS_S3_OPTIONS, ALGOLIA_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
-
 import { Pool } from "pg";
 import { GraphQLError } from "graphql";
 import { isUndefined } from "lodash-es";
@@ -13,6 +11,7 @@ import algolia, { SearchIndex, SearchClient } from "algoliasearch";
 import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
 import { ApolloFastifyContextFunction } from "@as-integrations/fastify";
 import { CustomServer } from "@oly_op/musicloud-common/build/create-fastify";
+import { AWS_S3_OPTIONS, ALGOLIA_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
 
 interface ContextAlgolia {
 	index: SearchIndex;
@@ -43,8 +42,7 @@ const determineAuthorization = async (
 	} else {
 		if (authorization.startsWith("Bearer ")) {
 			try {
-				const token = await verifyAccessToken(authorization.slice(7));
-				return token;
+				return await verifyAccessToken(authorization.slice(7));
 			} catch {
 				return false;
 			}
