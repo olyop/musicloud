@@ -1,0 +1,1 @@
+SELECT clear_queue_later({{ userID }});

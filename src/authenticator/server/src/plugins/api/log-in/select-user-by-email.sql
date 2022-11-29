@@ -3,4 +3,4 @@ SELECT
 FROM
 	users
 WHERE
-	email_address = '{{ emailAddress }}';
+	email_address = {{ emailAddress }};

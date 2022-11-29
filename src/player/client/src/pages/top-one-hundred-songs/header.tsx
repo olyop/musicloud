@@ -32,7 +32,7 @@ const Header: FC = () => {
 	};
 
 	const handleShare = () => {
-		share({
+		void share({
 			title: "Top #100",
 			url: "/top-one-hundred-songs",
 		});

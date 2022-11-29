@@ -5,4 +5,6 @@ FROM
 WHERE
 	playlist_id = '{{ playlistID }}'
 ORDER BY
-	index ASC;
+	index DESC
+LIMIT
+	1;

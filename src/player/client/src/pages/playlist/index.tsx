@@ -81,7 +81,7 @@ const PlaylistPage: FC = () => {
 		const { title, user, dateCreated, privacy, songs, songsTotal, playlistIndex } = playlist;
 
 		const handleShare = () => {
-			share({
+			void share({
 				title,
 				url: createObjectPath("artist", playlistID),
 			});

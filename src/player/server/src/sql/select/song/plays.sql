@@ -1,6 +1,6 @@
 SELECT
-  {{ columnNames }}
+	{{ columnNames }}
 FROM
-  plays
+	plays
 WHERE
-  song_id = '{{ songID }}';
+	song_id = '{{ songID }}';

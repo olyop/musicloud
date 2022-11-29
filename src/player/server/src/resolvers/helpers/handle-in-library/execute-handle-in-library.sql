@@ -1,0 +1,1 @@
+SELECT handle_{{ typeName }}_in_library({{ userID }}, {{ objectID }}, {{ inLibrary }});

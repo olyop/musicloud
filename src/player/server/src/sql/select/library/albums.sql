@@ -12,6 +12,5 @@ WHERE
 			albums
 				ON library_albums.song_id = albums.album_id
 		WHERE
-			in_library = true AND
 			user_id = '{{ userID }}'
 	);

@@ -43,7 +43,9 @@ const GenrePage: FC = () => {
 				</h2>
 			</Page>
 		);
-	} else if (!isUndefined(data)) {
+	} else if (isUndefined(data)) {
+		return <Page />;
+	} else {
 		const { songs } = data.getGenreByID;
 		return (
 			<Head pageTitle={data.getGenreByID.name}>
@@ -56,8 +58,6 @@ const GenrePage: FC = () => {
 				</Page>
 			</Head>
 		);
-	} else {
-		return <Page />;
 	}
 };
 

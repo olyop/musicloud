@@ -7,24 +7,34 @@ export const useShare = () => {
 	const [icon, setIcon] = useState("share");
 	const [text, setText] = useState("Share");
 
-	const handler = (data: ShareData) => {
-		if ("share" in navigator) {
-			void navigator.share(data);
-			setIcon("share");
-			setText("Sharing");
-		} else if ("clipboard" in navigator && data.url) {
-			const serviceURL = determineServiceURL({ service: ServicesNames.PLAYER });
-			void navigator.clipboard.writeText(`${serviceURL.slice(0, -1)}${data.url}`);
-			setIcon("done");
-			setText("Copied");
-		} else {
-			setIcon("error");
-			setText("Disabled");
+	const handleCannotShare = () => {
+		setIcon("error");
+		setText("Disabled");
+	};
+
+	const handler = async (data: ShareData) => {
+		try {
+			const navigatorVariable = navigator;
+			if ("share" in navigatorVariable) {
+				setText("Sharing");
+				await navigator.share(data);
+				setIcon("share");
+			} else if ("clipboard" in navigatorVariable && data.url) {
+				const serviceURL = determineServiceURL({ service: ServicesNames.PLAYER });
+				setText("Copying");
+				await navigator.clipboard.writeText(`${serviceURL.slice(0, -1)}${data.url}`);
+				setIcon("done");
+				setText("Copied");
+			} else {
+				handleCannotShare();
+			}
+		} catch {
+			handleCannotShare();
 		}
 	};
 
 	useEffect(() => {
-		let timer: NodeJS.Timer;
+		let timer: NodeJS.Timeout;
 		if (text) {
 			timer = setTimeout(() => {
 				setIcon("share");

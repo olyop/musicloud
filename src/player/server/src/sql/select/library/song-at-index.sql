@@ -9,7 +9,6 @@ JOIN
 	albums
 		ON songs.album_id = albums.album_id
 WHERE
-	in_library = true AND
 	user_id = '{{ userID }}'
 ORDER BY
 	{{ orderByField }} {{ orderByDirection }},

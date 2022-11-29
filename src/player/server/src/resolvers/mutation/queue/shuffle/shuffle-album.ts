@@ -1,34 +1,28 @@
-import { isEmpty } from "lodash-es";
-import { AlbumID } from "@oly_op/musicloud-common/build/types";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { join, query, exists, convertTableToCamelCase } from "@oly_op/pg-helpers";
+import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import { addPrefix, bulkInsert, convertTableToCamelCaseOrNull, query } from "@oly_op/pg-helpers";
+import { isEmpty, isNull } from "lodash-es";
 
+import { SELECT_ALBUM_SONGS } from "../../../../sql";
+import { QueueSong, Song } from "../../../../types";
+import { clearQueue, shuffle, updateQueueNowPlaying } from "../../../helpers";
 import resolver from "../../resolver";
-import { Song } from "../../../../types";
-import { INSERT_QUEUE_SONG, SELECT_ALBUM_SONGS } from "../../../../sql";
-import { shuffle, clearQueue, updateQueueNowPlaying } from "../../../helpers";
 
 export const shuffleAlbum = resolver<Record<string, never>, AlbumID>(async ({ args, context }) => {
 	const { albumID } = args;
 	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-	const albumExists = await exists(context.pg)({
-		value: albumID,
-		table: "albums",
-		column: COLUMN_NAMES.ALBUM[0],
-	});
-
-	if (!albumExists) {
-		throw new Error("Album does not exist");
-	}
-
 	const albumsSongs = await query(context.pg)(SELECT_ALBUM_SONGS)({
-		parse: convertTableToCamelCase<Song>(),
+		parse: convertTableToCamelCaseOrNull<Song>(),
 		variables: {
 			albumID,
-			columnNames: join(COLUMN_NAMES.SONG),
+			columnNames: addPrefix(COLUMN_NAMES.SONG),
 		},
 	});
+
+	if (isNull(albumsSongs)) {
+		throw new Error("Album does not exist");
+	}
 
 	if (isEmpty(albumsSongs)) {
 		throw new Error("Album has no songs");
@@ -43,7 +37,7 @@ export const shuffleAlbum = resolver<Record<string, never>, AlbumID>(async ({ ar
 
 		await clearQueue(client)({ userID });
 
-		const updateNowPlaying = updateQueueNowPlaying(
+		await updateQueueNowPlaying(
 			client,
 			context.ag.index,
 		)({
@@ -51,18 +45,30 @@ export const shuffleAlbum = resolver<Record<string, never>, AlbumID>(async ({ ar
 			value: nowPlaying!.songID,
 		});
 
-		const updateLaterQueue = shuffled.map(({ songID }, index) =>
-			query(client)(INSERT_QUEUE_SONG)({
-				variables: {
-					index,
-					userID,
-					songID,
-					tableName: "queue_laters",
-				},
-			}),
-		);
+		const queueSongs = shuffled.map<QueueSong>(({ songID }, index) => ({
+			userID,
+			songID,
+			index,
+		}));
 
-		await Promise.all([updateNowPlaying, ...updateLaterQueue]);
+		await bulkInsert(client)({
+			data: queueSongs,
+			table: "queue_laters",
+			columns: [
+				{
+					key: "index",
+					itemToValue: x => x.index,
+				},
+				{
+					key: "songID",
+					itemToValue: x => x.songID,
+				},
+				{
+					key: "userID",
+					itemToValue: x => x.userID,
+				},
+			],
+		});
 
 		await query(client)("COMMIT")();
 	} catch (error) {

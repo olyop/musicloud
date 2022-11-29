@@ -1,17 +1,18 @@
-import { Pool } from "pg";
+import { IncomingHttpHeaders } from "node:http";
+
+import { ApolloServerErrorCode } from "@apollo/server/errors";
+import { ApolloFastifyContextFunction } from "@as-integrations/fastify";
+import { S3Client } from "@aws-sdk/client-s3";
+import { CustomServer } from "@oly_op/musicloud-common/build/create-fastify";
+import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
+import { ALGOLIA_OPTIONS, AWS_S3_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
+import { JWTPayload } from "@oly_op/musicloud-common/build/types";
+import { RandomOrgClient } from "@randomorg/core";
+import algolia, { SearchClient, SearchIndex } from "algoliasearch";
+import { createVerifier } from "fast-jwt";
 import { GraphQLError } from "graphql";
 import { isUndefined } from "lodash-es";
-import { createVerifier } from "fast-jwt";
-import { S3Client } from "@aws-sdk/client-s3";
-import { IncomingHttpHeaders } from "node:http";
-import { RandomOrgClient } from "@randomorg/core";
-import { ApolloServerErrorCode } from "@apollo/server/errors";
-import { JWTPayload } from "@oly_op/musicloud-common/build/types";
-import algolia, { SearchIndex, SearchClient } from "algoliasearch";
-import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
-import { ApolloFastifyContextFunction } from "@as-integrations/fastify";
-import { CustomServer } from "@oly_op/musicloud-common/build/create-fastify";
-import { AWS_S3_OPTIONS, ALGOLIA_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
+import { Pool } from "pg";
 
 interface ContextAlgolia {
 	index: SearchIndex;
@@ -59,7 +60,7 @@ export const UNAUTHORIZED_ERROR = new GraphQLError("Unauthorized", {
 });
 
 const getAuthorizationJWTPayload = (authorization: ContextAuthorization) => {
-	if (typeof authorization === "boolean") {
+	if (authorization === false) {
 		throw UNAUTHORIZED_ERROR;
 	} else {
 		return authorization;

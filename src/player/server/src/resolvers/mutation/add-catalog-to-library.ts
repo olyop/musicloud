@@ -1,11 +1,11 @@
-import limit from "p-limit";
-import { query, convertTableToCamelCase, join } from "@oly_op/pg-helpers";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
+import { addPrefix, convertTableToCamelCase, query } from "@oly_op/pg-helpers";
+import limit from "p-limit";
 
-import resolver from "./resolver";
+import { SELECT_ARTISTS, SELECT_SONGS } from "../../sql";
 import { Artist, Song } from "../../types";
-import { handleInLibrary } from "../helpers";
-import { SELECT_SONGS, SELECT_ARTISTS } from "../../sql";
+import { addArtistToLibraryHelper, addSongToLibraryHelper } from "../helpers";
+import resolver from "./resolver";
 
 const pLimitter = limit(50);
 
@@ -16,50 +16,30 @@ export const addCatalogToLibrary = resolver(async ({ context }) => {
 		query(context.pg)(SELECT_SONGS)({
 			parse: convertTableToCamelCase<Song>(),
 			variables: {
-				columnNames: join(COLUMN_NAMES.SONG),
+				columnNames: addPrefix(COLUMN_NAMES.SONG),
 			},
 		}),
 		query(context.pg)(SELECT_ARTISTS)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {
-				columnNames: join(COLUMN_NAMES.ARTIST),
+				columnNames: addPrefix(COLUMN_NAMES.ARTIST),
 			},
 		}),
 	]);
 
 	const songsPromises = songs.map(({ songID }) =>
 		pLimitter(() =>
-			handleInLibrary(context.pg)({
+			addSongToLibraryHelper(context.pg)({
 				userID,
-				inLibrary: true,
-				skipExists: true,
-				typeName: "Song",
-				objectID: songID,
-				tableName: "songs",
-				columnKey: "songID",
-				useTransaction: false,
-				columnNames: COLUMN_NAMES.SONG,
-				columnName: COLUMN_NAMES.SONG[0],
-				libraryTableName: "library_songs",
-			}),
+			})({ songID }),
 		),
 	);
 
 	const artistsPromises = artists.map(({ artistID }) =>
 		pLimitter(() =>
-			handleInLibrary(context.pg)({
+			addArtistToLibraryHelper(context.pg)({
 				userID,
-				inLibrary: true,
-				skipExists: true,
-				typeName: "Artist",
-				objectID: artistID,
-				tableName: "artists",
-				useTransaction: false,
-				columnKey: "artistID",
-				columnNames: COLUMN_NAMES.ARTIST,
-				columnName: COLUMN_NAMES.ARTIST[0],
-				libraryTableName: "library_artists",
-			}),
+			})({ artistID }),
 		),
 	);
 

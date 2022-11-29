@@ -50,7 +50,7 @@ const createObserver = (options: IntersectionObserverInit) => {
 					thresholds.some(threshold => entry.intersectionRatio >= threshold);
 
 				// @ts-ignore
-				if (options.trackVisibility && typeof entry.isVisible === "undefined") {
+				if (options.trackVisibility && typeof entry.isVisible === undefined) {
 					// @ts-ignore
 					// eslint-disable-next-line no-param-reassign
 					entry.isVisible = inView;
@@ -84,7 +84,7 @@ const observe = (
 	options: IntersectionObserverInit = {},
 	fallbackInView = unsupportedValue,
 ) => {
-	if (typeof window.IntersectionObserver === "undefined" && fallbackInView !== undefined) {
+	if (typeof window.IntersectionObserver === undefined && fallbackInView !== undefined) {
 		const bounds = element.getBoundingClientRect();
 		callback(fallbackInView, {
 			isIntersecting: fallbackInView,

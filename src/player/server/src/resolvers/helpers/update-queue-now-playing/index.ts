@@ -1,18 +1,10 @@
-import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { exists, PoolOrClient, query as pgHelpersQuery } from "@oly_op/pg-helpers";
-
-import { isNull } from "lodash-es";
-import { SearchIndex } from "algoliasearch";
 import { UserID } from "@oly_op/musicloud-common/build/types";
-
-import {
-	INSERT_PLAY,
-	INSERT_NOW_PLAYING,
-	DELETE_QUEUE_NOW_PLAYING,
-	UPDATE_QUEUE_NOW_PLAYING,
-} from "../../../sql";
+import { PoolOrClient, importSQL, query } from "@oly_op/pg-helpers";
+import { SearchIndex } from "algoliasearch";
 
 import incrementPlays from "./increment-plays";
+
+const EXECUTE_UPDATE_NOW_PLAYING = await importSQL(import.meta.url)("execute-update-now-playing");
 
 export interface UpdateQueueNowPlayingOptions extends UserID {
 	value: string | null;
@@ -20,45 +12,22 @@ export interface UpdateQueueNowPlayingOptions extends UserID {
 
 export const updateQueueNowPlaying =
 	(pg: PoolOrClient, ag?: SearchIndex) => async (options: UpdateQueueNowPlayingOptions) => {
-		const { userID, value } = options;
+		const { userID, value: songID } = options;
 
-		const query = pgHelpersQuery(pg);
+		await query(pg)(EXECUTE_UPDATE_NOW_PLAYING)({
+			variables: {
+				userID,
+				songID,
+			},
+		});
 
-		if (isNull(value)) {
-			await query(DELETE_QUEUE_NOW_PLAYING)({
-				variables: { userID },
+		if (ag && songID) {
+			void incrementPlays(
+				pg,
+				ag,
+			)({
+				songID,
+				userID,
 			});
-		} else {
-			const songID = value;
-
-			const doesUserHaveNowPlaying = await exists(pg)({
-				value: userID,
-				table: "now_playing",
-				column: COLUMN_NAMES.USER[0],
-			});
-
-			if (doesUserHaveNowPlaying) {
-				await query(UPDATE_QUEUE_NOW_PLAYING)({
-					variables: { userID, songID },
-				});
-			} else {
-				await query(INSERT_NOW_PLAYING)({
-					variables: { userID, songID },
-				});
-			}
-
-			void query(INSERT_PLAY)({
-				variables: { userID, songID },
-			});
-
-			if (ag) {
-				void incrementPlays(
-					pg,
-					ag,
-				)({
-					songID,
-					userID,
-				});
-			}
 		}
 	};

@@ -3,4 +3,4 @@ SELECT
 FROM
 	users
 WHERE
-	user_id = '{{ userID }}';
+	user_id = {{ userID }};

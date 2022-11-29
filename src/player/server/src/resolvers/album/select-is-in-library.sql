@@ -1,0 +1,1 @@
+SELECT album_is_in_library({{ userID }}, {{ albumID }}) as EXISTS;

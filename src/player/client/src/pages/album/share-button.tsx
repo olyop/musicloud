@@ -9,7 +9,7 @@ const ShareButton: FC<PropTypes> = ({ album }) => {
 	const [share, { shareIcon, shareText }] = useShare();
 
 	const handleShare = () => {
-		share({
+		void share({
 			title: album.title,
 			url: createObjectPath("album", album.albumID),
 		});

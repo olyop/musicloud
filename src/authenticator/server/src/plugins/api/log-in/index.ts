@@ -1,14 +1,18 @@
-import { pipe } from "rxjs";
+import { importSQL } from "@oly_op/musicloud-common/build/import-sql";
+import { UserID, UserPasswordBase } from "@oly_op/musicloud-common/build/types";
+import { PoolOrClient, convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers";
 import { compare } from "bcrypt";
 import { FastifyPluginAsync } from "fastify";
-import { UserID, UserPasswordBase } from "@oly_op/musicloud-common/build/types";
-import { query, convertFirstRowToCamelCase, PoolOrClient } from "@oly_op/pg-helpers";
+import { pipe } from "rxjs";
 
-import options from "./options";
-import { Route } from "./types";
-import { SELECT_USER_PASSWORD } from "./sql";
 import { createJWT, emailAddressExists } from "../helpers";
 import getUserFromEmailAddress from "./get-user-from-email-address";
+import options from "./options";
+import { Route } from "./types";
+
+const SELECT_USER_PASSWORD = await importSQL(import.meta.url)("select-user-password");
+
+console.log(SELECT_USER_PASSWORD);
 
 const isPasswordCorrect = (inputPassword: string, hashedPassword: string) =>
 	compare(inputPassword, hashedPassword);

@@ -1,17 +1,16 @@
-import { isNull } from "lodash-es";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { join, query as pgHelpersQuery, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
+import { addPrefix, convertFirstRowToCamelCase, query as pgHelpersQuery } from "@oly_op/pg-helpers";
+import { isNull } from "lodash-es";
 
 import {
-	INSERT_QUEUE_SONG,
 	DELETE_QUEUE_SONG,
+	INSERT_QUEUE_SONG,
 	SELECT_QUEUE_SONG,
 	UPDATE_QUEUE_SONG_CREMENT_INDEX,
 } from "../../../sql";
-
-import resolver from "../resolver";
 import { QueueSong } from "../../../types";
 import { getQueue, updateQueueNowPlaying } from "../../helpers";
+import resolver from "../resolver";
 
 export const previousQueueSong = resolver<Record<string, never>>(async ({ context }) => {
 	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
@@ -29,8 +28,8 @@ export const previousQueueSong = resolver<Record<string, never>>(async ({ contex
 				variables: {
 					userID,
 					index: previous.length - 1,
-					tableName: "queue_previous",
-					columnNames: join(COLUMN_NAMES.QUEUE_SONG),
+					tableName: ["queue_previous"],
+					columnNames: addPrefix(COLUMN_NAMES.QUEUE_SONG),
 				},
 			});
 
@@ -38,7 +37,7 @@ export const previousQueueSong = resolver<Record<string, never>>(async ({ contex
 				variables: {
 					userID,
 					index: previous.length - 1,
-					tableName: "queue_previous",
+					tableName: ["queue_previous"],
 				},
 			});
 
@@ -51,9 +50,9 @@ export const previousQueueSong = resolver<Record<string, never>>(async ({ contex
 					await query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
 						variables: {
 							userID,
-							crement: "+",
+							crement: ["+"],
 							index: queue.index,
-							tableName: `queue_${queueToBedEditedName}s`,
+							tableName: [`queue_${queueToBedEditedName}s`],
 						},
 					});
 				}
@@ -64,7 +63,7 @@ export const previousQueueSong = resolver<Record<string, never>>(async ({ contex
 					userID,
 					index: 0,
 					songID: nowPlaying.songID,
-					tableName: `queue_${queueToBedEditedName}s`,
+					tableName: [`queue_${queueToBedEditedName}s`],
 				},
 			});
 

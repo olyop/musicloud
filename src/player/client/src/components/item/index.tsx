@@ -5,13 +5,12 @@ import Button from "@oly_op/react-button";
 import isUndefined from "lodash-es/isUndefined";
 import { useState, createElement, Fragment, forwardRef } from "react";
 
+import ItemInfo from "./info";
+import PlayButton from "./play-button";
+import { useShare } from "../../hooks";
 import { PropTypes, InfoOptions, PlayOptions, ImageOptions, Modal as ItemModal } from "./types";
 
-import PlayButton from "./play-button";
-
 import "./index.scss";
-import ItemInfo from "./info";
-import { useShare } from "../../hooks";
 
 const bem = createBEM("Item");
 

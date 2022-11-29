@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable unicorn/prevent-abbreviations */
-/* eslint-disable import/newline-after-import */
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-invalid-void-type */
 
+/* eslint-disable unicorn/prevent-abbreviations */
+
+/* eslint-disable import/newline-after-import */
+
+/* eslint-disable @typescript-eslint/ban-types */
+
+/* eslint-disable @typescript-eslint/no-invalid-void-type */
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from "graphql";
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };

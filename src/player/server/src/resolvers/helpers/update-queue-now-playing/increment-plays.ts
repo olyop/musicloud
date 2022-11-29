@@ -1,16 +1,15 @@
-import { SearchIndex } from "algoliasearch";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { convertTableToCamelCase, PoolOrClient, query } from "@oly_op/pg-helpers";
 import { ArtistID, GenreID, SongID, UserID } from "@oly_op/musicloud-common/build/types";
+import { PoolOrClient, convertTableToCamelCase, query } from "@oly_op/pg-helpers";
+import { SearchIndex } from "algoliasearch";
 
 import {
 	INSERT_PLAY,
-	SELECT_SONG_GENRES,
 	SELECT_SONG_ARTISTS,
-	SELECT_SONG_REMIXERS,
 	SELECT_SONG_FEATURING,
+	SELECT_SONG_GENRES,
+	SELECT_SONG_REMIXERS,
 } from "../../../sql";
-
 import { getSong } from "../get-objects";
 
 const incrementOne = {

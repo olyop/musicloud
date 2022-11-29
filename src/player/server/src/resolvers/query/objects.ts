@@ -1,26 +1,24 @@
 import {
-	UserID,
-	PlayID,
-	SongID,
 	AlbumID,
-	GenreID,
 	ArtistID,
+	GenreID,
+	PlayID,
 	PlaylistID,
 	PlaylistPrivacy,
+	SongID,
+	UserID,
 } from "@oly_op/musicloud-common/build/types";
 
-import { User, Song, Play, Album, Genre, Artist, Playlist } from "../../types";
-
+import { Album, Artist, Genre, Play, Playlist, Song, User } from "../../types";
 import {
-	getPlay,
-	getSong,
 	getAlbum,
-	getGenre,
 	getArtist,
+	getGenre,
+	getPlay,
 	getPlaylist,
+	getSong,
 	getUser as getUserHelper,
 } from "../helpers";
-
 import resolver from "./resolver";
 
 export const getQueue = resolver(() => Promise.resolve({}));
@@ -34,28 +32,47 @@ export const getUser = resolver(({ context }) =>
 );
 
 export const getUserByID = resolver<User, UserID>(({ args, context }) =>
-	getUserHelper(context.pg)(args),
+	getUserHelper(context.pg)({
+		userID: args.userID,
+	}),
 );
 
-export const getSongByID = resolver<Song, SongID>(({ args, context }) => getSong(context.pg)(args));
+export const getSongByID = resolver<Song, SongID>(({ args, context }) =>
+	getSong(context.pg)({
+		songID: args.songID,
+	}),
+);
 
-export const getPlayByID = resolver<Play, PlayID>(({ args, context }) => getPlay(context.pg)(args));
+export const getPlayByID = resolver<Play, PlayID>(({ args, context }) =>
+	getPlay(context.pg)({
+		playID: args.playID,
+	}),
+);
 
 export const getAlbumByID = resolver<Album, AlbumID>(({ args, context }) =>
-	getAlbum(context.pg)(args),
+	getAlbum(context.pg)({
+		albumID: args.albumID,
+	}),
 );
 
 export const getGenreByID = resolver<Genre, GenreID>(({ args, context }) =>
-	getGenre(context.pg)(args),
+	getGenre(context.pg)({
+		genreID: args.genreID,
+	}),
 );
 
 export const getArtistByID = resolver<Artist, ArtistID>(({ args, context }) =>
-	getArtist(context.pg)(args),
+	getArtist(context.pg)({
+		artistID: args.artistID,
+	}),
 );
 
 export const getPlaylistByID = resolver<Playlist, PlaylistID>(async ({ args, context }) => {
-	const playlist = await getPlaylist(context.pg)(args);
-	if (playlist.privacy.toUpperCase() === PlaylistPrivacy.PRIVATE) {
+	const playlist = await getPlaylist(context.pg)({
+		playlistID: args.playlistID,
+	});
+
+	if (playlist.privacy === PlaylistPrivacy.PRIVATE) {
 		if (playlist.userID === context.getAuthorizationJWTPayload(context.authorization).userID) {
 			return playlist;
 		} else {

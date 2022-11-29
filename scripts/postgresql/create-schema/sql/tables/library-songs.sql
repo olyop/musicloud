@@ -1,7 +1,6 @@
 CREATE TABLE IF NOT EXISTS library_songs (
 	user_id uuid,
 	song_id uuid,
-	in_library boolean NOT NULL,
 	date_added bigint NOT NULL DEFAULT get_now(),
 	CONSTRAINT library_songs_pk
 		PRIMARY KEY (user_id, song_id),

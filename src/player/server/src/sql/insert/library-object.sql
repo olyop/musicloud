@@ -1,9 +1,7 @@
 INSERT INTO {{ tableName }} (
 	user_id,
-	{{ columnName }},
-	in_library
+	{{ columnName }}
 ) VALUES (
 	'{{ userID }}',
-	'{{ objectID }}',
-	{{ inLibrary }}
+	'{{ objectID }}'
 );

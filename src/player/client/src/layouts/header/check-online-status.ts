@@ -10,9 +10,7 @@ const timeout = (promise: Promise<unknown>) =>
 
 const checkOnlineStatus = async () => {
 	const controller = new AbortController();
-	if (!navigator.onLine) {
-		return navigator.onLine;
-	} else {
+	if (navigator.onLine) {
 		try {
 			await timeout(
 				fetch("/ping.txt", {
@@ -25,6 +23,8 @@ const checkOnlineStatus = async () => {
 			controller.abort();
 			return false;
 		}
+	} else {
+		return navigator.onLine;
 	}
 };
 

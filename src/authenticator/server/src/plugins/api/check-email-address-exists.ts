@@ -1,6 +1,6 @@
+import { UserEmailAddressBase } from "@oly_op/musicloud-common/build/types";
 import { exists } from "@oly_op/pg-helpers";
 import { FastifyPluginAsync, RouteShorthandOptions } from "fastify";
-import { UserEmailAddressBase } from "@oly_op/musicloud-common/build/types";
 
 interface Reply {
 	exists: boolean;
@@ -38,11 +38,24 @@ export const checkEmailAddressExists: FastifyPluginAsync =
 		fastify.post<Route>("/check-email-address-exists", options, async request => {
 			const { emailAddress } = request.body;
 
-			const emailAddressExists = await exists(fastify.pg.pool)({
-				table: "users",
-				value: emailAddress,
-				column: "email_address",
-			});
+			let emailAddressExists;
+
+			try {
+				emailAddressExists = await exists(fastify.pg.pool)({
+					log: {
+						parsedResult: true,
+						result: true,
+						sql: true,
+						variables: true,
+					},
+					table: "users",
+					value: emailAddress,
+					column: "email_address",
+				});
+			} catch (error) {
+				console.error(error);
+				emailAddressExists = false;
+			}
 
 			return {
 				exists: emailAddressExists,
