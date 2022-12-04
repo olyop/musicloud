@@ -13,3 +13,4 @@ export * from "./remove-song-from-playlist";
 export * from "./un-follow-user";
 export * from "./update-playlist-privacy";
 export * from "./update-playlist-title";
+export * from "./add-remove-album-in-library";

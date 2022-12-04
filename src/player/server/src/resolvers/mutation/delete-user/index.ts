@@ -1,7 +1,7 @@
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { NAME } from "@oly_op/musicloud-common/build/metadata";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { exists, importSQL, query as pgHelpersQuery } from "@oly_op/pg-helpers";
+import { QueryOptions, exists, importSQL, query as pgHelpersQuery } from "@oly_op/pg-helpers";
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 
 import resolver from "../resolver";
@@ -28,13 +28,13 @@ export const deleteUser = resolver(async ({ context }) => {
 		throw new Error("User does not exist");
 	}
 
-	const variables = { userID };
+	const options: QueryOptions<void> = { variables: { userID } };
 
-	await query(DELETE_LIBRARY_SONGS)({ variables });
-	await query(DELETE_LIBRARY_ARTISTS)({ variables });
-	await query(DELETE_LIBRARY_PLAYLISTS)({ variables });
-	await query(DELETE_USER_PLAYLISTS)({ variables });
-	await query(DELETE_USER_BY_ID)({ variables });
+	await query(DELETE_LIBRARY_SONGS)(options);
+	await query(DELETE_LIBRARY_ARTISTS)(options);
+	await query(DELETE_LIBRARY_PLAYLISTS)(options);
+	await query(DELETE_USER_PLAYLISTS)(options);
+	await query(DELETE_USER_BY_ID)(options);
 
 	await context.s3.send(
 		new DeleteObjectCommand({

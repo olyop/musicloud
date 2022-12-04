@@ -1,0 +1,1 @@
+SELECT handle_album_in_library({{ userID }}, {{ albumID }}, {{ inLibrary }});

@@ -1,13 +1,13 @@
-import { isEmpty, last } from "lodash-es";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { AlbumID, PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
-import { exists, convertTableToCamelCase, query, PoolOrClient } from "@oly_op/pg-helpers";
+import { PoolOrClient, convertTableToCamelCase, exists, query } from "@oly_op/pg-helpers";
+import { isEmpty, last } from "lodash-es";
 
-import resolver from "./resolver";
-import { Song, Playlist, PlaylistSong, IndexOptions } from "../../types";
-import { isSongInPlaylist } from "../helpers/is-song-in-playlist";
-import { addSongToPlaylist, getPlaylist, isNotUsersPlaylist } from "../helpers";
 import { SELECT_ALBUM_SONGS, SELECT_PLAYLIST_SONGS_RELATIONS } from "../../sql";
+import { IndexOptions, Playlist, PlaylistSong } from "../../types";
+import { addSongToPlaylist, getPlaylist, isNotUsersPlaylist } from "../helpers";
+import { isSongInPlaylist } from "../helpers/is-song-in-playlist";
+import resolver from "./resolver";
 
 const handleAddSongToPlaylist =
 	(pg: PoolOrClient) =>
@@ -31,21 +31,22 @@ export const addAlbumToPlaylist = resolver<Playlist, Args>(async ({ context, arg
 	const { albumID, playlistID } = args;
 	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-	const albumExists = await exists(context.pg)({
-		value: albumID,
-		table: "albums",
-		column: COLUMN_NAMES.ALBUM[0],
-	});
+	const [albumExists, playlistExists] = await Promise.all([
+		exists(context.pg)({
+			value: albumID,
+			table: "albums",
+			column: COLUMN_NAMES.ALBUM[0],
+		}),
+		exists(context.pg)({
+			value: playlistID,
+			table: "playlists",
+			column: COLUMN_NAMES.PLAYLIST[0],
+		}),
+	]);
 
 	if (!albumExists) {
 		throw new Error("Album does not exist");
 	}
-
-	const playlistExists = await exists(context.pg)({
-		value: playlistID,
-		table: "playlists",
-		column: COLUMN_NAMES.PLAYLIST[0],
-	});
 
 	if (!playlistExists) {
 		throw new Error("Playlist does not exist");
@@ -57,17 +58,17 @@ export const addAlbumToPlaylist = resolver<Playlist, Args>(async ({ context, arg
 
 	const [albumSongs, playlistSongs] = await Promise.all([
 		query(context.pg)(SELECT_ALBUM_SONGS)({
-			parse: convertTableToCamelCase<Song>(),
+			parse: convertTableToCamelCase<SongID>(),
 			variables: {
 				albumID,
-				columnNames: COLUMN_NAMES.SONG[0],
+				columnNames: [COLUMN_NAMES.SONG[0]],
 			},
 		}),
 		query(context.pg)(SELECT_PLAYLIST_SONGS_RELATIONS)({
-			parse: convertTableToCamelCase<PlaylistSong>(),
+			parse: convertTableToCamelCase<Pick<PlaylistSong, "index">>(),
 			variables: {
 				playlistID,
-				columnNames: COLUMN_NAMES.PLAYLIST_SONG[0],
+				columnNames: [COLUMN_NAMES.PLAYLIST_SONG[0]],
 			},
 		}),
 	]);

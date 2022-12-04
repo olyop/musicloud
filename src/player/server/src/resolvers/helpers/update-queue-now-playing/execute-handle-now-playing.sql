@@ -1,0 +1,1 @@
+SELECT handle_now_playing({{ userID }}, {{ songID }});

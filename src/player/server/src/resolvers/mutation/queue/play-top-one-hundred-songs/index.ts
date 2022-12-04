@@ -1,10 +1,8 @@
-import { isEmpty } from "lodash-es";
 import { query } from "@oly_op/pg-helpers";
+import { isEmpty } from "lodash-es";
 
-import { clearQueue, getTopSongs, updateQueueNowPlaying } from "../../helpers";
-
-import resolver from "../resolver";
-import { INSERT_QUEUE_SONG } from "../../../sql";
+import { clearQueue, getTopSongs, insertQueueSong, updateQueueNowPlaying } from "../../../helpers";
+import resolver from "../../resolver";
 
 export const playTopOneHundredSongs = resolver<Record<string, never>>(async ({ context }) => {
 	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
@@ -30,13 +28,11 @@ export const playTopOneHundredSongs = resolver<Record<string, never>>(async ({ c
 			});
 
 			const updateQueueLaters = songs.map(({ songID }, index) =>
-				query(client)(INSERT_QUEUE_SONG)({
-					variables: {
-						index,
-						userID,
-						songID,
-						tableName: "queue_laters",
-					},
+				insertQueueSong(client)({
+					index,
+					userID,
+					songID,
+					tableName: "queue_laters",
 				}),
 			);
 

@@ -1,10 +1,14 @@
 import { UserID } from "@oly_op/musicloud-common/build/types";
-import { getResultExists, query } from "@oly_op/pg-helpers";
+import { getResultExists, importSQL, query } from "@oly_op/pg-helpers";
 
-import resolver from "./resolver";
-import { User } from "../../types";
-import { getUser } from "../helpers";
-import { EXISTS_USER_FOLLOWER, DELETE_USER_FOLLOWER } from "../../sql";
+import { User } from "../../../types";
+import { getUser } from "../../helpers";
+import resolver from "../resolver";
+
+const isf = importSQL(import.meta.url);
+
+const EXISTS_USER_FOLLOWER = await isf("exists-user-follower");
+const DELETE_USER_FOLLOWER = await isf("delete-user-follower");
 
 export const unFollowUser = resolver<User, UserID>(async ({ args, context }) => {
 	const { userID } = args;

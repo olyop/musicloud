@@ -1,12 +1,12 @@
-import { isEmpty } from "lodash-es";
-import { AlbumID } from "@oly_op/musicloud-common/build/types";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { join, query, convertTableToCamelCase, exists } from "@oly_op/pg-helpers";
+import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import { addPrefix, convertTableToCamelCase, exists, query } from "@oly_op/pg-helpers";
+import { isEmpty } from "lodash-es";
 
-import resolver from "../resolver";
+import { SELECT_ALBUM_SONGS } from "../../../sql";
 import { Song } from "../../../types";
-import { clearQueue, updateQueueNowPlaying } from "../../helpers";
-import { INSERT_QUEUE_SONG, SELECT_ALBUM_SONGS } from "../../../sql";
+import { clearQueue, insertQueueSong, updateQueueNowPlaying } from "../../helpers";
+import resolver from "../resolver";
 
 export const playAlbum = resolver<Record<string, never>, AlbumID>(async ({ args, context }) => {
 	const { albumID } = args;
@@ -26,7 +26,7 @@ export const playAlbum = resolver<Record<string, never>, AlbumID>(async ({ args,
 		parse: convertTableToCamelCase<Song>(),
 		variables: {
 			albumID,
-			columnNames: join(COLUMN_NAMES.SONG),
+			columnNames: addPrefix(COLUMN_NAMES.SONG),
 		},
 	});
 
@@ -49,13 +49,11 @@ export const playAlbum = resolver<Record<string, never>, AlbumID>(async ({ args,
 			});
 
 			const updateQueueLaters = songs.map(({ songID }, index) =>
-				query(client)(INSERT_QUEUE_SONG)({
-					variables: {
-						index,
-						userID,
-						songID,
-						tableName: "queue_laters",
-					},
+				insertQueueSong(client)({
+					index,
+					userID,
+					songID,
+					tableName: "queue_laters",
 				}),
 			);
 

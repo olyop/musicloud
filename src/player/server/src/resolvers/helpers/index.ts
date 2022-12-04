@@ -21,3 +21,4 @@ export * from "./shuffle";
 export * from "./time-stamp-to-milliseconds";
 export * from "./update-queue-now-playing";
 export * from "./get-queue-now-playing-song";
+export * from "./insert-queue-song";

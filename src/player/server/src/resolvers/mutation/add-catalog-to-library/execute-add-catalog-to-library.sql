@@ -1,0 +1,1 @@
+SELECT add_catalog_to_library({{ userID }});

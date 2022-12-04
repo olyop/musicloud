@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION
-	update_now_playing
+	handle_now_playing
 	(user_id_arg uuid, song_id_arg uuid DEFAULT NULL)
 RETURNS void
 LANGUAGE plpgsql
