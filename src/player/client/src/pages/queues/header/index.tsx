@@ -1,23 +1,20 @@
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
-
-import {
-	useDispatch,
-	expandQueuesDisclosure,
-	collapseQueuesDisclosure,
-	useStateQueuesDisclosure,
-} from "../../../redux";
+import { FC, createElement } from "react";
 
 import { useMutation, useResetPlayer } from "../../../hooks";
-
-import WRITE_QUEUE from "./write-queue.gql";
-import CLEAR_QUEUES from "./clear-queues.gql";
-import SHUFFLE_NEXT from "./shuffle-next.gql";
-import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql";
-
-import "./index.scss";
+import {
+	collapseQueuesDisclosure,
+	expandQueuesDisclosure,
+	useDispatch,
+	useStateQueuesDisclosure,
+} from "../../../redux";
 import { Queue, QueueLater, QueueNext, QueueNextLater } from "../../../types";
+import CLEAR_NEXT_QUEUES from "./clear-next-queues.gql";
+import CLEAR_QUEUES from "./clear-queues.gql";
+import "./index.scss";
+import SHUFFLE_NEXT from "./shuffle-next-and-later.gql";
+import WRITE_QUEUE from "./write-queue.gql";
 
 const bem = createBEM("QueuesHeader");
 

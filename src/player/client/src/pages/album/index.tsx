@@ -1,30 +1,32 @@
-import { AlbumID, ImageSizes, ImageDimensions } from "@oly_op/musicloud-common/build/types";
-
 import { createBEM } from "@oly_op/bem";
+import { AlbumID, ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 import Button from "@oly_op/react-button";
 import { Head } from "@oly_op/react-head";
-import { useParams } from "react-router-dom";
-import { createElement, Fragment, FC, useState } from "react";
 import { addDashesToUUID } from "@oly_op/uuid-dashes";
+import { FC, Fragment, createElement, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import Disc from "./disc";
-import { Album } from "../../types";
-import Page from "../../layouts/page";
-import ShareButton from "./share-button";
-import createDiscs from "./create-discs";
-import Chip from "../../components/chip";
-import AlbumPlayButton from "./play-button";
-import Buttons from "../../components/buttons";
-import AlbumTitle from "../../components/album-title";
-import ObjectLinks from "../../components/object-links";
-import Modal, { ModalHeader } from "../../components/modal";
 import AddAlbumToPlaylist from "../../components/add-album-to-playlist";
-import { useQuery, useToggleAlbumInLibrary, useShuffleAlbum } from "../../hooks";
-import { createObjectPath, createCatalogImageURL, determinePlural } from "../../helpers";
-
+import AlbumTitle from "../../components/album-title";
+import Buttons from "../../components/buttons";
+import Chip from "../../components/chip";
+import Modal, { ModalHeader } from "../../components/modal";
+import ObjectLinks from "../../components/object-links";
+import {
+	createCatalogImageURL,
+	createObjectPath,
+	determinePlural,
+	formatTimestampToDate,
+} from "../../helpers";
+import { useQuery, useShuffleAlbum, useToggleAlbumInLibrary } from "../../hooks";
+import Page from "../../layouts/page";
+import { Album } from "../../types";
+import createDiscs from "./create-discs";
+import Disc from "./disc";
 import GET_ALBUM_PAGE from "./get-album-page.gql";
-
 import "./index.scss";
+import AlbumPlayButton from "./play-button";
+import ShareButton from "./share-button";
 
 const bem = createBEM("AlbumPage");
 
@@ -94,7 +96,9 @@ const AlbumPage: FC = () => {
 										/>
 									))}
 								</div>
-								<h3 className="ParagraphOne LightColor MarginBottomHalf LightWeight">{released}</h3>
+								<h3 className="ParagraphOne LightColor MarginBottomHalf LightWeight">
+									{formatTimestampToDate(released)}
+								</h3>
 								<h3 className="ParagraphTwo LightColor LightWeight">
 									<ObjectLinks
 										links={genres.map(({ genreID, name }) => ({

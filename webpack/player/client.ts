@@ -1,15 +1,16 @@
 import path from "node:path";
-import { merge } from "webpack-merge";
-import { Configuration } from "webpack";
-import HTMLWebpackPlugin from "html-webpack-plugin";
+
 import { TITLE } from "@oly_op/musicloud-common/build/metadata";
+import HTMLWebpackPlugin from "html-webpack-plugin";
+import { Configuration } from "webpack";
+import { merge } from "webpack-merge";
 
 import baseConfiguration, {
-	BASE_SRC_PATH,
 	BASE_BUILD_PATH,
-	createTSLoaderRule,
-	createDevServerProxy,
+	BASE_SRC_PATH,
+	createDevelopmentServerProxy,
 	createHTMLPluginOptions,
+	createTSLoaderRule,
 } from "../base";
 
 const ROOT_PATH = path.join(BASE_SRC_PATH, "player", "client");
@@ -32,7 +33,7 @@ const configuration: Configuration = {
 	devServer: {
 		port: parseInt(process.env.PLAYER_CLIENT_PORT),
 		proxy: [
-			createDevServerProxy(process.env.PLAYER_SERVER_PORT, [
+			createDevelopmentServerProxy(process.env.PLAYER_SERVER_PORT, [
 				"/graphql",
 				"/ping.txt",
 				"/service-worker.js",

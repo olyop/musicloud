@@ -1,0 +1,1 @@
+SELECT shuffle_library({{ userID }});

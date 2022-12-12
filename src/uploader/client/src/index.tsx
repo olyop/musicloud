@@ -1,15 +1,15 @@
 // eslint-disable-next-line unicorn/prefer-node-protocol
 import { Buffer } from "buffer";
+import { StrictMode, createElement } from "react";
 import { createRoot } from "react-dom/client";
-import { createElement, StrictMode } from "react";
 import { BrowserRouter as ReactRouter } from "react-router-dom";
 
-import Pages from "./components/pages";
-import Header from "./components/header";
-import Footer from "./components/footer";
 import Authentication from "./components/authentication";
+import Footer from "./components/footer";
+import Header from "./components/header";
+import Pages from "./components/pages";
 
-if (typeof window !== "undefined" && typeof Buffer === "undefined") {
+if (typeof window !== "undefined" && Buffer === undefined) {
 	window.Buffer = Buffer;
 }
 

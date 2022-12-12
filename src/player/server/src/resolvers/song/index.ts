@@ -1,24 +1,21 @@
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { NAME } from "@oly_op/musicloud-common/build/metadata";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { PlaylistID, SongID, UserID } from "@oly_op/musicloud-common/build/types";
+import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 import {
-	PoolOrClient,
 	addPrefix,
-	convertFirstRowToCamelCase,
+	convertFirstRowToCamelCaseOrNull,
 	convertTableToCamelCase,
-	convertTableToCamelCaseOrNull,
 	getResultCountOrNull,
+	getResultExists,
 	getResultRowCountOrNull,
 	importSQL,
-	isResultEmpty,
 	query,
 } from "@oly_op/pg-helpers";
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 import { pipe } from "rxjs";
 
-import { SELECT_OBJECT_SONG_PLAYS, SELECT_PLAYLIST_SONG } from "../../sql";
-import { Artist, Genre, GetObjectsOptions, Play, PlaylistSong, Song } from "../../types";
+import { Artist, Genre, PlaylistSong, Song } from "../../types";
 import createParentResolver from "../create-parent-resolver";
 import {
 	getAlbum,
@@ -35,6 +32,9 @@ const SELECT_SONG_ARTISTS = await isf("select-artists");
 const SELECT_SONG_REMIXERS = await isf("select-remixers");
 const SELECT_SONG_FEATURING = await isf("select-featuring");
 const SELECT_SONG_PLAYS_COUNT = await isf("select-plays-count");
+const SELECT_SONG_PLAYLIST_SONG = await isf("select-playlist-song");
+const EXISTS_SONG_IS_IN_PLAYLIST = await isf("exists-is-in-playlist");
+const SELECT_SONG_USER_PLAYS_COUNT = await isf("select-user-plays-count");
 
 const resolver = createParentResolver<Song>();
 
@@ -97,40 +97,17 @@ export const playsTotal = resolver(({ parent, context }) =>
 		parse: getResultCountOrNull,
 		variables: {
 			songID: parent.songID,
-			columnNames: addPrefix(COLUMN_NAMES.PLAY),
 		},
 	}),
 );
 
-interface GetUserSongPlaysOptions<T> extends UserID, SongID, GetObjectsOptions<T> {}
-
-const getUserSongPlays =
-	(client: PoolOrClient) =>
-	<T>({ userID, songID, columnNames, parse }: GetUserSongPlaysOptions<T>) =>
-		query(client)(SELECT_OBJECT_SONG_PLAYS)({
-			parse,
-			variables: {
-				userID,
-				songID,
-				columnNames,
-			},
-		});
-
-export const userPlays = resolver(({ parent, context }) =>
-	getUserSongPlays(context.pg)({
-		songID: parent.songID,
-		columnNames: addPrefix(COLUMN_NAMES.PLAY),
-		userID: context.getAuthorizationJWTPayload(context.authorization).userID,
-		parse: convertTableToCamelCaseOrNull<Play>(),
-	}),
-);
-
 export const userPlaysTotal = resolver(({ parent, context }) =>
-	getUserSongPlays(context.pg)({
-		songID: parent.songID,
+	query(context.pg)(SELECT_SONG_USER_PLAYS_COUNT)({
 		parse: getResultRowCountOrNull,
-		columnNames: COLUMN_NAMES.PLAY[0],
-		userID: context.getAuthorizationJWTPayload(context.authorization).userID,
+		variables: {
+			songID: parent.songID,
+			userID: context.getAuthorizationJWTPayload(context.authorization).userID,
+		},
 	}),
 );
 
@@ -152,51 +129,39 @@ export const inLibrary = resolver(({ parent, context }) =>
 	}),
 );
 
-interface GetSongPlaylistSongOptions<T> extends SongID, PlaylistID, GetObjectsOptions<T> {}
-
-const getSongPlaylistSong =
-	(client: PoolOrClient) =>
-	<T>({ songID, playlistID, columnNames, parse }: GetSongPlaylistSongOptions<T>) =>
-		query(client)(SELECT_PLAYLIST_SONG)({
-			parse,
-			variables: {
-				songID,
-				playlistID,
-				columnNames,
-			},
-		});
-
-export const playlistIndex = resolver<number, PlaylistID>(({ parent, context, args }) =>
-	getSongPlaylistSong(context.pg)({
-		songID: parent.songID,
-		playlistID: args.playlistID,
-		columnNames: join(COLUMN_NAMES.PLAYLIST_SONG),
-		parse: pipe(convertFirstRowToCamelCase<PlaylistSong>(), ({ index }) => index),
+export const playlistIndex = resolver<number | null, PlaylistID>(({ parent, context, args }) =>
+	query(context.pg)(SELECT_SONG_PLAYLIST_SONG)({
+		parse: pipe(
+			convertFirstRowToCamelCaseOrNull<PlaylistSong>(),
+			playlistSong => playlistSong?.index ?? null,
+		),
+		variables: {
+			songID: parent.songID,
+			playlistID: args.playlistID,
+		},
 	}),
 );
 
 export const isInPlaylist = resolver<boolean, PlaylistID>(({ parent, context, args }) =>
-	getSongPlaylistSong(context.pg)({
-		songID: parent.songID,
-		playlistID: args.playlistID,
-		parse: result => !isResultEmpty(result),
-		columnNames: join(COLUMN_NAMES.PLAYLIST_SONG),
+	query(context.pg)(EXISTS_SONG_IS_IN_PLAYLIST)({
+		parse: getResultExists,
+		variables: {
+			songID: parent.songID,
+			playlistID: args.playlistID,
+		},
 	}),
 );
 
 export const dateAddedToPlaylist = resolver<number | null, PlaylistID>(
 	({ parent, context, args }) =>
-		getSongPlaylistSong(context.pg)({
-			songID: parent.songID,
-			playlistID: args.playlistID,
-			columnNames: COLUMN_NAMES.PLAYLIST_SONG[0],
-			parse: result =>
-				result.rowCount === 0
-					? null
-					: pipe(
-							convertFirstRowToCamelCase<PlaylistSong>(),
-							({ dateAdded }) => dateAdded,
-							timeStampToMilliseconds,
-					  )(result),
+		query(context.pg)(SELECT_SONG_PLAYLIST_SONG)({
+			parse: pipe(convertFirstRowToCamelCaseOrNull<PlaylistSong>(), playlistSong =>
+				playlistSong ? timeStampToMilliseconds(playlistSong.dateAdded) : null,
+			),
+			variables: {
+				songID: parent.songID,
+				playlistID: args.playlistID,
+				columnNames: addPrefix(COLUMN_NAMES.PLAYLIST_SONG),
+			},
 		}),
 );

@@ -3,7 +3,6 @@ import {
 	addPrefix,
 	convertFirstRowToCamelCase,
 	convertTableToCamelCase,
-	convertTableToCamelCaseOrNull,
 	getResultCount,
 	getResultCountOrNull,
 	importSQL,
@@ -11,7 +10,7 @@ import {
 } from "@oly_op/pg-helpers";
 import { pipe } from "rxjs";
 
-import { Album, Artist, OrderByArgs, Play, Song } from "../../types";
+import { Album, Artist, OrderByArgs, Song } from "../../types";
 import createParentResolver from "../create-parent-resolver";
 import {
 	determineSongsSQLOrderByField,
@@ -24,11 +23,10 @@ const isf = importSQL(import.meta.url);
 const SELECT_ARTIST_SINCE = await isf("select-since");
 const SELECT_ARTIST_PLAYS_COUNT = await isf("select-plays-count");
 const SELECT_ARTIST_SONGS_COUNT = await isf("select-songs-count");
+const SELECT_ARTIST_ALBUMS_COUNT = await isf("select-albums-count");
 const SELECT_ARTIST_SONGS_ORDERED = await isf("select-songs-ordered");
 const SELECT_ARTIST_ALBUMS_ORDERED = await isf("select-albums-ordered");
-const SELECT_ARTIST_ALBUMS_COUNT = await isf("select-albums-count");
 const SELECT_ARTIST_SONGS_TOP_TEN = await isf("select-songs-top-ten");
-const SELECT_ARTIST_USER_PLAYS = await isf("select-user-plays");
 const SELECT_ARTIST_USER_PLAYS_COUNT = await isf("select-user-plays-count");
 
 const resolver = createParentResolver<Artist>();
@@ -103,16 +101,6 @@ export const topTenSongs = resolver(({ parent, context }) =>
 		variables: {
 			artistID: parent.artistID,
 			columnNames: addPrefix(COLUMN_NAMES.SONG, "songs"),
-		},
-	}),
-);
-
-export const userPlays = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ARTIST_USER_PLAYS)({
-		parse: convertTableToCamelCaseOrNull<Play>(),
-		variables: {
-			artistID: parent.artistID,
-			columnNames: addPrefix(COLUMN_NAMES.PLAY),
 		},
 	}),
 );

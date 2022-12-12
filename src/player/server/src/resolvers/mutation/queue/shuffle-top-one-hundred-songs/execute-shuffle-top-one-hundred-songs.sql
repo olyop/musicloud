@@ -1,0 +1,1 @@
+SELECT shuffle_top_songs({{ userID }}, 100)

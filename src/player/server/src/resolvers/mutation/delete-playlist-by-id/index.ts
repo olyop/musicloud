@@ -1,10 +1,11 @@
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
-import { exists, query } from "@oly_op/pg-helpers";
+import { exists, importSQL, query } from "@oly_op/pg-helpers";
 
-import { DELETE_PLAYLIST_BY_ID } from "../../../sql";
 import { isNotUsersPlaylist } from "../../helpers";
 import resolver from "../resolver";
+
+const DELETE_PLAYLIST_BY_ID = await importSQL(import.meta.url)("delete-playlist-by-id");
 
 export const deletePlaylistByID =
 	// eslint-disable-next-line @typescript-eslint/no-invalid-void-type

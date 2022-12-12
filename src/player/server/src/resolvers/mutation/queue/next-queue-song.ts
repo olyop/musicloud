@@ -1,5 +1,5 @@
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { join, query as pgHelpersQuery, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
+import { addPrefix, query as pgHelpersQuery, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
 
 import { head, isNull } from "lodash-es";
 
@@ -38,8 +38,8 @@ export const nextQueueSong = resolver<Record<string, never>>(async ({ context })
 				variables: {
 					userID,
 					index: 0,
-					tableName: `queue_${queueToBeEditedName}s`,
-					columnNames: join(COLUMN_NAMES.QUEUE_SONG),
+					tableName: [`queue_${queueToBeEditedName}s`],
+					columnNames: addPrefix(COLUMN_NAMES.QUEUE_SONG),
 				},
 			});
 
@@ -58,8 +58,8 @@ export const nextQueueSong = resolver<Record<string, never>>(async ({ context })
 					variables: {
 						index,
 						userID,
-						crement: "-",
-						tableName: `queue_${queueToBeEditedName}s`,
+						crement: ["-"],
+						tableName: [`queue_${queueToBeEditedName}s`],
 					},
 				});
 
@@ -67,7 +67,7 @@ export const nextQueueSong = resolver<Record<string, never>>(async ({ context })
 				variables: {
 					userID,
 					songID: nowPlaying.songID,
-					tableName: "queue_previous",
+					tableName: ["queue_previous"],
 					index: isNull(previous) ? 0 : previous.length,
 				},
 			});

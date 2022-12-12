@@ -1,16 +1,14 @@
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
-import { convertFirstRowToCamelCaseOrNull, exists, importSQL, query } from "@oly_op/pg-helpers";
+import { exists, importSQL, query } from "@oly_op/pg-helpers";
 
-import { Playlist, PlaylistSong } from "../../../types";
-import {
-	addSongToPlaylist as addSongToPlaylistHelper,
-	getPlaylist,
-	isNotUsersPlaylist,
-} from "../../helpers";
+import { Playlist } from "../../../types";
+import { getPlaylist, isNotUsersPlaylist } from "../../helpers";
 import resolver from "../resolver";
 
-const SELECT_PLAYLIST_SONG_LAST = await importSQL(import.meta.url)("select-playlist-song-last");
+const EXECUTE_ADD_SONG_TO_PLAYLIST = await importSQL(import.meta.url)(
+	"execute-add-song-to-playlist",
+);
 
 export const addSongToPlaylist = resolver<Playlist, Args>(async ({ args, context }) => {
 	const { songID, playlistID } = args;
@@ -41,19 +39,11 @@ export const addSongToPlaylist = resolver<Playlist, Args>(async ({ args, context
 		throw new Error("Song does not exist");
 	}
 
-	const lastPlaylistSong = await query(context.pg)(SELECT_PLAYLIST_SONG_LAST)({
-		parse: convertFirstRowToCamelCaseOrNull<Pick<PlaylistSong, "index">>(),
+	await query(context.pg)(EXECUTE_ADD_SONG_TO_PLAYLIST)({
 		variables: {
+			songID,
 			playlistID,
 		},
-	});
-
-	const index = lastPlaylistSong ? lastPlaylistSong.index + 1 : 0;
-
-	await addSongToPlaylistHelper(context.pg)({
-		index,
-		songID,
-		playlistID,
 	});
 
 	return getPlaylist(context.pg)({ playlistID });

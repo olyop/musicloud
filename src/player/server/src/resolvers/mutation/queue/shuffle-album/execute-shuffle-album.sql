@@ -1,0 +1,1 @@
+SELECT shuffle_album({{ userID }}, {{ albumID }});

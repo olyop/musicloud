@@ -2,7 +2,6 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import {
 	addPrefix,
 	convertTableToCamelCase,
-	convertTableToCamelCaseOrNull,
 	getResultCount,
 	getResultCountOrNull,
 	getResultExists,
@@ -11,23 +10,28 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { Album, Artist, Genre, Play, Song } from "../../types";
+import { Album, Artist, Genre, Song } from "../../types";
 import createParentResolver from "../create-parent-resolver";
+import { dateToUnixTimestamp } from "../helpers";
 
 const isf = importSQL(import.meta.url);
 
-const SELECT_ALBUM_PLAYS = await isf("select-plays");
 const SELECT_ALBUM_SONGS = await isf("select-songs");
 const SELECT_ALBUM_GENRES = await isf("select-genres");
 const SELECT_ALBUM_ARTISTS = await isf("select-artists");
 const SELECT_ALBUM_REMIXERS = await isf("select-remixers");
+const SELECT_ALBUM_PLAYS_COUNT = await isf("select-plays-count");
 const SELECT_ALBUM_SONGS_COUNT = await isf("select-songs-count");
-const SELECT_ALBUM_USER_PLAYS = await isf("select-user-plays");
 const SELECT_ALBUM_IS_IN_LIBRARY = await isf("select-is-in-library");
 const SELECT_ALBUM_USER_PLAYS_COUNT = await isf("select-user-plays-count");
 const SELECT_ALBUM_SONGS_DURATION_SUM = await isf("select-songs-duration-sum");
 
 const resolver = createParentResolver<Album>();
+
+// eslint-disable-next-line @typescript-eslint/require-await
+export const released = resolver(({ parent }) =>
+	Promise.resolve(dateToUnixTimestamp(parent.released)),
+);
 
 export const songs = resolver(({ parent, context }) =>
 	query(context.pg)(SELECT_ALBUM_SONGS)({
@@ -86,21 +90,10 @@ export const genres = resolver(({ parent, context }) =>
 );
 
 export const playsTotal = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_PLAYS)({
+	query(context.pg)(SELECT_ALBUM_PLAYS_COUNT)({
 		parse: getResultCountOrNull,
 		variables: {
 			albumID: parent.albumID,
-		},
-	}),
-);
-
-export const userPlays = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_USER_PLAYS)({
-		parse: convertTableToCamelCaseOrNull<Play>(),
-		variables: {
-			albumID: parent.albumID,
-			columnNames: addPrefix(COLUMN_NAMES.PLAY, "plays"),
-			userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 		},
 	}),
 );

@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/indent */
 import {
-	UserID,
-	KeyBase,
-	UserBase,
-	PlayBase,
-	SongBase,
 	AlbumBase,
-	GenreBase,
 	ArtistBase,
+	GenreBase,
+	KeyBase,
+	PlayBase,
 	PlaylistBase,
+	SongBase,
+	UserBase,
+	UserID,
 } from "@oly_op/musicloud-common/build/types";
 
 export interface StoreObject<T = string> {
@@ -55,7 +55,7 @@ export interface Album extends AlbumBase, InLibraryBase, LibraryObject<"Album"> 
 	songs: Song[];
 	genres: Genre[];
 	duration: number;
-	released: string;
+	released: number;
 	artists: Artist[];
 	songsTotal: number;
 	remixers: Artist[];

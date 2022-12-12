@@ -16,5 +16,4 @@ type Query {
 	getGenreByID(genreID: UUID!): Genre!
 	getArtistByID(artistID: UUID!): Artist!
 	getPlaylistByID(playlistID: UUID!): Playlist!
-	getSearchResults(input: GetSearchResultsInput!): [Search!]!
 }

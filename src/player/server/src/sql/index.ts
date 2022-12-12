@@ -1,4 +1,3 @@
-export * from "./count";
 export * from "./exists";
 export * from "./insert";
 export * from "./select";

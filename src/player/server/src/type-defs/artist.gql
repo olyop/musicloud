@@ -10,7 +10,6 @@ type Artist {
 	dateAddedToLibrary: TimeStamp
 
 	# user
-	userPlays: [Play!]!
 	userPlaysTotal: PositiveInt
 
 	# relationships

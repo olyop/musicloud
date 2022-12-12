@@ -42,12 +42,6 @@ export const checkEmailAddressExists: FastifyPluginAsync =
 
 			try {
 				emailAddressExists = await exists(fastify.pg.pool)({
-					log: {
-						parsedResult: true,
-						result: true,
-						sql: true,
-						variables: true,
-					},
 					table: "users",
 					value: emailAddress,
 					column: "email_address",

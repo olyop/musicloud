@@ -1,12 +1,14 @@
-import isEmpty from "lodash-es/isEmpty";
-import { createElement, Fragment, FC } from "react";
 import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, createElement } from "react";
 
-import ObjectLink from "../object-link";
-import ObjectLinks from "../object-links";
-import { Handler, Album } from "../../types";
 import { createObjectPath } from "../../helpers";
 import { useStateShowReleased } from "../../redux";
+import { Album, Handler } from "../../types";
+import ObjectLink from "../object-link";
+import ObjectLinks from "../object-links";
+
+const releasedYearFormatter = new Intl.DateTimeFormat("en", { year: "numeric" });
 
 const AlbumTitle: FC<PropTypes> = ({
 	onClick,
@@ -44,7 +46,7 @@ const AlbumTitle: FC<PropTypes> = ({
 					<Fragment> </Fragment>
 					<span className="LightColor LightWeight">
 						<Fragment>(</Fragment>
-						{released.slice(0, 4)}
+						{releasedYearFormatter.format(released)}
 						<Fragment>)</Fragment>
 					</span>
 				</Fragment>

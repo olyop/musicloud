@@ -1,0 +1,1 @@
+SELECT play_top_songs({{ userID }}, 100)

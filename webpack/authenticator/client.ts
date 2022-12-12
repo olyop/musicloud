@@ -1,15 +1,15 @@
-import path from "path";
-import { merge } from "webpack-merge";
-import { Configuration } from "webpack";
-import HTMLWebpackPlugin from "html-webpack-plugin";
 import { TITLE } from "@oly_op/musicloud-common/build/metadata";
+import HTMLWebpackPlugin from "html-webpack-plugin";
+import path from "path";
+import { Configuration } from "webpack";
+import { merge } from "webpack-merge";
 
 import baseConfiguration, {
-	BASE_SRC_PATH,
 	BASE_BUILD_PATH,
-	createTSLoaderRule,
-	createDevServerProxy,
+	BASE_SRC_PATH,
+	createDevelopmentServerProxy,
 	createHTMLPluginOptions,
+	createTSLoaderRule,
 } from "../base";
 
 const ROOT_PATH = path.join(BASE_SRC_PATH, "authenticator", "client");
@@ -34,7 +34,7 @@ const configuration: Configuration = {
 	},
 	devServer: {
 		port: parseInt(process.env.AUTHENTICATOR_CLIENT_PORT),
-		proxy: createDevServerProxy(process.env.AUTHENTICATOR_SERVER_PORT, [
+		proxy: createDevelopmentServerProxy(process.env.AUTHENTICATOR_SERVER_PORT, [
 			"/api/log-in",
 			"/api/sign-up",
 			"/api/check-email-address-exists",

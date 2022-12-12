@@ -1,7 +1,7 @@
 type Album {
 	# base
 	albumID: UUID!
-	released: Date!
+	released: TimeStamp!
 	title: NonEmptyString!
 	duration: PositiveInt!
 
@@ -14,7 +14,6 @@ type Album {
 	songsTotal: PositiveInt!
 
 	# user
-	userPlays: [Play!]
 	userPlaysTotal: PositiveInt
 
 	# library

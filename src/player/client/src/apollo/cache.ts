@@ -1,7 +1,7 @@
-import localForage from "localforage";
-import isNull from "lodash-es/isNull";
 import { FieldMergeFunction, InMemoryCache } from "@apollo/client";
 import { CachePersistor, LocalForageWrapper } from "apollo3-cache-persist";
+import localForage from "localforage";
+import isNull from "lodash-es/isNull";
 
 const mergePossibleNullValue: FieldMergeFunction<unknown | null> = (existing, incoming) => {
 	if (isNull(incoming)) {

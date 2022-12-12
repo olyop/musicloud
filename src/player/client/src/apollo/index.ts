@@ -1,11 +1,11 @@
 import {
-	useApolloClient as useBaseApolloClient,
 	ApolloClient,
 	NormalizedCacheObject,
+	useApolloClient as useBaseApolloClient,
 } from "@apollo/client";
 
-import link from "./link";
 import { cache, cachePersistor } from "./cache";
+import link from "./link";
 
 const apollo = new ApolloClient({
 	link,

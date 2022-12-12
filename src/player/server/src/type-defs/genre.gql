@@ -4,7 +4,6 @@ type Genre {
 	name: NonEmptyString!
 
 	# user
-	userPlays: [Play!]
 	userPlaysTotal: PositiveInt
 
 	# relationships

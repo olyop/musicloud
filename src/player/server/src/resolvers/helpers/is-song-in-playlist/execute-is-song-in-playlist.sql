@@ -1,0 +1,1 @@
+SELECT is_song_in_playlist({{ songID }}, {{ playlistID }}) as EXISTS;

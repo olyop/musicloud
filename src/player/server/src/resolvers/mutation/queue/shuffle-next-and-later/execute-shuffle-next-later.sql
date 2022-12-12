@@ -1,0 +1,1 @@
+SELECT shuffle_next_and_later({{ userID }});

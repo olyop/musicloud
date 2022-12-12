@@ -1,19 +1,23 @@
-import isNull from "lodash-es/isNull";
-import { Link } from "react-router-dom";
 import { createBEM } from "@oly_op/bem";
-import { createElement, forwardRef, Fragment } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import isNull from "lodash-es/isNull";
+import { Fragment, createElement, forwardRef } from "react";
+import { Link } from "react-router-dom";
 
-import AlbumModal from "./modal";
-import AlbumTitle from "../album-title";
-import ObjectLinks from "../object-links";
-import Item, { ItemModal, PlayOptions } from "../item";
+import {
+	createCatalogImageURL,
+	createObjectPath,
+	formatTimestampToDate,
+	numberWithCommas,
+} from "../../helpers";
 import { usePlayAlbum } from "../../hooks";
 import { useStateListStyle, useStateShowReleased } from "../../redux";
-import { createCatalogImageURL, createObjectPath, numberWithCommas } from "../../helpers";
-import { ObjectShowIcon, SettingsListStyle, Album as AlbumType } from "../../types";
-
+import { Album as AlbumType, ObjectShowIcon, SettingsListStyle } from "../../types";
+import AlbumTitle from "../album-title";
+import Item, { ItemModal, PlayOptions } from "../item";
+import ObjectLinks from "../object-links";
 import "./index.scss";
+import AlbumModal from "./modal";
 
 const bem = createBEM("Album");
 
@@ -90,7 +94,8 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							),
 							rightLeft:
 								hidePlays || isNull(album.playsTotal) ? null : numberWithCommas(album.playsTotal),
-							rightRight: hideReleased || !showReleased ? undefined : album.released,
+							rightRight:
+								hideReleased || !showReleased ? undefined : formatTimestampToDate(album.released),
 					  }
 			}
 		/>

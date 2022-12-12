@@ -1,22 +1,20 @@
-import isNull from "lodash-es/isNull";
 import { createBEM } from "@oly_op/bem";
+import isNull from "lodash-es/isNull";
 import uniqueID from "lodash-es/uniqueId";
+import { FC, createElement, useEffect, useRef, useState } from "react";
 import { useAudioPlayer as useAudio } from "react-use-audio-player";
-import { useState, useEffect, useRef, createElement, FC } from "react";
 
-import Main from "./main";
-import Controls from "./controls";
-import { NowPlaying } from "./types";
-import Fullscreen from "./fullscreen";
-import XHR_OPTIONS from "./xhr-options";
-import { QueueNowPlaying } from "../../types";
 import { createCatalogMP3URL } from "../../helpers";
 import { useNextQueueSong, useQuery } from "../../hooks";
 import { addError, useDispatch, useStatePlay, useStateVolume } from "../../redux";
-
+import { QueueNowPlaying } from "../../types";
+import Controls from "./controls";
+import Fullscreen from "./fullscreen";
 import GET_NOW_PLAYING from "./get-now-playing.gql";
-
 import "./index.scss";
+import Main from "./main";
+import { NowPlaying } from "./types";
+import XHR_OPTIONS from "./xhr-options";
 
 const bem = createBEM("Bar");
 
@@ -34,7 +32,7 @@ const Bar: FC = () => {
 
 	const { data } = useQuery<QueryData>(GET_NOW_PLAYING, {
 		errorPolicy: "all",
-		fetchPolicy: "cache-only",
+		fetchPolicy: "cache-and-network",
 	});
 
 	const nowPlaying: NowPlaying = data?.getQueue.nowPlaying || null;

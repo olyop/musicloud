@@ -1,6 +1,5 @@
 type User {
 	userID: UUID!
-	plays: [Play!]
 	followers: [User!]
 	isFollower: Boolean!
 	name: NonEmptyString!

@@ -6,7 +6,9 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { CustomServer } from "@oly_op/musicloud-common/build/create-fastify";
 import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
 import { ALGOLIA_OPTIONS, AWS_S3_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { JWTPayload } from "@oly_op/musicloud-common/build/types";
+import { exists } from "@oly_op/pg-helpers/build";
 import { RandomOrgClient } from "@randomorg/core";
 import algolia, { SearchClient, SearchIndex } from "algoliasearch";
 import { createVerifier } from "fast-jwt";
@@ -37,13 +39,26 @@ const verifyAccessToken = createVerifier({
 
 const determineAuthorization = async (
 	authorization: IncomingHttpHeaders["authorization"],
+	pg: Pool,
 ): Promise<ContextAuthorization> => {
 	if (isUndefined(authorization)) {
 		return false;
 	} else {
 		if (authorization.startsWith("Bearer ")) {
 			try {
-				return await verifyAccessToken(authorization.slice(7));
+				const token = await verifyAccessToken(authorization.slice(7));
+
+				const userExists = await exists(pg)({
+					table: "users",
+					value: token.userID,
+					column: COLUMN_NAMES.USER[0],
+				});
+
+				if (userExists) {
+					return token;
+				} else {
+					return false;
+				}
 			} catch {
 				return false;
 			}
@@ -82,5 +97,8 @@ export const contextFunction: ApolloFastifyContextFunction<
 	randomDotOrg,
 	pg: request.server.pg.pool,
 	getAuthorizationJWTPayload,
-	authorization: await determineAuthorization(request.headers.authorization),
+	authorization: await determineAuthorization(
+		request.headers.authorization,
+		request.server.pg.pool,
+	),
 });

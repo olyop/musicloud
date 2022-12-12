@@ -1,26 +1,23 @@
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { GenreID, UserID } from "@oly_op/musicloud-common/build/types";
 import {
-	PoolOrClient,
 	addPrefix,
 	convertTableToCamelCase,
-	convertTableToCamelCaseOrNull,
 	getResultCount,
-	getResultRowCountOrNull,
+	getResultCountOrNull,
 	importSQL,
-	addPrefix,
 	query,
 } from "@oly_op/pg-helpers";
 
-import { SELECT_OBJECT_SONG_PLAYS } from "../../sql";
-import { Genre, GetObjectsOptions, OrderByArgs, Play, Song } from "../../types";
+import { Genre, OrderByArgs, Song } from "../../types";
 import createParentResolver from "../create-parent-resolver";
 import { determineSongsSQLOrderByField } from "../helpers";
 
 const isf = importSQL(import.meta.url);
 
-const SELECT_GENRE_SONGS_COUNT = await isf("select-genre-songs-count");
-const SELECT_GENRE_SONGS_ORDERED = await isf("select-genre-songs-ordered");
+const SELECT_GENRE_PLAYS_COUNT = await isf("select-plays-count");
+const SELECT_GENRE_SONGS_COUNT = await isf("select-songs-count");
+const SELECT_GENRE_SONGS_ORDERED = await isf("select-songs-ordered");
+const SELECT_GENRE_USER_PLAYS_COUNT = await isf("select-user-plays-count");
 
 const resolver = createParentResolver<Genre>();
 
@@ -46,34 +43,21 @@ export const songsTotal = resolver(({ parent, context }) =>
 	}),
 );
 
-interface GetUserGenrePlays<T> extends UserID, GenreID, GetObjectsOptions<T> {}
-
-const getUserGenrePlays =
-	(client: PoolOrClient) =>
-	<T>({ userID, genreID, columnNames, parse }: GetUserGenrePlays<T>) =>
-		query(client)(SELECT_OBJECT_SONG_PLAYS)({
-			parse,
-			variables: {
-				userID,
-				genreID,
-				columnNames,
-			},
-		});
-
-export const userPlays = resolver(({ parent, context }) =>
-	getUserGenrePlays(context.pg)({
-		genreID: parent.genreID,
-		userID: context.getAuthorizationJWTPayload(context.authorization).userID,
-		columnNames: addPrefix(COLUMN_NAMES.GENRE),
-		parse: convertTableToCamelCaseOrNull<Play>(),
+export const playsTotal = resolver(({ parent, context }) =>
+	query(context.pg)(SELECT_GENRE_PLAYS_COUNT)({
+		parse: getResultCountOrNull,
+		variables: {
+			genreID: parent.genreID,
+		},
 	}),
 );
 
 export const userPlaysTotal = resolver(({ parent, context }) =>
-	getUserGenrePlays(context.pg)({
-		genreID: parent.genreID,
-		parse: getResultRowCountOrNull,
-		userID: context.getAuthorizationJWTPayload(context.authorization).userID,
-		columnNames: addPrefix(COLUMN_NAMES.GENRE),
+	query(context.pg)(SELECT_GENRE_USER_PLAYS_COUNT)({
+		parse: getResultCountOrNull,
+		variables: {
+			genreID: parent.genreID,
+			userID: context.getAuthorizationJWTPayload(context.authorization).userID,
+		},
 	}),
 );

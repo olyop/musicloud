@@ -1,17 +1,17 @@
 import {
-	KeyID,
-	UserID,
-	SongID,
-	KeyBase,
-	AlbumID,
-	UserBase,
-	PlayBase,
-	SongBase,
 	AlbumBase,
-	GenreBase,
+	AlbumID,
 	ArtistBase,
-	PlaylistID,
+	GenreBase,
+	KeyBase,
+	KeyID,
+	PlayBase,
 	PlaylistBase,
+	PlaylistID,
+	SongBase,
+	SongID,
+	UserBase,
+	UserID,
 } from "@oly_op/musicloud-common/build/types";
 
 export type Key = KeyBase;

@@ -4,6 +4,8 @@
 		"project": "./tsconfig.json"
 	},
 	"rules": {
+		"import/extensions": "off",
+		"import/no-unresolved": "off",
 		"@typescript-eslint/no-non-null-assertion": "off"
 	}
 }

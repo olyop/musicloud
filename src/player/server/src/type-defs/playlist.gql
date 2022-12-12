@@ -13,7 +13,6 @@ type Playlist {
 	songsTotal: PositiveInt
 
 	# user
-	userPlays: [Play!]
 	userPlaysTotal: PositiveInt
 
 	# library

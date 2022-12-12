@@ -17,18 +17,14 @@ export const handleInLibrary =
 	async <T>(options: HandleInLibraryOptions) => {
 		const { userID, objectID, inLibrary, columnNames, typeName, tableName, columnName } = options;
 
-		try {
-			await query(pg)(EXECUTE_HANDLE_IN_LIBRARY)({
-				variables: {
-					userID,
-					objectID,
-					inLibrary,
-					typeName: [typeName],
-				},
-			});
-		} catch {
-			/* empty */
-		}
+		await query(pg)(EXECUTE_HANDLE_IN_LIBRARY)({
+			variables: {
+				userID,
+				objectID,
+				inLibrary,
+				typeName: [typeName],
+			},
+		});
 
 		return query(pg)(SELECT_OBJECT_BY_ID)({
 			parse: convertFirstRowToCamelCase<T>(),

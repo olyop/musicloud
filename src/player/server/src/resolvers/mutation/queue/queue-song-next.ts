@@ -1,18 +1,16 @@
-import {
-	join,
-	convertTableToCamelCase,
-	query as pgHelpersQuery,
-	exists as pgHelpersExists,
-} from "@oly_op/pg-helpers";
-
-import isEmpty from "lodash-es/isEmpty";
-import { SongID } from "@oly_op/musicloud-common/build/types";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
+import { SongID } from "@oly_op/musicloud-common/build/types";
+import {
+	addPrefix,
+	convertTableToCamelCase,
+	exists as pgHelpersExists,
+	query as pgHelpersQuery,
+} from "@oly_op/pg-helpers";
+import isEmpty from "lodash-es/isEmpty";
 
-import { SELECT_QUEUE, INSERT_QUEUE_SONG, UPDATE_QUEUE_SONG_CREMENT_INDEX } from "../../../sql";
-
-import resolver from "../resolver";
+import { INSERT_QUEUE_SONG, SELECT_QUEUE, UPDATE_QUEUE_SONG_CREMENT_INDEX } from "../../../sql";
 import { QueueSong } from "../../../types";
+import resolver from "../resolver";
 
 export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ args, context }) => {
 	const { songID } = args;
@@ -39,8 +37,8 @@ export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ ar
 			parse: convertTableToCamelCase<QueueSong>(),
 			variables: {
 				userID,
-				tableName: "queue_nexts",
-				columnNames: join(COLUMN_NAMES.QUEUE_SONG),
+				tableName: ["queue_nexts"],
+				columnNames: addPrefix(COLUMN_NAMES.QUEUE_SONG),
 			},
 		});
 
@@ -49,9 +47,9 @@ export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ ar
 				await query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
 					variables: {
 						userID,
-						crement: "+",
+						crement: ["+"],
 						index: next.index,
-						tableName: "queue_nexts",
+						tableName: ["queue_nexts"],
 					},
 				});
 			}
@@ -62,7 +60,7 @@ export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ ar
 				userID,
 				songID,
 				index: 0,
-				tableName: "queue_nexts",
+				tableName: ["queue_nexts"],
 			},
 		});
 

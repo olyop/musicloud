@@ -1,26 +1,26 @@
-import trim from "lodash-es/trim";
-import { isEmpty } from "lodash-es";
 import multiPart from "@fastify/multipart";
-import { readFile } from "node:fs/promises";
-import { FastifyPluginAsync } from "fastify";
 import { UserBase } from "@oly_op/musicloud-common/build/types";
-import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers";
+import { convertFirstRowToCamelCase, importSQL, query } from "@oly_op/pg-helpers";
+import bytes from "bytes";
+import { FastifyPluginAsync } from "fastify";
+import { isEmpty } from "lodash-es";
+import trim from "lodash-es/trim";
 
-import saveToAlgolia from "./save-to-algolia";
-import { hashPassword } from "./hash-password";
-import passwordSchema from "./password-schema";
-import { isPartFile, Part, Body, Route } from "./types";
 import { createJWT, emailAddressExists } from "../helpers";
-import { coverImages, profileImages } from "./image-inputs";
 import { determineCover, determineProfile } from "./determine-images";
+import { hashPassword } from "./hash-password";
+import { coverImages, profileImages } from "./image-inputs";
 import { normalizeImageAndUploadToS3 } from "./normalize-image-and-upload-to-s3";
+import passwordSchema from "./password-schema";
+import saveToAlgolia from "./save-to-algolia";
+import { Body, Part, Route, isPartFile } from "./types";
 
-const INSERT_USER = (await readFile(new URL("./insert-user.sql", import.meta.url))).toString();
+const INSERT_USER = await importSQL(import.meta.url)("insert-user");
 
 export const signUp: FastifyPluginAsync = async fastify => {
 	await fastify.register(multiPart, {
 		limits: {
-			fileSize: 15 * 1000000, // 15 MB
+			fileSize: bytes("15mb"),
 		},
 	});
 
@@ -65,10 +65,6 @@ export const signUp: FastifyPluginAsync = async fastify => {
 			parse: convertFirstRowToCamelCase<UserBase>(),
 			variables: [
 				{
-					value: "*",
-					key: "columnNames",
-				},
-				{
 					key: "name",
 					value: name,
 					parameterized: true,
@@ -82,6 +78,11 @@ export const signUp: FastifyPluginAsync = async fastify => {
 					key: "emailAddress",
 					value: emailAddress,
 					parameterized: true,
+				},
+				{
+					value: "*",
+					key: "columnNames",
+					surroundStringWithCommas: false,
 				},
 			],
 		});

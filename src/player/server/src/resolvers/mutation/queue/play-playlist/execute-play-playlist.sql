@@ -1,0 +1,1 @@
+SELECT play_playlist({{ userID }}, {{ playlistID }});

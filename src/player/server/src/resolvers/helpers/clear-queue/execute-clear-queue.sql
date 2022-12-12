@@ -1,1 +1,1 @@
-SELECT clear_queue({{ userID }});
+SELECT clear_queues({{ userID }});

@@ -1,0 +1,1 @@
+SELECT add_song_to_playlist({{ songID }}, {{ playlistID }})

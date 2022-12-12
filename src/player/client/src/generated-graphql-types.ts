@@ -45,7 +45,6 @@ export type Album = {
 	songs: Array<Song>;
 	songsTotal: Scalars["PositiveInt"];
 	title: Scalars["NonEmptyString"];
-	userPlays?: Maybe<Array<Play>>;
 	userPlaysTotal?: Maybe<Scalars["PositiveInt"]>;
 };
 
@@ -74,7 +73,6 @@ export type Artist = {
 	songs: Array<Song>;
 	songsTotal: Scalars["PositiveInt"];
 	topTenSongs: Array<Song>;
-	userPlays: Array<Play>;
 	userPlaysTotal?: Maybe<Scalars["PositiveInt"]>;
 };
 
@@ -98,7 +96,6 @@ export type Genre = {
 	playsTotal?: Maybe<Scalars["PositiveInt"]>;
 	songs: Array<Song>;
 	songsTotal?: Maybe<Scalars["PositiveInt"]>;
-	userPlays?: Maybe<Array<Play>>;
 	userPlaysTotal?: Maybe<Scalars["PositiveInt"]>;
 };
 
@@ -261,7 +258,7 @@ export type Mutation = {
 	shuffleArtist: Queue;
 	shuffleLibrary: Queue;
 	shuffleLibraryCustom: Queue;
-	shuffleNext: Queue;
+	shuffleNextAndLater: Queue;
 	shufflePlaylist: Queue;
 	shuffleTopOneHundredSongs: Queue;
 	test?: Maybe<Scalars["Void"]>;
@@ -427,7 +424,6 @@ export type Playlist = {
 	songsTotal?: Maybe<Scalars["PositiveInt"]>;
 	title: Scalars["NonEmptyString"];
 	user: User;
-	userPlays?: Maybe<Array<Play>>;
 	userPlaysTotal?: Maybe<Scalars["PositiveInt"]>;
 };
 
@@ -447,7 +443,6 @@ export type Query = {
 	getPlaylistByID: Playlist;
 	getPlaysTotal: Scalars["NonNegativeInt"];
 	getQueue: Queue;
-	getSearchResults: Array<Search>;
 	getSongByID: Song;
 	getTopOneHundredSongs: Array<Song>;
 	getTopTenSongs: Array<Song>;
@@ -479,10 +474,6 @@ export type QueryGetPlaylistByIdArgs = {
 	playlistID: Scalars["UUID"];
 };
 
-export type QueryGetSearchResultsArgs = {
-	input: GetSearchResultsInput;
-};
-
 export type QueryGetSongByIdArgs = {
 	songID: Scalars["UUID"];
 };
@@ -498,8 +489,6 @@ export type Queue = {
 	nowPlaying?: Maybe<Song>;
 	previous?: Maybe<Array<Song>>;
 };
-
-export type Search = Album | Artist | Genre | Playlist | Song | User;
 
 export type ShuffleLibraryCustomInput = {
 	artists?: InputMaybe<Array<Scalars["UUID"]>>;
@@ -529,7 +518,6 @@ export type Song = {
 	songID: Scalars["UUID"];
 	title: Scalars["NonEmptyString"];
 	trackNumber: Scalars["PositiveInt"];
-	userPlays?: Maybe<Array<Play>>;
 	userPlaysTotal?: Maybe<Scalars["PositiveInt"]>;
 };
 
@@ -578,7 +566,6 @@ export type User = {
 	playlists?: Maybe<Array<Playlist>>;
 	playlistsFilteredBySong?: Maybe<Array<Playlist>>;
 	playlistsTotal?: Maybe<Scalars["PositiveInt"]>;
-	plays?: Maybe<Array<Play>>;
 	playsTotal?: Maybe<Scalars["PositiveInt"]>;
 	userID: Scalars["UUID"];
 };
@@ -706,13 +693,6 @@ export type ResolversTypes = {
 	PositiveInt: ResolverTypeWrapper<Scalars["PositiveInt"]>;
 	Query: ResolverTypeWrapper<{}>;
 	Queue: ResolverTypeWrapper<Queue>;
-	Search:
-		| ResolversTypes["Album"]
-		| ResolversTypes["Artist"]
-		| ResolversTypes["Genre"]
-		| ResolversTypes["Playlist"]
-		| ResolversTypes["Song"]
-		| ResolversTypes["User"];
 	ShuffleLibraryCustomInput: ShuffleLibraryCustomInput;
 	Song: ResolverTypeWrapper<Song>;
 	SongsOrderByField: SongsOrderByField;
@@ -756,13 +736,6 @@ export type ResolversParentTypes = {
 	PositiveInt: Scalars["PositiveInt"];
 	Query: {};
 	Queue: Queue;
-	Search:
-		| ResolversParentTypes["Album"]
-		| ResolversParentTypes["Artist"]
-		| ResolversParentTypes["Genre"]
-		| ResolversParentTypes["Playlist"]
-		| ResolversParentTypes["Song"]
-		| ResolversParentTypes["User"];
 	ShuffleLibraryCustomInput: ShuffleLibraryCustomInput;
 	Song: Song;
 	SongsOrderByInput: SongsOrderByInput;
@@ -790,7 +763,6 @@ export type AlbumResolvers<
 	songs?: Resolver<Array<ResolversTypes["Song"]>, ParentType, ContextType>;
 	songsTotal?: Resolver<ResolversTypes["PositiveInt"], ParentType, ContextType>;
 	title?: Resolver<ResolversTypes["NonEmptyString"], ParentType, ContextType>;
-	userPlays?: Resolver<Maybe<Array<ResolversTypes["Play"]>>, ParentType, ContextType>;
 	userPlaysTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -822,7 +794,6 @@ export type ArtistResolvers<
 	>;
 	songsTotal?: Resolver<ResolversTypes["PositiveInt"], ParentType, ContextType>;
 	topTenSongs?: Resolver<Array<ResolversTypes["Song"]>, ParentType, ContextType>;
-	userPlays?: Resolver<Array<ResolversTypes["Play"]>, ParentType, ContextType>;
 	userPlaysTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -850,7 +821,6 @@ export type GenreResolvers<
 		RequireFields<GenreSongsArgs, "orderBy">
 	>;
 	songsTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
-	userPlays?: Resolver<Maybe<Array<ResolversTypes["Play"]>>, ParentType, ContextType>;
 	userPlaysTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1091,7 +1061,7 @@ export type MutationResolvers<
 		ContextType,
 		RequireFields<MutationShuffleLibraryCustomArgs, "input">
 	>;
-	shuffleNext?: Resolver<ResolversTypes["Queue"], ParentType, ContextType>;
+	shuffleNextAndLater?: Resolver<ResolversTypes["Queue"], ParentType, ContextType>;
 	shufflePlaylist?: Resolver<
 		ResolversTypes["Queue"],
 		ParentType,
@@ -1156,7 +1126,6 @@ export type PlaylistResolvers<
 	songsTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
 	title?: Resolver<ResolversTypes["NonEmptyString"], ParentType, ContextType>;
 	user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
-	userPlays?: Resolver<Maybe<Array<ResolversTypes["Play"]>>, ParentType, ContextType>;
 	userPlaysTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1203,12 +1172,6 @@ export type QueryResolvers<
 	>;
 	getPlaysTotal?: Resolver<ResolversTypes["NonNegativeInt"], ParentType, ContextType>;
 	getQueue?: Resolver<ResolversTypes["Queue"], ParentType, ContextType>;
-	getSearchResults?: Resolver<
-		Array<ResolversTypes["Search"]>,
-		ParentType,
-		ContextType,
-		RequireFields<QueryGetSearchResultsArgs, "input">
-	>;
 	getSongByID?: Resolver<
 		ResolversTypes["Song"],
 		ParentType,
@@ -1239,17 +1202,6 @@ export type QueueResolvers<
 	nowPlaying?: Resolver<Maybe<ResolversTypes["Song"]>, ParentType, ContextType>;
 	previous?: Resolver<Maybe<Array<ResolversTypes["Song"]>>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type SearchResolvers<
-	ContextType = any,
-	ParentType extends ResolversParentTypes["Search"] = ResolversParentTypes["Search"],
-> = {
-	__resolveType: TypeResolveFn<
-		"Album" | "Artist" | "Genre" | "Playlist" | "Song" | "User",
-		ParentType,
-		ContextType
-	>;
 };
 
 export type SongResolvers<
@@ -1292,7 +1244,6 @@ export type SongResolvers<
 	songID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
 	title?: Resolver<ResolversTypes["NonEmptyString"], ParentType, ContextType>;
 	trackNumber?: Resolver<ResolversTypes["PositiveInt"], ParentType, ContextType>;
-	userPlays?: Resolver<Maybe<Array<ResolversTypes["Play"]>>, ParentType, ContextType>;
 	userPlaysTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -1324,7 +1275,6 @@ export type UserResolvers<
 		RequireFields<UserPlaylistsFilteredBySongArgs, "songID">
 	>;
 	playlistsTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
-	plays?: Resolver<Maybe<Array<ResolversTypes["Play"]>>, ParentType, ContextType>;
 	playsTotal?: Resolver<Maybe<ResolversTypes["PositiveInt"]>, ParentType, ContextType>;
 	userID?: Resolver<ResolversTypes["UUID"], ParentType, ContextType>;
 	__isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1350,7 +1300,6 @@ export type Resolvers<ContextType = any> = {
 	PositiveInt?: GraphQLScalarType;
 	Query?: QueryResolvers<ContextType>;
 	Queue?: QueueResolvers<ContextType>;
-	Search?: SearchResolvers<ContextType>;
 	Song?: SongResolvers<ContextType>;
 	TimeStamp?: GraphQLScalarType;
 	UUID?: GraphQLScalarType;

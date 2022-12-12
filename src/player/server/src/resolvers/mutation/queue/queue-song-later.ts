@@ -1,16 +1,9 @@
-import {
-	join,
-	exists as pgExists,
-	query as pgHelpersQuery,
-	convertTableToCamelCase,
-} from "@oly_op/pg-helpers";
-
-import { SongID } from "@oly_op/musicloud-common/build/types";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
+import { SongID } from "@oly_op/musicloud-common/build/types";
+import { exists as pgExists, query as pgHelpersQuery } from "@oly_op/pg-helpers";
 
+import { getQueueSection, insertQueueSong } from "../../helpers";
 import resolver from "../resolver";
-import { QueueSong } from "../../../types";
-import { SELECT_QUEUE, INSERT_QUEUE_SONG } from "../../../sql";
 
 export const queueSongLater = resolver<Record<string, never>, SongID>(async ({ args, context }) => {
 	const { songID } = args;
@@ -33,23 +26,19 @@ export const queueSongLater = resolver<Record<string, never>, SongID>(async ({ a
 			throw new Error("Song does not exist");
 		}
 
-		const nexts = await query(SELECT_QUEUE)({
-			parse: convertTableToCamelCase<QueueSong>(),
-			variables: {
-				userID,
-				tableName: "queue_laters",
-				columnNames: join(COLUMN_NAMES.QUEUE_SONG),
-			},
+		const nexts = await getQueueSection(context.pg)({
+			userID,
+			tableName: "queue_laters",
 		});
 
-		await query(INSERT_QUEUE_SONG)({
-			variables: {
+		if (nexts) {
+			await insertQueueSong(context.pg)({
 				userID,
 				songID,
 				index: nexts.length,
 				tableName: "queue_laters",
-			},
-		});
+			});
+		}
 
 		await query("COMMIT")();
 	} catch (error) {

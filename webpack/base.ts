@@ -59,11 +59,11 @@ export const createTSLoaderRule = (
 	},
 });
 
-export const createDevServerProxy = (port: string, proxy: string[]): ProxyConfigArrayItem => ({
+export const createDevelopmentServerProxy = (port: string, proxy: string[]): ProxyConfigArrayItem => ({
+	secure: false,
 	logLevel: "silent",
 	timeout: ms("120s"),
 	proxyTimeout: ms("120s"),
-	secure: process.env.HTTPS ? false : undefined,
 	onProxyReq: (proxyRequest, request) => request.setTimeout(ms("120s")),
 	target: `${USE_HTTPS ? "https" : "http"}://${process.env.HOST}:${port}`,
 	context: ["/icon.png", "/robots.txt", "/favicon.ico", "/security.txt", ...proxy],

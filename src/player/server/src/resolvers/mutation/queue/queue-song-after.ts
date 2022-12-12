@@ -35,8 +35,8 @@ export const queueSongAfter = resolver<Record<string, never>, SongID>(async ({ a
 			parse: getResultRowCount,
 			variables: {
 				userID,
-				columnNames: "*",
-				tableName: "queue_nexts",
+				columnNames: ["*"],
+				tableName: ["queue_nexts"],
 			},
 		});
 
@@ -45,7 +45,7 @@ export const queueSongAfter = resolver<Record<string, never>, SongID>(async ({ a
 				userID,
 				songID,
 				index: nexts,
-				tableName: "queue_nexts",
+				tableName: ["queue_nexts"],
 			},
 		});
 

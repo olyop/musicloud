@@ -1,8 +1,10 @@
 CREATE OR REPLACE FUNCTION
 	handle_now_playing
 	(user_id_arg uuid, song_id_arg uuid DEFAULT NULL)
-RETURNS void
-LANGUAGE plpgsql
+RETURNS
+	void
+LANGUAGE
+	plpgsql
 VOLATILE
 AS $$ BEGIN
 	IF (song_id_arg IS NULL) THEN
@@ -11,7 +13,7 @@ AS $$ BEGIN
 		WHERE
 			user_id = user_id_arg;
 	ELSE
-		IF (EXISTS (SELECT 1 FROM now_playing WHERE user_id = user_id_arg)) THEN
+		IF EXISTS (SELECT 1 FROM now_playing WHERE user_id = user_id_arg) THEN
 			UPDATE
 				now_playing
 			SET

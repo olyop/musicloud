@@ -3,7 +3,7 @@ import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-com
 import { addPrefix, convertFirstRowToCamelCase, importSQL, query } from "@oly_op/pg-helpers";
 
 import { Playlist } from "../../../types";
-import { getUser, handleInLibrary } from "../../helpers";
+import { addPlaylistToLibraryHelper, getUser } from "../../helpers";
 import resolver from "../resolver";
 
 const isf = importSQL(import.meta.url);
@@ -29,17 +29,9 @@ export const createPlaylist = resolver<Playlist, Args>(async ({ args, context })
 
 	const { playlistID } = playlist;
 
-	await handleInLibrary(context.pg)({
-		columnKey: "playlistID",
-		columnName: "playlist_id",
-		columnNames: COLUMN_NAMES.PLAYLIST,
-		inLibrary: true,
-		libraryTableName: "library_playlists",
-		objectID: playlistID,
+	await addPlaylistToLibraryHelper(context.pg)({
 		userID,
-		tableName: "playlists",
-		typeName: "Playlist",
-	});
+	})({ playlistID });
 
 	const { name } = await getUser(context.pg)({ userID });
 

@@ -1,37 +1,32 @@
 import {
-	join,
+	query,
 	getResultExists,
-	query as pgHelpersQuery,
-	convertTableToCamelCase,
 } from "@oly_op/pg-helpers";
 
 import { find, isEmpty } from "lodash-es";
-import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 
 import {
-	SELECT_QUEUE,
 	DELETE_QUEUE_SONG,
 	EXISTS_QUEUE_SONG,
 	UPDATE_QUEUE_SONG_INDEX,
 } from "../../../sql";
 
 import resolver from "../resolver";
-import { updateQueueNowPlaying } from "../../helpers";
-import { IndexOptions, QueueSong } from "../../../types";
+import { IndexOptions } from "../../../types";
+import { updateQueueNowPlaying, getQueueSection } from "../../helpers";
 
 export const jumpToSongInQueueLater = resolver<Record<string, never>, IndexOptions>(
 	async ({ args, context }) => {
 		const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
 		const pg = await context.pg.connect();
-		const query = pgHelpersQuery(pg);
 
-		const queueSongExists = await query(EXISTS_QUEUE_SONG)({
+		const queueSongExists = await query(context.pg)(EXISTS_QUEUE_SONG)({
 			parse: getResultExists,
 			variables: {
 				userID,
 				index: args.index,
-				tableName: "queue_laters",
+				tableName: ["queue_laters"],
 			},
 		});
 
@@ -40,27 +35,19 @@ export const jumpToSongInQueueLater = resolver<Record<string, never>, IndexOptio
 		}
 
 		try {
-			await query("BEGIN")();
+			await query(context.pg)("BEGIN")();
 
-			const nextSongs = await query(SELECT_QUEUE)({
-				parse: convertTableToCamelCase<QueueSong>(),
-				variables: {
-					userID,
-					tableName: "queue_nexts",
-					columnNames: join(COLUMN_NAMES.QUEUE_SONG),
-				},
+			const nextSongs = await getQueueSection(context.pg)({
+				userID,
+				tableName: "queue_nexts",
 			});
 
-			const laterSongs = await query(SELECT_QUEUE)({
-				parse: convertTableToCamelCase<QueueSong>(),
-				variables: {
-					userID,
-					tableName: "queue_laters",
-					columnNames: join(COLUMN_NAMES.QUEUE_SONG),
-				},
+			const laterSongs = await getQueueSection(context.pg)({
+				userID,
+				tableName: "queue_laters",
 			});
 
-			if (isEmpty(nextSongs) && !isEmpty(laterSongs)) {
+			if (laterSongs && isEmpty(nextSongs) && !isEmpty(laterSongs)) {
 				await updateQueueNowPlaying(
 					pg,
 					context.ag.index,
@@ -71,41 +58,41 @@ export const jumpToSongInQueueLater = resolver<Record<string, never>, IndexOptio
 
 				await Promise.all(
 					laterSongs.slice(0, args.index).map(queueSong =>
-						query(DELETE_QUEUE_SONG)({
+						query(context.pg)(DELETE_QUEUE_SONG)({
 							variables: {
 								userID,
 								index: queueSong.index,
-								tableName: "queue_laters",
+								tableName: ["queue_laters"],
 							},
 						}),
 					),
 				);
 
-				await query(DELETE_QUEUE_SONG)({
+				await query(context.pg)(DELETE_QUEUE_SONG)({
 					variables: {
 						userID,
 						index: args.index,
-						tableName: "queue_laters",
+						tableName: ["queue_laters"],
 					},
 				});
 
 				await Promise.all(
 					laterSongs.slice(args.index + 1).map(({ index }, newIndex) =>
-						query(UPDATE_QUEUE_SONG_INDEX)({
+						query(context.pg)(UPDATE_QUEUE_SONG_INDEX)({
 							variables: {
 								index,
 								userID,
 								newIndex,
-								tableName: "queue_laters",
+								tableName: ["queue_laters"],
 							},
 						}),
 					),
 				);
 			}
 
-			await query("COMMIT")();
+			await query(context.pg)("COMMIT")();
 		} catch (error) {
-			await query("ROLLBACK")();
+			await query(context.pg)("ROLLBACK")();
 			throw error;
 		} finally {
 			pg.release();

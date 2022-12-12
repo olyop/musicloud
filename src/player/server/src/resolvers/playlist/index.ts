@@ -1,19 +1,15 @@
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
-import { PlaylistID, PlaylistPrivacy, UserID } from "@oly_op/musicloud-common/build/types";
+import { PlaylistPrivacy } from "@oly_op/musicloud-common/build/types";
 import {
-	PoolOrClient,
 	addPrefix,
 	convertTableToCamelCaseOrNull,
 	getResultCountOrNull,
-	getResultRowCountOrNull,
 	getResultSumOrNull,
 	importSQL,
 	query,
 } from "@oly_op/pg-helpers";
-import { random } from "lodash-es";
 
-import { SELECT_OBJECT_SONG_PLAYS } from "../../sql";
-import { GetObjectsOptions, Play, Playlist, Song } from "../../types";
+import { Playlist, Song } from "../../types";
 import createParentResolver from "../create-parent-resolver";
 import {
 	getObjectDateAddedToLibrary,
@@ -26,6 +22,8 @@ const isf = importSQL(import.meta.url);
 
 const SELECT_PLAYLIST_SONGS = await isf("select-songs");
 const SELECT_PLAYLIST_SONGS_COUNT = await isf("select-songs-count");
+const SELECT_PLAYLIST_PLAYS_COUNT = await isf("select-plays-count");
+const SELECT_PLAYLIST_USER_PLAYS_COUNT = await isf("select-user-plays-count");
 const SELECT_PLAYLIST_SONGS_DURATION_SUM = await isf("select-songs-duration-sum");
 
 const resolver = createParentResolver<Playlist>(({ parent, context }) => {
@@ -47,7 +45,14 @@ export const user = resolver(({ parent, context }) =>
 	getUser(context.pg)({ userID: parent.userID }),
 );
 
-export const playsTotal = resolver(() => Promise.resolve(random(50, 1000)));
+export const playsTotal = resolver(({ parent, context }) =>
+	query(context.pg)(SELECT_PLAYLIST_PLAYS_COUNT)({
+		parse: getResultCountOrNull,
+		variables: {
+			playlistID: parent.playlistID,
+		},
+	}),
+);
 
 export const songs = resolver(({ parent, context }) =>
 	query(context.pg)(SELECT_PLAYLIST_SONGS)({
@@ -77,35 +82,13 @@ export const duration = resolver(({ parent, context }) =>
 	}),
 );
 
-interface GetUserPlaylistPlaysOptions<T> extends UserID, PlaylistID, GetObjectsOptions<T> {}
-
-const getUserPlaylistPlays =
-	(client: PoolOrClient) =>
-	<T>({ userID, playlistID, columnNames, parse }: GetUserPlaylistPlaysOptions<T>) =>
-		query(client)(SELECT_OBJECT_SONG_PLAYS)({
-			parse,
-			variables: {
-				userID,
-				playlistID,
-				columnNames,
-			},
-		});
-
-export const userPlays = resolver(({ parent, context }) =>
-	getUserPlaylistPlays(context.pg)({
-		playlistID: parent.playlistID,
-		columnNames: addPrefix(COLUMN_NAMES.PLAY),
-		userID: context.getAuthorizationJWTPayload(context.authorization).userID,
-		parse: convertTableToCamelCaseOrNull<Play>(),
-	}),
-);
-
 export const userPlaysTotal = resolver(({ parent, context }) =>
-	getUserPlaylistPlays(context.pg)({
-		playlistID: parent.playlistID,
-		parse: getResultRowCountOrNull,
-		columnNames: COLUMN_NAMES.PLAY[0],
-		userID: context.getAuthorizationJWTPayload(context.authorization).userID,
+	query(context.pg)(SELECT_PLAYLIST_USER_PLAYS_COUNT)({
+		parse: getResultCountOrNull,
+		variables: {
+			playlistID: parent.playlistID,
+			userID: context.getAuthorizationJWTPayload(context.authorization).userID,
+		},
 	}),
 );
 

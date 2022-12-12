@@ -4,11 +4,13 @@ import {
 	PoolOrClient,
 	addPrefix,
 	convertFirstRowToCamelCaseOrNull,
+	importSQL,
 	query,
 } from "@oly_op/pg-helpers";
 
-import { SELECT_QUEUE_NOW_PLAYING_SONG } from "../../../sql";
 import { Song } from "../../../types";
+
+const SELECT_QUEUE_NOW_PLAYING_SONG = await importSQL(import.meta.url)("select-now-playing-song");
 
 export const getQueueNowPlayingSong =
 	(pg: PoolOrClient) =>

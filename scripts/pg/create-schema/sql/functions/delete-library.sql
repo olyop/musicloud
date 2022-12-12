@@ -11,10 +11,12 @@ AS $$ BEGIN
 		library_songs
 	WHERE
 		user_id = user_id_arg;
+
 	DELETE FROM
 		library_artists
 	WHERE
 		user_id = user_id_arg;
+
 	DELETE FROM
 		library_playlists
 	WHERE
