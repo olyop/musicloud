@@ -56,6 +56,9 @@
 					width: 100%;
 					border-radius: 0;
 					justify-content: flex-start;
+					&-cache-size {
+						font-size: 10rem;
+					}
 					&-image {
 						--fix: -1rem;
 						margin-top: -2rem;

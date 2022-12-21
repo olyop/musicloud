@@ -1,9 +1,7 @@
 type Mutation {
 	# user
-	deleteUser: Void
 	followUser(userID: UUID!): User!
 	unFollowUser(userID: UUID!): User!
-	changePassword(password: NonEmptyString!): Void
 
 	# queue
 	clearQueues: Queue!

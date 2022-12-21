@@ -19,9 +19,7 @@ import { IS_DEVELOPMENT, IS_PRODUCTION, USE_HTTPS } from "@oly_op/musicloud-comm
 import packageDotJSON from "../package.json" assert { type: "json" };
 
 export const BASE_ROOT_PATH = process.cwd();
-
 export const BASE_SRC_PATH = path.join(BASE_ROOT_PATH, "src");
-
 export const BASE_BUILD_PATH = path.join(BASE_ROOT_PATH, "build");
 
 export const createHTMLPluginOptions = ({
@@ -129,6 +127,7 @@ const baseConfiguration: webpack.Configuration = {
 	plugins: [
 		new DotenvPlugin(),
 		new webpack.DefinePlugin({
+			AUTHOR : JSON.stringify(packageDotJSON.author.name),
 			VERSION: JSON.stringify(packageDotJSON.version),
 		}),
 		...(process.env.LINTING_IN_BUILD === "true"

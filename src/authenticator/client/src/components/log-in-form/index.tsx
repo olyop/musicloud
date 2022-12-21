@@ -1,11 +1,16 @@
-import isEmpty from "lodash-es/isEmpty";
-import Button from "@oly_op/react-button";
 import { AccessToken } from "@oly_op/musicloud-common/build/types";
-import { useState, createElement, FC, FormEventHandler } from "react";
+import Button from "@oly_op/react-button";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, FormEventHandler, createElement, useState } from "react";
 
 import Input, { InputOnChange } from "../input";
 
-const LogInForm: FC<PropTypes> = ({ onSubmit, emailAddress, onEmailAddressChange }) => {
+const LogInForm: FC<PropTypes> = ({
+	onSubmit,
+	emailAddress,
+	onEmailAddressChange,
+	onOpenForgotPassword,
+}) => {
 	const [error, setError] = useState<Error | null>(null);
 
 	const [loading, setLoading] = useState(false);
@@ -43,10 +48,14 @@ const LogInForm: FC<PropTypes> = ({ onSubmit, emailAddress, onEmailAddressChange
 		}
 	};
 
+	const isValid = !isEmpty(password) && !isEmpty(emailAddress);
+
 	const handleSubmit: FormEventHandler = event => {
 		event.preventDefault();
-		setError(null);
-		void handleLogIn();
+		if (isValid) {
+			setError(null);
+			void handleLogIn();
+		}
 	};
 
 	return (
@@ -72,13 +81,21 @@ const LogInForm: FC<PropTypes> = ({ onSubmit, emailAddress, onEmailAddressChange
 				autoComplete="password"
 				onChange={handlePasswordChange}
 			/>
+			<button
+				type="button"
+				aria-label="Forgot Password"
+				onClick={onOpenForgotPassword}
+				className="ParagraphTwo Link Left"
+			>
+				Forgot Password?
+			</button>
 			{error && <p className="ParagraphOne Error">{error.message}</p>}
 			<Button
 				text="Submit"
 				type="submit"
 				tabIndex={3}
 				rightIcon="login"
-				disabled={loading || isEmpty(password)}
+				disabled={loading || !isValid}
 			/>
 		</form>
 	);
@@ -86,6 +103,7 @@ const LogInForm: FC<PropTypes> = ({ onSubmit, emailAddress, onEmailAddressChange
 
 interface PropTypes {
 	emailAddress: string;
+	onOpenForgotPassword: () => void;
 	onEmailAddressChange: InputOnChange;
 	onSubmit: (accessToken: string) => void;
 }

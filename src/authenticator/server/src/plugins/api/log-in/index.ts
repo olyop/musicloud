@@ -1,26 +1,14 @@
-import { UserID, UserPasswordBase } from "@oly_op/musicloud-common/build/types";
-import { PoolOrClient, convertFirstRowToCamelCase, importSQL, query } from "@oly_op/pg-helpers";
-import { compare } from "bcrypt";
 import { FastifyPluginAsync } from "fastify";
-import { pipe } from "rxjs";
 
-import { createJWT, emailAddressExists } from "../helpers";
-import getUserFromEmailAddress from "./get-user-from-email-address";
+import {
+	createJWT,
+	emailAddressExists,
+	getUserByEmailAddress,
+	getUserPassword,
+	isPasswordCorrect,
+} from "../helpers";
 import options from "./options";
 import { Route } from "./types";
-
-const SELECT_USER_PASSWORD = await importSQL(import.meta.url)("select-user-password");
-
-const isPasswordCorrect = (inputPassword: string, hashedPassword: string) =>
-	compare(inputPassword, hashedPassword);
-
-const getUserPassword =
-	(pg: PoolOrClient) =>
-	({ userID }: UserID) =>
-		query(pg)(SELECT_USER_PASSWORD)({
-			variables: { userID },
-			parse: pipe(convertFirstRowToCamelCase<UserPasswordBase>(), ({ password }) => password),
-		});
 
 export const logIn: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
@@ -31,7 +19,7 @@ export const logIn: FastifyPluginAsync =
 			const doesEmailAddressExists = await emailAddressExists(fastify.pg.pool)({ emailAddress });
 
 			if (doesEmailAddressExists) {
-				const user = await getUserFromEmailAddress(fastify.pg.pool)({ emailAddress });
+				const user = await getUserByEmailAddress(fastify.pg.pool)({ emailAddress });
 
 				const { userID } = user;
 

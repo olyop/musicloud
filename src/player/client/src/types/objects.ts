@@ -78,7 +78,7 @@ export interface Artist
 		ArtistSongs,
 		ArtistTopTenSongs,
 		InLibraryObject<"Artist"> {
-	since: string;
+	since: number;
 	albums: Album[];
 	songsTotal: number;
 	albumsTotal: number;

@@ -8,8 +8,8 @@ LANGUAGE
 VOLATILE
 AS $$
 	DECLARE
+		iterator integer;
 		playlist_song record;
-		iterator integer := 0;
 	BEGIN
 		PERFORM clear_queues(user_id_arg);
 
@@ -26,8 +26,9 @@ AS $$
 			ORDER BY
 				index ASC
 		LOOP
-			IF (iterator = 0) THEN
+			IF (iterator IS NULL) THEN
 				PERFORM handle_now_playing(user_id_arg, playlist_song.song_id);
+				iterator := 0;
 			ELSE
 				INSERT INTO queue_laters
 					(index, user_id, song_id)

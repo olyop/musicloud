@@ -1,17 +1,15 @@
 import multiPart from "@fastify/multipart";
+import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { UserBase } from "@oly_op/musicloud-common/build/types";
-import { convertFirstRowToCamelCase, importSQL, query } from "@oly_op/pg-helpers";
+import { addPrefix, convertFirstRowToCamelCase, importSQL, query } from "@oly_op/pg-helpers";
 import bytes from "bytes";
 import { FastifyPluginAsync } from "fastify";
-import { isEmpty } from "lodash-es";
-import trim from "lodash-es/trim";
+import { isString, trim } from "lodash-es";
 
-import { createJWT, emailAddressExists } from "../helpers";
+import { createJWT, emailAddressExists, hashPassword, isPasswordValid } from "../helpers";
 import { determineCover, determineProfile } from "./determine-images";
-import { hashPassword } from "./hash-password";
 import { coverImages, profileImages } from "./image-inputs";
 import { normalizeImageAndUploadToS3 } from "./normalize-image-and-upload-to-s3";
-import passwordSchema from "./password-schema";
 import saveToAlgolia from "./save-to-algolia";
 import { Body, Part, Route, isPartFile } from "./types";
 
@@ -44,47 +42,27 @@ export const signUp: FastifyPluginAsync = async fastify => {
 		const emailAddress = trim(body.emailAddress);
 
 		const doesUserExist = await emailAddressExists(fastify.pg.pool)({ emailAddress });
-
 		if (doesUserExist) {
 			throw new Error("Email address already exists");
 		}
 
-		const passwordValidation = passwordSchema.validate(body.password, { list: true });
-
-		if (Array.isArray(passwordValidation) && !isEmpty(passwordValidation)) {
-			throw new Error(`Password validation failed: ${passwordValidation.toString()}`);
+		const passwordValidationResult = isPasswordValid(body.password);
+		if (isString(passwordValidationResult)) {
+			throw new Error(passwordValidationResult);
 		}
 
 		const name = trim(body.name);
 
-		const password = await hashPassword({
-			password: body.password,
-		});
+		const passwordHash = await hashPassword(body.password);
 
 		const user = await query(fastify.pg.pool)(INSERT_USER)({
 			parse: convertFirstRowToCamelCase<UserBase>(),
-			variables: [
-				{
-					key: "name",
-					value: name,
-					parameterized: true,
-				},
-				{
-					key: "password",
-					value: password,
-					parameterized: true,
-				},
-				{
-					key: "emailAddress",
-					value: emailAddress,
-					parameterized: true,
-				},
-				{
-					value: "*",
-					key: "columnNames",
-					surroundStringWithCommas: false,
-				},
-			],
+			variables: {
+				name: [name, [true]],
+				password: [passwordHash, [true]],
+				emailAddress: [emailAddress, [true]],
+				columnNames: addPrefix(COLUMN_NAMES.USER),
+			},
 		});
 
 		const { userID } = user;

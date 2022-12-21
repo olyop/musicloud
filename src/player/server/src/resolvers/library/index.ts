@@ -64,7 +64,7 @@ export const genreAtIndex = resolver<Genre | null, LibraryObjectAtIndexArgs>(({ 
 			atIndex: [args.input.atIndex],
 			orderByField: [args.input.orderBy.field],
 			orderByDirection: [args.input.orderBy.direction],
-			columnNames: [addPrefix(COLUMN_NAMES.GENRE, "genres")],
+			columnNames: addPrefix(COLUMN_NAMES.GENRE, "genres"),
 			userID: context.getAuthorizationJWTPayload(context.authorization).userID,
 		},
 	}),

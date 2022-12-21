@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"license": "MIT",
-	"version": "1.2.12",
+	"version": "1.2.17",
 	"description": "musicloud-common",
 	"name": "@oly_op/musicloud-common",
 	"homepage": "https://github.com/olyop/musicloud",

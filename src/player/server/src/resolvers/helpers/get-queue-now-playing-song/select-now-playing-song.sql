@@ -6,4 +6,4 @@ JOIN
 	songs ON
 		songs.song_id = now_playing.song_id
 WHERE
-	user_id = {{ userID }};
+	now_playing.user_id = {{ userID }};

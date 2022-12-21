@@ -1,10 +1,10 @@
 import { FieldMergeFunction, InMemoryCache } from "@apollo/client";
-import { CachePersistor, LocalForageWrapper } from "apollo3-cache-persist";
-import localForage from "localforage";
+import { CachePersistor, LocalStorageWrapper } from "apollo3-cache-persist";
+import isEmpty from "lodash-es/isEmpty";
 import isNull from "lodash-es/isNull";
 
 const mergePossibleNullValue: FieldMergeFunction<unknown | null> = (existing, incoming) => {
-	if (isNull(incoming)) {
+	if (isNull(incoming) || isEmpty(incoming)) {
 		return null;
 	} else {
 		return incoming;
@@ -12,8 +12,8 @@ const mergePossibleNullValue: FieldMergeFunction<unknown | null> = (existing, in
 };
 
 const mergeObjects: FieldMergeFunction<Record<string, unknown>> = (existing, incoming) => ({
-	...existing,
-	...incoming,
+	...(isNull(existing) ? {} : existing),
+	...(isNull(incoming) ? {} : incoming),
 });
 
 const cache = new InMemoryCache({
@@ -75,7 +75,7 @@ const cache = new InMemoryCache({
 const cachePersistor = new CachePersistor({
 	cache,
 	maxSize: false,
-	storage: new LocalForageWrapper(localForage),
+	storage: new LocalStorageWrapper(localStorage),
 });
 
 await cachePersistor.restore();

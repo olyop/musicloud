@@ -13,7 +13,7 @@ type Artist {
 	userPlaysTotal: PositiveInt
 
 	# relationships
-	since: Date!
+	since: TimeStamp!
 	topTenSongs: [Song!]!
 	playsTotal: PositiveInt
 	songsTotal: PositiveInt!

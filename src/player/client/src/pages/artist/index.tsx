@@ -1,23 +1,28 @@
+import { ArtistID, ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 import Button from "@oly_op/react-button";
 import { Head } from "@oly_op/react-head";
-import { createElement, Fragment, FC } from "react";
 import { addDashesToUUID } from "@oly_op/uuid-dashes";
-import { useParams, Route, Routes } from "react-router-dom";
-import { ImageSizes, ArtistID, ImageDimensions } from "@oly_op/musicloud-common/build/types";
+import { FC, Fragment, createElement } from "react";
+import { Route, Routes, useParams } from "react-router-dom";
 
-import routes from "./routes";
-import { Artist } from "../../types";
-import Page from "../../layouts/page";
-import ShareButton from "./share-button";
-import Banner from "../../layouts/banner";
 import Window from "../../components/window";
-import ArtistFollowButton from "./follow-button";
-import Navigation from "../../layouts/navigation";
+import {
+	createArtistLower,
+	createCatalogImageURL,
+	determinePlural,
+	formatPlays,
+	formatTimestamp,
+} from "../../helpers";
 import { useQuery, useShuffleArtist } from "../../hooks";
+import Banner from "../../layouts/banner";
+import Navigation from "../../layouts/navigation";
+import Page from "../../layouts/page";
+import { Artist } from "../../types";
 import createGoogleMapsURL from "./create-google-maps-url";
-import { determinePlural, createArtistLower, createCatalogImageURL } from "../../helpers";
-
+import ArtistFollowButton from "./follow-button";
 import GET_ARTIST_PAGE from "./get-artist-page.gql";
+import routes from "./routes";
+import ShareButton from "./share-button";
 
 const ArtistPage: FC = () => {
 	const params = useParams<keyof ArtistID>();
@@ -78,7 +83,7 @@ const ArtistPage: FC = () => {
 							<div className="FlexColumnGapQuart" style={{ alignItems: "flex-start" }}>
 								<p className="ParagraphTwoInverted">
 									<Fragment>Formed in </Fragment>
-									{since.slice(0, -6)}
+									{formatTimestamp(since)}
 								</p>
 								{city && country && (
 									<a
@@ -94,7 +99,7 @@ const ArtistPage: FC = () => {
 								)}
 								{playsTotal && (
 									<p className="ParagraphTwoInverted">
-										{playsTotal.toLocaleString() ?? 0}
+										{formatPlays(playsTotal)}
 										<Fragment> play</Fragment>
 										{determinePlural(playsTotal)}
 									</p>

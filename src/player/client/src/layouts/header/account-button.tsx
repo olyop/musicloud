@@ -1,25 +1,24 @@
-import { Link } from "react-router-dom";
 import { createBEM } from "@oly_op/bem";
-import uniqueID from "lodash-es/uniqueId";
-import Button from "@oly_op/react-button";
-import { createElement, Fragment, useState, FC } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import Button from "@oly_op/react-button";
+import uniqueID from "lodash-es/uniqueId";
+import { FC, Fragment, createElement, useState } from "react";
+import { Link } from "react-router-dom";
 
 import Modal from "../../components/modal";
+import { createCatalogImageURL, createObjectPath, formatPlays } from "../../helpers";
+import { useClearCache, useJWTPayload, useSignOut } from "../../hooks";
 import { addLoading, removeLoading, useDispatch } from "../../redux";
-import { createCatalogImageURL, createObjectPath } from "../../helpers";
-import { useClearCache, useJWTPayload, useResetCache, useSignOut } from "../../hooks";
+import { determineCacheSize } from "./determine-cache-size";
+
+const clearCacheLoadingID = uniqueID();
 
 const bem = createBEM("Header");
-
-const refreshLoadingID = uniqueID();
-const clearCacheLoadingID = uniqueID();
 
 const HeaderAccountButton: FC = () => {
 	const signOut = useSignOut();
 	const dispatch = useDispatch();
 	const clearCache = useClearCache();
-	const resetCache = useResetCache();
 	const { userID, name } = useJWTPayload();
 
 	const [accountModal, setAccountModal] = useState(false);
@@ -28,21 +27,18 @@ const HeaderAccountButton: FC = () => {
 
 	const handleAccountModalClose = () => setAccountModal(false);
 
-	const handleRefresh = () => {
-		dispatch(addLoading(refreshLoadingID));
-		handleAccountModalClose();
-		resetCache()
-			.catch(console.error)
-			.finally(() => dispatch(removeLoading(refreshLoadingID)));
-	};
-
-	const handleClearCache = () => {
+	const handleClearCache = async () => {
 		dispatch(addLoading(clearCacheLoadingID));
 		handleAccountModalClose();
-		clearCache()
-			.catch(console.error)
-			.finally(() => dispatch(removeLoading(refreshLoadingID)));
+		await clearCache();
+		dispatch(removeLoading(clearCacheLoadingID));
 	};
+
+	const handleClearCacheClick = () => {
+		void handleClearCache();
+	};
+
+	const cacheSize = determineCacheSize();
 
 	return (
 		<Fragment>
@@ -90,16 +86,21 @@ const HeaderAccountButton: FC = () => {
 				<Button
 					transparent
 					icon="refresh"
-					text="Refresh"
-					onClick={handleRefresh}
+					onClick={handleClearCacheClick}
 					className={bem("account-modal-content-button")}
-				/>
-				<Button
-					transparent
-					text="Clear"
-					icon="delete_outline"
-					onClick={handleClearCache}
-					className={bem("account-modal-content-button")}
+					text={
+						<Fragment>
+							<Fragment>Cache</Fragment>
+							{cacheSize && (
+								<Fragment>
+									<Fragment> </Fragment>
+									<span className={bem("account-modal-content-button-cache-size", "LightColor")}>
+										{formatPlays(cacheSize)}
+									</span>
+								</Fragment>
+							)}
+						</Fragment>
+					}
 				/>
 				<Link
 					to="/settings"

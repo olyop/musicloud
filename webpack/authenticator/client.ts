@@ -1,6 +1,7 @@
+import path from "node:path";
+
 import { TITLE } from "@oly_op/musicloud-common/build/metadata";
 import HTMLWebpackPlugin from "html-webpack-plugin";
-import path from "path";
 import { Configuration } from "webpack";
 import { merge } from "webpack-merge";
 
@@ -33,10 +34,12 @@ const configuration: Configuration = {
 		rules: [createTSLoaderRule(TSCONFIG_PATH)],
 	},
 	devServer: {
-		port: parseInt(process.env.AUTHENTICATOR_CLIENT_PORT),
+		port: Number.parseInt(process.env.AUTHENTICATOR_CLIENT_PORT),
 		proxy: createDevelopmentServerProxy(process.env.AUTHENTICATOR_SERVER_PORT, [
 			"/api/log-in",
 			"/api/sign-up",
+			"/api/delete-account",
+			"/api/change-password",
 			"/api/check-email-address-exists",
 		]),
 	},

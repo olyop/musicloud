@@ -1,22 +1,22 @@
+import { ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common/build/types";
 import Button from "@oly_op/react-button";
 import { Head } from "@oly_op/react-head";
-import { createElement, Fragment, FC } from "react";
 import { addDashesToUUID } from "@oly_op/uuid-dashes";
+import { FC, Fragment, createElement } from "react";
 import { Link, NavLink, Route, Routes, useParams } from "react-router-dom";
-import { ImageDimensions, ImageSizes, UserID } from "@oly_op/musicloud-common/build/types";
 
-import { User } from "../../types";
-import Page from "../../layouts/page";
-import UserFollowers from "./followers";
+import { createCatalogImageURL, formatTimestamp } from "../../helpers";
+import { useJWTPayload, useQuery, useToggleUserFollowing } from "../../hooks";
 import Banner from "../../layouts/banner";
-import { createCatalogImageURL } from "../../helpers";
-import { useQuery, useToggleUserFollowing } from "../../hooks";
-
+import Page from "../../layouts/page";
+import { User } from "../../types";
+import UserFollowers from "./followers";
 import GET_USER_PAGE from "./get-user-page.gql";
 
 const UserPageHome: FC = () => <p className="ParagraphOne">W.I.P.</p>;
 
 const UserPage: FC = () => {
+	const token = useJWTPayload();
 	const params = useParams<keyof UserID>();
 	const userID = addDashesToUUID(params.userID!);
 
@@ -36,9 +36,9 @@ const UserPage: FC = () => {
 		);
 	}
 
-	const dateJoined = data ? new Date(data.getUserByID.dateJoined).toLocaleDateString() : "";
-
 	if (data) {
+		const dateJoined = formatTimestamp(data.getUserByID.dateJoined);
+		const isOwnPage = data.getUserByID.userID === token.userID;
 		return (
 			<Head pageTitle={data.getUserByID.name}>
 				<Page>
@@ -51,11 +51,7 @@ const UserPage: FC = () => {
 						}
 						buttons={
 							<Fragment>
-								{isUser ? (
-									<Link to="/manage-account">
-										<Button text="Manage" title="Manage Account" icon="manage_accounts" />
-									</Link>
-								) : (
+								{isOwnPage || (
 									<Button
 										onClick={toggleUserFollowing}
 										icon={isFollowing ? "done" : "person_add"}

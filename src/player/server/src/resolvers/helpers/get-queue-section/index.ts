@@ -15,13 +15,13 @@ const SELECT_QUEUE = await importSQL(import.meta.url)("select-queue");
 export interface GetQueueOptions extends UserID, TableNameOptions {}
 
 export const getQueueSection =
-	(client: PoolOrClient) =>
+	(pg: PoolOrClient) =>
 	({ userID, tableName }: GetQueueOptions) =>
-		query(client)(SELECT_QUEUE)({
+		query(pg)(SELECT_QUEUE)({
 			parse: convertTableToCamelCaseOrNull<QueueSong>(),
 			variables: {
 				userID,
 				tableName: [tableName],
-				columnNames: addPrefix(COLUMN_NAMES.QUEUE_SONG, "songs"),
+				columnNames: addPrefix(COLUMN_NAMES.QUEUE_SONG),
 			},
 		});

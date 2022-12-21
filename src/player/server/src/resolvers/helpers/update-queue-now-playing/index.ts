@@ -23,12 +23,12 @@ export const updateQueueNowPlaying =
 		});
 
 		if (ag && songID) {
-			void incrementAlgoliaPlays(
+			await incrementAlgoliaPlays(
 				pg,
 				ag,
 			)({
 				songID,
-			});
+			}).catch(console.error);
 		}
 	};
 

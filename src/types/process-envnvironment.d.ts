@@ -35,12 +35,14 @@ declare namespace NodeJS {
 		POSTGRESQL_PASSWORD: string;
 		POSTGRESQL_HOSTNAME: string;
 
+		REDIS_HOSTNAME: string;
+		REDIS_PORT: string;
+		REDIS_KEY_PREFIX: string;
+
 		ALGOLIA_SEARCH_INDEX_NAME: string;
 		ALGOLIA_APPLICATION_ID: string;
 		ALGOLIA_ADMIN_API_KEY: string;
 		ALGOLIA_SEARCH_API_KEY: string;
-
-		RANDOM_ORG_API_KEY: string;
 
 		JWT_TOKEN_SECRET: string;
 

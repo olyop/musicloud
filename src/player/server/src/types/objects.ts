@@ -19,7 +19,7 @@ export type Key = KeyBase;
 export type User = UserBase;
 
 export interface Album extends AlbumBase {
-	released: Date;
+	released: number;
 }
 
 export type Genre = GenreBase;

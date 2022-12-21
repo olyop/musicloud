@@ -11,6 +11,12 @@ import {
 
 import { Album, Artist, Genre, Play, Playlist, Song, User } from "../../types";
 import {
+	determineRedisAlbumsKey,
+	determineRedisArtistsKey,
+	determineRedisGenresKey,
+	determineRedisPlaysKey,
+	determineRedisSongsKey,
+	determineRedisUsersKey,
 	getAlbum,
 	getArtist,
 	getGenre,
@@ -18,6 +24,7 @@ import {
 	getPlaylist,
 	getSong,
 	getUser as getUserHelper,
+	redisHandler,
 } from "../helpers";
 import resolver from "./resolver";
 
@@ -26,45 +33,61 @@ export const getQueue = resolver(() => Promise.resolve({}));
 export const getLibrary = resolver(() => Promise.resolve({}));
 
 export const getUser = resolver(({ context }) =>
-	getUserHelper(context.pg)({
-		userID: context.getAuthorizationJWTPayload(context.authorization).userID,
-	}),
+	redisHandler(context.redis)(
+		determineRedisUsersKey(context.getAuthorizationJWTPayload(context.authorization).userID, "row"),
+		() =>
+			getUserHelper(context.pg)({
+				userID: context.getAuthorizationJWTPayload(context.authorization).userID,
+			}),
+	),
 );
 
 export const getUserByID = resolver<User, UserID>(({ args, context }) =>
-	getUserHelper(context.pg)({
-		userID: args.userID,
-	}),
+	redisHandler(context.redis)(determineRedisUsersKey(args.userID, "row"), () =>
+		getUserHelper(context.pg)({
+			userID: args.userID,
+		}),
+	),
 );
 
 export const getSongByID = resolver<Song, SongID>(({ args, context }) =>
-	getSong(context.pg)({
-		songID: args.songID,
-	}),
+	redisHandler(context.redis)(determineRedisSongsKey(args.songID, "row"), () =>
+		getSong(context.pg)({
+			songID: args.songID,
+		}),
+	),
 );
 
 export const getPlayByID = resolver<Play, PlayID>(({ args, context }) =>
-	getPlay(context.pg)({
-		playID: args.playID,
-	}),
+	redisHandler(context.redis)(determineRedisPlaysKey(args.playID, "row"), () =>
+		getPlay(context.pg)({
+			playID: args.playID,
+		}),
+	),
 );
 
 export const getAlbumByID = resolver<Album, AlbumID>(({ args, context }) =>
-	getAlbum(context.pg)({
-		albumID: args.albumID,
-	}),
+	redisHandler(context.redis)(determineRedisAlbumsKey(args.albumID, "row"), () =>
+		getAlbum(context.pg)({
+			albumID: args.albumID,
+		}),
+	),
 );
 
 export const getGenreByID = resolver<Genre, GenreID>(({ args, context }) =>
-	getGenre(context.pg)({
-		genreID: args.genreID,
-	}),
+	redisHandler(context.redis)(determineRedisGenresKey(args.genreID, "row"), () =>
+		getGenre(context.pg)({
+			genreID: args.genreID,
+		}),
+	),
 );
 
 export const getArtistByID = resolver<Artist, ArtistID>(({ args, context }) =>
-	getArtist(context.pg)({
-		artistID: args.artistID,
-	}),
+	redisHandler(context.redis)(determineRedisArtistsKey(args.artistID, "row"), () =>
+		getArtist(context.pg)({
+			artistID: args.artistID,
+		}),
+	),
 );
 
 export const getPlaylistByID = resolver<Playlist, PlaylistID>(async ({ args, context }) => {

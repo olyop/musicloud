@@ -1,10 +1,10 @@
-import isNull from "lodash-es/isNull";
+import {
+	RedirectOptions,
+	determineServiceURL,
+} from "@oly_op/musicloud-common/build/determine-service-url";
 import { TITLE } from "@oly_op/musicloud-common/build/metadata";
 import { AccessToken, ServicesNames } from "@oly_op/musicloud-common/build/types";
-import {
-	determineServiceURL,
-	RedirectOptions,
-} from "@oly_op/musicloud-common/build/determine-service-url";
+import isNull from "lodash-es/isNull";
 
 export const isValidServiceName = (
 	value: ReturnType<URLSearchParams["get"]>,
@@ -31,8 +31,8 @@ export const createRedirectURL = ({ accessToken, redirect }: CreateRedirectURLOp
 	}
 };
 
-export const determineTitle = (checked: boolean, exists: boolean) =>
-	checked ? (exists ? "Log In" : "Sign Up") : TITLE;
+export const determineTitle = (checked: boolean, exists: boolean, forgotPassword: boolean) =>
+	forgotPassword ? "Forgot Password" : checked ? (exists ? "Log In" : "Sign Up") : TITLE;
 
 export const isEmailAddress = (value: string) =>
 	// eslint-disable-next-line max-len

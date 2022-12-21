@@ -9,7 +9,7 @@ import {
 import { pipe } from "rxjs";
 
 import { ColumnNameOptions, LibraryObject, TableNameOptions } from "../../../types";
-import { timeStampToMilliseconds } from "../time-stamp-to-milliseconds";
+import { pgEpochToJS } from "../pg-epoch-to-js";
 
 const isf = importSQL(import.meta.url);
 
@@ -28,7 +28,7 @@ export const getObjectDateAddedToLibrary =
 		query(pg)(SELECT_OBJECT_LIBRARY_DATE_ADDED)({
 			parse: pipe(
 				convertFirstRowToCamelCaseOrNull<LibraryObject>(),
-				result => result && timeStampToMilliseconds(result.dateAdded),
+				result => result && pgEpochToJS(result.dateAdded),
 			),
 			variables: {
 				userID,

@@ -2,13 +2,13 @@
 	"dir": "ltr",
 	"lang": "en-US",
 	"name": "Musicloud",
-	"id": "/library/songs",
+	"id": "/library/albums",
 	"display": "standalone",
 	"theme_color": "#ff5722",
 	"short_name": "Musicloud",
 	"orientation": "portrait",
 	"description": "Musicloud",
-	"start_url": "/library/songs",
+	"start_url": "/library/albums",
 	"background_color": "#fafafa",
 	"icons": [
 		{

@@ -1,1 +1,1 @@
-SELECT shuffle_playlist({{ userID }}, {{ albumID }});
+SELECT shuffle_playlist({{ userID }}, {{ playlistID }});

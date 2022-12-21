@@ -1,24 +1,21 @@
-import { Workbox } from "workbox-window";
+import { StrictMode, createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { createElement, StrictMode } from "react";
-import { IS_PRODUCTION } from "@oly_op/musicloud-common/build/globals";
 import { AudioPlayerProvider as AudioProvider } from "react-use-audio-player";
 
-import {
-	HeadProvider,
-	ReduxProvider,
-	ErrorProvider,
-	ApolloProvider,
-	LoadingProvider,
-	SettingsProvider,
-	AuthenticationProvider,
-} from "./providers";
-
-import Routes from "./routes";
 import Bar from "./layouts/bar";
 import Header from "./layouts/header";
 import Sidebar from "./layouts/sidebar";
+import {
+	ApolloProvider,
+	AuthenticationProvider,
+	ErrorProvider,
+	HeadProvider,
+	LoadingProvider,
+	ReduxProvider,
+	SettingsProvider,
+} from "./providers";
+import Routes from "./routes";
 
 const rootElement = document.getElementById("Root")!;
 
@@ -51,7 +48,6 @@ root.render(
 	</StrictMode>,
 );
 
-if (IS_PRODUCTION && process.env.SERVICE_WORKER === "true" && "serviceWorker" in navigator) {
-	const workbox = new Workbox("/service-worker.js");
-	await workbox.register();
+if (process.env.SERVICE_WORKER === "true" && "serviceWorker" in navigator) {
+	await navigator.serviceWorker.register("/service-worker.js");
 }

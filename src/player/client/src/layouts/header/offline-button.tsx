@@ -1,10 +1,9 @@
-import ms from "ms";
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { createElement, useEffect, FC } from "react";
+import { FC, createElement, useEffect } from "react";
 
-import checkOnlineStatus from "./check-online-status";
 import { updateIsOnline, useDispatch, useStateIsOnline } from "../../redux";
+import checkOnlineStatus from "./check-online-status";
 
 const bem = createBEM("Header");
 
@@ -23,7 +22,7 @@ const HeaderOfflineButton: FC = () => {
 
 		const id = setInterval(() => {
 			void checkStatus();
-		}, ms("10s"));
+		}, 10_000);
 
 		return () => {
 			window.removeEventListener("offline", handleOnOffline);

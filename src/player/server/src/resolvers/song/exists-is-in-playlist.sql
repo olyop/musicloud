@@ -5,5 +5,5 @@ SELECT EXISTS (
 		playlists_songs
 	WHERE
 		song_id = {{ songID }} AND
-		playlist_id = {{ playlistID }};
+		playlist_id = {{ playlistID }}
 );

@@ -45,8 +45,8 @@ export const updatePlaylistPrivacy = resolver<Playlist, InterfaceWithInput<Input
 		return query(context.pg)(UPDATE_PLAYLIST_PRIVACY)({
 			parse: convertFirstRowToCamelCase<Playlist>(),
 			variables: {
+				privacy,
 				playlistID,
-				privacy: privacy.toLowerCase(),
 				columnNames: addPrefix(COLUMN_NAMES.PLAYLIST, "playlists"),
 			},
 		});

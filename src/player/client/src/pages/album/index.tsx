@@ -16,7 +16,8 @@ import {
 	createCatalogImageURL,
 	createObjectPath,
 	determinePlural,
-	formatTimestampToDate,
+	formatPlays,
+	formatTimestamp,
 } from "../../helpers";
 import { useQuery, useShuffleAlbum, useToggleAlbumInLibrary } from "../../hooks";
 import Page from "../../layouts/page";
@@ -97,7 +98,7 @@ const AlbumPage: FC = () => {
 									))}
 								</div>
 								<h3 className="ParagraphOne LightColor MarginBottomHalf LightWeight">
-									{formatTimestampToDate(released)}
+									{formatTimestamp(released)}
 								</h3>
 								<h3 className="ParagraphTwo LightColor LightWeight">
 									<ObjectLinks
@@ -159,9 +160,7 @@ const AlbumPage: FC = () => {
 								</p>
 								{playsTotal && (
 									<p className="ParagraphTwo LightColor">
-										{playsTotal}
-										<Fragment> play</Fragment>
-										{determinePlural(playsTotal)}
+										{formatPlays(playsTotal)} play{determinePlural(playsTotal)}
 									</p>
 								)}
 							</div>

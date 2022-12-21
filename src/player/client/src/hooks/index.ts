@@ -16,7 +16,7 @@ export * from "./next-queue-song";
 export * from "./create-playlist";
 export * from "./delete-playlist";
 export * from "./shuffle-playlist";
-export * from "./clear-reset-cache";
+export * from "./clear-cache";
 export * from "./previous-queue-song";
 export * from "./toggle-user-following";
 export * from "./update-playlist-title";

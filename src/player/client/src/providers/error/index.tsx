@@ -1,18 +1,10 @@
-import isEmpty from "lodash-es/isEmpty";
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { createElement, FC, Fragment, PropsWithChildren } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, PropsWithChildren, createElement } from "react";
 
-import { StateErrorID } from "../../types";
 import { removeError, useDispatch, useStateErrors } from "../../redux";
-
-import "@oly_op/css-utilities/index.css";
-
-// eslint-disable-next-line import/extensions, import/no-unresolved
-import "@oly_op/react-button/index.css";
-
-import "../../index.scss";
-
+import { StateErrorID } from "../../types";
 import "./index.scss";
 
 const bem = createBEM("Errors");

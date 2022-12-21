@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url";
-import ms from "ms";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import { useEffect, useState } from "react";
 
 export const useShare = () => {
 	const [icon, setIcon] = useState("share");
@@ -39,7 +38,7 @@ export const useShare = () => {
 			timer = setTimeout(() => {
 				setIcon("share");
 				setText("Share");
-			}, ms("2s"));
+			}, 2000);
 		}
 		return () => clearTimeout(timer);
 	}, [text]);

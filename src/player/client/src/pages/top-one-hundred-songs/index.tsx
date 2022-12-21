@@ -1,24 +1,18 @@
 import Button from "@oly_op/react-button";
 import { Head } from "@oly_op/react-head";
-import { createElement, FC, Fragment } from "react";
+import { FC, Fragment, createElement } from "react";
 
-import Page from "../../layouts/page";
 import Song from "../../components/song";
-import ShareButton from "./share-button";
 import Songs from "../../components/songs";
-import { Song as SongType, Queue } from "../../types";
-import { updateNowPlayingMutationFunction } from "../../helpers";
-import { useQuery, useMutation, useResetPlayer } from "../../hooks";
-
+import { formatPlays, updateNowPlayingMutationFunction } from "../../helpers";
+import { useMutation, useQuery, useResetPlayer } from "../../hooks";
+import Page from "../../layouts/page";
+import { Queue, Song as SongType } from "../../types";
 import GET_TOP_ONE_HUNDRED_SONGS from "./get-top-one-hundred-songs.gql";
-import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql";
-import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql";
-
 import "./index.scss";
-
-const numberFormatter = new Intl.NumberFormat("en", {
-	notation: "compact",
-});
+import PLAY_TOP_ONE_HUNDRED_SONGS from "./play-top-one-hundred-songs.gql";
+import ShareButton from "./share-button";
+import SHUFFLE_TOP_ONE_HUNDRED_SONGS from "./shuffle-top-one-hundred-songs.gql";
 
 const TopOneHundredSongsPage: FC = () => {
 	const resetPlayer = useResetPlayer();
@@ -93,7 +87,7 @@ const TopOneHundredSongsPage: FC = () => {
 								}
 							</Songs>
 							<p className="ParagraphTwo LightColor">
-								{numberFormatter.format(topOneHundredSongsData.getPlaysTotal)}
+								{formatPlays(topOneHundredSongsData.getPlaysTotal)}
 								<Fragment> plays</Fragment>
 							</p>
 						</div>

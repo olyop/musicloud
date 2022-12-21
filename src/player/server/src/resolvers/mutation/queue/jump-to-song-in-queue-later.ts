@@ -1,33 +1,25 @@
-import {
-	query,
-	getResultExists,
-} from "@oly_op/pg-helpers";
-
+import { query } from "@oly_op/pg-helpers";
 import { find, isEmpty } from "lodash-es";
 
-import {
-	DELETE_QUEUE_SONG,
-	EXISTS_QUEUE_SONG,
-	UPDATE_QUEUE_SONG_INDEX,
-} from "../../../sql";
-
-import resolver from "../resolver";
 import { IndexOptions } from "../../../types";
-import { updateQueueNowPlaying, getQueueSection } from "../../helpers";
+import {
+	deleteQueueSong,
+	existsQueueSong,
+	getQueueSection,
+	updateQueueNowPlaying,
+} from "../../helpers";
+import resolver from "../resolver";
 
 export const jumpToSongInQueueLater = resolver<Record<string, never>, IndexOptions>(
 	async ({ args, context }) => {
 		const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
-		const pg = await context.pg.connect();
+		const client = await context.pg.connect();
 
-		const queueSongExists = await query(context.pg)(EXISTS_QUEUE_SONG)({
-			parse: getResultExists,
-			variables: {
-				userID,
-				index: args.index,
-				tableName: ["queue_laters"],
-			},
+		const queueSongExists = await existsQueueSong(client)({
+			userID,
+			index: args.index,
+			tableName: "queue_laters",
 		});
 
 		if (!queueSongExists) {
@@ -35,21 +27,21 @@ export const jumpToSongInQueueLater = resolver<Record<string, never>, IndexOptio
 		}
 
 		try {
-			await query(context.pg)("BEGIN")();
+			await query(client)("BEGIN")();
 
-			const nextSongs = await getQueueSection(context.pg)({
+			const nextSongs = await getQueueSection(client)({
 				userID,
 				tableName: "queue_nexts",
 			});
 
-			const laterSongs = await getQueueSection(context.pg)({
+			const laterSongs = await getQueueSection(client)({
 				userID,
 				tableName: "queue_laters",
 			});
 
 			if (laterSongs && isEmpty(nextSongs) && !isEmpty(laterSongs)) {
 				await updateQueueNowPlaying(
-					pg,
+					context.pg,
 					context.ag.index,
 				)({
 					userID,
@@ -58,44 +50,40 @@ export const jumpToSongInQueueLater = resolver<Record<string, never>, IndexOptio
 
 				await Promise.all(
 					laterSongs.slice(0, args.index).map(queueSong =>
-						query(context.pg)(DELETE_QUEUE_SONG)({
-							variables: {
-								userID,
-								index: queueSong.index,
-								tableName: ["queue_laters"],
-							},
+						deleteQueueSong(client)({
+							userID,
+							index: queueSong.index,
+							tableName: "queue_laters",
 						}),
 					),
 				);
 
-				await query(context.pg)(DELETE_QUEUE_SONG)({
-					variables: {
-						userID,
-						index: args.index,
-						tableName: ["queue_laters"],
-					},
+				await deleteQueueSong(client)({
+					userID,
+					index: args.index,
+					tableName: "queue_laters",
 				});
 
 				await Promise.all(
 					laterSongs.slice(args.index + 1).map(({ index }, newIndex) =>
-						query(context.pg)(UPDATE_QUEUE_SONG_INDEX)({
+						query(client)("")({
 							variables: {
 								index,
 								userID,
 								newIndex,
-								tableName: ["queue_laters"],
+								tableName: "queue_laters",
 							},
 						}),
 					),
 				);
 			}
 
-			await query(context.pg)("COMMIT")();
+			await query(client)("COMMIT")();
 		} catch (error) {
-			await query(context.pg)("ROLLBACK")();
+			await query(client)("ROLLBACK")();
 			throw error;
 		} finally {
-			pg.release();
+			client.release();
 		}
 
 		return {};

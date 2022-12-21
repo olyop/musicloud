@@ -1,12 +1,15 @@
+import { BEMInput, createBEM } from "@oly_op/bem";
+import "@oly_op/css-utilities/index.css";
 import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
-import { createBEM, BEMInput } from "@oly_op/bem";
+// eslint-disable-next-line import/extensions, import/no-unresolved
+import "@oly_op/react-button/index.css";
+import { FC, createElement } from "react";
 
-import { BarCommonPropTypes } from "../types";
-import { ClassNameBEMPropTypes } from "../../../types";
-import { togglePlay, useDispatch, useStatePlay } from "../../../redux";
 import { useNextQueueSong, usePreviousQueueSong } from "../../../hooks";
-
+import "../../../index.scss";
+import { togglePlay, useDispatch, useStatePlay } from "../../../redux";
+import { ClassNameBEMPropTypes } from "../../../types";
+import { BarCommonPropTypes } from "../types";
 import "./index.scss";
 
 const bem = createBEM("BarControls");

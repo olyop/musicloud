@@ -1,15 +1,8 @@
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { SongID } from "@oly_op/musicloud-common/build/types";
-import {
-	addPrefix,
-	convertTableToCamelCase,
-	exists as pgHelpersExists,
-	query as pgHelpersQuery,
-} from "@oly_op/pg-helpers";
-import isEmpty from "lodash-es/isEmpty";
+import { exists, query } from "@oly_op/pg-helpers";
 
-import { INSERT_QUEUE_SONG, SELECT_QUEUE, UPDATE_QUEUE_SONG_CREMENT_INDEX } from "../../../sql";
-import { QueueSong } from "../../../types";
+import { crementQueueSongIndex, getQueueSection, insertQueueSong } from "../../helpers";
 import resolver from "../resolver";
 
 export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ args, context }) => {
@@ -17,10 +10,8 @@ export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ ar
 	const { userID } = context.getAuthorizationJWTPayload(context.authorization);
 
 	const client = await context.pg.connect();
-	const query = pgHelpersQuery(client);
-	const exists = pgHelpersExists(client);
 
-	const songExists = await exists({
+	const songExists = await exists(client)({
 		value: songID,
 		table: "songs",
 		column: COLUMN_NAMES.SONG[0],
@@ -31,42 +22,33 @@ export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ ar
 	}
 
 	try {
-		await query("BEGIN")();
+		await query(client)("BEGIN")();
 
-		const nexts = await query(SELECT_QUEUE)({
-			parse: convertTableToCamelCase<QueueSong>(),
-			variables: {
-				userID,
-				tableName: ["queue_nexts"],
-				columnNames: addPrefix(COLUMN_NAMES.QUEUE_SONG),
-			},
+		const nexts = await getQueueSection(client)({
+			userID,
+			tableName: "queue_nexts",
 		});
 
-		if (!isEmpty(nexts)) {
+		if (nexts) {
 			for (const next of nexts) {
-				await query(UPDATE_QUEUE_SONG_CREMENT_INDEX)({
-					variables: {
-						userID,
-						crement: ["+"],
-						index: next.index,
-						tableName: ["queue_nexts"],
-					},
+				await crementQueueSongIndex(client)(true, {
+					userID,
+					index: next.index,
+					tableName: "queue_nexts",
 				});
 			}
 		}
 
-		await query(INSERT_QUEUE_SONG)({
-			variables: {
-				userID,
-				songID,
-				index: 0,
-				tableName: ["queue_nexts"],
-			},
+		await insertQueueSong(client)({
+			userID,
+			songID,
+			index: 0,
+			tableName: "queue_nexts",
 		});
 
-		await query("COMMIT")();
+		await query(client)("COMMIT")();
 	} catch (error) {
-		await query("ROLLBACK")();
+		await query(client)("ROLLBACK")();
 		throw error;
 	} finally {
 		client.release();

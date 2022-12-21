@@ -1,14 +1,12 @@
 /* eslint-disable react/no-array-index-key */
-
-import { FC, Ref, useRef, useState, Fragment, useEffect, createElement } from "react";
-
-import uniqueID from "lodash-es/uniqueId";
 import type { DocumentNode } from "@apollo/client";
+import uniqueID from "lodash-es/uniqueId";
+import { FC, Fragment, Ref, createElement, useEffect, useRef, useState } from "react";
 
-import { SettingsOrderBy } from "../../types";
 import { useApolloClient } from "../../apollo";
+import { addLoading, removeLoading, useDispatch } from "../../redux";
+import { SettingsOrderBy } from "../../types";
 import FeedItem, { FeedItemVars } from "./item";
-import { useDispatch, addLoading, removeLoading } from "../../redux";
 
 const Feed = <ItemsTotalData, Item, ItemData>(
 	propTypes: PropTypes<ItemsTotalData, Item, ItemData>,
@@ -33,7 +31,7 @@ const Feed = <ItemsTotalData, Item, ItemData>(
 
 		const { data } = await client.query<ItemsTotalData>({
 			query: itemsTotalQuery,
-			fetchPolicy: "cache-first",
+			fetchPolicy: "network-only",
 		});
 
 		const total = itemsTotalDataToValue(data);

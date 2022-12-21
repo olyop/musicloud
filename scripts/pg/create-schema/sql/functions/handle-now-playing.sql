@@ -26,5 +26,10 @@ AS $$ BEGIN
 			VALUES
 				(user_id_arg, song_id_arg);
 		END IF;
+
+		INSERT INTO plays
+			(user_id, song_id)
+		VALUES
+			(user_id_arg, song_id_arg);
 	END IF;
 END $$;

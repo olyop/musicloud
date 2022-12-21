@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION
-	clear_queue_later
+	clear_queue_laters
 	(user_id_arg uuid)
 RETURNS void
 LANGUAGE plpgsql

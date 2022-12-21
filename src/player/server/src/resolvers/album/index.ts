@@ -9,10 +9,11 @@ import {
 	importSQL,
 	query,
 } from "@oly_op/pg-helpers";
+import ms from "ms";
 
 import { Album, Artist, Genre, Song } from "../../types";
 import createParentResolver from "../create-parent-resolver";
-import { dateToUnixTimestamp } from "../helpers";
+import { determineRedisAlbumsKey, pgEpochToJS, redisHandler } from "../helpers";
 
 const isf = importSQL(import.meta.url);
 
@@ -28,74 +29,86 @@ const SELECT_ALBUM_SONGS_DURATION_SUM = await isf("select-songs-duration-sum");
 
 const resolver = createParentResolver<Album>();
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export const released = resolver(({ parent }) =>
-	Promise.resolve(dateToUnixTimestamp(parent.released)),
-);
+export const released = resolver(({ parent }) => Promise.resolve(pgEpochToJS(parent.released)));
 
 export const songs = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_SONGS)({
-		parse: convertTableToCamelCase<Song>(),
-		variables: {
-			albumID: parent.albumID,
-			columnNames: addPrefix(COLUMN_NAMES.SONG, "songs"),
-		},
-	}),
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "songs"), () =>
+		query(context.pg)(SELECT_ALBUM_SONGS)({
+			parse: convertTableToCamelCase<Song>(),
+			variables: {
+				albumID: parent.albumID,
+				columnNames: addPrefix(COLUMN_NAMES.SONG, "songs"),
+			},
+		}),
+	),
 );
 
 export const duration = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_SONGS_DURATION_SUM)({
-		parse: getResultSum,
-		variables: {
-			albumID: parent.albumID,
-		},
-	}),
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "duration"), () =>
+		query(context.pg)(SELECT_ALBUM_SONGS_DURATION_SUM)({
+			parse: getResultSum,
+			variables: { albumID: parent.albumID },
+		}),
+	),
 );
 
 export const songsTotal = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_SONGS_COUNT)({
-		parse: getResultCount,
-		variables: { albumID: parent.albumID },
-	}),
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "songs-total"), () =>
+		query(context.pg)(SELECT_ALBUM_SONGS_COUNT)({
+			parse: getResultCount,
+			variables: { albumID: parent.albumID },
+		}),
+	),
 );
 
 export const artists = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_ARTISTS)({
-		parse: convertTableToCamelCase<Artist>(),
-		variables: {
-			albumID: parent.albumID,
-			columnNames: addPrefix(COLUMN_NAMES.ARTIST, "artists"),
-		},
-	}),
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "artists"), () =>
+		query(context.pg)(SELECT_ALBUM_ARTISTS)({
+			parse: convertTableToCamelCase<Artist>(),
+			variables: {
+				albumID: parent.albumID,
+				columnNames: addPrefix(COLUMN_NAMES.ARTIST, "artists"),
+			},
+		}),
+	),
 );
 
 export const remixers = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_REMIXERS)({
-		parse: convertTableToCamelCase<Artist>(),
-		variables: {
-			albumID: parent.albumID,
-			columnNames: addPrefix(COLUMN_NAMES.ARTIST, "artists"),
-		},
-	}),
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "remixers"), () =>
+		query(context.pg)(SELECT_ALBUM_REMIXERS)({
+			parse: convertTableToCamelCase<Artist>(),
+			variables: {
+				albumID: parent.albumID,
+				columnNames: addPrefix(COLUMN_NAMES.ARTIST, "artists"),
+			},
+		}),
+	),
 );
 
 export const genres = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_GENRES)({
-		parse: convertTableToCamelCase<Genre>(),
-		variables: {
-			albumID: parent.albumID,
-			columnNames: addPrefix(COLUMN_NAMES.GENRE, "genres"),
-		},
-	}),
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "genres"), () =>
+		query(context.pg)(SELECT_ALBUM_GENRES)({
+			parse: convertTableToCamelCase<Genre>(),
+			variables: {
+				albumID: parent.albumID,
+				columnNames: addPrefix(COLUMN_NAMES.GENRE, "genres"),
+			},
+		}),
+	),
 );
 
 export const playsTotal = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_ALBUM_PLAYS_COUNT)({
-		parse: getResultCountOrNull,
-		variables: {
-			albumID: parent.albumID,
-		},
-	}),
+	redisHandler(context.redis)(
+		determineRedisAlbumsKey(parent.albumID, "plays-total"),
+		() =>
+			query(context.pg)(SELECT_ALBUM_PLAYS_COUNT)({
+				parse: getResultCountOrNull,
+				variables: {
+					albumID: parent.albumID,
+				},
+			}),
+		ms("30m"),
+	),
 );
 
 export const userPlaysTotal = resolver(({ parent, context }) =>

@@ -3,6 +3,6 @@ SELECT
 FROM
 	albums
 WHERE
-	released > (CURRENT_DATE - INTERVAL '2' year)
+	released > (get_now() - 86400 * 265 * 2)
 LIMIT
 	{{ limit }};

@@ -21,8 +21,8 @@ export const handleInLibrary =
 			variables: {
 				userID,
 				objectID,
-				inLibrary,
 				typeName: [typeName],
+				inLibrary: !inLibrary,
 			},
 		});
 

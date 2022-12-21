@@ -1,27 +1,25 @@
 import { createBEM } from "@oly_op/bem";
+import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common/build/types";
 import Button from "@oly_op/react-button";
 import { Head } from "@oly_op/react-head";
-import { useParams } from "react-router-dom";
-import { createElement, FC, Fragment } from "react";
 import { addDashesToUUID } from "@oly_op/uuid-dashes";
-import { ImageDimensions, ImageSizes, SongID } from "@oly_op/musicloud-common/build/types";
+import { FC, Fragment, createElement } from "react";
+import { useParams } from "react-router-dom";
 
-import {
-	numberWithCommas,
-	createObjectPath,
-	deserializeDuration,
-	createCatalogImageURL,
-} from "../../helpers";
-
-import { Song } from "../../types";
-import Page from "../../layouts/page";
-import { useStatePlay } from "../../redux";
-import GET_SONG_PAGE from "./get-song-page.gql";
-import { useQuery, usePlaySong } from "../../hooks";
+import FeaturingArtists from "../../components/featuring-artists";
 import ObjectLink from "../../components/object-link";
 import ObjectLinks from "../../components/object-links";
-import FeaturingArtists from "../../components/featuring-artists";
-
+import {
+	createCatalogImageURL,
+	createObjectPath,
+	deserializeDuration,
+	formatPlays,
+} from "../../helpers";
+import { usePlaySong, useQuery } from "../../hooks";
+import Page from "../../layouts/page";
+import { useStatePlay } from "../../redux";
+import { Song } from "../../types";
+import GET_SONG_PAGE from "./get-song-page.gql";
 import "./index.scss";
 
 const bem = createBEM("SongPage");
@@ -96,7 +94,7 @@ const SongPage: FC<PropTypes> = ({ song }) => (
 						<h4 className="ParagraphTwo MarginBottomQuart">
 							Plays:
 							<Fragment> </Fragment>
-							{numberWithCommas(song.playsTotal)}
+							{formatPlays(song.playsTotal)}
 						</h4>
 					)}
 					<h4 className="ParagraphTwo MarginBottomQuart">

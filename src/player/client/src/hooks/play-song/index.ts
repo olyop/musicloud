@@ -1,19 +1,18 @@
-import { useEffect } from "react";
+import { SongID } from "@oly_op/musicloud-common/build/types";
 import isNull from "lodash-es/isNull";
 import isUndefined from "lodash-es/isUndefined";
-import { SongID } from "@oly_op/musicloud-common/build/types";
+import { useEffect } from "react";
 
-import { Song } from "../../types";
-import { useQuery } from "../query";
-import { useMutation } from "../mutation";
-import { useResetPlayer } from "../reset-player";
-import useUpdatePlaysTotal from "./use-update-plays-total";
 import { updateNowPlayingMutationFunction } from "../../helpers";
 import { togglePlay, updatePlay, useDispatch } from "../../redux";
-import { Input, GetQueueNowPlayingData, PlaySongData } from "./types";
-
-import PLAY_SONG from "./play-song.gql";
+import { Song } from "../../types";
+import { useMutation } from "../mutation";
+import { useQuery } from "../query";
+import { useResetPlayer } from "../reset-player";
 import GET_QUEUE_NOW_PLAYING_SONG_ID from "./get-queue-now-playing-song-id.gql";
+import PLAY_SONG from "./play-song.gql";
+import { GetQueueNowPlayingData, Input, PlaySongData } from "./types";
+import useUpdatePlaysTotal from "./use-update-plays-total";
 
 const isSong = (song: Input): song is Song => (isNull(song) ? false : "__typename" in song);
 
@@ -22,9 +21,7 @@ export const usePlaySong = (song: Input) => {
 	const resetPlayer = useResetPlayer();
 	const updatePlaysTotalCache = useUpdatePlaysTotal(song);
 
-	const { data: nowPlayingData } = useQuery<GetQueueNowPlayingData>(GET_QUEUE_NOW_PLAYING_SONG_ID, {
-		fetchPolicy: "cache-and-network",
-	});
+	const { data: nowPlayingData } = useQuery<GetQueueNowPlayingData>(GET_QUEUE_NOW_PLAYING_SONG_ID);
 
 	const isSongNotNull = !isNull(song);
 

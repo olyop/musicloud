@@ -1,17 +1,17 @@
-import { trim } from "lodash-es";
+import { AlgoliaRecordArtist, ArtistID } from "@oly_op/musicloud-common/build/types";
+import { convertFirstRowToCamelCase, exists, query } from "@oly_op/pg-helpers";
 import { FastifyPluginAsync } from "fastify";
-import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
-import { ArtistID, AlgoliaRecordArtist } from "@oly_op/musicloud-common/build/types";
+import { trim } from "lodash-es";
 
-import { Route } from "./types";
-import { INSERT_ARTIST } from "./sql";
-import { coverImageInputs, profileImageInputs } from "./images-inputs";
 import {
 	addRecordToSearchIndex,
 	deleteRecordFromSearchIndex,
 	determineCatalogImageURL,
 	normalizeImageAndUploadToS3,
 } from "../helpers";
+import { coverImageInputs, profileImageInputs } from "./images-inputs";
+import { INSERT_ARTIST } from "./sql";
+import { Route } from "./types";
 
 export const uploadArtist: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await
@@ -51,16 +51,20 @@ export const uploadArtist: FastifyPluginAsync =
 							value: name,
 							parameterized: true,
 						},
-						{
-							key: "city",
-							value: city,
-							parameterized: true,
-						},
-						{
-							key: "country",
-							value: country,
-							parameterized: true,
-						},
+						...(city && country
+							? [
+									{
+										key: "city",
+										value: city,
+										parameterized: true,
+									},
+									{
+										key: "country",
+										value: country,
+										parameterized: true,
+									},
+							  ]
+							: []),
 					],
 				});
 

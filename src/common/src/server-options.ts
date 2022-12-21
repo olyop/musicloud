@@ -1,22 +1,37 @@
-import ms from "ms";
-import type { PoolConfig } from "pg";
 import type { S3ClientConfig } from "@aws-sdk/client-s3";
 import type { FastifyHelmetOptions } from "@fastify/helmet";
+import ms from "ms";
+import type { PoolConfig } from "pg";
 
-import { USE_HTTPS, IS_PRODUCTION, IS_TESTING, FILES_URL } from "./globals";
+import { FILES_URL, IS_DEVELOPMENT, IS_PRODUCTION, IS_TESTING, USE_HTTPS } from "./globals";
 
 const GOOGLE_FONTS_FONT_ORIGIN = "https://fonts.gstatic.com";
 const GOOGLE_FONTS_CSS_ORIGIN = "https://fonts.googleapis.com";
 const ALGOLIA_SEARCH_ORIGINS = ["https://*.algolia.net", "https://*.algolianet.com"];
 
+const APOLLO_STUDIO_ORIGINS = ["https://*.apollographql.com"];
+
 export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 	hsts: USE_HTTPS ? IS_PRODUCTION && !IS_TESTING : false,
+	crossOriginEmbedderPolicy: !IS_DEVELOPMENT,
 	contentSecurityPolicy: {
 		directives: {
 			workerSrc: ["'self'"],
-			imgSrc: ["'self'", "blob:", FILES_URL],
 			fontSrc: ["'self'", GOOGLE_FONTS_FONT_ORIGIN],
-			styleSrc: ["'self'", GOOGLE_FONTS_CSS_ORIGIN],
+			manifestSrc: ["'self'", ...(IS_DEVELOPMENT ? APOLLO_STUDIO_ORIGINS : [])],
+			imgSrc: ["'self'", "blob:", FILES_URL, ...(IS_DEVELOPMENT ? APOLLO_STUDIO_ORIGINS : [])],
+			frameSrc: ["'self'", ...(IS_DEVELOPMENT ? APOLLO_STUDIO_ORIGINS : [])],
+			styleSrc: [
+				"'self'",
+				GOOGLE_FONTS_CSS_ORIGIN,
+				...(IS_DEVELOPMENT ? APOLLO_STUDIO_ORIGINS : []),
+				...(IS_DEVELOPMENT ? ["'unsafe-inline'"] : []),
+			],
+			scriptSrc: [
+				"'self'",
+				...(IS_DEVELOPMENT ? APOLLO_STUDIO_ORIGINS : []),
+				...(IS_DEVELOPMENT ? ["'unsafe-inline'"] : []),
+			],
 			connectSrc: [
 				"'self'",
 				FILES_URL,

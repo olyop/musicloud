@@ -12,5 +12,5 @@ WHERE
 			songs
 				ON playlists_songs.song_id = songs.song_id
 		WHERE
-			playlist_id = {{ playlistID }};
+			playlist_id = {{ playlistID }}
 	);

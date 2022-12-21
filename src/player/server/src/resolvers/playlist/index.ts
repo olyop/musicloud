@@ -12,10 +12,12 @@ import {
 import { Playlist, Song } from "../../types";
 import createParentResolver from "../create-parent-resolver";
 import {
+	determineRedisPlaysKey,
 	getObjectDateAddedToLibrary,
 	getObjectInLibrary,
 	getUser,
-	timeStampToMilliseconds,
+	pgEpochToJS,
+	redisHandler,
 } from "../helpers";
 
 const isf = importSQL(import.meta.url);
@@ -35,19 +37,19 @@ const resolver = createParentResolver<Playlist>(({ parent, context }) => {
 	}
 });
 
-export const privacy = resolver(({ parent }) => Promise.resolve(parent.privacy));
-
 export const dateCreated = resolver(({ parent }) =>
-	Promise.resolve(timeStampToMilliseconds(parent.dateCreated)),
+	Promise.resolve(pgEpochToJS(parent.dateCreated)),
 );
 
 export const user = resolver(({ parent, context }) =>
-	getUser(context.pg)({ userID: parent.userID }),
+	redisHandler(context.redis)(determineRedisPlaysKey(parent.playlistID, "user"), () =>
+		getUser(context.pg)({ userID: parent.userID }),
+	),
 );
 
-export const playsTotal = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_PLAYLIST_PLAYS_COUNT)({
-		parse: getResultCountOrNull,
+export const duration = resolver(({ parent, context }) =>
+	query(context.pg)(SELECT_PLAYLIST_SONGS_DURATION_SUM)({
+		parse: getResultSumOrNull,
 		variables: {
 			playlistID: parent.playlistID,
 		},
@@ -73,9 +75,9 @@ export const songsTotal = resolver(({ parent, context }) =>
 	}),
 );
 
-export const duration = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_PLAYLIST_SONGS_DURATION_SUM)({
-		parse: getResultSumOrNull,
+export const playsTotal = resolver(({ parent, context }) =>
+	query(context.pg)(SELECT_PLAYLIST_PLAYS_COUNT)({
+		parse: getResultCountOrNull,
 		variables: {
 			playlistID: parent.playlistID,
 		},

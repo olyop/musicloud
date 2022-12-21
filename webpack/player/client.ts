@@ -14,15 +14,10 @@ import baseConfiguration, {
 } from "../base";
 
 const ROOT_PATH = path.join(BASE_SRC_PATH, "player", "client");
-
 const SRC_PATH = path.join(ROOT_PATH, "src");
-
 const SRC_ENTRY_PATH = path.join(SRC_PATH, "index.tsx");
-
 const SRC_INDEX_PATH = path.join(SRC_PATH, "index.html");
-
 const TSCONFIG_PATH = path.join(ROOT_PATH, "tsconfig.json");
-
 const BUILD_PATH = path.join(BASE_BUILD_PATH, "player", "public");
 
 const configuration: Configuration = {
@@ -31,7 +26,7 @@ const configuration: Configuration = {
 		path: BUILD_PATH,
 	},
 	devServer: {
-		port: parseInt(process.env.PLAYER_CLIENT_PORT),
+		port: Number.parseInt(process.env.PLAYER_CLIENT_PORT),
 		proxy: [
 			createDevelopmentServerProxy(process.env.PLAYER_SERVER_PORT, [
 				"/graphql",
@@ -40,10 +35,13 @@ const configuration: Configuration = {
 				"/manifest.webmanifest",
 			]),
 			{
-				timeout: 120000,
+				timeout: 120_000,
 				logLevel: "silent",
 				context: "/logo/**",
 				secure: process.env.HTTPS ? false : undefined,
+				headers: {
+					"Content-Type": "image/png",
+				},
 				target: `${process.env.HTTPS ? "https" : "http"}://${process.env.HOST}:${
 					process.env.PLAYER_SERVER_PORT
 				}`,

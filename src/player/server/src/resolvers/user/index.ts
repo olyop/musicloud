@@ -12,7 +12,7 @@ import {
 } from "@oly_op/pg-helpers";
 
 import { Playlist, User } from "../../types";
-import { timeStampToMilliseconds } from "../helpers";
+import { pgEpochToJS } from "../helpers";
 import resolver from "./resolver";
 
 const isf = importSQL(import.meta.url);
@@ -25,7 +25,7 @@ const SELECT_USER_PLAYLISTS_COUNT = await isf("select-playlists-count");
 const SELECT_USER_PLAYLISTS_FILTERED_BY_SONG = await isf("select-playlists-filtered-by-song");
 
 export const dateJoined = resolver(
-	({ parent }) => Promise.resolve(timeStampToMilliseconds(parent.dateJoined)),
+	({ parent }) => Promise.resolve(pgEpochToJS(parent.dateJoined)),
 	{ parent: false },
 );
 

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/comma-dangle */
+import { DocumentNode, useApolloClient } from "@apollo/client";
+import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 import isNull from "lodash-es/isNull";
 import uniqueID from "lodash-es/uniqueId";
-import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
-import { DocumentNode, useApolloClient } from "@apollo/client";
 import { Ref, useCallback, useEffect, useRef, useState } from "react";
 
-import { OrderBy, SettingsOrderBy } from "../../types";
-import { useHasMounted, useInView, UseInViewOptionsOnChange } from "../../hooks";
+import { UseInViewOptionsOnChange, useHasMounted, useInView } from "../../hooks";
 import { addLoading, removeLoading, useDispatch, useStateOrderBy } from "../../redux";
+import { OrderBy, SettingsOrderBy } from "../../types";
 
 const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const { index, itemQuery, renderItem, itemDataToValue, settingsOrderBy } = propTypes;
@@ -44,6 +44,8 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 					cachedItem.current = tempItem;
 					setItem(tempItem);
 				}
+			} catch {
+				setItem(null);
 			} finally {
 				dispatch(removeLoading(loadingID.current));
 			}

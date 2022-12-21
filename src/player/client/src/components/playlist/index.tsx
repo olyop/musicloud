@@ -1,19 +1,18 @@
-import isNull from "lodash-es/isNull";
 import { createBEM } from "@oly_op/bem";
+import isNull from "lodash-es/isNull";
 import { createElement, forwardRef } from "react";
 
+import { createObjectPath, formatPlays } from "../../helpers";
+import { usePlayPlaylist } from "../../hooks";
 import {
+	ClassNameBEMPropTypes,
 	ObjectShowIcon,
 	OnClickPropTypes,
-	ClassNameBEMPropTypes,
 	Playlist as PlaylistType,
 } from "../../types";
-
 import Item from "../item";
-import Modal from "./modal";
 import ObjectLink from "../object-link";
-import { usePlayPlaylist } from "../../hooks";
-import { createObjectPath, numberWithCommas } from "../../helpers";
+import Modal from "./modal";
 
 const bem = createBEM("Playlist");
 
@@ -62,9 +61,7 @@ const Playlist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 								/>
 							),
 							rightLeft:
-								hidePlays || isNull(playlist.playsTotal)
-									? null
-									: numberWithCommas(playlist.playsTotal),
+								hidePlays || isNull(playlist.playsTotal) ? null : formatPlays(playlist.playsTotal),
 					  }
 			}
 			playOptions={

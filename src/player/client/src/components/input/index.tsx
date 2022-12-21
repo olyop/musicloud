@@ -1,11 +1,9 @@
-import { useState, useEffect, createElement, ChangeEventHandler, InputHTMLAttributes } from "react";
-
-import isNull from "lodash-es/isNull";
 import { createBEM } from "@oly_op/bem";
+import isNull from "lodash-es/isNull";
 import isString from "lodash-es/isString";
+import { ChangeEventHandler, InputHTMLAttributes, createElement, useEffect, useState } from "react";
 
 import { ClassNameBEMPropTypes } from "../../types";
-
 import "./index.scss";
 
 const bem = createBEM("Input");
@@ -17,12 +15,16 @@ const Input = <T extends InputValue>(propTypes: InputPropTypes<T>) => {
 	const [imageURL, setImageURL] = useState<string | null>(null);
 
 	const handleOnChange: ChangeEventHandler<HTMLInputElement> = event => {
-		if (inputPropTypes.type === "file") {
-			if (event.target.files) {
-				onChange(event.target.files.item(0) as T);
+		event.preventDefault();
+
+		if (onChange) {
+			if (inputPropTypes.type === "file") {
+				if (event.target.files) {
+					onChange(event.target.files.item(0) as T);
+				}
+			} else {
+				onChange(event.target.value as T);
 			}
-		} else {
-			onChange(event.target.value as T);
 		}
 	};
 
@@ -87,8 +89,8 @@ export interface InputPropTypes<T extends InputValue>
 		ClassNameBEMPropTypes {
 	name: string;
 	value: T | null;
-	tabIndex: number;
-	onChange: InputOnChange<T>;
+	tabIndex?: number;
+	onChange?: InputOnChange<T>;
 	imageOrientation?: InputImageOrientation;
 }
 

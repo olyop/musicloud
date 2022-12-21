@@ -10,9 +10,9 @@ export const insertQueueSong =
 	({ index, songID, userID, tableName }: Options) =>
 		query(client)(INSERT_QUEUE_SONG)({
 			variables: {
+				index,
 				userID,
 				songID,
-				index: [index],
 				tableName: [tableName],
 			},
 		});

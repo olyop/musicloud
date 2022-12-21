@@ -4,17 +4,23 @@ import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { ApolloFastifyContextFunction } from "@as-integrations/fastify";
 import { S3Client } from "@aws-sdk/client-s3";
 import { CustomServer } from "@oly_op/musicloud-common/build/create-fastify";
-import { JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
+import { IS_PRODUCTION, JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
 import { ALGOLIA_OPTIONS, AWS_S3_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { JWTPayload } from "@oly_op/musicloud-common/build/types";
-import { exists } from "@oly_op/pg-helpers/build";
-import { RandomOrgClient } from "@randomorg/core";
+import { exists } from "@oly_op/pg-helpers";
+import { RedisClientOptions, createClient } from "@redis/client";
 import algolia, { SearchClient, SearchIndex } from "algoliasearch";
 import { createVerifier } from "fast-jwt";
 import { GraphQLError } from "graphql";
 import { isUndefined } from "lodash-es";
-import { Pool } from "pg";
+import pg, { Pool } from "pg";
+
+import { RedisClient } from "./types";
+
+pg.types.setTypeParser(pg.types.builtins.INT2, Number.parseInt);
+pg.types.setTypeParser(pg.types.builtins.INT4, Number.parseInt);
+pg.types.setTypeParser(pg.types.builtins.INT8, Number.parseInt);
 
 interface ContextAlgolia {
 	index: SearchIndex;
@@ -27,7 +33,7 @@ export interface Context {
 	pg: Pool;
 	s3: S3Client;
 	ag: ContextAlgolia;
-	randomDotOrg: RandomOrgClient;
+	redis: RedisClient;
 	authorization: ContextAuthorization;
 	getAuthorizationJWTPayload: (authorization: ContextAuthorization) => JWTPayload;
 }
@@ -39,7 +45,7 @@ const verifyAccessToken = createVerifier({
 
 const determineAuthorization = async (
 	authorization: IncomingHttpHeaders["authorization"],
-	pg: Pool,
+	pool: Pool,
 ): Promise<ContextAuthorization> => {
 	if (isUndefined(authorization)) {
 		return false;
@@ -48,11 +54,13 @@ const determineAuthorization = async (
 			try {
 				const token = await verifyAccessToken(authorization.slice(7));
 
-				const userExists = await exists(pg)({
-					table: "users",
-					value: token.userID,
-					column: COLUMN_NAMES.USER[0],
-				});
+				const userExists = IS_PRODUCTION
+					? await exists(pool)({
+							table: "users",
+							value: token.userID,
+							column: COLUMN_NAMES.USER[0],
+					  })
+					: true;
 
 				if (userExists) {
 					return token;
@@ -82,23 +90,28 @@ const getAuthorizationJWTPayload = (authorization: ContextAuthorization) => {
 	}
 };
 
-const s3 = new S3Client(AWS_S3_OPTIONS);
-const agClient = algolia(...ALGOLIA_OPTIONS);
-const randomDotOrg = new RandomOrgClient(process.env.RANDOM_ORG_API_KEY);
-const agIndex = agClient.initIndex(process.env.ALGOLIA_SEARCH_INDEX_NAME);
-const ag: ContextAlgolia = { client: agClient, index: agIndex };
+const REDIS_OPTIONS: RedisClientOptions = {
+	url: `redis://${process.env.REDIS_HOSTNAME}:${process.env.REDIS_PORT}`,
+};
 
-export const contextFunction: ApolloFastifyContextFunction<
-	Context,
-	CustomServer
-> = async request => ({
-	s3,
-	ag,
-	randomDotOrg,
-	pg: request.server.pg.pool,
-	getAuthorizationJWTPayload,
-	authorization: await determineAuthorization(
-		request.headers.authorization,
-		request.server.pg.pool,
-	),
-});
+export const createContext = async (): Promise<
+	ApolloFastifyContextFunction<Context, CustomServer>
+> => {
+	const s3 = new S3Client(AWS_S3_OPTIONS);
+	const agClient = algolia(...ALGOLIA_OPTIONS);
+	const agIndex = agClient.initIndex(process.env.ALGOLIA_SEARCH_INDEX_NAME);
+	const ag: ContextAlgolia = { client: agClient, index: agIndex };
+	const redis = createClient(REDIS_OPTIONS);
+	await redis.connect();
+	return async request => ({
+		s3,
+		ag,
+		redis,
+		pg: request.server.pg.pool,
+		getAuthorizationJWTPayload,
+		authorization: await determineAuthorization(
+			request.headers.authorization,
+			request.server.pg.pool,
+		),
+	});
+};

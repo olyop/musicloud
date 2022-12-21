@@ -1,28 +1,26 @@
+import { ApolloServer } from "@apollo/server";
+import fastifyApollo, { fastifyApolloDrainPlugin } from "@as-integrations/fastify";
+import compress from "@fastify/compress";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
-import compress from "@fastify/compress";
-import serveStatic from "@fastify/static";
-import rateLimit from "@fastify/rate-limit";
-import { ApolloServer } from "@apollo/server";
 import fastifyPostgres from "@fastify/postgres";
-import { ServicesNames } from "@oly_op/musicloud-common/build/types";
-import { serveClient } from "@oly_op/musicloud-common/build/serve-client";
+import rateLimit from "@fastify/rate-limit";
+import serveStatic from "@fastify/static";
 import { createFastify } from "@oly_op/musicloud-common/build/create-fastify";
-import fastifyApollo, { fastifyApolloDrainPlugin } from "@as-integrations/fastify";
-
-import {
-	PG_POOL_OPTIONS,
-	FASTIFY_HELMET_OPTIONS,
-} from "@oly_op/musicloud-common/build/server-options";
-
 import {
 	createFastifyCORSOptions,
 	createFastifyStaticOptions,
 } from "@oly_op/musicloud-common/build/create-server-options";
+import { serveClient } from "@oly_op/musicloud-common/build/serve-client";
+import {
+	FASTIFY_HELMET_OPTIONS,
+	PG_POOL_OPTIONS,
+} from "@oly_op/musicloud-common/build/server-options";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 
-import typeDefs from "./type-defs";
+import { Context, createContext } from "./context";
 import resolvers from "./resolvers";
-import { contextFunction, Context } from "./context";
+import typeDefs from "./type-defs";
 
 const fastify = await createFastify();
 
@@ -43,7 +41,7 @@ await fastify.register(helmet, FASTIFY_HELMET_OPTIONS);
 await fastify.register(cors, createFastifyCORSOptions({ service: ServicesNames.PLAYER }));
 await fastify.register(serveStatic, createFastifyStaticOptions({ root: STATIC_ROOT }));
 await fastify.register(fastifyPostgres, PG_POOL_OPTIONS);
-await fastify.register(fastifyApollo(apollo), { context: contextFunction });
+await fastify.register(fastifyApollo(apollo), { context: await createContext() });
 await fastify.register(serveClient, { indexPath: INDEX_DOT_HTML_PATH });
 
 await fastify.listen({

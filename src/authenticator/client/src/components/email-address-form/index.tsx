@@ -1,9 +1,11 @@
-import { FC, useState, useEffect, createElement, FormEventHandler } from "react";
-
+import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
+import { FC, FormEventHandler, createElement, useEffect, useState } from "react";
 
 import { isEmailAddress } from "../../helpers";
 import Input, { InputOnChange } from "../input";
+
+const bem = createBEM("EmailAddressForm");
 
 const EmailAddressForm: FC<PropTypes> = ({
 	emailAddress,
@@ -80,6 +82,7 @@ const EmailAddressForm: FC<PropTypes> = ({
 			{error && <p className="ParagraphOne Error">{error.message}</p>}
 			<Button
 				type="submit"
+				className={bem("submit")}
 				rightIcon="arrow_forward"
 				disabled={loading || !isValid}
 				text={loading ? "Loading..." : "Next"}

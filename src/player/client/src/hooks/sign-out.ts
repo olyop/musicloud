@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import { useEffect, useState } from "react";
 
-import { useClearCache } from "./clear-reset-cache";
 import { updateAccessToken, useDispatch } from "../redux";
+import { useClearCache } from "./clear-cache";
 
 export const useSignOut = () => {
 	const dispatch = useDispatch();

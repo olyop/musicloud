@@ -1,24 +1,23 @@
-import isNull from "lodash-es/isNull";
 import { BEMInput } from "@oly_op/bem";
-import isUndefined from "lodash-es/isUndefined";
-import { createElement, forwardRef, Fragment, Ref } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import isNull from "lodash-es/isNull";
+import isUndefined from "lodash-es/isUndefined";
+import { Fragment, Ref, createElement, forwardRef } from "react";
 
 import {
-	createObjectPath,
-	numberWithCommas,
-	deserializeDuration,
 	createCatalogImageURL,
+	createObjectPath,
+	deserializeDuration,
+	formatPlays,
 } from "../../helpers";
-
-import Item from "../item";
-import Modal from "./modal";
-import SongTitle from "../song-title";
-import ObjectLinks from "../object-links";
 import { usePlaySong } from "../../hooks";
+import { useStateShowDuration, useStateShowGenres } from "../../redux";
+import { ClassNameBEMPropTypes, Handler, ObjectShowIcon, Song as SongType } from "../../types";
 import FeaturingArtists from "../featuring-artists";
-import { useStateShowGenres, useStateShowDuration } from "../../redux";
-import { Song as SongType, Handler, ObjectShowIcon, ClassNameBEMPropTypes } from "../../types";
+import Item from "../item";
+import ObjectLinks from "../object-links";
+import SongTitle from "../song-title";
+import Modal from "./modal";
 
 const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 	const {
@@ -121,8 +120,7 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 									)}
 								</Fragment>
 							),
-							rightLeft:
-								hidePlays || isNull(song.playsTotal) ? null : numberWithCommas(song.playsTotal),
+							rightLeft: hidePlays || isNull(song.playsTotal) ? null : formatPlays(song.playsTotal),
 							rightRight: showDuration
 								? hideDuration
 									? null
@@ -131,7 +129,7 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					  }
 			}
 			modal={
-				hideModal || isSongNull
+				isSongNull || hideModal
 					? undefined
 					: ({ open, onClose }) => (
 							<Modal

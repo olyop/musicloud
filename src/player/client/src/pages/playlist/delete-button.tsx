@@ -1,10 +1,9 @@
-import Button from "@oly_op/react-button";
-import { useNavigate } from "react-router-dom";
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
-import { createElement, Fragment, useEffect, useState, FC } from "react";
+import Button from "@oly_op/react-button";
+import { FC, Fragment, createElement, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Modal, { ModalButton, ModalButtons, ModalHeader } from "../../components/modal";
-
 import { useDeletePlaylist } from "../../hooks";
 
 const PlaylistPageDeleteButton: FC<PlaylistID> = ({ playlistID }) => {
@@ -17,13 +16,9 @@ const PlaylistPageDeleteButton: FC<PlaylistID> = ({ playlistID }) => {
 
 	const handleModalClose = () => setModal(false);
 
-	const handleDeletePlaylist = () => {
-		void deletePlaylist();
-	};
-
 	useEffect(() => {
-		if (data) {
-			navigate(-1);
+		if (data?.deletePlaylistByID === null) {
+			navigate(-2);
 		}
 	}, [data]);
 
@@ -45,8 +40,8 @@ const PlaylistPageDeleteButton: FC<PlaylistID> = ({ playlistID }) => {
 					<ModalButton
 						text="Delete"
 						icon="delete"
+						onClick={deletePlaylist}
 						onClose={handleModalClose}
-						onClick={handleDeletePlaylist}
 					/>
 					<ModalButton text="Cancel" icon="arrow_back" onClick={handleModalClose} />
 				</ModalButtons>

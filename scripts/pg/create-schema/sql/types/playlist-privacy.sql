@@ -1,5 +1,5 @@
 CREATE TYPE playlist_privacy AS ENUM (
-	'public',
-	'private',
-	'followers'
+	'PUBLIC',
+	'PRIVATE',
+	'FOLLOWERS'
 );
