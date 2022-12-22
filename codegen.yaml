@@ -1,11 +1,11 @@
 overwrite: true
-documents: src/player/client/src
+emitLegacyCommonJSImports: false
+documents: src/player/client/src/**/*.gql
 schema: src/player/server/src/type-defs/*.gql
 hooks:
-  afterAllFileWrite:
-    - prettier --write
+  afterAllFileWrite: prettier --write
 generates:
-  src/player/client/src/generated-graphql-types.ts:
+  src/player/client/src/generated-types.ts:
     config:
       scalars:
         UUID: string
@@ -18,7 +18,8 @@ generates:
         NonEmptyString: number
     plugins:
       - typescript
-      - typescript-resolvers
+      # - typescript-resolvers
+      # - typescript-operations
       - add:
           content: |
             /* eslint-disable @typescript-eslint/no-explicit-any */
