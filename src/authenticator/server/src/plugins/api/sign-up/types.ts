@@ -1,13 +1,12 @@
+import { MultipartFile, MultipartValue } from "@fastify/multipart";
 import {
-	NameBase,
-	ImageSizes,
 	AccessToken,
 	ImageDimensions,
-	UserPasswordBase,
+	ImageSizes,
+	NameBase,
 	UserEmailAddressBase,
+	UserPasswordBase,
 } from "@oly_op/musicloud-common/build/types";
-
-import { MultipartFile, MultipartValue } from "@fastify/multipart";
 
 export interface ImageInput {
 	name: string;

@@ -1,13 +1,11 @@
+import { BEMInput, createBEM } from "@oly_op/bem";
 import isFunction from "lodash-es/isFunction";
-import { createBEM, BEMInput } from "@oly_op/bem";
-import { createElement, FC, ReactNode } from "react";
+import { FC, ReactNode, createElement } from "react";
 
 import { ClassNameBEMPropTypes, Handler } from "../../types";
-
+import ModalButton, { ModalButtonPropTypes } from "./button";
 import ModalButtons from "./buttons";
 import ModalHeader, { ModalHeaderPropTypes } from "./header";
-import ModalButton, { ModalButtonPropTypes } from "./button";
-
 import "./index.scss";
 
 const bem = createBEM("Modal");

@@ -1,8 +1,8 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import { ModalButton } from "../../modal";
-import { Handler, Artist } from "../../../types";
 import { useToggleObjectInLibrary } from "../../../hooks";
+import { Artist, Handler } from "../../../types";
+import { ModalButton } from "../../modal";
 
 const InLibraryButton: FC<PropTypes> = ({ artist, onClose }) => {
 	const [toggleInLibrary, inLibrary] = useToggleObjectInLibrary(artist);

@@ -1,14 +1,13 @@
 import { Head } from "@oly_op/react-head";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import Queue from "./queue";
-import Header from "./header";
 import Page from "../../layouts/page";
-import NowPlaying from "./now-playing";
-
-import GET_QUEUE_NEXT from "./get-queue-next.gql";
 import GET_QUEUE_LATER from "./get-queue-later.gql";
+import GET_QUEUE_NEXT from "./get-queue-next.gql";
 import GET_QUEUE_PREVIOUS from "./get-queue-previous.gql";
+import Header from "./header";
+import NowPlaying from "./now-playing";
+import Queue from "./queue";
 
 const Queues: FC = () => (
 	<Head pageTitle="Queue">

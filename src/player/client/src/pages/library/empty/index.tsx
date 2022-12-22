@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC, Fragment, ReactNode } from "react";
+import { FC, Fragment, ReactNode, createElement } from "react";
+import { Link } from "react-router-dom";
 
 import "./index.scss";
 

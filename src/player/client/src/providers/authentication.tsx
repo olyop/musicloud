@@ -1,10 +1,10 @@
-import { useSearchParams } from "react-router-dom";
-import { ServicesNames } from "@oly_op/musicloud-common/build/types";
-import { createElement, FC, Fragment, useEffect, PropsWithChildren } from "react";
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import { FC, Fragment, PropsWithChildren, createElement, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { verifyJWT } from "../helpers";
-import { useDispatch, updateAccessToken, useStateAccessToken } from "../redux";
+import { updateAccessToken, useDispatch, useStateAccessToken } from "../redux";
 
 const handleRedirect = () => {
 	window.location.href = determineServiceURL({

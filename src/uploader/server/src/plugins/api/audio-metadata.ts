@@ -1,9 +1,8 @@
 // eslint-disable-next-line import/no-unresolved
-import { parseBuffer } from "music-metadata";
-
-import { isEmpty, trim } from "lodash-es";
-import { FastifyPluginAsync } from "fastify";
 import { SongAudioMetadataBase } from "@oly_op/musicloud-common/build/types";
+import { FastifyPluginAsync } from "fastify";
+import { isEmpty, trim } from "lodash-es";
+import { parseBuffer } from "music-metadata";
 
 import { BodyEntry } from "./types";
 

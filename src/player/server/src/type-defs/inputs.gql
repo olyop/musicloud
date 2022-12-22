@@ -19,11 +19,6 @@ input UpdatePlaylistPrivacyInput {
 	privacy: PlaylistPrivacy!
 }
 
-input GetSearchResultsInput {
-	value: NonEmptyString!
-	length: NonNegativeInt!
-}
-
 # OrderBy Inputs
 input SongsOrderByInput {
 	field: SongsOrderByField!

@@ -1,8 +1,8 @@
-import isNull from "lodash-es/isNull";
 import isEmpty from "lodash-es/isEmpty";
+import isNull from "lodash-es/isNull";
 
-import { SignUpInput } from "../../types";
 import { isEmailAddress } from "../../helpers";
+import { SignUpInput } from "../../types";
 
 const isSignUpFormValid = ({ name, cover, profile, password, emailAddress }: SignUpInput) =>
 	!isEmpty(name) &&

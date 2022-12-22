@@ -1,5 +1,5 @@
-import { useSelector } from "./store";
 import { OrderBy, SettingsOrderBy } from "../types";
+import { useSelector } from "./store";
 
 export const useStatePlay = () => useSelector(({ play }) => play);
 

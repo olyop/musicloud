@@ -5,7 +5,7 @@ import { addDashesToUUID } from "@oly_op/uuid-dashes";
 import { FC, Fragment, createElement } from "react";
 import { Link, NavLink, Route, Routes, useParams } from "react-router-dom";
 
-import { createCatalogImageURL, formatTimestamp } from "../../helpers";
+import { createCatalogImageURL, formatTimestampToDate } from "../../helpers";
 import { useJWTPayload, useQuery, useToggleUserFollowing } from "../../hooks";
 import Banner from "../../layouts/banner";
 import Page from "../../layouts/page";
@@ -37,7 +37,7 @@ const UserPage: FC = () => {
 	}
 
 	if (data) {
-		const dateJoined = formatTimestamp(data.getUserByID.dateJoined);
+		const dateJoined = formatTimestampToDate(data.getUserByID.dateJoined);
 		const isOwnPage = data.getUserByID.userID === token.userID;
 		return (
 			<Head pageTitle={data.getUserByID.name}>

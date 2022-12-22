@@ -1,21 +1,19 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import { isUser, isSong, isAlbum, isGenre, isArtist, isPlaylist } from "./is-object";
-
+import Album from "../../components/album";
+import Artist from "../../components/artist";
+import Genre from "../../components/genre";
+import Playlist from "../../components/playlist";
+import Song from "../../components/song";
+import User from "../../components/user";
 import {
-	Song as SongType,
 	Album as AlbumType,
 	Artist as ArtistType,
 	Playlist as PlaylistType,
+	Song as SongType,
 } from "../../types";
-
+import { isAlbum, isArtist, isGenre, isPlaylist, isSong, isUser } from "./is-object";
 import { Hit } from "./types";
-import User from "../../components/user";
-import Song from "../../components/song";
-import Genre from "../../components/genre";
-import Album from "../../components/album";
-import Artist from "../../components/artist";
-import Playlist from "../../components/playlist";
 
 const className = "PaddingHalf ItemBorder";
 

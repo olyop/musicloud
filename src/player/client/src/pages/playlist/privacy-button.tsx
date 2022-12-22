@@ -1,10 +1,10 @@
-import Button from "@oly_op/react-button";
 import { PlaylistPrivacy } from "@oly_op/musicloud-common/build/types";
-import { createElement, Fragment, useState, FC } from "react";
+import Button from "@oly_op/react-button";
+import { FC, Fragment, createElement, useState } from "react";
 
-import { Playlist } from "../../types";
-import { useUpdatePlaylistPrivacy } from "../../hooks";
 import Modal, { ModalButton, ModalButtons, ModalHeader } from "../../components/modal";
+import { useUpdatePlaylistPrivacy } from "../../hooks";
+import { Playlist } from "../../types";
 
 const PlaylistPagePrivacyButton: FC<PropTypes> = ({ playlist }) => {
 	const [modal, setModal] = useState(false);

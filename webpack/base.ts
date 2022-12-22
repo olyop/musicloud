@@ -1,22 +1,23 @@
-import ms from "ms";
-import path from "node:path";
-import DotenvPlugin from "dotenv-webpack";
 import { readFile } from "node:fs/promises";
-import webpack, { RuleSetRule } from "webpack";
+import path from "node:path";
+
+import type { WithRequired } from "@apollo/utils.withrequired";
+import { IS_DEVELOPMENT, IS_PRODUCTION, USE_HTTPS } from "@oly_op/musicloud-common/build/globals";
+import { DESCRIPTION, KEYWORDS } from "@oly_op/musicloud-common/build/metadata";
+import CompressionPlugin from "compression-webpack-plugin";
+import CSSMinimizerPlugin from "css-minimizer-webpack-plugin";
+import DotenvPlugin from "dotenv-webpack";
 import ESLintPlugin from "eslint-webpack-plugin";
+import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin";
+import MiniCSSExtractPlugin from "mini-css-extract-plugin";
+import ms from "ms";
 import StylelintPlugin from "stylelint-webpack-plugin";
 import { Options as TSLoaderOptions } from "ts-loader";
-import { ProxyConfigArrayItem } from "webpack-dev-server";
-import CompressionPlugin from "compression-webpack-plugin";
-import MiniCSSExtractPlugin from "mini-css-extract-plugin";
-import CSSMinimizerPlugin from "css-minimizer-webpack-plugin";
+import webpack, { RuleSetRule } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import type { WithRequired } from "@apollo/utils.withrequired";
-import { Options as HTMLWebpackPluginOptions } from "html-webpack-plugin";
-import { KEYWORDS, DESCRIPTION } from "@oly_op/musicloud-common/build/metadata";
-import { IS_DEVELOPMENT, IS_PRODUCTION, USE_HTTPS } from "@oly_op/musicloud-common/build/globals";
+import { ProxyConfigArrayItem } from "webpack-dev-server";
 
-import packageDotJSON from "../package.json" assert { type: "json" };
+import packageDotJSON from "../package.json";
 
 export const BASE_ROOT_PATH = process.cwd();
 export const BASE_SRC_PATH = path.join(BASE_ROOT_PATH, "src");
@@ -57,7 +58,10 @@ export const createTSLoaderRule = (
 	},
 });
 
-export const createDevelopmentServerProxy = (port: string, proxy: string[]): ProxyConfigArrayItem => ({
+export const createDevelopmentServerProxy = (
+	port: string,
+	proxy: string[],
+): ProxyConfigArrayItem => ({
 	secure: false,
 	logLevel: "silent",
 	timeout: ms("120s"),
@@ -127,7 +131,7 @@ const baseConfiguration: webpack.Configuration = {
 	plugins: [
 		new DotenvPlugin(),
 		new webpack.DefinePlugin({
-			AUTHOR : JSON.stringify(packageDotJSON.author.name),
+			AUTHOR: JSON.stringify(packageDotJSON.author.name),
 			VERSION: JSON.stringify(packageDotJSON.version),
 		}),
 		...(process.env.LINTING_IN_BUILD === "true"

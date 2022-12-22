@@ -1,19 +1,20 @@
 import { ApolloClient } from "@apollo/client";
 
-import downloadSongMP3 from "./download-song-mp3";
-import { SetCurrentDownload, SetStatus } from "../../types";
-import downloadSongAlbumCovers from "./download-song-album-covers";
-
 import { FeedItemVars } from "../../../../../components/feed";
-import { GetSongsTotalData, GetSongAtIndexData } from "../../../../../pages/library/songs";
+import { GetSongAtIndexData, GetSongsTotalData } from "../../../../../pages/library/songs";
+import GET_LIBRARY_SONG_AT_INDEX from "../../../../../pages/library/songs/get-library-song-at-index.gql";
+import GET_LIBRARY_SONGS_TOTAL from "../../../../../pages/library/songs/get-library-songs-total.gql";
 import {
 	LibrarySongsOrderBy,
 	LibrarySongsOrderByField,
 	OrderByDirection,
 } from "../../../../../types";
-
-import GET_LIBRARY_SONGS_TOTAL from "../../../../../pages/library/songs/get-library-songs-total.gql";
-import GET_LIBRARY_SONG_AT_INDEX from "../../../../../pages/library/songs/get-library-song-at-index.gql";
+import { SetCurrentDownload, SetStatus } from "../../types";
+import downloadSongAlbumCovers from "./album-covers";
+import { downloadAlbumPage } from "./album-page";
+import { downloadSongArtistsAndGenres } from "./artists-and-genres";
+import downloadSongMP3 from "./mp3";
+import { downloadSongPage } from "./page";
 
 const orderBy: LibrarySongsOrderBy = {
 	direction: OrderByDirection.ASC,
@@ -25,6 +26,7 @@ const downloadSongs =
 	async (setCurrentDownload: SetCurrentDownload, setStatus: SetStatus) => {
 		const { data } = await client.query<GetSongsTotalData>({
 			query: GET_LIBRARY_SONGS_TOTAL,
+			fetchPolicy: "network-only",
 		});
 
 		if (data.getLibrary.songsTotal) {
@@ -32,12 +34,9 @@ const downloadSongs =
 			for (let index = 0; index <= songsTotal; index += 1) {
 				setStatus([index, songsTotal]);
 
-				const {
-					data: {
-						getLibrary: { songAtIndex },
-					},
-				} = await client.query<GetSongAtIndexData, FeedItemVars>({
+				const result = await client.query<GetSongAtIndexData, FeedItemVars>({
 					query: GET_LIBRARY_SONG_AT_INDEX,
+					fetchPolicy: "network-only",
 					variables: {
 						input: {
 							orderBy,
@@ -46,15 +45,23 @@ const downloadSongs =
 					},
 				});
 
+				const { songAtIndex } = result.data.getLibrary;
+
 				if (songAtIndex) {
 					setCurrentDownload(songAtIndex);
+
 					const {
 						songID,
 						album: { albumID },
 					} = songAtIndex;
 
-					await downloadSongMP3({ songID });
-					await downloadSongAlbumCovers({ albumID });
+					await Promise.all([
+						downloadSongMP3({ songID }),
+						downloadSongAlbumCovers({ albumID }),
+						downloadSongPage(client, { songID }),
+						downloadAlbumPage(client, { albumID }),
+						downloadSongArtistsAndGenres(client, songAtIndex),
+					]);
 				}
 			}
 		}

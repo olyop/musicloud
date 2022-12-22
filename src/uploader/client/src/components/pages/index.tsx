@@ -1,10 +1,9 @@
-import { createElement, FC } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { FC, createElement } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import GenreForm from "../genre-form";
 import AlbumForm from "../album-form";
 import ArtistForm from "../artist-form";
-
+import GenreForm from "../genre-form";
 import "./index.scss";
 
 const Pages: FC = () => (

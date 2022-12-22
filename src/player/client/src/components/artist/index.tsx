@@ -1,19 +1,18 @@
-import isNull from "lodash-es/isNull";
 import { createBEM } from "@oly_op/bem";
-import { NavLink } from "react-router-dom";
-import { createElement, forwardRef } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import isNull from "lodash-es/isNull";
+import { createElement, forwardRef } from "react";
+import { NavLink } from "react-router-dom";
 
-import Modal from "./modal";
-import ObjectLink from "../object-link";
-import ArtistLower from "../artist-lower";
+import { createCatalogImageURL, createObjectPath } from "../../helpers";
 import { useShuffleArtist } from "../../hooks";
 import { useStateListStyle } from "../../redux";
-import { createObjectPath, createCatalogImageURL } from "../../helpers";
-import Item, { ItemModal, InfoOptions, ImageOptions, PlayOptions } from "../item";
-import { ObjectShowIcon, SettingsListStyle, Artist as ArtistType } from "../../types";
-
+import { Artist as ArtistType, ObjectShowIcon, SettingsListStyle } from "../../types";
+import ArtistLower from "../artist-lower";
+import Item, { ImageOptions, InfoOptions, ItemModal, PlayOptions } from "../item";
+import ObjectLink from "../object-link";
 import "./index.scss";
+import Modal from "./modal";
 
 const bem = createBEM("Artist");
 

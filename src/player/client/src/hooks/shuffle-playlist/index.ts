@@ -1,12 +1,11 @@
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 import { useEffect } from "react";
 
-import { useMutation } from "../mutation";
-import { QueueNowPlaying } from "../../types";
-import { useResetPlayer } from "../reset-player";
-import { updatePlay, useDispatch } from "../../redux";
 import { updateNowPlayingMutationFunction } from "../../helpers";
-
+import { updatePlay, useDispatch } from "../../redux";
+import { QueueNowPlaying } from "../../types";
+import { useMutation } from "../mutation";
+import { useResetPlayer } from "../reset-player";
 import SHUFFLE_PLAYLIST from "./shuffle-playlist.gql";
 
 export const useShufflePlaylist = ({ playlistID }: PlaylistID) => {

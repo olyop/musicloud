@@ -1,10 +1,10 @@
-import isEmpty from "lodash-es/isEmpty";
-import { createElement, Fragment, FC } from "react";
 import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, createElement } from "react";
 
-import ObjectLinks from "../object-links";
-import { OnClickPropTypes } from "../../types";
 import { createObjectPath } from "../../helpers";
+import { OnClickPropTypes } from "../../types";
+import ObjectLinks from "../object-links";
 
 const FeaturingArtists: FC<PropTypes> = ({ song, onClick }) => (
 	<Fragment>

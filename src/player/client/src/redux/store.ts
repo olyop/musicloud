@@ -1,13 +1,13 @@
-import last from "lodash-es/last";
-import isNull from "lodash-es/isNull";
-import isEmpty from "lodash-es/isEmpty";
 import { configureStore } from "@reduxjs/toolkit";
+import isEmpty from "lodash-es/isEmpty";
+import isNull from "lodash-es/isNull";
+import last from "lodash-es/last";
 import { useDispatch as baseUseDispatch, useSelector as baseUseSelector } from "react-redux";
 
-import reducer from "./reducer";
 import { getJWT } from "../helpers";
 import { Settings, State } from "../types";
 import { removeError } from "./actions";
+import reducer from "./reducer";
 
 const loadSettings = () => {
 	const settingsString = localStorage.getItem("settings");

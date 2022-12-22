@@ -1,6 +1,6 @@
 import isEmpty from "lodash-es/isEmpty";
 
-import { Song, Disc } from "../../types";
+import { Disc, Song } from "../../types";
 
 const createDiscs = (songs: Song[]) => {
 	if (isEmpty(songs)) {

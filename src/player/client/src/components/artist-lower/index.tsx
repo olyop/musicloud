@@ -1,9 +1,8 @@
-import { createElement, Fragment, FC } from "react";
+import { FC, Fragment, createElement } from "react";
 
-import ObjectLink from "../object-link";
-import { Artist, Handler } from "../../types";
 import { createObjectPath, determinePlural } from "../../helpers";
-
+import { Artist, Handler } from "../../types";
+import ObjectLink from "../object-link";
 import "./index.scss";
 
 const ArtistLower: FC<PropTypes> = ({ onClick, artist: { artistID, songsTotal, albumsTotal } }) => {

@@ -1,5 +1,5 @@
 import { Head } from "@oly_op/react-head";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
 const LibraryHome: FC = () => (
 	<Head pageTitle="Library">

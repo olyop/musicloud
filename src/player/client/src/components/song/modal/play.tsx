@@ -1,8 +1,8 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import { Song } from "../../../types";
 import { usePlaySong } from "../../../hooks";
 import { useStatePlay } from "../../../redux";
+import { Song } from "../../../types";
 import { ModalButton, ModalOnClose } from "../../modal";
 
 const PlayButton: FC<PropTypes> = ({ song, hidePlay, onClose }) => {

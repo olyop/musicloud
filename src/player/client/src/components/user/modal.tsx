@@ -1,11 +1,11 @@
-import { createElement, FC } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
-import ObjectLink from "../object-link";
-import { User as UserType } from "../../types";
-import { useToggleUserFollowing } from "../../hooks";
 import { createCatalogImageURL, createObjectPath } from "../../helpers";
+import { useToggleUserFollowing } from "../../hooks";
+import { User as UserType } from "../../types";
 import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../modal";
+import ObjectLink from "../object-link";
 
 const UserModal: FC<PropTypes> = ({ open, user, onClose }) => {
 	const { userID, name } = user;

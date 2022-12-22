@@ -7,10 +7,21 @@ hooks:
 generates:
   src/player/client/src/generated-types.ts:
     config:
+      avoidOptionals: true
+      immutableTypes: true
+      useTypeImports: true
+      mergeFragmentTypes: true
+      nonOptionalTypename: true
+      useImplementingTypes: true
+      flattenGeneratedTypes: true
+      defaultScalarType: unknown
+      inlineFragmentTypes: combine
+      namingConvention:
+        enumValues: change-case#upperCase
       scalars:
+        Void: void
         UUID: string
         Date: string
-        Void: void
         TimeStamp: number
         PositiveInt: number
         EmailAddress: string
@@ -18,8 +29,7 @@ generates:
         NonEmptyString: number
     plugins:
       - typescript
-      # - typescript-resolvers
-      # - typescript-operations
+      - typescript-operations
       - add:
           content: |
             /* eslint-disable @typescript-eslint/no-explicit-any */

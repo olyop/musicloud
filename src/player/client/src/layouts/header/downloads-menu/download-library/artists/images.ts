@@ -1,6 +1,6 @@
 import { ArtistID, ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 
-import { createCatalogImageURL } from "../../../../helpers";
+import { createCatalogImageURL } from "../../../../../helpers";
 
 const downloadArtistCover = async ({ artistID }: ArtistID) => {
 	await fetch(createCatalogImageURL(artistID, "cover", ImageSizes.HALF, ImageDimensions.LANDSCAPE));

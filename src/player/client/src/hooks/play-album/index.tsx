@@ -1,17 +1,16 @@
-import { useEffect } from "react";
+import { AlbumID } from "@oly_op/musicloud-common/build/types";
 import isNull from "lodash-es/isNull";
 import isUndefined from "lodash-es/isUndefined";
-import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import { useEffect } from "react";
 
-import { useQuery } from "../query";
-import { useMutation } from "../mutation";
-import { QueueNowPlaying } from "../../types";
-import { useResetPlayer } from "../reset-player";
 import { updateNowPlayingMutationFunction } from "../../helpers";
-import { useDispatch, togglePlay, updatePlay } from "../../redux";
-
-import PLAY_ALBUM from "./play-album.gql";
+import { togglePlay, updatePlay, useDispatch } from "../../redux";
+import { QueueNowPlaying } from "../../types";
+import { useMutation } from "../mutation";
+import { useQuery } from "../query";
+import { useResetPlayer } from "../reset-player";
 import GET_ALBUM_NOW_PLAYING from "./get-album-now-playing.gql";
+import PLAY_ALBUM from "./play-album.gql";
 
 export const usePlayAlbum = (album: AlbumID | null) => {
 	const dispatch = useDispatch();

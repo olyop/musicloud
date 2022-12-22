@@ -1,38 +1,36 @@
-import isNull from "lodash-es/isNull";
-import toLower from "lodash-es/toLower";
-import isEmpty from "lodash-es/isEmpty";
+import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 import Button from "@oly_op/react-button";
 import { Head } from "@oly_op/react-head";
-import startCase from "lodash-es/startCase";
-import { useParams } from "react-router-dom";
-import { createElement, FC, Fragment } from "react";
 import { addDashesToUUID } from "@oly_op/uuid-dashes";
-import { PlaylistID } from "@oly_op/musicloud-common/build/types";
+import isEmpty from "lodash-es/isEmpty";
+import isNull from "lodash-es/isNull";
+import startCase from "lodash-es/startCase";
+import toLower from "lodash-es/toLower";
+import { FC, Fragment, createElement } from "react";
+import { useParams } from "react-router-dom";
 
+import Buttons from "../../components/buttons";
+import Chip from "../../components/chip";
+import Song from "../../components/song";
+import Songs from "../../components/songs";
+import { createObjectPath, determinePlural } from "../../helpers";
 import {
-	useShare,
-	useQuery,
-	useMutation,
 	useJWTPayload,
+	useMutation,
 	usePlayPlaylist,
+	useQuery,
+	useShare,
 	useShufflePlaylist,
 } from "../../hooks";
-
 import Page from "../../layouts/page";
-import Song from "../../components/song";
-import Chip from "../../components/chip";
-import DeleteButton from "./delete-button";
-import RenameButton from "./rename-button";
-import Songs from "../../components/songs";
 import { useStatePlay } from "../../redux";
-import PrivacyButton from "./privacy-button";
-import Buttons from "../../components/buttons";
-import InLibraryButton from "./in-library-button";
 import { Playlist, SongPlaylistIndex } from "../../types";
-import { determinePlural, createObjectPath } from "../../helpers";
-
+import DeleteButton from "./delete-button";
 import GET_PLAYLIST_PAGE from "./get-playlist-page.gql";
+import InLibraryButton from "./in-library-button";
+import PrivacyButton from "./privacy-button";
 import REMOVE_SONG_FROM_PLAYLIST from "./remove-song-from-playlist.gql";
+import RenameButton from "./rename-button";
 
 const PlaylistPage: FC = () => {
 	const play = useStatePlay();
@@ -52,10 +50,9 @@ const PlaylistPage: FC = () => {
 		variables,
 	});
 
-	const [removeSongFromPlaylist] = useMutation<
-		RemoveSongFromPlaylistData,
-		RemoveSongFromPlaylistVars
-	>(REMOVE_SONG_FROM_PLAYLIST);
+	const [removeSongFromPlaylist] = useMutation<unknown, RemoveSongFromPlaylistVars>(
+		REMOVE_SONG_FROM_PLAYLIST,
+	);
 
 	const isUsers = data?.getPlaylistByID.user.userID === userID;
 
@@ -120,9 +117,11 @@ const PlaylistPage: FC = () => {
 								{songs.map(song => (
 									<Song
 										hidePlays
+										shareIcon
 										song={song}
 										key={song.songID}
 										index={playlistIndex!}
+										showDateAddedToPlaylist
 										onRemove={isUsers ? handleRemoveSongFromPlaylist(song) : undefined}
 									/>
 								))}
@@ -161,10 +160,6 @@ const PlaylistPage: FC = () => {
 
 interface GetPlaylistPageData {
 	getPlaylistByID: Playlist;
-}
-
-interface RemoveSongFromPlaylistData {
-	removeSongFromPlaylist: Playlist;
 }
 
 interface RemoveSongFromPlaylistVars extends PlaylistID {

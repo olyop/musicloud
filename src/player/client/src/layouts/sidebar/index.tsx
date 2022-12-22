@@ -1,12 +1,11 @@
 import { createBEM } from "@oly_op/bem";
-import Button from "@oly_op/react-button";
-import { NavLink } from "react-router-dom";
-import { createElement, FC, Fragment } from "react";
-import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import Button from "@oly_op/react-button";
+import { FC, Fragment, createElement } from "react";
+import { NavLink } from "react-router-dom";
 
-import { useDispatch, toggleSidebar, useStateSidebar, useStateAccessToken } from "../../redux";
-
+import { toggleSidebar, useDispatch, useStateAccessToken, useStateSidebar } from "../../redux";
 import "./index.scss";
 
 const bem = createBEM("Sidebar");

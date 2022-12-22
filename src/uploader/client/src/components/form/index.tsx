@@ -1,11 +1,10 @@
-import { FC, Fragment, createElement, FormEventHandler, FormHTMLAttributes } from "react";
-
+import Button from "@oly_op/react-button";
 import { FormikErrors } from "formik";
 import isEmpty from "lodash-es/isEmpty";
-import Button from "@oly_op/react-button";
+import { FC, FormEventHandler, FormHTMLAttributes, Fragment, createElement } from "react";
 
+import FormField, { Field, FieldTypeEnum, FieldValue } from "./field";
 import getInitialValues from "./get-initial-values";
-import FormField, { Field, FieldValue, FieldTypeEnum } from "./field";
 
 const Form: FC<PropTypes> = ({ title, errors, loading, onSubmit, children, ...props }) => {
 	if (loading) {

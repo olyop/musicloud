@@ -1,14 +1,12 @@
-import { useState, useEffect, createElement, ChangeEventHandler, InputHTMLAttributes } from "react";
-
-import isNull from "lodash-es/isNull";
-import isString from "lodash-es/isString";
 import { BEMInput, createBEM } from "@oly_op/bem";
-
 import "@oly_op/css-utilities/index.css";
 // eslint-disable-next-line import/extensions, import/no-unresolved
 import "@oly_op/react-button/index.css";
-import "../../index.scss";
+import isNull from "lodash-es/isNull";
+import isString from "lodash-es/isString";
+import { ChangeEventHandler, InputHTMLAttributes, createElement, useEffect, useState } from "react";
 
+import "../../index.scss";
 import "./index.scss";
 
 const bem = createBEM("Input");

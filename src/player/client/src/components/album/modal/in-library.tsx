@@ -1,8 +1,8 @@
-import { createElement, FC } from "react";
 import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
-import { ModalButton, ModalOnClose } from "../../modal";
 import { useToggleAlbumInLibrary } from "../../../hooks";
+import { ModalButton, ModalOnClose } from "../../modal";
 
 const InLibraryButton: FC<PropTypes> = ({ albumID, onClose }) => {
 	const [toggleInLibrary, inLibrary] = useToggleAlbumInLibrary({ albumID });

@@ -8,7 +8,7 @@ import {
 	createCatalogImageURL,
 	createObjectPath,
 	formatPlays,
-	formatTimestamp,
+	formatTimestampToDate,
 } from "../../helpers";
 import { usePlayAlbum } from "../../hooks";
 import { useStateListStyle, useStateShowReleased } from "../../redux";
@@ -95,7 +95,7 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							rightLeft:
 								hidePlays || isNull(album.playsTotal) ? null : formatPlays(album.playsTotal),
 							rightRight:
-								hideReleased || !showReleased ? undefined : formatTimestamp(album.released),
+								hideReleased || !showReleased ? undefined : formatTimestampToDate(album.released),
 					  }
 			}
 		/>

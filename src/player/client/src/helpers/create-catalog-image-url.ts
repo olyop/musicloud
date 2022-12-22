@@ -1,6 +1,6 @@
-import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 import { FILES_CATALOG_URL } from "@oly_op/musicloud-common/build/globals";
-import { ImageSizes, ImageDimensions } from "@oly_op/musicloud-common/build/types";
+import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 
 export const createCatalogImageURL = (
 	objectID: string,

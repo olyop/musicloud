@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { createElement, FC, Fragment, AnchorHTMLAttributes } from "react";
+import { AnchorHTMLAttributes, FC, Fragment, createElement } from "react";
+import { Link } from "react-router-dom";
 
 import { ClassNameBEMPropTypes, Handler } from "../../types";
 

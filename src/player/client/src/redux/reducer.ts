@@ -1,31 +1,30 @@
-import { createReducer, combineReducers } from "@reduxjs/toolkit";
+import { combineReducers, createReducer } from "@reduxjs/toolkit";
 
+import { Settings, State } from "../types";
 import {
 	addError,
 	addLoading,
-	updatePlay,
-	togglePlay,
-	updateTheme,
+	collapseQueuesDisclosure,
+	expandQueuesDisclosure,
 	removeError,
-	updateVolume,
 	removeLoading,
-	updateOrderBy,
+	togglePlay,
+	toggleQueueDisclosure,
+	toggleShowDuration,
+	toggleShowGenres,
+	toggleShowReleased,
 	toggleSidebar,
+	updateAccessToken,
+	updateGridChildWidth,
 	updateIsOnline,
 	updateListStyle,
+	updateOrderBy,
 	updatePageTitle,
-	toggleShowGenres,
+	updatePlay,
+	updateTheme,
 	updateTransitions,
-	updateAccessToken,
-	toggleShowReleased,
-	toggleShowDuration,
-	updateGridChildWidth,
-	toggleQueueDisclosure,
-	expandQueuesDisclosure,
-	collapseQueuesDisclosure,
+	updateVolume,
 } from "./actions";
-
-import { State, Settings } from "../types";
 import { initialState } from "./initial-state";
 
 const sidebar = createReducer(initialState.sidebar, builder =>

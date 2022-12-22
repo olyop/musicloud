@@ -1,6 +1,6 @@
 import { ApolloCache, MutationUpdaterFunction } from "@apollo/client";
 
-import { QueueNowPlaying, Song, Queue } from "../../types";
+import { Queue, QueueNowPlaying, Song } from "../../types";
 import WRITE_QUEUE_NOW_PLAYING from "./write-queue-now-playing.gql";
 
 interface GetQueueData {

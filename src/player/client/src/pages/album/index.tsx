@@ -17,7 +17,7 @@ import {
 	createObjectPath,
 	determinePlural,
 	formatPlays,
-	formatTimestamp,
+	formatTimestampToDate,
 } from "../../helpers";
 import { useQuery, useShuffleAlbum, useToggleAlbumInLibrary } from "../../hooks";
 import Page from "../../layouts/page";
@@ -98,7 +98,7 @@ const AlbumPage: FC = () => {
 									))}
 								</div>
 								<h3 className="ParagraphOne LightColor MarginBottomHalf LightWeight">
-									{formatTimestamp(released)}
+									{formatTimestampToDate(released)}
 								</h3>
 								<h3 className="ParagraphTwo LightColor LightWeight">
 									<ObjectLinks

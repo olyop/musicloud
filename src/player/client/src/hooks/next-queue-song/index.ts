@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 
-import { useMutation } from "../mutation";
-import { QueueNowPlaying } from "../../types";
-import { useResetPlayer } from "../reset-player";
-import { updatePlay, useDispatch } from "../../redux";
 import { updateNowPlayingMutationFunction } from "../../helpers";
-
+import { updatePlay, useDispatch } from "../../redux";
+import { QueueNowPlaying } from "../../types";
+import { useMutation } from "../mutation";
+import { useResetPlayer } from "../reset-player";
 import NEXT_QUEUE_SONG from "./next-queue-song.gql";
 
 export const useNextQueueSong = () => {

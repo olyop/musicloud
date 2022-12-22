@@ -1,9 +1,8 @@
 import { createBEM } from "@oly_op/bem";
 import startCase from "lodash-es/startCase";
-import { createElement, FC, ChangeEventHandler, SelectHTMLAttributes } from "react";
+import { ChangeEventHandler, FC, SelectHTMLAttributes, createElement } from "react";
 
 import { ClassNameBEMPropTypes } from "../../types";
-
 import "./index.scss";
 
 const bem = createBEM("Select");

@@ -1,5 +1,5 @@
-import { exists, PoolOrClient } from "@oly_op/pg-helpers";
 import { UserEmailAddressBase } from "@oly_op/musicloud-common/build/types";
+import { PoolOrClient, exists } from "@oly_op/pg-helpers";
 
 export const emailAddressExists =
 	(pg: PoolOrClient) =>

@@ -1,5 +1,5 @@
-import algoliasearch from "algoliasearch";
 import { ALGOLIA_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
+import algoliasearch from "algoliasearch";
 
 const client = algoliasearch(...ALGOLIA_OPTIONS);
 const index = client.initIndex(process.env.ALGOLIA_SEARCH_INDEX_NAME);

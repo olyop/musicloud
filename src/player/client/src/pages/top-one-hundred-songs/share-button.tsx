@@ -1,5 +1,5 @@
 import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
 import { useShare } from "../../hooks";
 

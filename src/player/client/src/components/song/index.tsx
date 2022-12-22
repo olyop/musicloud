@@ -9,6 +9,7 @@ import {
 	createObjectPath,
 	deserializeDuration,
 	formatPlays,
+	formatTimestampToDateTime,
 } from "../../helpers";
 import { usePlaySong } from "../../hooks";
 import { useStateShowDuration, useStateShowGenres } from "../../redux";
@@ -36,6 +37,7 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		hideInLibrary = false,
 		leftIcon = "audiotrack",
 		hideTrackNumber = false,
+		showDateAddedToPlaylist = false,
 		className = "ItemBorder PaddingHalf",
 	} = propTypes;
 
@@ -120,7 +122,12 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 									)}
 								</Fragment>
 							),
-							rightLeft: hidePlays || isNull(song.playsTotal) ? null : formatPlays(song.playsTotal),
+							rightLeft:
+								showDateAddedToPlaylist && !isNull(song.dateAddedToPlaylist)
+									? formatTimestampToDateTime(song.dateAddedToPlaylist)
+									: hidePlays || isNull(song.playsTotal)
+									? null
+									: formatPlays(song.playsTotal),
 							rightRight: showDuration
 								? hideDuration
 									? null
@@ -162,6 +169,7 @@ interface PropTypes extends ObjectShowIcon, ClassNameBEMPropTypes {
 	iconClassName?: BEMInput;
 	ref?: Ref<HTMLDivElement>;
 	hideTrackNumber?: boolean;
+	showDateAddedToPlaylist?: boolean;
 }
 
 export default Song;

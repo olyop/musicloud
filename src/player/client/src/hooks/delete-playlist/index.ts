@@ -1,7 +1,6 @@
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 
 import { useMutation } from "../mutation";
-
 import DELETE_PLAYLIST from "./delete-playlist.gql";
 
 export const useDeletePlaylist = ({ playlistID }: PlaylistID) => {

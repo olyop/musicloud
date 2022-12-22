@@ -1,9 +1,8 @@
 /* eslint-disable react/no-array-index-key */
-import type { DocumentNode } from "@apollo/client";
+import { DocumentNode, useLazyQuery } from "@apollo/client";
 import uniqueID from "lodash-es/uniqueId";
 import { FC, Fragment, Ref, createElement, useEffect, useRef, useState } from "react";
 
-import { useApolloClient } from "../../apollo";
 import { addLoading, removeLoading, useDispatch } from "../../redux";
 import { SettingsOrderBy } from "../../types";
 import FeedItem, { FeedItemVars } from "./item";
@@ -21,25 +20,32 @@ const Feed = <ItemsTotalData, Item, ItemData>(
 	} = propTypes;
 
 	const dispatch = useDispatch();
-	const client = useApolloClient();
 	const loadingID = useRef(uniqueID());
 
 	const [itemsTotal, setItemsTotal] = useState<Total>(null);
 
+	const [getItemsTotal] = useLazyQuery<ItemsTotalData>(itemsTotalQuery, {
+		fetchPolicy: "cache-and-network",
+	});
+
 	const getAndSetItemsTotal = async () => {
-		dispatch(addLoading(loadingID.current));
+		try {
+			dispatch(addLoading(loadingID.current));
 
-		const { data } = await client.query<ItemsTotalData>({
-			query: itemsTotalQuery,
-			fetchPolicy: "network-only",
-		});
+			const { data } = await getItemsTotal();
 
-		const total = itemsTotalDataToValue(data);
-		if (total) {
-			setItemsTotal(total);
+			if (data) {
+				const total = itemsTotalDataToValue(data);
+
+				if (total) {
+					setItemsTotal(total);
+				}
+			}
+		} catch {
+			setItemsTotal(null);
+		} finally {
+			dispatch(removeLoading(loadingID.current));
 		}
-
-		dispatch(removeLoading(loadingID.current));
 	};
 
 	useEffect(() => {

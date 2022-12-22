@@ -1,5 +1,6 @@
+import { createReadStream, existsSync } from "node:fs";
+
 import { FastifyPluginAsync } from "fastify";
-import { existsSync, createReadStream } from "node:fs";
 
 export const serveClient: FastifyPluginAsync<Options> =
 	// eslint-disable-next-line @typescript-eslint/require-await

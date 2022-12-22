@@ -1,6 +1,5 @@
 import { PlaylistPrivacy } from "./enums";
-
-import { KeyID, PlayID, SongID, UserID, AlbumID, GenreID, ArtistID, PlaylistID } from "./ids";
+import { AlbumID, ArtistID, GenreID, KeyID, PlayID, PlaylistID, SongID, UserID } from "./ids";
 
 export interface KeyBase extends KeyID {
 	flat: string;

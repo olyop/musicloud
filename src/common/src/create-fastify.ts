@@ -1,9 +1,10 @@
+import { readFile } from "node:fs/promises";
 import type http from "node:http";
 import type http2 from "node:http2";
-import { readFile } from "node:fs/promises";
-import type { PrettyOptions } from "pino-pretty";
+
 import Fastify, { FastifyInstance } from "fastify";
 import type { FastifyHttp2SecureOptions, FastifyServerOptions } from "fastify";
+import type { PrettyOptions } from "pino-pretty";
 
 import { IS_DEVELOPMENT, USE_HTTPS } from "./globals";
 

@@ -1,15 +1,14 @@
+import { useApolloClient } from "@apollo/client";
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { useApolloClient } from "@apollo/client";
-import { useState, createElement, FC, Fragment, useEffect, ReactNode } from "react";
+import { FC, Fragment, ReactNode, createElement, useEffect, useState } from "react";
 
-import { Status } from "./types";
-import Song from "../../../components/song";
 import Modal from "../../../components/modal";
+import Song from "../../../components/song";
 import { Song as SongType } from "../../../types";
 import downloadLibrary from "./download-library";
-
 import "./index.scss";
+import { Status } from "./types";
 
 const bem = createBEM("DownloadsMenu");
 

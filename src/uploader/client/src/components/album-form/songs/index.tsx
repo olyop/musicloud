@@ -1,9 +1,8 @@
-import isEmpty from "lodash-es/isEmpty";
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC, PropsWithChildren } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, PropsWithChildren, createElement } from "react";
 
 import { Song } from "../types";
-
 import "./index.scss";
 
 const bem = createBEM("AlbumSongs");

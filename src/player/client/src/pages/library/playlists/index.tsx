@@ -1,18 +1,16 @@
-import { createElement, FC } from "react";
-
-import {
-	OrderByOptions,
-	PlaylistsOrderByField,
-	Playlist as PlaylistType,
-	SettingsOrderByPlaylists,
-} from "../../../types";
+import { FC, createElement } from "react";
 
 import Feed from "../../../components/feed";
 import Playlist from "../../../components/playlist";
 import Playlists from "../../../components/playlists";
-import GET_LIBRARY_PLAYLISTS_TOTAL from "./get-library-playlists-total.gql";
+import {
+	OrderByOptions,
+	Playlist as PlaylistType,
+	PlaylistsOrderByField,
+	SettingsOrderByPlaylists,
+} from "../../../types";
 import GET_LIBRARY_PLAYLIST_AT_INDEX from "./get-library-playlist-at-index.gql";
-
+import GET_LIBRARY_PLAYLISTS_TOTAL from "./get-library-playlists-total.gql";
 import "./index.scss";
 
 const orderBy: OrderByOptions<SettingsOrderByPlaylists> = {

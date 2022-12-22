@@ -1,19 +1,16 @@
 import { createBEM } from "@oly_op/bem";
-import { createElement, CSSProperties, FC } from "react";
+import { CSSProperties, FC, createElement } from "react";
 
-import { useDispatch, updateOrderBy, useStateOrderBy, useStateListStyle } from "../../redux";
-
+import { updateOrderBy, useDispatch, useStateListStyle, useStateOrderBy } from "../../redux";
 import {
-	OrderBy,
-	OrderByOptions,
-	SettingsOrderBy,
-	OrderByDirection,
 	ClassNameBEMPropTypes,
+	OrderBy,
+	OrderByDirection,
+	OrderByOptions,
 	SettingsListStyle,
+	SettingsOrderBy,
 } from "../../types";
-
 import Select from "../select";
-
 import "./index.scss";
 
 const bem = createBEM("SelectOrderBy");

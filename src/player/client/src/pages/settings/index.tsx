@@ -1,30 +1,28 @@
 import { createBEM } from "@oly_op/bem";
 import { Head } from "@oly_op/react-head";
 import toNumber from "lodash-es/toNumber";
-import { ChangeEventHandler, createElement, FC } from "react";
+import { ChangeEventHandler, FC, createElement } from "react";
 
-import {
-	useDispatch,
-	updateTheme,
-	useStateTheme,
-	updateListStyle,
-	toggleShowGenres,
-	updateTransitions,
-	useStateListStyle,
-	useStateShowGenres,
-	toggleShowReleased,
-	toggleShowDuration,
-	useStateTransitions,
-	useStateShowDuration,
-	useStateShowReleased,
-	updateGridChildWidth,
-	useStateGridChildWidth,
-} from "../../redux";
-
-import Page from "../../layouts/page";
 import Select from "../../components/select";
-import { SettingsTheme, SettingsListStyle, SettingsTransitions } from "../../types";
-
+import Page from "../../layouts/page";
+import {
+	toggleShowDuration,
+	toggleShowGenres,
+	toggleShowReleased,
+	updateGridChildWidth,
+	updateListStyle,
+	updateTheme,
+	updateTransitions,
+	useDispatch,
+	useStateGridChildWidth,
+	useStateListStyle,
+	useStateShowDuration,
+	useStateShowGenres,
+	useStateShowReleased,
+	useStateTheme,
+	useStateTransitions,
+} from "../../redux";
+import { SettingsListStyle, SettingsTheme, SettingsTransitions } from "../../types";
 import "./index.scss";
 
 const bem = createBEM("SettingsPage");

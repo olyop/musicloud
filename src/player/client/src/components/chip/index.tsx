@@ -1,10 +1,9 @@
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC } from "react";
 import { ImageDimensions, ImageSizes, ObjectID } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
+import { createCatalogImageURL, createObjectPath } from "../../helpers";
 import ObjectLink from "../object-link";
-import { createObjectPath, createCatalogImageURL } from "../../helpers";
-
 import "./index.scss";
 
 const bem = createBEM("Chip");

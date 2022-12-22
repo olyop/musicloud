@@ -1,7 +1,7 @@
+import { GenreBase } from "@oly_op/musicloud-common/build/types";
 import { useFormik } from "formik";
 import isEmpty from "lodash-es/isEmpty";
-import { createElement, FC, useEffect, useState } from "react";
-import { GenreBase } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement, useEffect, useState } from "react";
 
 import Form from "../form";
 import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field";

@@ -1,8 +1,8 @@
-import { onError } from "@apollo/client/link/error";
+import { ApolloLink, HttpLink, from } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { from, ApolloLink, HttpLink } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 
-import { store, dispatch, updateIsOnline, updateAccessToken } from "../redux";
+import { dispatch, store, updateAccessToken, updateIsOnline } from "../redux";
 
 const withAuthorization = setContext(request => {
 	const { accessToken } = store.getState();

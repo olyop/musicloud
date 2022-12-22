@@ -1,8 +1,8 @@
 import { createBEM } from "@oly_op/bem";
-import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
-import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import Button from "@oly_op/react-button";
+import { FC, createElement } from "react";
 
 import "./index.scss";
 

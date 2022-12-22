@@ -1,11 +1,10 @@
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { createElement, FC, ChangeEventHandler } from "react";
+import { ChangeEventHandler, FC, createElement } from "react";
 
-import AlbumFormSongList from "./list";
-
-import "./index.scss";
 import { Song, SongLists } from "../types";
+import "./index.scss";
+import AlbumFormSongList from "./list";
 
 const bem = createBEM("AlbumFormSong");
 

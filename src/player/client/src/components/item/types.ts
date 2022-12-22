@@ -1,5 +1,5 @@
 import { BEMInput } from "@oly_op/bem";
-import { ReactNode, CSSProperties } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 import { ClassNameBEMPropTypes, Handler, OnClickPropTypes } from "../../types";
 

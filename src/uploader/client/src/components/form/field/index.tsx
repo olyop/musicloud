@@ -1,10 +1,9 @@
-import { useFormik } from "formik";
 import { createBEM } from "@oly_op/bem";
-import { createElement, ChangeEventHandler, FC } from "react";
-
-import TextField from "./text-field";
+import { useFormik } from "formik";
+import { ChangeEventHandler, FC, createElement } from "react";
 
 import "./index.scss";
+import TextField from "./text-field";
 
 export enum FieldTypeEnum {
 	TEXT = "TEXT",

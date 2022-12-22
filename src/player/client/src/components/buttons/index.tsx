@@ -1,8 +1,7 @@
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, createElement } from "react";
 
 import { ClassNameBEMPropTypes } from "../../types";
-
 import "./index.scss";
 
 const bem = createBEM("Buttons");

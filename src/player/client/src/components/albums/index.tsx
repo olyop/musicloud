@@ -1,19 +1,18 @@
 import { createBEM } from "@oly_op/bem";
 import isFunction from "lodash-es/isFunction";
 import isUndefined from "lodash-es/isUndefined";
-import { createElement, FC, ReactNode } from "react";
+import { FC, ReactNode, createElement } from "react";
 
+import { useStateListStyle } from "../../redux";
 import {
 	Album,
-	SettingsListStyle,
 	Album as AlbumType,
 	AlbumsOrderByField,
 	ClassNameBEMPropTypes,
+	SettingsListStyle,
 } from "../../types";
-
 import List from "../list";
 import SelectOrderBy from "../select-order-by";
-import { useStateListStyle } from "../../redux";
 
 const bem = createBEM("Albums");
 

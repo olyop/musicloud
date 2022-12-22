@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/indent */
 import {
-	SettingsTheme,
-	OrderByDirection,
-	SettingsListStyle,
-	SongsOrderByField,
-	GenresOrderByField,
 	AlbumsOrderByField,
 	ArtistsOrderByField,
-	SettingsTransitions,
-	PlaylistsOrderByField,
-	LibrarySongsOrderByField,
+	GenresOrderByField,
 	LibraryArtistsOrderByField,
 	LibraryPlaylistsOrderByField,
+	LibrarySongsOrderByField,
+	OrderByDirection,
+	PlaylistsOrderByField,
+	SettingsListStyle,
+	SettingsTheme,
+	SettingsTransitions,
+	SongsOrderByField,
 } from "./enums";
-
 import { QueuePreviousNextLater } from "./objects";
 
 export interface OrderBy<F = string> {

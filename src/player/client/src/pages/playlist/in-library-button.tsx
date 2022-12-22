@@ -1,8 +1,8 @@
 import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import { Playlist } from "../../types";
 import { useToggleObjectInLibrary } from "../../hooks";
+import { Playlist } from "../../types";
 
 const PlaylistPageInLibraryButton: FC<PropTypes> = ({ playlist }) => {
 	const [toggleInLibrary, inLibrary] = useToggleObjectInLibrary(playlist);

@@ -1,12 +1,12 @@
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
-import Item from "../item";
-import Modal from "./modal";
-import ObjectLink from "../object-link";
+import { createCatalogImageURL, createObjectPath } from "../../helpers";
 import { ObjectShowIcon, User as UserType } from "../../types";
-import { createObjectPath, createCatalogImageURL } from "../../helpers";
+import Item from "../item";
+import ObjectLink from "../object-link";
+import Modal from "./modal";
 
 const bem = createBEM("User");
 

@@ -1,13 +1,12 @@
-import { createElement, FC } from "react";
-import { useParams } from "react-router-dom";
-import { addDashesToUUID } from "@oly_op/uuid-dashes";
 import { ArtistID } from "@oly_op/musicloud-common/build/types";
+import { addDashesToUUID } from "@oly_op/uuid-dashes";
+import { FC, createElement } from "react";
+import { useParams } from "react-router-dom";
 
-import { useQuery } from "../../hooks";
 import Song from "../../components/song";
 import Songs from "../../components/songs";
+import { useQuery } from "../../hooks";
 import { ArtistTopTenSongs } from "../../types";
-
 import GET_ARTIST_PAGE_HOME from "./get-artist-page-home.gql";
 
 const ArtistPageHome: FC = () => {

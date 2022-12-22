@@ -1,5 +1,5 @@
-import { SearchIndex } from "algoliasearch";
 import { AlgoliaRecord, ObjectID } from "@oly_op/musicloud-common/build/types";
+import { SearchIndex } from "algoliasearch";
 
 export const addRecordToSearchIndex =
 	(ag: SearchIndex) =>

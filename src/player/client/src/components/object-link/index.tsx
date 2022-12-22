@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
+import { Link } from "react-router-dom";
 
 import { ClassNameBEMPropTypes, OnClickPropTypes } from "../../types";
-
 import "./index.scss";
 
 const bem = createBEM("ObjectLink");

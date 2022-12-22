@@ -1,10 +1,9 @@
-import { createElement, useEffect, FC, Fragment, PropsWithChildren } from "react";
+import { FC, Fragment, PropsWithChildren, createElement, useEffect } from "react";
 
-import { useStateTheme, useStateTransitions, useStateGridChildWidth } from "../../redux";
-
+import { useStateGridChildWidth, useStateTheme, useStateTransitions } from "../../redux";
+import applyGridChildWidth from "./apply-grid-child-width";
 import applyTheme from "./apply-theme";
 import applyTransitions from "./apply-transitions";
-import applyGridChildWidth from "./apply-grid-child-width";
 
 export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
 	const theme = useStateTheme();

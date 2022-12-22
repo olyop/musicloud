@@ -1,8 +1,7 @@
-import { PlaylistID, InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
+import { InterfaceWithInput, PlaylistID } from "@oly_op/musicloud-common/build/types";
 
 import { Playlist } from "../../types";
 import { useMutation } from "../mutation";
-
 import UPDATE_PLAYLIST_TITLE from "./update-playlist-title.gql";
 
 export const useUpdatePlaylistTitle = ({ playlistID }: PlaylistID) => {

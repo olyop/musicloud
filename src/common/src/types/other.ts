@@ -1,4 +1,4 @@
-import { UserIDNameBase, UserDateJoinedBase, UserEmailAddressBase } from "./objects";
+import { UserDateJoinedBase, UserEmailAddressBase, UserIDNameBase } from "./objects";
 
 export interface InterfaceWithInput<T> {
 	input: T;

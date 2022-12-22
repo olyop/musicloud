@@ -1,24 +1,22 @@
-import { Head } from "@oly_op/react-head";
-import { createElement, FC } from "react";
-import { useParams } from "react-router-dom";
-import isUndefined from "lodash-es/isUndefined";
-import { addDashesToUUID } from "@oly_op/uuid-dashes";
 import { GenreID } from "@oly_op/musicloud-common/build/types";
+import { Head } from "@oly_op/react-head";
+import { addDashesToUUID } from "@oly_op/uuid-dashes";
+import isUndefined from "lodash-es/isUndefined";
+import { FC, createElement } from "react";
+import { useParams } from "react-router-dom";
 
-import {
-	Genre,
-	SongsOrderBy,
-	OrderByOptions,
-	SongsOrderByField,
-	SettingsOrderBySongs,
-} from "../../types";
-
-import Page from "../../layouts/page";
-import { useQuery } from "../../hooks";
 import Song from "../../components/song";
 import Songs from "../../components/songs";
+import { useQuery } from "../../hooks";
+import Page from "../../layouts/page";
 import { useStateOrderBy } from "../../redux";
-
+import {
+	Genre,
+	OrderByOptions,
+	SettingsOrderBySongs,
+	SongsOrderBy,
+	SongsOrderByField,
+} from "../../types";
 import GET_GENRE_PAGE from "./get-genre-page.gql";
 
 const orderBy: OrderByOptions<SettingsOrderBySongs> = {

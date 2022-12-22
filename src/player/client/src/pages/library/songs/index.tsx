@@ -1,18 +1,16 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import Song from "../../../components/song";
 import Feed from "../../../components/feed";
+import Song from "../../../components/song";
 import Songs from "../../../components/songs";
 import {
-	Song as SongType,
 	LibrarySongsOrderByField,
 	OrderByOptions,
 	SettingsOrderBySongs,
+	Song as SongType,
 } from "../../../types";
-
-import GET_LIBRARY_SONGS_TOTAL from "./get-library-songs-total.gql";
 import GET_LIBRARY_SONG_AT_INDEX from "./get-library-song-at-index.gql";
-
+import GET_LIBRARY_SONGS_TOTAL from "./get-library-songs-total.gql";
 import "./index.scss";
 
 const orderBy: OrderByOptions<SettingsOrderBySongs> = {

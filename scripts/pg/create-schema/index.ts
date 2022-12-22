@@ -1,7 +1,8 @@
 import fs from "node:fs";
-import { Pool } from "pg";
 import path from "node:path";
+
 import { PG_POOL_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
+import { Pool } from "pg";
 
 const database = new Pool(PG_POOL_OPTIONS);
 

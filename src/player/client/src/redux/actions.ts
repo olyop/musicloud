@@ -2,13 +2,13 @@ import { createAction } from "@reduxjs/toolkit";
 
 import type {
 	OrderBy,
-	StateError,
-	SettingsTheme,
-	StatePageTitle,
-	SettingsOrderBy,
 	SettingsListStyle,
-	SettingsTransitions,
+	SettingsOrderBy,
 	SettingsQueuesDisclosure,
+	SettingsTheme,
+	SettingsTransitions,
+	StateError,
+	StatePageTitle,
 } from "../types";
 
 export const togglePlay = createAction("TOGGLE_PLAY");

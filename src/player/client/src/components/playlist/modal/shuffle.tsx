@@ -1,5 +1,5 @@
-import { createElement, FC } from "react";
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
 import { useShufflePlaylist } from "../../../hooks";
 import { ModalButton, ModalOnClose } from "../../modal";

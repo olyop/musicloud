@@ -1,6 +1,6 @@
-import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
 import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import Button from "@oly_op/react-button";
+import { FC, createElement } from "react";
 
 import { usePlayAlbum } from "../../hooks";
 import { useStatePlay } from "../../redux";

@@ -1,16 +1,15 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Link } from "react-router-dom";
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
 import isUndefined from "lodash-es/isUndefined";
-import { useState, createElement, Fragment, forwardRef } from "react";
+import { Fragment, createElement, forwardRef, useState } from "react";
+import { Link } from "react-router-dom";
 
+import { useShare } from "../../hooks";
+import "./index.scss";
 import ItemInfo from "./info";
 import PlayButton from "./play-button";
-import { useShare } from "../../hooks";
-import { PropTypes, InfoOptions, PlayOptions, ImageOptions, Modal as ItemModal } from "./types";
-
-import "./index.scss";
+import { ImageOptions, InfoOptions, Modal as ItemModal, PlayOptions, PropTypes } from "./types";
 
 const bem = createBEM("Item");
 

@@ -1,13 +1,13 @@
-import isUndefined from "lodash-es/isUndefined";
 import { UserID } from "@oly_op/musicloud-common/build/types";
+import isUndefined from "lodash-es/isUndefined";
 
 import { User } from "../../types";
-import { useQuery } from "../query";
-import { useMutation } from "../mutation";
-import FOLLOW_USER from "./follow-user.gql";
 import { useJWTPayload } from "../jwt-payload";
-import UN_FOLLOW_USER from "./un-follow-user.gql";
+import { useMutation } from "../mutation";
+import { useQuery } from "../query";
+import FOLLOW_USER from "./follow-user.gql";
 import GET_USER_FOLLOWING from "./get-user-following.gql";
+import UN_FOLLOW_USER from "./un-follow-user.gql";
 
 export const useToggleUserFollowing = ({ userID }: UserID) => {
 	const { userID: ownUserID } = useJWTPayload();

@@ -1,5 +1,5 @@
-import { createElement, FC, PropsWithChildren } from "react";
 import { ApolloProvider as ApolloBaseProvider } from "@apollo/client";
+import { FC, PropsWithChildren, createElement } from "react";
 
 import apollo from "../apollo";
 

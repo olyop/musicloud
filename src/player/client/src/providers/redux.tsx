@@ -1,5 +1,5 @@
+import { FC, PropsWithChildren, createElement } from "react";
 import { Provider } from "react-redux";
-import { createElement, FC, PropsWithChildren } from "react";
 
 import { store } from "../redux";
 

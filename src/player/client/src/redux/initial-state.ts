@@ -1,18 +1,18 @@
 import {
-	State,
-	Settings,
-	SettingsTheme,
-	OrderByDirection,
-	SettingsListStyle,
-	SongsOrderByField,
 	AlbumsOrderByField,
-	GenresOrderByField,
 	ArtistsOrderByField,
-	SettingsTransitions,
-	PlaylistsOrderByField,
-	LibrarySongsOrderByField,
+	GenresOrderByField,
 	LibraryArtistsOrderByField,
 	LibraryPlaylistsOrderByField,
+	LibrarySongsOrderByField,
+	OrderByDirection,
+	PlaylistsOrderByField,
+	Settings,
+	SettingsListStyle,
+	SettingsTheme,
+	SettingsTransitions,
+	SongsOrderByField,
+	State,
 } from "../types";
 
 export const initialSettings: Settings = {

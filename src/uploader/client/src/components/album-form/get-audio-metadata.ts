@@ -1,5 +1,5 @@
-import type { ConnectionError } from "fastify";
 import { SongAudioMetadataBase } from "@oly_op/musicloud-common/build/types";
+import type { ConnectionError } from "fastify";
 
 interface SongAudioMetadata extends SongAudioMetadataBase {
 	cover: ConnectionError["rawPacket"] | null;

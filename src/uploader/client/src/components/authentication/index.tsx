@@ -1,7 +1,7 @@
-import { useSearchParams } from "react-router-dom";
-import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 import { determineServiceURL } from "@oly_op/musicloud-common/build/determine-service-url";
-import { createElement, FC, Fragment, useEffect, PropsWithChildren, useState } from "react";
+import { ServicesNames } from "@oly_op/musicloud-common/build/types";
+import { FC, Fragment, PropsWithChildren, createElement, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 const Authentication: FC<PropsWithChildren> = ({ children }) => {
 	const [ok, setOk] = useState(false);

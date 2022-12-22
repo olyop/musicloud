@@ -1,15 +1,14 @@
-import {
-	pageCache,
-	imageCache,
-	offlineFallback,
-	googleFontsCache,
-	staticResourceCache,
-} from "workbox-recipes";
-
 import { clientsClaim } from "workbox-core";
-import { registerRoute } from "workbox-routing";
 import { ExpirationPlugin } from "workbox-expiration";
 import { RangeRequestsPlugin } from "workbox-range-requests";
+import {
+	googleFontsCache,
+	imageCache,
+	offlineFallback,
+	pageCache,
+	staticResourceCache,
+} from "workbox-recipes";
+import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkOnly } from "workbox-strategies";
 
 declare const self: ServiceWorkerGlobalScope;

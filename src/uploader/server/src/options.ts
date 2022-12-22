@@ -1,7 +1,7 @@
-import { exists } from "@oly_op/pg-helpers";
 import { FastifyJWTOptions } from "@fastify/jwt";
 import { FastifyMultipartOptions } from "@fastify/multipart";
 import { JWTPayload } from "@oly_op/musicloud-common/build/types";
+import { exists } from "@oly_op/pg-helpers";
 import bytes from "bytes";
 
 export const FASTIFY_JWT_OPTIONS: FastifyJWTOptions = {

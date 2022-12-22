@@ -1,10 +1,10 @@
+import { ArtistBase } from "@oly_op/musicloud-common/build/types";
 import { useFormik } from "formik";
 import isEmpty from "lodash-es/isEmpty";
-import { ArtistBase } from "@oly_op/musicloud-common/build/types";
-import { ChangeEventHandler, createElement, FC, useEffect, useState } from "react";
+import { ChangeEventHandler, FC, createElement, useEffect, useState } from "react";
 
-import Form from "../form";
 import { createGoogleSearchURL } from "../../helpers";
+import Form from "../form";
 import TextField, { CheckOptionsText, CheckOptionsValue } from "../text-field";
 
 interface ArtistImages {

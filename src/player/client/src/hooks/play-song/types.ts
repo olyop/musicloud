@@ -1,5 +1,5 @@
-import { SongID } from "@oly_op/musicloud-common/build/types";
 import { ApolloCache, MutationUpdaterFunction } from "@apollo/client";
+import { SongID } from "@oly_op/musicloud-common/build/types";
 
 import { QueueNowPlaying, Song } from "../../types";
 

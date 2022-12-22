@@ -1,22 +1,19 @@
-import { Link } from "react-router-dom";
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
 import { Head } from "@oly_op/react-head";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
+import { Link } from "react-router-dom";
 
-import { Song as SongType, Album as AlbumType, Playlist as PlaylistType } from "../types";
-
-import Page from "../layouts/page";
-import { useQuery } from "../hooks";
-import Song from "../components/song";
-import Songs from "../components/songs";
 import Album from "../components/album";
 import Albums from "../components/albums";
 import Playlist from "../components/playlist";
 import Playlists from "../components/playlists";
-
+import Song from "../components/song";
+import Songs from "../components/songs";
+import { useQuery } from "../hooks";
+import Page from "../layouts/page";
+import { Album as AlbumType, Playlist as PlaylistType, Song as SongType } from "../types";
 import GET_HOME_PAGE from "./get-home-page.gql";
-
 import "./index.scss";
 
 const bem = createBEM("HomePage");

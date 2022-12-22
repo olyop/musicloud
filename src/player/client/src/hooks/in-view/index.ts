@@ -1,8 +1,7 @@
-import { useCallback, useRef, useEffect } from "react";
-
-import { State, InViewHookResponse, IntersectionOptions, ObserverInstanceCallback } from "./types";
+import { useCallback, useEffect, useRef } from "react";
 
 import observe from "./observe";
+import { InViewHookResponse, IntersectionOptions, ObserverInstanceCallback, State } from "./types";
 
 export const useInView = (options: IntersectionOptions = {}): InViewHookResponse => {
 	const {

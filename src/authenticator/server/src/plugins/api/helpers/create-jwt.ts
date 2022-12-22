@@ -1,8 +1,8 @@
-import ms from "ms";
-import { createSigner } from "fast-jwt";
-import { SearchClient } from "algoliasearch";
 import { IS_DEVELOPMENT, JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
 import { JWTPayload, JWTPayloadUser, UserID } from "@oly_op/musicloud-common/build/types";
+import { SearchClient } from "algoliasearch";
+import { createSigner } from "fast-jwt";
+import ms from "ms";
 
 const signer = createSigner({
 	algorithm: JWT_ALGORITHM,

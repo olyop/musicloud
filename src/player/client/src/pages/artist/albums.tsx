@@ -1,15 +1,13 @@
-import { createElement, FC } from "react";
-import { useParams } from "react-router-dom";
-import { addDashesToUUID } from "@oly_op/uuid-dashes";
 import { ArtistID } from "@oly_op/musicloud-common/build/types";
+import { addDashesToUUID } from "@oly_op/uuid-dashes";
+import { FC, createElement } from "react";
+import { useParams } from "react-router-dom";
 
-import { Artist, AlbumsOrderBy, SettingsListStyle, AlbumsOrderByField } from "../../types";
-
-import { useQuery } from "../../hooks";
 import Album from "../../components/album";
 import Albums from "../../components/albums";
+import { useQuery } from "../../hooks";
 import { useStateListStyle, useStateOrderBy } from "../../redux";
-
+import { AlbumsOrderBy, AlbumsOrderByField, Artist, SettingsListStyle } from "../../types";
 import GET_ARTIST_PAGE_ALBUMS from "./get-artist-page-albums.gql";
 
 const ArtistPageAlbums: FC = () => {

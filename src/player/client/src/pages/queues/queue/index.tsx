@@ -1,32 +1,29 @@
-import isNull from "lodash-es/isNull";
-import { createBEM } from "@oly_op/bem";
-import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
 import { DocumentNode } from "@apollo/client";
 import { Modifier } from "@apollo/client/cache/core/types/common";
-
-import {
-	SongQueueIndex,
-	Song as SongType,
-	Queue as QueueType,
-	ClassNameBEMPropTypes,
-	SettingsQueuesDisclosureKeys,
-} from "../../../types";
+import { createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import isNull from "lodash-es/isNull";
+import { FC, createElement } from "react";
 
 import Song from "../../../components/song";
 import Songs from "../../../components/songs";
-import { useDispatch, toggleQueueDisclosure, useStateQueuesDisclosure } from "../../../redux";
 import {
-	useQuery,
 	useMutation,
-	useRemoveSongFromQueueNext,
+	useQuery,
 	useRemoveSongFromQueueLater,
+	useRemoveSongFromQueueNext,
 } from "../../../hooks";
-
-import JUMP_TO_SONG_IN_QUEUE_NEXT from "./jump-to-song-in-queue-next.gql";
-import JUMP_TO_SONG_IN_QUEUE_LATER from "./jump-to-song-in-queue-later.gql";
-
+import { toggleQueueDisclosure, useDispatch, useStateQueuesDisclosure } from "../../../redux";
+import {
+	ClassNameBEMPropTypes,
+	Queue as QueueType,
+	SettingsQueuesDisclosureKeys,
+	SongQueueIndex,
+	Song as SongType,
+} from "../../../types";
 import "./index.scss";
+import JUMP_TO_SONG_IN_QUEUE_LATER from "./jump-to-song-in-queue-later.gql";
+import JUMP_TO_SONG_IN_QUEUE_NEXT from "./jump-to-song-in-queue-next.gql";
 
 const bem = createBEM("Queue");
 

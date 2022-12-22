@@ -1,13 +1,13 @@
-import { SearchIndex } from "algoliasearch";
 import {
 	AlgoliaRecordUser,
 	NameBase,
 	UserEmailAddressBase,
 	UserID,
 } from "@oly_op/musicloud-common/build/types";
+import { SearchIndex } from "algoliasearch";
 
-import { ImageInput } from "./types";
 import determineCatalogImageURL from "./determine-catalog-image-url";
+import { ImageInput } from "./types";
 
 interface Options extends UserID, NameBase, UserEmailAddressBase {
 	image: ImageInput;

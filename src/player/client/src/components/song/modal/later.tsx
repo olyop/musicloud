@@ -1,9 +1,8 @@
-import { createElement, FC } from "react";
 import { SongID } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
 import { useMutation } from "../../../hooks";
 import { ModalButton, ModalOnClose } from "../../modal";
-
 import QUEUE_SONG_LATER from "./queue-song-later.gql";
 
 const LaterButton: FC<PropTypes> = ({ songID, onClose }) => {

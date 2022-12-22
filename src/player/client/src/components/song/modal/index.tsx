@@ -1,16 +1,16 @@
-import { createElement, FC, useEffect, useState } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement, useEffect, useState } from "react";
 
-import PlayButton from "./play";
-import NextButton from "./next";
-import LaterButton from "./later";
-import AfterButton from "./after";
-import SongTitle from "../../song-title";
-import InLibraryButton from "./in-library";
+import { createCatalogImageURL, createObjectPath } from "../../../helpers";
 import { Handler, Song } from "../../../types";
 import AddToPlaylist from "../../add-song-to-playlist";
-import { createCatalogImageURL, createObjectPath } from "../../../helpers";
 import Modal, { ModalButton, ModalButtons, ModalHeader, ModalOnClose } from "../../modal";
+import SongTitle from "../../song-title";
+import AfterButton from "./after";
+import InLibraryButton from "./in-library";
+import LaterButton from "./later";
+import NextButton from "./next";
+import PlayButton from "./play";
 
 const SongModal: FC<PropTypes> = ({ open, song, onClose, hidePlay, onRemove, hideInLibrary }) => {
 	const [addToPlaylist, setAddToPlayPlaylist] = useState(false);

@@ -1,8 +1,8 @@
 import { FastifyPluginAsync } from "fastify";
 
+import { audioMetadata } from "./audio-metadata";
 import { check } from "./check";
 import { upload } from "./upload";
-import { audioMetadata } from "./audio-metadata";
 
 export const api: FastifyPluginAsync = async fastify => {
 	await fastify.register(audioMetadata);

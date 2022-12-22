@@ -1,8 +1,9 @@
-import { trim } from "lodash-es";
 import { readFile } from "node:fs/promises";
-import { FastifyPluginAsync } from "fastify";
+
 import { GenreBase, GenreID } from "@oly_op/musicloud-common/build/types";
-import { query, exists, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
+import { convertFirstRowToCamelCase, exists, query } from "@oly_op/pg-helpers";
+import { FastifyPluginAsync } from "fastify";
+import { trim } from "lodash-es";
 
 import { addRecordToSearchIndex, deleteRecordFromSearchIndex } from "../helpers";
 

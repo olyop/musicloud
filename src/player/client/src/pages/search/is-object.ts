@@ -1,4 +1,4 @@
-import { Hit, HitUser, HitSong, HitAlbum, HitGenre, HitArtist, HitPlaylist } from "./types";
+import { Hit, HitAlbum, HitArtist, HitGenre, HitPlaylist, HitSong, HitUser } from "./types";
 
 export const isUser = (hit: Hit): hit is HitUser => hit.typeName === "User";
 

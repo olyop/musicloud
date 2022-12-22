@@ -1,6 +1,6 @@
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC } from "react";
 import { FILES_URL } from "@oly_op/musicloud-common/build/globals";
+import { FC, createElement } from "react";
 
 import { useStateTheme } from "../../redux";
 import { SettingsTheme } from "../../types";

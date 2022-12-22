@@ -1,11 +1,10 @@
-import Button from "@oly_op/react-button";
-import { NavLink } from "react-router-dom";
 import { BEMInput, createBEM } from "@oly_op/bem";
-import { createElement, ReactNode, FC } from "react";
+import Button from "@oly_op/react-button";
+import { FC, ReactNode, createElement } from "react";
+import { NavLink } from "react-router-dom";
 
 import Window from "../../components/window";
 import { ClassNameBEMPropTypes, ClassNamePropTypes, Route } from "../../types";
-
 import "./index.scss";
 
 const bem = createBEM("Navigation");

@@ -1,6 +1,6 @@
-import fp from "fastify-plugin";
 import fastifyJWT from "@fastify/jwt";
 import { FastifyPluginAsync, RouteHandler } from "fastify";
+import fp from "fastify-plugin";
 
 import { FASTIFY_JWT_OPTIONS } from "../options";
 

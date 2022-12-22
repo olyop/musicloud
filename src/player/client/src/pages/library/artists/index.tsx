@@ -1,21 +1,18 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import {
-	OrderByOptions,
-	SettingsListStyle,
-	Artist as ArtistType,
-	SettingsOrderByArtists,
-	LibraryArtistsOrderByField,
-} from "../../../types";
-
-import Feed from "../../../components/feed";
 import Artist from "../../../components/artist";
 import Artists from "../../../components/artists";
+import Feed from "../../../components/feed";
 import { useStateListStyle } from "../../../redux";
-
-import GET_LIBRARY_ARTISTS_TOTAL from "./get-library-artists-total.gql";
+import {
+	Artist as ArtistType,
+	LibraryArtistsOrderByField,
+	OrderByOptions,
+	SettingsListStyle,
+	SettingsOrderByArtists,
+} from "../../../types";
 import GET_LIBRARY_ARTIST_AT_INDEX from "./get-library-artist-at-index.gql";
-
+import GET_LIBRARY_ARTISTS_TOTAL from "./get-library-artists-total.gql";
 import "./index.scss";
 
 const orderBy: OrderByOptions<SettingsOrderByArtists> = {

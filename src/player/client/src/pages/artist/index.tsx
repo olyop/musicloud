@@ -11,7 +11,7 @@ import {
 	createCatalogImageURL,
 	determinePlural,
 	formatPlays,
-	formatTimestamp,
+	formatTimestampToDate,
 } from "../../helpers";
 import { useQuery, useShuffleArtist } from "../../hooks";
 import Banner from "../../layouts/banner";
@@ -83,7 +83,7 @@ const ArtistPage: FC = () => {
 							<div className="FlexColumnGapQuart" style={{ alignItems: "flex-start" }}>
 								<p className="ParagraphTwoInverted">
 									<Fragment>Formed in </Fragment>
-									{formatTimestamp(since)}
+									{formatTimestampToDate(since)}
 								</p>
 								{city && country && (
 									<a

@@ -1,17 +1,15 @@
-import isEmpty from "lodash-es/isEmpty";
 import { createBEM } from "@oly_op/bem";
-import { useState, createElement, FC, Fragment, useEffect } from "react";
-import { PlaylistID, AlbumID } from "@oly_op/musicloud-common/build/types";
+import { AlbumID, PlaylistID } from "@oly_op/musicloud-common/build/types";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, createElement, useEffect, useState } from "react";
 
+import { useMutation, useQuery } from "../../hooks";
+import { Handler, Playlist as PlaylistType, User } from "../../types";
+import { ModalButton, ModalButtons } from "../modal";
 import Playlist from "../playlist";
 import Playlists from "../playlists";
-import { useQuery, useMutation } from "../../hooks";
-import { ModalButton, ModalButtons } from "../modal";
-import { User, Playlist as PlaylistType, Handler } from "../../types";
-
-import GET_USER_PLAYLISTS from "./get-user-playlists.gql";
 import ADD_ALBUM_TO_PLAYLIST from "./add-album-to-playlist.gql";
-
+import GET_USER_PLAYLISTS from "./get-user-playlists.gql";
 import "./index.scss";
 
 const bem = createBEM("AddAlbumToPlaylist");

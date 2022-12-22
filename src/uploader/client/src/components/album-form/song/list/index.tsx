@@ -1,10 +1,9 @@
-import isEmpty from "lodash-es/isEmpty";
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { ChangeEventHandler, createElement, FC } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import { ChangeEventHandler, FC, createElement } from "react";
 
 import { Item } from "../../../../types";
-
 import "./index.scss";
 
 const bem = createBEM("AlbumFormSongList");

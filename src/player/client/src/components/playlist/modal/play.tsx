@@ -1,9 +1,9 @@
-import { createElement, FC } from "react";
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
-import { Handler } from "../../../types";
-import { useStatePlay } from "../../../redux";
 import { usePlayPlaylist } from "../../../hooks";
+import { useStatePlay } from "../../../redux";
+import { Handler } from "../../../types";
 import { ModalButton, ModalOnClose } from "../../modal";
 
 const PlayButton: FC<PropTypes> = ({ playlistID, onClose }) => {

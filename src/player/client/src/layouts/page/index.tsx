@@ -1,5 +1,5 @@
 import { BEMInput, createBEM } from "@oly_op/bem";
-import { createElement, FC, ReactElement, ReactNode, useEffect } from "react";
+import { FC, ReactElement, ReactNode, createElement, useEffect } from "react";
 
 import "./index.scss";
 

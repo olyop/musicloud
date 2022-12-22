@@ -1,8 +1,8 @@
-import { createElement, Fragment, FC } from "react";
+import { FC, Fragment, createElement } from "react";
 
 import { OnClickPropTypes } from "../../types";
-import determineConcat from "./determine-concat";
 import ObjectLink, { ObjectLinkOptions } from "../object-link";
+import determineConcat from "./determine-concat";
 
 const ObjectLinks: FC<PropTypes> = ({ links, onClick, ampersand = true }) => (
 	<Fragment>

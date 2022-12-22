@@ -1,8 +1,8 @@
+import { BEMInput as BaseBEMInput } from "@oly_op/bem";
 import { HTMLAttributes } from "react";
 import { NavLinkProps, PathRouteProps } from "react-router-dom";
-import { BEMInput as BaseBEMInput } from "@oly_op/bem";
 
-import { Song, Artist, Playlist } from "./objects";
+import { Artist, Playlist, Song } from "./objects";
 
 export interface Disc {
 	songs: Song[];

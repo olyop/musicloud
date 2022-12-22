@@ -1,13 +1,12 @@
 import {
 	AlbumID,
 	AlbumIDTitleBase,
-	ArtistIDNameBase,
 	AlgoliaRecordAlbum,
+	ArtistIDNameBase,
 } from "@oly_op/musicloud-common/build/types";
-
-import { trim } from "lodash-es";
+import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers";
 import { FastifyPluginAsync } from "fastify";
-import { query, convertFirstRowToCamelCase } from "@oly_op/pg-helpers";
+import { trim } from "lodash-es";
 
 import {
 	addRecordToSearchIndex,
@@ -15,13 +14,12 @@ import {
 	determineCatalogImageURL,
 	normalizeImageAndUploadToS3,
 } from "../helpers";
-
-import uploadSong from "./upload-song";
+import checkRelationships from "./check-relationships";
 import coverInputs from "./cover-inputs";
 import getArtistID from "./get-artist-id";
-import { List, Route, Song } from "./types";
-import checkRelationships from "./check-relationships";
 import { INSERT_ALBUM, INSERT_ALBUM_ARTIST } from "./sql";
+import { List, Route, Song } from "./types";
+import uploadSong from "./upload-song";
 
 export const uploadAlbum: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await

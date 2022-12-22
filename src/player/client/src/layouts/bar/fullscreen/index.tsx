@@ -1,19 +1,18 @@
 import { createBEM } from "@oly_op/bem";
-import Button from "@oly_op/react-button";
-import { createElement, useEffect, FC, Fragment } from "react";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
+import Button from "@oly_op/react-button";
+import { FC, Fragment, createElement, useEffect } from "react";
 
-import Progress from "../progress";
-import Controls from "../controls";
-import { Handler } from "../../../types";
-import { useKeyPress } from "../../../hooks";
-import Modal from "../../../components/modal";
-import { BarCommonPropTypes } from "../types";
-import SongTitle from "../../../components/song-title";
-import ObjectLinks from "../../../components/object-links";
 import FeaturingArtists from "../../../components/featuring-artists";
-import { createObjectPath, createCatalogImageURL } from "../../../helpers";
-
+import Modal from "../../../components/modal";
+import ObjectLinks from "../../../components/object-links";
+import SongTitle from "../../../components/song-title";
+import { createCatalogImageURL, createObjectPath } from "../../../helpers";
+import { useKeyPress } from "../../../hooks";
+import { Handler } from "../../../types";
+import Controls from "../controls";
+import Progress from "../progress";
+import { BarCommonPropTypes } from "../types";
 import "./index.scss";
 
 const bem = createBEM("BarFullscreen");

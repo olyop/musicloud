@@ -1,13 +1,13 @@
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
+import { FC, Fragment, createElement } from "react";
 import { NavLink } from "react-router-dom";
-import { createElement, FC, Fragment } from "react";
 import { AudioPlayerControls } from "react-use-audio-player";
 
-import Volume from "./volume";
-import Progress from "./progress";
 import Song from "../../components/song";
 import { Handler, Song as SongType } from "../../types";
+import Progress from "./progress";
+import Volume from "./volume";
 
 const bem = createBEM("Bar");
 

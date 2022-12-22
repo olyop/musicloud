@@ -1,12 +1,10 @@
-import { FC, useState, Fragment, createElement, ChangeEventHandler } from "react";
-
-import Button from "@oly_op/react-button";
 import { BEMInput, createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import { ChangeEventHandler, FC, Fragment, createElement, useState } from "react";
 
 import Modal from "../../../components/modal";
+import { updateVolume, useDispatch, useStateVolume } from "../../../redux";
 import { ClassNameBEMPropTypes } from "../../../types";
-import { useDispatch, updateVolume, useStateVolume } from "../../../redux";
-
 import "./index.scss";
 
 const bem = createBEM("BarVolume");

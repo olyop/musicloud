@@ -1,9 +1,9 @@
 import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import { Artist } from "../../types";
-import { useShare } from "../../hooks";
 import { createObjectPath } from "../../helpers";
+import { useShare } from "../../hooks";
+import { Artist } from "../../types";
 
 const ShareButton: FC<PropTypes> = ({ artist, width }) => {
 	const [share, { shareIcon, shareText }] = useShare();

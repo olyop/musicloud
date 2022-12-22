@@ -1,10 +1,10 @@
 import isNull from "lodash-es/isNull";
 import { createElement, forwardRef } from "react";
 
-import Item from "../item";
-import ObjectLink from "../object-link";
 import { createObjectPath } from "../../helpers";
 import { Genre as GenreType, ObjectShowIcon } from "../../types";
+import Item from "../item";
+import ObjectLink from "../object-link";
 
 const Genre = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 	const { genre, className, showIcon = false } = propTypes;

@@ -1,9 +1,8 @@
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import { InfoOptions } from "../types";
 import { ClassNameBEMPropTypes } from "../../../types";
-
+import { InfoOptions } from "../types";
 import "./index.scss";
 
 const bem = createBEM("ItemInfo");

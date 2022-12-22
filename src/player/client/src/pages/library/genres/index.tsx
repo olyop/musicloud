@@ -1,13 +1,11 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
 import Feed from "../../../components/feed";
 import Genre from "../../../components/genre";
 import Genres from "../../../components/genres";
 import { Genre as GenreType } from "../../../types";
-
-import GET_LIBRARY_GENRES_TOTAL from "./get-library-genres-total.gql";
 import GET_LIBRARY_GENRE_AT_INDEX from "./get-library-genre-at-index.gql";
-
+import GET_LIBRARY_GENRES_TOTAL from "./get-library-genres-total.gql";
 import "./index.scss";
 
 const LibraryGenres: FC = () => (

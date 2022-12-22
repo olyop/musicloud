@@ -1,8 +1,8 @@
 import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import { Artist } from "../../types";
 import { useToggleObjectInLibrary } from "../../hooks";
+import { Artist } from "../../types";
 
 const ArtistFollowButton: FC<ArtistFollowButtonPropTypes> = ({ artist }) => {
 	const [toggleInLibrary, inLibrary, isError] = useToggleObjectInLibrary(artist);

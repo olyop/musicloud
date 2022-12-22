@@ -1,15 +1,14 @@
-import { createElement } from "react";
 import uniqueID from "lodash-es/uniqueId";
+import { createElement } from "react";
 
 import { Route } from "../../types";
-
-import LibraryHome from "./home";
-import LibrarySongs from "./songs";
-import LibraryGenres from "./genres";
 import LibraryAlbums from "./albums";
 import LibraryArtists from "./artists";
-import LibrarySettings from "./settings";
+import LibraryGenres from "./genres";
+import LibraryHome from "./home";
 import LibraryPlaylists from "./playlists";
+import LibrarySettings from "./settings";
+import LibrarySongs from "./songs";
 
 const routes: Route[] = [
 	{

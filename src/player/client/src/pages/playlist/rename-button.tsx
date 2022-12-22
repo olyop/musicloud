@@ -1,10 +1,10 @@
 import Button from "@oly_op/react-button";
-import { createElement, Fragment, useState, FC } from "react";
+import { FC, Fragment, createElement, useState } from "react";
 
-import { Playlist } from "../../types";
+import Input, { InputOnChange } from "../../components/input";
 import Modal from "../../components/modal";
 import { useUpdatePlaylistTitle } from "../../hooks";
-import Input, { InputOnChange } from "../../components/input";
+import { Playlist } from "../../types";
 
 const PlaylistPageRenameButton: FC<PropTypes> = ({ playlist }) => {
 	const { playlistID } = playlist;

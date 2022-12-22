@@ -1,11 +1,10 @@
+import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
+import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
-import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 
 import { Playlist } from "../../types";
 import { useMutation } from "../mutation";
-
 import CREATE_PLAYLIST from "./create-playlist.gql";
 
 export const useCreatePlaylist = () => {

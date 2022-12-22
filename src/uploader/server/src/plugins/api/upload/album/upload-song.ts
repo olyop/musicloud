@@ -1,12 +1,6 @@
-import { PoolClient } from "pg";
 import { Readable } from "node:stream";
-import { SearchIndex } from "algoliasearch";
-import { parseBuffer } from "music-metadata";
+
 import { S3Client } from "@aws-sdk/client-s3";
-// eslint-disable-next-line import/no-unresolved
-import { isNull, random, trim } from "lodash-es";
-import { getAudioDurationInSeconds } from "get-audio-duration";
-import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers";
 import {
 	AlbumID,
 	AlbumIDTitleBase,
@@ -15,9 +9,21 @@ import {
 	GenreIDNameBase,
 	SongID,
 } from "@oly_op/musicloud-common/build/types";
+import { convertFirstRowToCamelCase, query } from "@oly_op/pg-helpers";
+import { SearchIndex } from "algoliasearch";
+import { getAudioDurationInSeconds } from "get-audio-duration";
+// eslint-disable-next-line import/no-unresolved
+import { isNull, random, trim } from "lodash-es";
+import { parseBuffer } from "music-metadata";
+import { PoolClient } from "pg";
 
-import { Body, Song } from "./types";
 import { BodyEntry } from "../../types";
+import {
+	addRecordToSearchIndex,
+	deleteRecordFromSearchIndex,
+	determineCatalogAudioPath,
+	uploadFileToS3,
+} from "../helpers";
 import getArtistID from "./get-artist-id";
 import getGenreID from "./get-genre-id";
 import {
@@ -27,12 +33,7 @@ import {
 	INSERT_SONG_GENRE,
 	INSERT_SONG_REMIXER,
 } from "./sql";
-import {
-	addRecordToSearchIndex,
-	deleteRecordFromSearchIndex,
-	determineCatalogAudioPath,
-	uploadFileToS3,
-} from "../helpers";
+import { Body, Song } from "./types";
 
 const uploadSong =
 	(client: PoolClient, s3: S3Client, ag: SearchIndex) => async (options: Options) => {

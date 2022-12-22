@@ -1,14 +1,14 @@
-import isEmpty from "lodash-es/isEmpty";
-import Button from "@oly_op/react-button";
-import { useNavigate } from "react-router-dom";
 import { PlaylistPrivacy } from "@oly_op/musicloud-common/build/types";
-import { useState, createElement, FC, Fragment, useEffect } from "react";
+import Button from "@oly_op/react-button";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, createElement, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import Modal from "../../components/modal";
-import { useCreatePlaylist } from "../../hooks";
-import { createObjectPath } from "../../helpers";
 import Input, { InputOnChange } from "../../components/input";
+import Modal from "../../components/modal";
 import Select, { SelectOnChange } from "../../components/select";
+import { createObjectPath } from "../../helpers";
+import { useCreatePlaylist } from "../../hooks";
 
 const CreatePlaylistButton: FC<PropTypes> = ({ hideButtonText }) => {
 	const navigate = useNavigate();

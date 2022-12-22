@@ -1,7 +1,7 @@
 import type { FastifyCorsOptions } from "@fastify/cors";
 import { FastifyStaticOptions } from "@fastify/static";
 
-import { determineServiceURL, ServiceOptions } from "./determine-service-url";
+import { ServiceOptions, determineServiceURL } from "./determine-service-url";
 
 export const createFastifyCORSOptions = ({ service }: ServiceOptions): FastifyCorsOptions => ({
 	origin: determineServiceURL({ service }),

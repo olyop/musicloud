@@ -1,11 +1,11 @@
-import isEmpty from "lodash-es/isEmpty";
 import { createBEM } from "@oly_op/bem";
+import isEmpty from "lodash-es/isEmpty";
 import isFunction from "lodash-es/isFunction";
 import isUndefined from "lodash-es/isUndefined";
-import { createElement, FC, ReactNode } from "react";
+import { FC, ReactNode, createElement } from "react";
 
-import SelectOrderBy from "../select-order-by";
 import { ClassNameBEMPropTypes, OrderByOptions, SettingsOrderBySongs, Song } from "../../types";
+import SelectOrderBy from "../select-order-by";
 
 const bem = createBEM("Songs");
 

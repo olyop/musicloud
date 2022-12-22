@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
-
 import {
 	AlgoliaRecord,
-	AlgoliaRecordUser,
-	AlgoliaRecordSong,
-	AlgoliaRecordGenre,
 	AlgoliaRecordAlbum,
 	AlgoliaRecordArtist,
+	AlgoliaRecordGenre,
 	AlgoliaRecordPlaylist,
+	AlgoliaRecordSong,
+	AlgoliaRecordUser,
 } from "@oly_op/musicloud-common/build/types";
-
 import { SearchIndex } from "algoliasearch";
 
 type AlgoliaHit<T> = T &

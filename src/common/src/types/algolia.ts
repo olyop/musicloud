@@ -1,16 +1,16 @@
 import {
-	ObjectID,
-	UserBase,
-	SongBase,
-	GenreBase,
 	AlbumBase,
-	ArtistBase,
-	PlaylistBase,
-	UserIDNameBase,
-	ObjectTypeNames,
-	GenreIDNameBase,
 	AlbumIDTitleBase,
+	ArtistBase,
 	ArtistIDNameBase,
+	GenreBase,
+	GenreIDNameBase,
+	ObjectID,
+	ObjectTypeNames,
+	PlaylistBase,
+	SongBase,
+	UserBase,
+	UserIDNameBase,
 } from "./objects";
 
 export type AlgoliaRecordTypeName = Exclude<ObjectTypeNames, "Key" | "Play">;

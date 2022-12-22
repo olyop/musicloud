@@ -1,12 +1,11 @@
+import { TITLE } from "@oly_op/musicloud-common/build/metadata";
 import {
+	HeadProvider as HeadBaseProvider,
 	HeadConfiguration,
 	HeadOnPageTitleChange,
 	defaultParseTitleFunction,
-	HeadProvider as HeadBaseProvider,
 } from "@oly_op/react-head";
-
-import { createElement, FC, PropsWithChildren } from "react";
-import { TITLE } from "@oly_op/musicloud-common/build/metadata";
+import { FC, PropsWithChildren, createElement } from "react";
 
 import { updatePageTitle, useDispatch } from "../redux";
 

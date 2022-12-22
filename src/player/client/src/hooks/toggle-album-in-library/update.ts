@@ -1,10 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
+
 /* eslint-disable react/function-component-definition */
-import isEmpty from "lodash-es/isEmpty";
-import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import { MutationUpdaterFunction, gql } from "@apollo/client";
 import { ApolloCache, Reference } from "@apollo/client/cache";
-import { gql, MutationUpdaterFunction } from "@apollo/client";
 import { Modifier } from "@apollo/client/cache/core/types/common";
+import { AlbumID } from "@oly_op/musicloud-common/build/types";
+import isEmpty from "lodash-es/isEmpty";
 
 import { Album } from "../../types";
 import { AddData, RemoveData } from "./types";

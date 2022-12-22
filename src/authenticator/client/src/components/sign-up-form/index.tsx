@@ -1,6 +1,5 @@
-import { FC, useState, createElement, FormEventHandler } from "react";
-
 import Button from "@oly_op/react-button";
+import { FC, FormEventHandler, createElement, useState } from "react";
 
 import Input, { InputOnChange } from "../input";
 import isSignUpFormValid from "./is-sign-up-form-valid";

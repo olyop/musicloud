@@ -1,11 +1,10 @@
 import { createBEM } from "@oly_op/bem";
+import { ChangeEventHandler, FC, createElement } from "react";
 import { useAudioPosition } from "react-use-audio-player";
-import { createElement, ChangeEventHandler, FC } from "react";
 
-import { BarCommonPropTypes } from "../types";
 import { deserializeDuration } from "../../../helpers";
 import { ClassNameBEMPropTypes } from "../../../types";
-
+import { BarCommonPropTypes } from "../types";
 import "./index.scss";
 
 const bem = createBEM("Progress");

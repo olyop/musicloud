@@ -1,20 +1,18 @@
+import { BEMInput, createBEM } from "@oly_op/bem";
+import Button from "@oly_op/react-button";
+import isEmpty from "lodash-es/isEmpty";
+import isNull from "lodash-es/isNull";
+import isUndefined from "lodash-es/isUndefined";
 import {
-	FC,
-	useState,
-	useEffect,
-	createElement,
-	InputHTMLAttributes,
 	ChangeEventHandler,
+	FC,
+	InputHTMLAttributes,
+	createElement,
+	useEffect,
+	useState,
 } from "react";
 
-import isNull from "lodash-es/isNull";
-import isEmpty from "lodash-es/isEmpty";
-import Button from "@oly_op/react-button";
-import isUndefined from "lodash-es/isUndefined";
-import { createBEM, BEMInput } from "@oly_op/bem";
-
 import { Item } from "../../types";
-
 import "./index.scss";
 
 const bem = createBEM("TextField");

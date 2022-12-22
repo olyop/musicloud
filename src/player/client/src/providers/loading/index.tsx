@@ -1,9 +1,8 @@
-import isEmpty from "lodash-es/isEmpty";
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC, Fragment, PropsWithChildren } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, PropsWithChildren, createElement } from "react";
 
 import { useStateLoading } from "../../redux";
-
 import "./index.scss";
 
 const bem = createBEM("Loading");

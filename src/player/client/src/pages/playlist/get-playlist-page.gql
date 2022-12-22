@@ -10,6 +10,7 @@ query getPlaylistPage($playlistID: UUID!) {
 		songs {
 			...SongCoreFragment
 			playlistIndex(playlistID: $playlistID)
+			dateAddedToPlaylist(playlistID: $playlistID)
 		}
 	}
 }

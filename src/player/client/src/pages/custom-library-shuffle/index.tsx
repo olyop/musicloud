@@ -1,6 +1,6 @@
 import Button from "@oly_op/react-button";
-import { createElement, FC } from "react";
 import { Head } from "@oly_op/react-head";
+import { FC, createElement } from "react";
 
 const CustomLibraryShufflePage: FC = () => (
 	<Head pageTitle="Library Shuffle">

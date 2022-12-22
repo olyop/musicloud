@@ -1,9 +1,9 @@
-import { createElement, FC, Fragment, useEffect } from "react";
-import { AccessToken, ServicesNames } from "@oly_op/musicloud-common/build/types";
 import {
-	determineServiceURL,
 	RedirectPathOptions,
+	determineServiceURL,
 } from "@oly_op/musicloud-common/build/determine-service-url";
+import { AccessToken, ServicesNames } from "@oly_op/musicloud-common/build/types";
+import { FC, Fragment, createElement, useEffect } from "react";
 
 const LoggedIn: FC<PropTypes> = ({ accessToken, redirectPath, redirectService }) => {
 	const redirectURL = determineServiceURL({

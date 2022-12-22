@@ -1,4 +1,4 @@
-import { useEffect, useState, createElement, FC, Fragment, ReactNode } from "react";
+import { FC, Fragment, ReactNode, createElement, useEffect, useState } from "react";
 
 const Window: FC<PropTypes> = ({ children }) => {
 	const [dimensions, setDimensions] = useState<Dimensions>({

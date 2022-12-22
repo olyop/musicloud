@@ -1,9 +1,8 @@
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
-import { createElement, ReactNode, FC } from "react";
+import { FC, ReactNode, createElement } from "react";
 
 import { Handler } from "../../../types";
-
 import "./index.scss";
 
 const canShare = () => "share" in navigator;

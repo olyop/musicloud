@@ -1,21 +1,19 @@
 import isUndefined from "lodash-es/isUndefined";
 
-import { useQuery } from "../query";
-import determineID from "./determine-id";
-import { useMutation } from "../mutation";
 import { InLibraryObjects } from "../../types";
-import determineReturn from "./determine-return";
-
-import GET_SONG from "./get-song-in-library.gql";
-import GET_ARTIST from "./get-artist-in-library.gql";
-import GET_PLAYLIST from "./get-playlist-in-library.gql";
-
-import ADD_SONG from "./add-song-to-library.gql";
+import { useMutation } from "../mutation";
+import { useQuery } from "../query";
 import ADD_ARTIST from "./add-artist-to-library.gql";
 import ADD_PLAYLIST from "./add-playlist-to-library.gql";
-import REMOVE_SONG from "./remove-song-from-library.gql";
+import ADD_SONG from "./add-song-to-library.gql";
+import determineID from "./determine-id";
+import determineReturn from "./determine-return";
+import GET_ARTIST from "./get-artist-in-library.gql";
+import GET_PLAYLIST from "./get-playlist-in-library.gql";
+import GET_SONG from "./get-song-in-library.gql";
 import REMOVE_ARTIST from "./remove-artist-from-library.gql";
 import REMOVE_PLAYLIST from "./remove-playlist-from-library.gql";
+import REMOVE_SONG from "./remove-song-from-library.gql";
 
 export const useToggleObjectInLibrary = <T extends InLibraryObjects>(object: T) => {
 	const dr = determineReturn(object);

@@ -1,12 +1,12 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import PlayButton from "./play";
-import ShuffleButton from "./shuffle";
+import { createObjectPath } from "../../../helpers";
 import { Playlist } from "../../../types";
+import Modal, { ModalButtons, ModalHeader, ModalOnClose } from "../../modal";
 import ObjectLink from "../../object-link";
 import InLibraryButton from "./in-library";
-import { createObjectPath } from "../../../helpers";
-import Modal, { ModalButtons, ModalHeader, ModalOnClose } from "../../modal";
+import PlayButton from "./play";
+import ShuffleButton from "./shuffle";
 
 const PlaylistModal: FC<ModalPropTypes> = ({ open, onClose, playlist, hideInLibrary }) => (
 	<Modal open={open} onClose={onClose}>

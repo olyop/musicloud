@@ -1,14 +1,13 @@
 import { createBEM } from "@oly_op/bem";
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
-import PageTitle from "./page-title";
-import MenuButton from "./menu-button";
-import SearchButton from "./search-button";
-import OfflineButton from "./offline-button";
 import AccountButton from "./account-button";
 import DownloadsMenu from "./downloads-menu";
-
 import "./index.scss";
+import MenuButton from "./menu-button";
+import OfflineButton from "./offline-button";
+import PageTitle from "./page-title";
+import SearchButton from "./search-button";
 
 const bem = createBEM("Header");
 

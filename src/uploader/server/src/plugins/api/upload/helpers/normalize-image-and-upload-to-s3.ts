@@ -1,10 +1,10 @@
 import { S3 } from "@aws-sdk/client-s3";
+import { ImageDimensions, ImageSizes, ObjectID } from "@oly_op/musicloud-common/build/types";
 import sharp, { ResizeOptions } from "sharp";
-import { ImageSizes, ObjectID, ImageDimensions } from "@oly_op/musicloud-common/build/types";
 
 import { ImageInput } from "../../types";
-import { uploadFileToS3 } from "./upload-file-to-s3";
 import { determineCatalogImagePath } from "./determine-catalog-image-path";
+import { uploadFileToS3 } from "./upload-file-to-s3";
 
 interface BaseInput extends ObjectID {
 	buffer: Buffer;

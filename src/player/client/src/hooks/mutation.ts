@@ -1,9 +1,8 @@
 import { DocumentNode, MutationHookOptions, useMutation as useBaseMutation } from "@apollo/client";
-
-import { useRef, useEffect } from "react";
 import uniqueID from "lodash-es/uniqueId";
+import { useEffect, useRef } from "react";
 
-import { addLoading, useDispatch, removeLoading, updateAccessToken } from "../redux";
+import { addLoading, removeLoading, updateAccessToken, useDispatch } from "../redux";
 
 export const useMutation = <Data, Vars = Record<string, unknown>>(
 	mutation: DocumentNode,

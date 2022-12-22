@@ -1,12 +1,11 @@
-import isEmpty from "lodash-es/isEmpty";
-import { createElement, Fragment, FC } from "react";
 import { ArtistIDNameBase } from "@oly_op/musicloud-common/build/types";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, createElement } from "react";
 
+import { createObjectPath } from "../../helpers";
 import { Handler, Song } from "../../types";
 import ObjectLink from "../object-link";
 import ObjectLinks from "../object-links";
-import { createObjectPath } from "../../helpers";
-
 import "./index.scss";
 
 const SongTitle: FC<PropTypes> = ({ onClick, song: { mix, title, songID, remixers } }) => (

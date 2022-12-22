@@ -185,7 +185,6 @@ export const dateAddedToPlaylist = resolver<number | null, PlaylistID>(
 			variables: {
 				songID: parent.songID,
 				playlistID: args.playlistID,
-				columnNames: addPrefix(COLUMN_NAMES.PLAYLIST_SONG),
 			},
 		}),
 );

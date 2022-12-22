@@ -1,8 +1,8 @@
-import { createElement, FC } from "react";
+import { FC, createElement } from "react";
 
+import { useJWTPayload, useToggleObjectInLibrary } from "../../../hooks";
 import { Playlist } from "../../../types";
 import { ModalButton, ModalOnClose } from "../../modal";
-import { useJWTPayload, useToggleObjectInLibrary } from "../../../hooks";
 
 const InLibraryButton: FC<PropTypes> = ({ playlist, onClose }) => {
 	const { userID } = useJWTPayload();

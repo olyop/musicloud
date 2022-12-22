@@ -1,15 +1,14 @@
 import {
-	QueryResult,
 	DocumentNode,
-	QueryHookOptions,
 	OperationVariables,
+	QueryHookOptions,
+	QueryResult,
 	useQuery as useBaseQuery,
 } from "@apollo/client";
-
 import uniqueID from "lodash-es/uniqueId";
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-import { addLoading, updateAccessToken, useDispatch, removeLoading } from "../redux";
+import { addLoading, removeLoading, updateAccessToken, useDispatch } from "../redux";
 
 export const useQuery = <Data, Vars extends OperationVariables = OperationVariables>(
 	query: DocumentNode,

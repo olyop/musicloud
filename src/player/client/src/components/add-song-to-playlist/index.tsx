@@ -1,17 +1,15 @@
-import isEmpty from "lodash-es/isEmpty";
 import { createBEM } from "@oly_op/bem";
-import { useState, createElement, FC, Fragment, useEffect } from "react";
-import { SongID, PlaylistID } from "@oly_op/musicloud-common/build/types";
+import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
+import isEmpty from "lodash-es/isEmpty";
+import { FC, Fragment, createElement, useEffect, useState } from "react";
 
+import { useMutation, useQuery } from "../../hooks";
+import { Handler, Playlist as PlaylistType, User } from "../../types";
+import { ModalButton, ModalButtons } from "../modal";
 import Playlist from "../playlist";
 import Playlists from "../playlists";
-import { useQuery, useMutation } from "../../hooks";
-import { ModalButton, ModalButtons } from "../modal";
-import { User, Playlist as PlaylistType, Handler } from "../../types";
-
 import ADD_SONG_TO_PLAYLIST from "./add-song-to-playlist.gql";
 import GET_USER_PLAYLISTS from "./get-user-playlists-filtered-by-song.gql";
-
 import "./index.scss";
 
 const bem = createBEM("AddSongToPlaylist");

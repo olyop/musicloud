@@ -1,9 +1,9 @@
-import { createElement, FC } from "react";
 import { ArtistID } from "@oly_op/musicloud-common/build/types";
+import { FC, createElement } from "react";
 
+import { useShuffleArtist } from "../../../hooks";
 import { Handler } from "../../../types";
 import { ModalButton } from "../../modal";
-import { useShuffleArtist } from "../../../hooks";
 
 const ShuffleButton: FC<PropTypes> = ({ onClose, artistID }) => {
 	const [shuffle] = useShuffleArtist({ artistID });

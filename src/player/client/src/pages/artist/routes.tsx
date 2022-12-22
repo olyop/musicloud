@@ -1,10 +1,10 @@
-import { createElement } from "react";
 import uniqueID from "lodash-es/uniqueId";
+import { createElement } from "react";
 
 import { Route } from "../../types";
+import ArtistPageAlbums from "./albums";
 import ArtistPageHome from "./home";
 import ArtistPageSongs from "./songs";
-import ArtistPageAlbums from "./albums";
 
 const routes: Route[] = [
 	{

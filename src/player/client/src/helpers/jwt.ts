@@ -1,6 +1,6 @@
+import { UserID } from "@oly_op/musicloud-common/build/types";
 import jwtDecode from "jwt-decode";
 import isNull from "lodash-es/isNull";
-import { UserID } from "@oly_op/musicloud-common/build/types";
 
 import { StateAccessToken } from "../types";
 
