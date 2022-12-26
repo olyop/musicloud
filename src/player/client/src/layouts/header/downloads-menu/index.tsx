@@ -5,7 +5,13 @@ import { FC, Fragment, ReactNode, createElement, useEffect, useState } from "rea
 
 import Modal from "../../../components/modal";
 import Song from "../../../components/song";
-import { Song as SongType } from "../../../types";
+import { useStateOrderBy } from "../../../redux";
+import {
+	AlbumsOrderByField,
+	LibrarySongsOrderByField,
+	Song as SongType,
+	SongsOrderByField,
+} from "../../../types";
 import downloadLibrary from "./download-library";
 import "./index.scss";
 import { Status } from "./types";
@@ -14,14 +20,14 @@ const bem = createBEM("DownloadsMenu");
 
 const DownloadsMenu: FC = () => {
 	const client = useApolloClient();
+	const songsOrderBy = useStateOrderBy<SongsOrderByField>("songs");
+	const albumsOrderBy = useStateOrderBy<AlbumsOrderByField>("albums");
+	const librarySongsOrderBy = useStateOrderBy<LibrarySongsOrderByField>("librarySongs");
 
 	const [showMenu, setShowMenu] = useState(false);
-
 	const [isDownloading, setIsDownloading] = useState(false);
-
-	const [currentDownload, setCurrentDownload] = useState<SongType | null>(null);
-
 	const [downloadStatus, setDownloadStatus] = useState<Status | null>(null);
+	const [currentDownload, setCurrentDownload] = useState<SongType | null>(null);
 
 	const handleMenuOpen = () => setShowMenu(true);
 
@@ -37,7 +43,13 @@ const DownloadsMenu: FC = () => {
 		if (isDownloading) {
 			void (async () => {
 				try {
-					await downloadLibrary(client)(setCurrentDownload, setDownloadStatus);
+					await downloadLibrary(client)({
+						songsOrderBy,
+						albumsOrderBy,
+						setCurrentDownload,
+						setDownloadStatus,
+						librarySongsOrderBy,
+					});
 				} catch (error) {
 					console.error(error);
 				} finally {

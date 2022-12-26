@@ -6,14 +6,14 @@ import {
 } from "@oly_op/musicloud-common/build/types";
 import { SearchIndex } from "algoliasearch";
 
-import determineCatalogImageURL from "./determine-catalog-image-url";
-import { ImageInput } from "./types";
+import determineCatalogImageURL from "./determine-catalog-image-url.js";
+import { ImageInput } from "./types.js";
 
 interface Options extends UserID, NameBase, UserEmailAddressBase {
 	image: ImageInput;
 }
 
-const saveToAlogilia =
+const saveToAlgolia =
 	(ag: SearchIndex) =>
 	({ userID, name, image, emailAddress }: Options) => {
 		const algoliaRecord: AlgoliaRecordUser = {
@@ -27,4 +27,4 @@ const saveToAlogilia =
 		return ag.saveObject(algoliaRecord);
 	};
 
-export default saveToAlogilia;
+export default saveToAlgolia;

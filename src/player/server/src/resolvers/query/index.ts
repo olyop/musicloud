@@ -1,2 +1,2 @@
-export * from "./custom";
-export * from "./objects";
+export * from "./custom.js";
+export * from "./objects.js";

@@ -11,7 +11,7 @@ import baseConfiguration, {
 	createDevelopmentServerProxy,
 	createHTMLPluginOptions,
 	createTSLoaderRule,
-} from "../base";
+} from "../base.js";
 
 const ROOT_PATH = path.join(BASE_SRC_PATH, "authenticator", "client");
 

@@ -6,12 +6,12 @@ import bytes from "bytes";
 import { FastifyPluginAsync } from "fastify";
 import { isString, trim } from "lodash-es";
 
-import { createJWT, emailAddressExists, hashPassword, isPasswordValid } from "../helpers";
-import { determineCover, determineProfile } from "./determine-images";
-import { coverImages, profileImages } from "./image-inputs";
-import { normalizeImageAndUploadToS3 } from "./normalize-image-and-upload-to-s3";
-import saveToAlgolia from "./save-to-algolia";
-import { Body, Part, Route, isPartFile } from "./types";
+import { createJWT, emailAddressExists, hashPassword, isPasswordValid } from "../helpers/index.js";
+import { determineCover, determineProfile } from "./determine-images.js";
+import { coverImages, profileImages } from "./image-inputs.js";
+import { normalizeImageAndUploadToS3 } from "./normalize-image-and-upload-to-s3.js";
+import saveToAlgolia from "./save-to-algolia.js";
+import { Body, Part, Route, isPartFile } from "./types.js";
 
 const INSERT_USER = await importSQL(import.meta.url)("insert-user");
 

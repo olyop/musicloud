@@ -1,4 +1,4 @@
-import createParentResolver from "../create-parent-resolver";
+import createParentResolver from "../create-parent-resolver.js";
 
 const resolver = createParentResolver();
 

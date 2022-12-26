@@ -1,6 +1,6 @@
 import { AlbumBase, SongBase } from "@oly_op/musicloud-common/build/types";
 
-import { BodyEntry } from "../../types";
+import { BodyEntry } from "../../types.js";
 
 export interface Body extends Pick<AlbumBase, "title"> {
 	songs: string;

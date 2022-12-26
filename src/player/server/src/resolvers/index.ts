@@ -9,17 +9,17 @@ import {
 	VoidResolver as Void,
 } from "graphql-scalars";
 
-import * as Album from "./album";
-import * as Artist from "./artist";
-import * as Genre from "./genre";
-import * as Library from "./library";
-import * as Mutation from "./mutation";
-import * as Play from "./play";
-import * as Playlist from "./playlist";
-import * as Query from "./query";
-import * as Queue from "./queue";
-import * as Song from "./song";
-import * as User from "./user";
+import * as Album from "./album/index.js";
+import * as Artist from "./artist/index.js";
+import * as Genre from "./genre/index.js";
+import * as Library from "./library/index.js";
+import * as Mutation from "./mutation/index.js";
+import * as Play from "./play/index.js";
+import * as Playlist from "./playlist/index.js";
+import * as Query from "./query/index.js";
+import * as Queue from "./queue/index.js";
+import * as Song from "./song/index.js";
+import * as User from "./user/index.js";
 
 const resolvers = {
 	Date,

@@ -3,7 +3,7 @@ import { PoolOrClient, convertFirstRowToCamelCase, query } from "@oly_op/pg-help
 import { trim } from "lodash-es";
 import { pipe } from "rxjs";
 
-import { SELECT_GENRE } from "./sql";
+import { SELECT_GENRE } from "./sql.js";
 
 const getGenreID = (pg: PoolOrClient) => (value: string) =>
 	query(pg)(SELECT_GENRE)({

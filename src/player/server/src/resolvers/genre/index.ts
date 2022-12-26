@@ -9,9 +9,13 @@ import {
 } from "@oly_op/pg-helpers";
 import ms from "ms";
 
-import { Genre, OrderByArgs, Song } from "../../types";
-import createParentResolver from "../create-parent-resolver";
-import { determineRedisGenresKey, determineSongsSQLOrderByField, redisHandler } from "../helpers";
+import { Genre, OrderByArgs, Song } from "../../types/index.js";
+import createParentResolver from "../create-parent-resolver.js";
+import {
+	determineRedisGenresKey,
+	determineSongsSQLOrderByField,
+	redisHandler,
+} from "../helpers/index.js";
 
 const isf = importSQL(import.meta.url);
 

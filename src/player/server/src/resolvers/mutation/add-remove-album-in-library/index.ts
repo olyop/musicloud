@@ -1,9 +1,9 @@
 import { AlbumID } from "@oly_op/musicloud-common/build/types";
-import { importSQL, query } from "@oly_op/pg-helpers/build";
+import { importSQL, query } from "@oly_op/pg-helpers";
 
-import { Album } from "../../../types";
-import { getAlbum } from "../../helpers";
-import resolver from "../resolver";
+import { Album } from "../../../types/index.js";
+import { getAlbum } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 const isf = importSQL(import.meta.url);
 

@@ -1,4 +1,7 @@
 {
 	"extends": "../../../tsconfig-tsx.json",
+	"compilerOptions": {
+		"moduleResolution": "Node"
+	},
 	"include": ["src", "../../types"]
 }

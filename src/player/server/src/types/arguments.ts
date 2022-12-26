@@ -1,10 +1,6 @@
 import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 
-import { OrderBy } from "./other";
-
-export interface PageArgs {
-	page: number | null;
-}
+import { OrderBy } from "./other.js";
 
 export interface OrderByArgs {
 	orderBy: OrderBy;

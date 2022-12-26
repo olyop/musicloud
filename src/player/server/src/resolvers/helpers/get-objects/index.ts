@@ -19,7 +19,7 @@ import {
 } from "@oly_op/pg-helpers";
 import { isNull } from "lodash-es";
 
-import { Album, Artist, Genre, Key, Play, Playlist, Song, User } from "../../../types";
+import { Album, Artist, Genre, Key, Play, Playlist, Song, User } from "../../../types/index.js";
 
 const isf = importSQL(import.meta.url);
 

@@ -1,6 +1,6 @@
-import { UNAUTHORIZED_ERROR } from "../../context";
-import { User } from "../../types";
-import createParentResolver from "../create-parent-resolver";
+import { UNAUTHORIZED_ERROR } from "../../context.js";
+import { User } from "../../types/index.js";
+import createParentResolver from "../create-parent-resolver.js";
 
 const resolver = createParentResolver<User>(({ parent, context }) => {
 	if (parent.userID !== context.getAuthorizationJWTPayload(context.authorization).userID) {

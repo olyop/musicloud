@@ -7,7 +7,7 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { Playlist } from "../../../types";
+import { Playlist } from "../../../types/index.js";
 
 const SELECT_PLAYLISTS_TRENDING = await importSQL(import.meta.url)("select-playlists-trending");
 

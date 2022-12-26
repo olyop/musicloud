@@ -1,7 +1,7 @@
 import uniqueID from "lodash-es/uniqueId";
 import { createElement } from "react";
 
-import { Route } from "../../types";
+import { RouteObjectCustom } from "../../types";
 import LibraryAlbums from "./albums";
 import LibraryArtists from "./artists";
 import LibraryGenres from "./genres";
@@ -10,7 +10,7 @@ import LibraryPlaylists from "./playlists";
 import LibrarySettings from "./settings";
 import LibrarySongs from "./songs";
 
-const routes: Route[] = [
+const routes: RouteObjectCustom[] = [
 	{
 		path: "",
 		end: true,

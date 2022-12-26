@@ -1,6 +1,6 @@
-import { IndexOptions } from "../../../types";
-import { removeSongFromQueue } from "../../helpers";
-import resolver from "../resolver";
+import { IndexOptions } from "../../../types/index.js";
+import { removeSongFromQueue } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 export const removeSongFromQueueNext = resolver<Record<string, never>, IndexOptions>(
 	async ({ args, context }) => {

@@ -3,7 +3,7 @@ import path from "node:path";
 import { IS_DEVELOPMENT } from "@oly_op/musicloud-common/build/globals";
 import { Configuration } from "webpack";
 
-import { BASE_BUILD_PATH, BASE_SRC_PATH, createTSLoaderRule } from "../base";
+import { BASE_BUILD_PATH, BASE_SRC_PATH, createTSLoaderRule } from "../base.js";
 
 const ROOT_PATH = path.join(BASE_SRC_PATH, "player", "service-worker");
 const SRC_PATH = path.join(ROOT_PATH, "src");

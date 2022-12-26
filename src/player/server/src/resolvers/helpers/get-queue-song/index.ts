@@ -8,7 +8,7 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { IndexOptions, QueueSong, TableNameOptions } from "../../../types";
+import { IndexOptions, QueueSong, TableNameOptions } from "../../../types/index.js";
 
 const SELECT_QUEUE_SONG = await importSQL(import.meta.url)("select-queue-song");
 

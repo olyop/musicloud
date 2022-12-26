@@ -1,6 +1,6 @@
 import { isNull } from "lodash-es";
 
-import { RedisClient } from "../../../types";
+import { RedisClient } from "../../../types/index.js";
 
 const KEY_PREFIX = process.env.REDIS_KEY_PREFIX;
 

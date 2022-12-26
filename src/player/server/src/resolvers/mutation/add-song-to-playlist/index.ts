@@ -2,9 +2,9 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
 import { exists, importSQL, query } from "@oly_op/pg-helpers";
 
-import { Playlist } from "../../../types";
-import { getPlaylist, isNotUsersPlaylist } from "../../helpers";
-import resolver from "../resolver";
+import { Playlist } from "../../../types/index.js";
+import { getPlaylist, isNotUsersPlaylist } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 const EXECUTE_ADD_SONG_TO_PLAYLIST = await importSQL(import.meta.url)(
 	"execute-add-song-to-playlist",

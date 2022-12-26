@@ -24,6 +24,7 @@ export interface InfoOptions {
 interface ClassNames extends ClassNameBEMPropTypes {
 	infoClassName?: BEMInput;
 	iconClassName?: BEMInput;
+	imageClassName?: BEMInput;
 }
 
 interface Options {

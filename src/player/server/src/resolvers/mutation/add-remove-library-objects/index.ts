@@ -1,6 +1,6 @@
 import { ArtistID, PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
 
-import { Artist, Playlist, Song } from "../../../types";
+import { Artist, Playlist, Song } from "../../../types/index.js";
 import {
 	addArtistToLibraryHelper,
 	addPlaylistToLibraryHelper,
@@ -9,8 +9,8 @@ import {
 	removeArtistFromLibraryHelper,
 	removePlaylistFromLibraryHelper,
 	removeSongFromLibraryHelper,
-} from "../../helpers";
-import resolver from "../resolver";
+} from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 export const addSongToLibrary = resolver<Song, SongID>(({ args, context }) =>
 	addSongToLibraryHelper(context.pg)({

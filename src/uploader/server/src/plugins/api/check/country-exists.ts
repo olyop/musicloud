@@ -1,9 +1,8 @@
 import { NameBase } from "@oly_op/musicloud-common/build/types";
-import { FastifyPluginAsync } from "fastify";
-import { RouteGenericInterface } from "fastify/types/route";
-import includes from "lodash-es/includes";
+import { FastifyPluginAsync, RouteGenericInterface } from "fastify";
+import { includes } from "lodash-es";
 
-import countries from "./countries";
+import countries from "./countries.js";
 
 interface Route extends RouteGenericInterface {
 	Querystring: NameBase;

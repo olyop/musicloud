@@ -1,7 +1,6 @@
 import { NameBase } from "@oly_op/musicloud-common/build/types";
 import { exists } from "@oly_op/pg-helpers";
-import { FastifyPluginAsync } from "fastify";
-import { RouteGenericInterface } from "fastify/types/route";
+import { FastifyPluginAsync, RouteGenericInterface } from "fastify";
 
 interface Route extends RouteGenericInterface {
 	Querystring: NameBase;

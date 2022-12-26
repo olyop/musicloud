@@ -1,15 +1,15 @@
 import uniqueID from "lodash-es/uniqueId";
 import { createElement } from "react";
 
-import { Route } from "../../types";
+import { RouteObjectCustom } from "../../types";
 import ArtistPageAlbums from "./albums";
 import ArtistPageHome from "./home";
 import ArtistPageSongs from "./songs";
 
-const routes: Route[] = [
+const routes: RouteObjectCustom[] = [
 	{
 		path: "",
-		end: true,
+		index: true,
 		icon: "home",
 		routeID: uniqueID(),
 		element: <ArtistPageHome />,

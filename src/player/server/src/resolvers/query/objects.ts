@@ -9,7 +9,7 @@ import {
 	UserID,
 } from "@oly_op/musicloud-common/build/types";
 
-import { Album, Artist, Genre, Play, Playlist, Song, User } from "../../types";
+import { Album, Artist, Genre, Play, Playlist, Song, User } from "../../types/index.js";
 import {
 	determineRedisAlbumsKey,
 	determineRedisArtistsKey,
@@ -25,8 +25,8 @@ import {
 	getSong,
 	getUser as getUserHelper,
 	redisHandler,
-} from "../helpers";
-import resolver from "./resolver";
+} from "../helpers/index.js";
+import resolver from "./resolver.js";
 
 export const getQueue = resolver(() => Promise.resolve({}));
 

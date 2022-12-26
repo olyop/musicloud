@@ -1,6 +1,6 @@
-import { IS_DEVELOPMENT, IS_TESTING, USE_HTTPS } from "./globals";
-import { DOMAIN_NAME } from "./metadata";
-import { AccessToken, ServicesNames } from "./types";
+import { IS_DEVELOPMENT, IS_TESTING, USE_HTTPS } from "./globals.js";
+import { DOMAIN_NAME } from "./metadata.js";
+import { AccessToken, ServicesNames } from "./types/index.js";
 
 const determineDevelopmentPort = ({ service }: ServiceOptions) => {
 	if (service === ServicesNames.PLAYER) {

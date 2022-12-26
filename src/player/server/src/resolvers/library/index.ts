@@ -5,11 +5,18 @@ import {
 	getResultCountOrNull,
 	importSQL,
 	query,
-} from "@oly_op/pg-helpers/build";
+} from "@oly_op/pg-helpers";
 
-import { Album, Artist, Genre, LibraryObjectAtIndexArgs, Playlist, Song } from "../../types";
-import createParentResolver from "../create-parent-resolver";
-import { determineSongsSQLOrderByField } from "../helpers";
+import {
+	Album,
+	Artist,
+	Genre,
+	LibraryObjectAtIndexArgs,
+	Playlist,
+	Song,
+} from "../../types/index.js";
+import createParentResolver from "../create-parent-resolver.js";
+import { determineSongsSQLOrderByField } from "../helpers/index.js";
 
 const isf = importSQL(import.meta.url);
 

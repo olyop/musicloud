@@ -1,6 +1,6 @@
 import { BEMInput as BaseBEMInput } from "@oly_op/bem";
 import { HTMLAttributes } from "react";
-import { NavLinkProps, PathRouteProps } from "react-router-dom";
+import { NavLinkProps, RouteObject } from "react-router-dom";
 
 import { Artist, Playlist, Song } from "./objects";
 
@@ -10,14 +10,16 @@ export interface Disc {
 	hideLabel: boolean;
 }
 
-export interface Route extends PathRouteProps, Omit<NavLinkProps, "children" | "to" | "path"> {
-	path: string;
-	icon?: string;
-	name?: string;
-	routeID: string;
-	ignore?: boolean;
-	underline?: boolean;
-}
+export type RouteObjectCustom = RouteObject &
+	Pick<NavLinkProps, "end"> & {
+		path: string;
+		icon?: string;
+		name?: string;
+		routeID: string;
+		ignore?: boolean;
+		underline?: boolean;
+	};
+
 export type Handler = () => void;
 
 export interface OnClickPropTypes {

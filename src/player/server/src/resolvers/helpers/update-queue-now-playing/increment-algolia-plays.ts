@@ -2,7 +2,7 @@ import { ArtistID, GenreID, SongID } from "@oly_op/musicloud-common/build/types"
 import { PoolOrClient, convertTableToCamelCase, importSQL, query } from "@oly_op/pg-helpers";
 import { SearchIndex } from "algoliasearch";
 
-import { getSong } from "../get-objects";
+import { getSong } from "../get-objects/index.js";
 
 const isf = importSQL(import.meta.url);
 

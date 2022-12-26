@@ -4,7 +4,7 @@ import { FC, ReactNode, createElement } from "react";
 import { NavLink } from "react-router-dom";
 
 import Window from "../../components/window";
-import { ClassNameBEMPropTypes, ClassNamePropTypes, Route } from "../../types";
+import { ClassNameBEMPropTypes, ClassNamePropTypes, RouteObjectCustom } from "../../types";
 import "./index.scss";
 
 const bem = createBEM("Navigation");
@@ -36,7 +36,7 @@ const NavigationLink: FC<LinkPropTypes> = ({
 );
 
 interface LinkPropTypes extends ClassNameBEMPropTypes {
-	route: Route;
+	route: RouteObjectCustom;
 }
 
 const Navigation: FC<PropTypes> = ({ right, routes, className, linkClassName }) => (
@@ -56,7 +56,7 @@ const Navigation: FC<PropTypes> = ({ right, routes, className, linkClassName }) 
 );
 
 interface PropTypes extends ClassNamePropTypes {
-	routes: Route[];
+	routes: RouteObjectCustom[];
 	right?: ReactNode;
 	linkClassName?: BEMInput;
 }

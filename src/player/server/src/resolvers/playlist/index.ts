@@ -9,8 +9,8 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { Playlist, Song } from "../../types";
-import createParentResolver from "../create-parent-resolver";
+import { Playlist, Song } from "../../types/index.js";
+import createParentResolver from "../create-parent-resolver.js";
 import {
 	determineRedisPlaysKey,
 	getObjectDateAddedToLibrary,
@@ -18,7 +18,7 @@ import {
 	getUser,
 	pgEpochToJS,
 	redisHandler,
-} from "../helpers";
+} from "../helpers/index.js";
 
 const isf = importSQL(import.meta.url);
 

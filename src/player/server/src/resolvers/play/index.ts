@@ -1,6 +1,12 @@
-import { Play } from "../../types";
-import createParentResolver from "../create-parent-resolver";
-import { determineRedisPlaysKey, getSong, getUser, pgEpochToJS, redisHandler } from "../helpers";
+import { Play } from "../../types/index.js";
+import createParentResolver from "../create-parent-resolver.js";
+import {
+	determineRedisPlaysKey,
+	getSong,
+	getUser,
+	pgEpochToJS,
+	redisHandler,
+} from "../helpers/index.js";
 
 const resolver = createParentResolver<Play>();
 

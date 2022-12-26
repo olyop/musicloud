@@ -37,13 +37,13 @@ const LibraryAlbums: FC = () => {
 	);
 };
 
-interface GetAlbumsTotalData {
+export interface GetAlbumsTotalData {
 	getLibrary: {
 		albumsTotal: number | null;
 	};
 }
 
-interface GetAlbumAtIndexData {
+export interface GetAlbumAtIndexData {
 	getLibrary: {
 		albumAtIndex: AlbumType | null;
 	};

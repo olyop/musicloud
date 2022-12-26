@@ -2,8 +2,12 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 import { exists, importSQL, query } from "@oly_op/pg-helpers";
 
-import { deleteCacheValue, determineRedisPlaylistsKey, isNotUsersPlaylist } from "../../helpers";
-import resolver from "../resolver";
+import {
+	deleteCacheValue,
+	determineRedisPlaylistsKey,
+	isNotUsersPlaylist,
+} from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 const DELETE_PLAYLIST_BY_ID = await importSQL(import.meta.url)("delete-playlist-by-id");
 

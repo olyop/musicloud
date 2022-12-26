@@ -1,5 +1,5 @@
-import createParentResolver from "../create-parent-resolver";
-import { getQueueNowPlayingSong, getQueueSongs } from "../helpers";
+import createParentResolver from "../create-parent-resolver.js";
+import { getQueueNowPlayingSong, getQueueSongs } from "../helpers/index.js";
 
 const QUEUE_PAGE_SIZE = 100;
 

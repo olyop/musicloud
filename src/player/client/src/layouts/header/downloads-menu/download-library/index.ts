@@ -1,12 +1,9 @@
 import { ApolloClient } from "@apollo/client";
 
-import { SetCurrentDownload, SetStatus } from "../types";
+import { DownloadOptions } from "../types";
 import downloadSongs from "./songs";
 
-const downloadLibrary =
-	(client: ApolloClient<unknown>) =>
-	async (setCurrentDownload: SetCurrentDownload, setStatus: SetStatus) => {
-		await downloadSongs(client)(setCurrentDownload, setStatus);
-	};
-
+const downloadLibrary = (client: ApolloClient<unknown>) => async (options: DownloadOptions) => {
+	await downloadSongs(client)(options);
+};
 export default downloadLibrary;

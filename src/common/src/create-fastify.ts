@@ -2,11 +2,11 @@ import { readFile } from "node:fs/promises";
 import type http from "node:http";
 import type http2 from "node:http2";
 
-import Fastify, { FastifyInstance } from "fastify";
+import { FastifyInstance, fastify } from "fastify";
 import type { FastifyHttp2SecureOptions, FastifyServerOptions } from "fastify";
 import type { PrettyOptions } from "pino-pretty";
 
-import { IS_DEVELOPMENT, USE_HTTPS } from "./globals";
+import { IS_DEVELOPMENT, USE_HTTPS } from "./globals.js";
 
 const PINO_PRETTY_OPTIONS: PrettyOptions = {
 	singleLine: true,
@@ -38,9 +38,9 @@ export const createFastify = async () => {
 			},
 		};
 
-		return Fastify(http2Options) as FastifyInstance<CustomServer>;
+		return fastify(http2Options) as FastifyInstance<CustomServer>;
 	} else {
-		return Fastify(createBaseOptions<http.Server>()) as FastifyInstance<CustomServer>;
+		return fastify(createBaseOptions<http.Server>()) as FastifyInstance<CustomServer>;
 	}
 };
 

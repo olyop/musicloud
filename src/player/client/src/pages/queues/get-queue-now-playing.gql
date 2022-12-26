@@ -1,4 +1,4 @@
-#import "../fragments/queue-now-playing.gql";
+#import "../../graphql/fragments/queue-now-playing.gql";
 
 query getQueueNowPlaying {
 	getQueue {

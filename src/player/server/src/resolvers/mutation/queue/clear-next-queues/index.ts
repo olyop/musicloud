@@ -1,6 +1,6 @@
 import { importSQL, query } from "@oly_op/pg-helpers";
 
-import resolver from "../../resolver";
+import resolver from "../../resolver.js";
 
 const EXECUTE_CLEAR_NEXT_QUEUES = await importSQL(import.meta.url)("execute-clear-next-queues");
 

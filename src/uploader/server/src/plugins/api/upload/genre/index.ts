@@ -1,17 +1,15 @@
-import { readFile } from "node:fs/promises";
-
 import { GenreBase, GenreID } from "@oly_op/musicloud-common/build/types";
-import { convertFirstRowToCamelCase, exists, query } from "@oly_op/pg-helpers";
+import { convertFirstRowToCamelCase, exists, importSQL, query } from "@oly_op/pg-helpers";
 import { FastifyPluginAsync } from "fastify";
 import { trim } from "lodash-es";
 
-import { addRecordToSearchIndex, deleteRecordFromSearchIndex } from "../helpers";
+import { addRecordToSearchIndex, deleteRecordFromSearchIndex } from "../helpers/index.js";
 
 interface Route {
 	Body: Pick<GenreBase, "name">;
 }
 
-const INSERT_GENRE = (await readFile(new URL("./insert-genre.sql", import.meta.url))).toString();
+const INSERT_GENRE = await importSQL(import.meta.url)("insert-genre");
 
 export const uploadGenre: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await

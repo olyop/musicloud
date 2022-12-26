@@ -13,13 +13,13 @@ import {
 	deleteRecordFromSearchIndex,
 	determineCatalogImageURL,
 	normalizeImageAndUploadToS3,
-} from "../helpers";
-import checkRelationships from "./check-relationships";
-import coverInputs from "./cover-inputs";
-import getArtistID from "./get-artist-id";
-import { INSERT_ALBUM, INSERT_ALBUM_ARTIST } from "./sql";
-import { List, Route, Song } from "./types";
-import uploadSong from "./upload-song";
+} from "../helpers/index.js";
+import checkRelationships from "./check-relationships.js";
+import coverInputs from "./cover-inputs.js";
+import getArtistID from "./get-artist-id.js";
+import { INSERT_ALBUM, INSERT_ALBUM_ARTIST } from "./sql.js";
+import { List, Route, Song } from "./types.js";
+import uploadSong from "./upload-song.js";
 
 export const uploadAlbum: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await

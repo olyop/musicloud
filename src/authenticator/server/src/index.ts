@@ -1,8 +1,7 @@
 import compress from "@fastify/compress";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
-import rateLimit from "@fastify/rate-limit";
-import serveStatic from "@fastify/static";
+import { fastifyStatic } from "@fastify/static";
 import { createFastify } from "@oly_op/musicloud-common/build/create-fastify";
 import {
 	createFastifyCORSOptions,
@@ -19,10 +18,9 @@ const INDEX_DOT_HTML_PATH = new URL("public/index.html", import.meta.url).pathna
 
 const fastify = await createFastify();
 
-await fastify.register(rateLimit);
 await fastify.register(helmet, FASTIFY_HELMET_OPTIONS);
 await fastify.register(cors, createFastifyCORSOptions({ service: ServicesNames.AUTHENTICATOR }));
-await fastify.register(serveStatic, createFastifyStaticOptions({ root: STATIC_ROOT }));
+await fastify.register(fastifyStatic, createFastifyStaticOptions({ root: STATIC_ROOT }));
 await fastify.register(compress);
 await fastify.register(services);
 await fastify.register(api);

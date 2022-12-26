@@ -1,14 +1,14 @@
 import { query } from "@oly_op/pg-helpers";
 import { find, isEmpty } from "lodash-es";
 
-import { IndexOptions } from "../../../types";
+import { IndexOptions } from "../../../types/index.js";
 import {
 	deleteQueueSong,
 	existsQueueSong,
 	getQueueSection,
 	updateQueueNowPlaying,
-} from "../../helpers";
-import resolver from "../resolver";
+} from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 export const jumpToSongInQueueLater = resolver<Record<string, never>, IndexOptions>(
 	async ({ args, context }) => {

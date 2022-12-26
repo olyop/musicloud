@@ -8,8 +8,8 @@ import {
 } from "@oly_op/pg-helpers";
 import { pipe } from "rxjs";
 
-import { ColumnNameOptions, LibraryObject, TableNameOptions } from "../../../types";
-import { pgEpochToJS } from "../pg-epoch-to-js";
+import { ColumnNameOptions, LibraryObject, TableNameOptions } from "../../../types/index.js";
+import { pgEpochToJS } from "../pg-epoch-to-js.js";
 
 const isf = importSQL(import.meta.url);
 

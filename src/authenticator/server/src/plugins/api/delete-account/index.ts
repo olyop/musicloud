@@ -1,5 +1,4 @@
 import { DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { NAME } from "@oly_op/musicloud-common/build/metadata";
 import { QueryOptions, importSQL, query } from "@oly_op/pg-helpers";
 import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 import { FastifyPluginAsync } from "fastify";
@@ -9,9 +8,9 @@ import {
 	getUserByEmailAddress,
 	getUserPassword,
 	isPasswordCorrect,
-} from "../helpers";
-import options from "./options";
-import { Route } from "./types";
+} from "../helpers/index.js";
+import options from "./options.js";
+import { Route } from "./types.js";
 
 const isf = importSQL(import.meta.url);
 
@@ -52,7 +51,7 @@ export const deleteAccount: FastifyPluginAsync =
 
 						await fastify.s3.send(
 							new DeleteObjectCommand({
-								Bucket: NAME,
+								Bucket: process.env.AWS_S3_BUCKET_NAME,
 								Key: `catalog/${removeDashesFromUUID(userID)}`,
 							}),
 						);

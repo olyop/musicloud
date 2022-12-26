@@ -11,9 +11,9 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { Playlist, User } from "../../types";
-import { pgEpochToJS } from "../helpers";
-import resolver from "./resolver";
+import { Playlist, User } from "../../types/index.js";
+import { pgEpochToJS } from "../helpers/index.js";
+import resolver from "./resolver.js";
 
 const isf = importSQL(import.meta.url);
 

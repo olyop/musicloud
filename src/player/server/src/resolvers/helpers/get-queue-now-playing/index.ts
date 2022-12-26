@@ -8,7 +8,7 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { NowPlaying } from "../../../types";
+import { NowPlaying } from "../../../types/index.js";
 
 const SELECT_NOW_PLAYING = await importSQL(import.meta.url)("select-now-playing");
 

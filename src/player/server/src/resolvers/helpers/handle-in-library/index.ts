@@ -1,9 +1,9 @@
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { ArtistID, PlaylistID, SongID, UserID } from "@oly_op/musicloud-common/build/types";
-import { PoolOrClient } from "@oly_op/pg-helpers/build";
+import { PoolOrClient } from "@oly_op/pg-helpers";
 
-import { Artist, Playlist, Song } from "../../../types";
-import { handleInLibrary } from "./base";
+import { Artist, Playlist, Song } from "../../../types/index.js";
+import { handleInLibrary } from "./base.js";
 
 type HandleObjectInLibraryFunction<ObjectOptions, Return> = (
 	pg: PoolOrClient,

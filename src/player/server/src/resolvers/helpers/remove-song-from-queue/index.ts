@@ -1,11 +1,11 @@
 import { UserID } from "@oly_op/musicloud-common/build/types";
 import { PoolOrClient } from "@oly_op/pg-helpers";
 
-import { IndexOptions, TableNameOptions } from "../../../types";
-import { crementQueueSongIndex } from "../crement-queue-song-index";
-import { deleteQueueSong } from "../delete-queue-song";
-import { existsQueueSong } from "../exists-queue-song";
-import { getQueueSection } from "../get-queue-section";
+import { IndexOptions, TableNameOptions } from "../../../types/index.js";
+import { crementQueueSongIndex } from "../crement-queue-song-index/index.js";
+import { deleteQueueSong } from "../delete-queue-song/index.js";
+import { existsQueueSong } from "../exists-queue-song/index.js";
+import { getQueueSection } from "../get-queue-section/index.js";
 
 export const removeSongFromQueue = (pg: PoolOrClient) => async (options: Options) => {
 	const { userID, tableName, index } = options;
@@ -43,4 +43,4 @@ export const removeSongFromQueue = (pg: PoolOrClient) => async (options: Options
 	}
 };
 
-export interface Options extends UserID, IndexOptions, TableNameOptions {}
+interface Options extends UserID, IndexOptions, TableNameOptions {}

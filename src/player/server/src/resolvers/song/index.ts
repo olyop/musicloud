@@ -1,5 +1,4 @@
 import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { NAME } from "@oly_op/musicloud-common/build/metadata";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 import {
@@ -16,8 +15,8 @@ import { removeDashesFromUUID } from "@oly_op/uuid-dashes";
 import ms from "ms";
 import { pipe } from "rxjs";
 
-import { Artist, Genre, PlaylistSong, Song } from "../../types";
-import createParentResolver from "../create-parent-resolver";
+import { Artist, Genre, PlaylistSong, Song } from "../../types/index.js";
+import createParentResolver from "../create-parent-resolver.js";
 import {
 	determineRedisSongsKey,
 	getAlbum,
@@ -26,7 +25,7 @@ import {
 	getObjectInLibrary,
 	pgEpochToJS,
 	redisHandler,
-} from "../helpers";
+} from "../helpers/index.js";
 
 const isf = importSQL(import.meta.url);
 
@@ -45,26 +44,29 @@ export const size = resolver(({ parent, context }) =>
 	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "size"), async () => {
 		const songID = removeDashesFromUUID(parent.songID);
 		const Key = `catalog/${songID}/audio/index.mp3`;
-		const command = new GetObjectCommand({ Bucket: NAME, Key });
+		const command = new GetObjectCommand({ Bucket: process.env.AWS_S3_BUCKET_NAME, Key });
 		const content = await context.s3.send(command);
 		return content.ContentLength ?? null;
 	}),
 );
 
 export const key = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "key"), () =>
+	redisHandler(context.redis)(
+		determineRedisSongsKey(parent.songID, "key"),
 		getKey(context.pg)({ keyID: parent.keyID }),
 	),
 );
 
 export const album = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "album"), () =>
+	redisHandler(context.redis)(
+		determineRedisSongsKey(parent.songID, "album"),
 		getAlbum(context.pg)({ albumID: parent.albumID }),
 	),
 );
 
 export const genres = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "genres"), () =>
+	redisHandler(context.redis)(
+		determineRedisSongsKey(parent.songID, "genres"),
 		query(context.pg)(SELECT_SONG_GENRES)({
 			parse: convertTableToCamelCase<Genre>(),
 			variables: {
@@ -76,7 +78,8 @@ export const genres = resolver(({ parent, context }) =>
 );
 
 export const artists = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "artists"), () =>
+	redisHandler(context.redis)(
+		determineRedisSongsKey(parent.songID, "artists"),
 		query(context.pg)(SELECT_SONG_ARTISTS)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {
@@ -88,7 +91,8 @@ export const artists = resolver(({ parent, context }) =>
 );
 
 export const remixers = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "remixers"), () =>
+	redisHandler(context.redis)(
+		determineRedisSongsKey(parent.songID, "remixers"),
 		query(context.pg)(SELECT_SONG_REMIXERS)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {
@@ -100,7 +104,8 @@ export const remixers = resolver(({ parent, context }) =>
 );
 
 export const featuring = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "featuring"), () =>
+	redisHandler(context.redis)(
+		determineRedisSongsKey(parent.songID, "featuring"),
 		query(context.pg)(SELECT_SONG_FEATURING)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {

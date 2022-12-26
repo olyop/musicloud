@@ -2,9 +2,9 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import { AlgoliaRecordPlaylist, InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 import { addPrefix, convertFirstRowToCamelCase, importSQL, query } from "@oly_op/pg-helpers";
 
-import { Playlist } from "../../../types";
-import { addPlaylistToLibraryHelper, getUser } from "../../helpers";
-import resolver from "../resolver";
+import { Playlist } from "../../../types/index.js";
+import { addPlaylistToLibraryHelper, getUser } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 const isf = importSQL(import.meta.url);
 

@@ -1,10 +1,10 @@
 import { FastifyPluginAsync } from "fastify";
 
-import { changePassword } from "./change-password";
-import { checkEmailAddressExists } from "./check-email-address-exists";
-import { deleteAccount } from "./delete-account";
-import { logIn } from "./log-in";
-import { signUp } from "./sign-up";
+import { changePassword } from "./change-password/index.js";
+import { checkEmailAddressExists } from "./check-email-address-exists/index.js";
+import { deleteAccount } from "./delete-account/index.js";
+import { logIn } from "./log-in/index.js";
+import { signUp } from "./sign-up/index.js";
 
 export const api: FastifyPluginAsync = async fastify => {
 	await fastify.register(

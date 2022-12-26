@@ -3,7 +3,7 @@ import type { FastifyHelmetOptions } from "@fastify/helmet";
 import ms from "ms";
 import type { PoolConfig } from "pg";
 
-import { FILES_URL, IS_DEVELOPMENT, IS_PRODUCTION, IS_TESTING, USE_HTTPS } from "./globals";
+import { FILES_URL, IS_DEVELOPMENT, IS_PRODUCTION, IS_TESTING, USE_HTTPS } from "./globals.js";
 
 const GOOGLE_FONTS_FONT_ORIGIN = "https://fonts.gstatic.com";
 const GOOGLE_FONTS_CSS_ORIGIN = "https://fonts.googleapis.com";
@@ -24,13 +24,11 @@ export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 			styleSrc: [
 				"'self'",
 				GOOGLE_FONTS_CSS_ORIGIN,
-				...(IS_DEVELOPMENT ? APOLLO_STUDIO_ORIGINS : []),
-				...(IS_DEVELOPMENT ? ["'unsafe-inline'"] : []),
+				...(IS_DEVELOPMENT ? [...APOLLO_STUDIO_ORIGINS, "'unsafe-inline'"] : []),
 			],
 			scriptSrc: [
 				"'self'",
-				...(IS_DEVELOPMENT ? APOLLO_STUDIO_ORIGINS : []),
-				...(IS_DEVELOPMENT ? ["'unsafe-inline'"] : []),
+				...(IS_DEVELOPMENT ? [...APOLLO_STUDIO_ORIGINS, "'unsafe-inline'"] : []),
 			],
 			connectSrc: [
 				"'self'",
@@ -45,7 +43,6 @@ export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 
 export const PG_POOL_OPTIONS: PoolConfig = {
 	max: 60,
-	parseInputDatesAsUTC: true,
 	idleTimeoutMillis: ms("30s"),
 	connectionTimeoutMillis: ms("30s"),
 	host: process.env.POSTGRESQL_HOSTNAME,

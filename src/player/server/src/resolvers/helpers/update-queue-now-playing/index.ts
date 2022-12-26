@@ -2,7 +2,7 @@ import { UserID } from "@oly_op/musicloud-common/build/types";
 import { PoolOrClient, importSQL, query } from "@oly_op/pg-helpers";
 import { SearchIndex } from "algoliasearch";
 
-import { incrementAlgoliaPlays } from "./increment-algolia-plays";
+import { incrementAlgoliaPlays } from "./increment-algolia-plays.js";
 
 const INSERT_PLAY = await importSQL(import.meta.url)("insert-play");
 const EXECUTE_HANDLE_NOW_PLAYING = await importSQL(import.meta.url)("execute-handle-now-playing");

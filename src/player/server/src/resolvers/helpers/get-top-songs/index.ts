@@ -7,7 +7,7 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { Song } from "../../../types";
+import { Song } from "../../../types/index.js";
 
 const SELECT_TOP_SONGS = await importSQL(import.meta.url)("select-top-songs");
 

@@ -2,8 +2,8 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import { SongID } from "@oly_op/musicloud-common/build/types";
 import { exists, query } from "@oly_op/pg-helpers";
 
-import { crementQueueSongIndex, getQueueSection, insertQueueSong } from "../../helpers";
-import resolver from "../resolver";
+import { crementQueueSongIndex, getQueueSection, insertQueueSong } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 export const queueSongNext = resolver<Record<string, never>, SongID>(async ({ args, context }) => {
 	const { songID } = args;

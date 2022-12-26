@@ -12,8 +12,8 @@ const importSQL = (folderName: string, fileName: string) =>
 	fs.readFileSync(path.join(SQL_PATH, folderName, `${fileName}.sql`)).toString();
 
 const files = [
-	// importSQL("types", "playlist-privacy"),
-	// importSQL("functions", "get-now"),
+	importSQL("types", "playlist-privacy"),
+	importSQL("functions", "get-now"),
 	importSQL("tables", "keys"),
 	importSQL("tables", "users"),
 	importSQL("tables", "users-followers"),

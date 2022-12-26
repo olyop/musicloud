@@ -1,9 +1,9 @@
 import { UserID } from "@oly_op/musicloud-common/build/types";
 import { PoolOrClient } from "@oly_op/pg-helpers";
 
-import { Queue } from "../../types";
-import { getQueueNowPlaying } from "./get-queue-now-playing";
-import { getQueueSection } from "./get-queue-section";
+import { Queue } from "../../types/index.js";
+import { getQueueNowPlaying } from "./get-queue-now-playing/index.js";
+import { getQueueSection } from "./get-queue-section/index.js";
 
 export const getQueue =
 	(client: PoolOrClient) =>

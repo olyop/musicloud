@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 
-import isEmpty from "lodash-es/isEmpty";
+import { isEmpty } from "lodash-es";
 import PasswordValidator from "password-validator";
 
 const compromisedPasswordsFile = await readFile(

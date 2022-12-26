@@ -1,5 +1,5 @@
 import { PlaylistID, SongID } from "@oly_op/musicloud-common/build/types";
-import { PoolOrClient, getResultExists, importSQL, query } from "@oly_op/pg-helpers/build";
+import { PoolOrClient, getResultExists, importSQL, query } from "@oly_op/pg-helpers";
 
 const EXISTS_PLAYLIST_SONG = await importSQL(import.meta.url)("execute-is-song-in-playlist");
 

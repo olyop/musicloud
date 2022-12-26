@@ -2,10 +2,10 @@
 import { createBEM } from "@oly_op/bem";
 import Button from "@oly_op/react-button";
 import isUndefined from "lodash-es/isUndefined";
-import { Fragment, createElement, forwardRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { createElement, forwardRef, useState } from "react";
 
 import { useShare } from "../../hooks";
+import ItemImage from "./image";
 import "./index.scss";
 import ItemInfo from "./info";
 import PlayButton from "./play-button";
@@ -28,15 +28,14 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		imageOptions,
 		infoClassName,
 		iconClassName,
+		imageClassName,
 		infoFadeInFromRight = false,
 	} = propTypes;
 
 	const [share, { shareIcon }] = useShare();
-
 	const [showModal, setShowModal] = useState(false);
 
 	const handleModalOpen = () => setShowModal(true);
-
 	const handleModalClose = () => setShowModal(false);
 
 	const handleShare = () => {
@@ -71,32 +70,7 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					className={bem(iconClassName, "left-icon")}
 				/>
 			)}
-			{imageOptions && (
-				<Fragment>
-					{imageOptions.path ? (
-						<Link
-							to={imageOptions.path}
-							title={imageOptions.title}
-							className={bem("img-link")}
-							children={
-								<img
-									src={imageOptions.url}
-									crossOrigin="anonymous"
-									alt={imageOptions.title}
-									className={bem("img", "Card")}
-								/>
-							}
-						/>
-					) : (
-						<img
-							src={imageOptions.url}
-							crossOrigin="anonymous"
-							alt={imageOptions.title}
-							className={bem("img-link", "img", "Card")}
-						/>
-					)}
-				</Fragment>
-			)}
+			{imageOptions && <ItemImage options={imageOptions} className={imageClassName} />}
 			{infoOptions && (
 				<ItemInfo
 					info={infoOptions}

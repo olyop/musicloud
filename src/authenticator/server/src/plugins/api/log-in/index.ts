@@ -6,9 +6,9 @@ import {
 	getUserByEmailAddress,
 	getUserPassword,
 	isPasswordCorrect,
-} from "../helpers";
-import options from "./options";
-import { Route } from "./types";
+} from "../helpers/index.js";
+import options from "./options.js";
+import { Route } from "./types.js";
 
 export const logIn: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await

@@ -1,6 +1,6 @@
 import { ArtistBase, ArtistID } from "@oly_op/musicloud-common/build/types";
 
-import { BodyEntry } from "../../types";
+import { BodyEntry } from "../../types.js";
 
 interface Body extends Omit<ArtistBase, "artistID"> {
 	city?: string;

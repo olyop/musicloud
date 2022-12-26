@@ -1,5 +1,5 @@
-import { clearQueue } from "../../../helpers";
-import resolver from "../../resolver";
+import { clearQueue } from "../../../helpers/index.js";
+import resolver from "../../resolver.js";
 
 export const clearQueues = resolver<Record<string, never>>(async ({ context }) => {
 	const { userID } = context.getAuthorizationJWTPayload(context.authorization);

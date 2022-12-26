@@ -1,7 +1,7 @@
 import { UserID } from "@oly_op/musicloud-common/build/types";
 import { PoolOrClient, importSQL, query } from "@oly_op/pg-helpers";
 
-import { IndexOptions, TableNameOptions } from "../../../types";
+import { IndexOptions, TableNameOptions } from "../../../types/index.js";
 
 const isf = importSQL(import.meta.url);
 

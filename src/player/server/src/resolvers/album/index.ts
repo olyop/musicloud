@@ -11,9 +11,9 @@ import {
 } from "@oly_op/pg-helpers";
 import ms from "ms";
 
-import { Album, Artist, Genre, Song } from "../../types";
-import createParentResolver from "../create-parent-resolver";
-import { determineRedisAlbumsKey, pgEpochToJS, redisHandler } from "../helpers";
+import { Album, Artist, Genre, Song } from "../../types/index.js";
+import createParentResolver from "../create-parent-resolver.js";
+import { determineRedisAlbumsKey, pgEpochToJS, redisHandler } from "../helpers/index.js";
 
 const isf = importSQL(import.meta.url);
 

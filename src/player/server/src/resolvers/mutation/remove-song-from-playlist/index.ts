@@ -1,9 +1,9 @@
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 import { importSQL, query } from "@oly_op/pg-helpers";
 
-import { IndexOptions, Playlist } from "../../../types";
-import { getPlaylist, isNotUsersPlaylist } from "../../helpers";
-import resolver from "../resolver";
+import { IndexOptions, Playlist } from "../../../types/index.js";
+import { getPlaylist, isNotUsersPlaylist } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 const DELETE_PLAYLIST_SONG = await importSQL(import.meta.url)("delete-playlist-song");
 

@@ -1,7 +1,7 @@
 import { query } from "@oly_op/pg-helpers";
 import { isNull } from "lodash-es";
 
-import { QueueSong } from "../../../../types";
+import { QueueSong } from "../../../../types/index.js";
 import {
 	crementQueueSongIndex,
 	deleteQueueSong,
@@ -9,8 +9,8 @@ import {
 	getQueueSong,
 	insertQueueSong,
 	updateQueueNowPlaying,
-} from "../../../helpers";
-import resolver from "../../resolver";
+} from "../../../helpers/index.js";
+import resolver from "../../resolver.js";
 
 export const previousQueueSong = resolver<Record<string, never>>(async ({ context }) => {
 	const { userID } = context.getAuthorizationJWTPayload(context.authorization);

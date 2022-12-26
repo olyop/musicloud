@@ -4,7 +4,6 @@ import compress from "@fastify/compress";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import fastifyPostgres from "@fastify/postgres";
-import rateLimit from "@fastify/rate-limit";
 import serveStatic from "@fastify/static";
 import { createFastify } from "@oly_op/musicloud-common/build/create-fastify";
 import {
@@ -18,9 +17,9 @@ import {
 } from "@oly_op/musicloud-common/build/server-options";
 import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 
-import { Context, createContext } from "./context";
-import resolvers from "./resolvers";
-import typeDefs from "./type-defs";
+import { Context, createContext } from "./context.js";
+import resolvers from "./resolvers/index.js";
+import typeDefs from "./type-defs/index.js";
 
 const fastify = await createFastify();
 
@@ -36,7 +35,6 @@ const STATIC_ROOT = new URL("public", import.meta.url).pathname;
 const INDEX_DOT_HTML_PATH = new URL("public/index.html", import.meta.url).pathname;
 
 await fastify.register(compress);
-await fastify.register(rateLimit);
 await fastify.register(helmet, FASTIFY_HELMET_OPTIONS);
 await fastify.register(cors, createFastifyCORSOptions({ service: ServicesNames.PLAYER }));
 await fastify.register(serveStatic, createFastifyStaticOptions({ root: STATIC_ROOT }));

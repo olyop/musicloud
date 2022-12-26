@@ -1,31 +1,15 @@
-import { readFile } from "node:fs/promises";
+import { importSQL } from "@oly_op/pg-helpers";
 
-export const SELECT_ARTIST = (
-	await readFile(new URL("./select-artist.sql", import.meta.url))
-).toString();
-export const SELECT_GENRE = (
-	await readFile(new URL("./select-genre.sql", import.meta.url))
-).toString();
+const isf = importSQL(import.meta.url);
 
-export const INSERT_ALBUM = (
-	await readFile(new URL("./insert-album.sql", import.meta.url))
-).toString();
-export const INSERT_ALBUM_ARTIST = (
-	await readFile(new URL("./insert-album-artist.sql", import.meta.url))
-).toString();
+export const SELECT_ARTIST = await isf("select-artist");
+export const SELECT_GENRE = await isf("select-genre");
 
-export const INSERT_SONG = (
-	await readFile(new URL("./insert-song.sql", import.meta.url))
-).toString();
-export const INSERT_SONG_GENRE = (
-	await readFile(new URL("./insert-song-genre.sql", import.meta.url))
-).toString();
-export const INSERT_SONG_ARTIST = (
-	await readFile(new URL("./insert-song-artist.sql", import.meta.url))
-).toString();
-export const INSERT_SONG_REMIXER = (
-	await readFile(new URL("./insert-song-remixer.sql", import.meta.url))
-).toString();
-export const INSERT_SONG_FEATURE = (
-	await readFile(new URL("./insert-song-feature.sql", import.meta.url))
-).toString();
+export const INSERT_ALBUM = await isf("insert-album");
+export const INSERT_ALBUM_ARTIST = await isf("insert-album-artist");
+
+export const INSERT_SONG = await isf("insert-song");
+export const INSERT_SONG_GENRE = await isf("insert-song-genre");
+export const INSERT_SONG_ARTIST = await isf("insert-song-artist");
+export const INSERT_SONG_REMIXER = await isf("insert-song-remixer");
+export const INSERT_SONG_FEATURE = await isf("insert-song-feature");

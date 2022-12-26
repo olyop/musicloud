@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 
-import { InputCover, InputProfile } from "./types";
+import { InputCover, InputProfile } from "./types.js";
 
 const DEFAULT_COVER_PATH = new URL("default-cover.jpg", import.meta.url);
 

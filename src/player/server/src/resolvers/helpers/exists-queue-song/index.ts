@@ -1,7 +1,7 @@
 import { UserID } from "@oly_op/musicloud-common/build/types";
-import { PoolOrClient, getResultExists, importSQL, query } from "@oly_op/pg-helpers/build";
+import { PoolOrClient, getResultExists, importSQL, query } from "@oly_op/pg-helpers";
 
-import { IndexOptions, TableNameOptions } from "../../../types";
+import { IndexOptions, TableNameOptions } from "../../../types/index.js";
 
 const EXISTS_QUEUE_SONG = await importSQL(import.meta.url)("exists-queue-song");
 

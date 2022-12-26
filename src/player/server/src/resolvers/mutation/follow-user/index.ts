@@ -2,9 +2,9 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import { UserID } from "@oly_op/musicloud-common/build/types";
 import { exists, getResultExists, importSQL, query } from "@oly_op/pg-helpers";
 
-import { User } from "../../../types";
-import { getUser } from "../../helpers";
-import resolver from "../resolver";
+import { User } from "../../../types/index.js";
+import { getUser } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 const isf = importSQL(import.meta.url);
 

@@ -32,6 +32,7 @@ const HeaderAccountButton: FC = () => {
 		handleAccountModalClose();
 		await clearCache();
 		dispatch(removeLoading(clearCacheLoadingID));
+		window.location.reload();
 	};
 
 	const handleClearCacheClick = () => {

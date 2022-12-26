@@ -17,7 +17,7 @@ import webpack, { RuleSetRule } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import { ProxyConfigArrayItem } from "webpack-dev-server";
 
-import packageDotJSON from "../package.json";
+import packageDotJSON from "../package.json" assert { type: "json" };
 
 export const BASE_ROOT_PATH = process.cwd();
 export const BASE_SRC_PATH = path.join(BASE_ROOT_PATH, "src");

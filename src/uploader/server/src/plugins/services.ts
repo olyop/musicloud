@@ -5,8 +5,14 @@ import {
 	AWS_S3_OPTIONS,
 	PG_POOL_OPTIONS,
 } from "@oly_op/musicloud-common/build/server-options";
-import algolia from "algoliasearch";
+import algoliasearch, { AlgoliaSearchOptions, SearchClient } from "algoliasearch";
 import fp from "fastify-plugin";
+
+const algolia = algoliasearch as unknown as (
+	appId: string,
+	apiKey: string,
+	options?: AlgoliaSearchOptions,
+) => SearchClient;
 
 const s3 = new S3(AWS_S3_OPTIONS);
 

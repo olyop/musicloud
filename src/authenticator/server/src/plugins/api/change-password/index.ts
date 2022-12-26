@@ -1,6 +1,6 @@
-import { importSQL, query } from "@oly_op/pg-helpers/build";
+import { importSQL, query } from "@oly_op/pg-helpers";
 import { FastifyPluginAsync } from "fastify";
-import isString from "lodash-es/isString";
+import { isString } from "lodash-es";
 
 import {
 	createJWT,
@@ -10,9 +10,9 @@ import {
 	hashPassword,
 	isPasswordCorrect,
 	isPasswordValid,
-} from "../helpers";
-import options from "./options";
-import { Route } from "./types";
+} from "../helpers/index.js";
+import options from "./options.js";
+import { Route } from "./types.js";
 
 const UPDATE_USER_PASSWORD = await importSQL(import.meta.url)("update-user-password");
 

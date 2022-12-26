@@ -4,7 +4,7 @@ import { FastifyPluginAsync } from "fastify";
 import { isEmpty, trim } from "lodash-es";
 import { parseBuffer } from "music-metadata";
 
-import { BodyEntry } from "./types";
+import { BodyEntry } from "./types.js";
 
 interface Reply extends SongAudioMetadataBase {
 	cover: Buffer | null;

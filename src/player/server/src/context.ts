@@ -10,17 +10,19 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import { JWTPayload } from "@oly_op/musicloud-common/build/types";
 import { exists } from "@oly_op/pg-helpers";
 import { RedisClientOptions, createClient } from "@redis/client";
-import algolia, { SearchClient, SearchIndex } from "algoliasearch";
+import algoliasearch, { AlgoliaSearchOptions, SearchClient, SearchIndex } from "algoliasearch";
 import { createVerifier } from "fast-jwt";
 import { GraphQLError } from "graphql";
 import { isUndefined } from "lodash-es";
-import pg, { Pool } from "pg";
+import { Pool } from "pg";
 
-import { RedisClient } from "./types";
+import { RedisClient } from "./types/index.js";
 
-pg.types.setTypeParser(pg.types.builtins.INT2, Number.parseInt);
-pg.types.setTypeParser(pg.types.builtins.INT4, Number.parseInt);
-pg.types.setTypeParser(pg.types.builtins.INT8, Number.parseInt);
+const algolia = algoliasearch as unknown as (
+	appId: string,
+	apiKey: string,
+	options?: AlgoliaSearchOptions,
+) => SearchClient;
 
 interface ContextAlgolia {
 	index: SearchIndex;

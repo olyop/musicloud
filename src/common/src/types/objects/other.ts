@@ -1,4 +1,4 @@
-import { SongBase } from "./bases";
+import { SongBase } from "./bases.js";
 
 export type ObjectTypeNames =
 	| "Key"

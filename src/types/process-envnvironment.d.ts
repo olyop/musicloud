@@ -26,6 +26,10 @@ declare namespace NodeJS {
 		ANALYZE_BUNDLE: TrueFalse;
 		LINTING_IN_BUILD: TrueFalse;
 
+		AWS_S3_BUCKET_NAME: string;
+		AWS_S3_BUCKET_URL: string;
+		AWS_CLOUDFRONT_URL: string;
+
 		AWS_REGION: string;
 		AWS_ACCESS_KEY_ID: string;
 		AWS_ACCESS_KEY_SECRET: string;

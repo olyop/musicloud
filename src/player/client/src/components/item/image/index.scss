@@ -1,0 +1,8 @@
+.ItemImage {
+	width: var(--button-dimension);
+	height: var(--button-dimension);
+	&__link {
+		height: 100%;
+		margin-right: var(--gap);
+	}
+}

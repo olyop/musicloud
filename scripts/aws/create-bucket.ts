@@ -4,8 +4,9 @@ import {
 	PutBucketCorsCommand,
 	S3Client,
 } from "@aws-sdk/client-s3";
-import { NAME as Bucket } from "@oly_op/musicloud-common/build/metadata";
 import { AWS_S3_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
+
+const Bucket = process.env.AWS_S3_BUCKET_NAME;
 
 const CORSConfiguration: CORSConfigurationType = {
 	CORSRules: [

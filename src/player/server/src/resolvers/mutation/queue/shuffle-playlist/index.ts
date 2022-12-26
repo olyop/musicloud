@@ -2,7 +2,7 @@ import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names
 import { PlaylistID } from "@oly_op/musicloud-common/build/types";
 import { exists, importSQL, query } from "@oly_op/pg-helpers";
 
-import resolver from "../../resolver";
+import resolver from "../../resolver.js";
 
 const EXECUTE_SHUFFLE_PLAYLIST = await importSQL(import.meta.url)("execute-shuffle-playlist");
 

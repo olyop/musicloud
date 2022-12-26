@@ -8,9 +8,9 @@ import {
 	query,
 } from "@oly_op/pg-helpers";
 
-import { Playlist } from "../../../types";
-import { isNotUsersPlaylist } from "../../helpers";
-import resolver from "../resolver";
+import { Playlist } from "../../../types/index.js";
+import { isNotUsersPlaylist } from "../../helpers/index.js";
+import resolver from "../resolver.js";
 
 const UPDATE_PLAYLIST_TITLE = await importSQL(import.meta.url)("update-playlist-title");
 

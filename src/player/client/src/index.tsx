@@ -2,6 +2,7 @@ import { StrictMode, createElement } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AudioPlayerProvider as AudioProvider } from "react-use-audio-player";
+import { Workbox } from "workbox-window";
 
 import Bar from "./layouts/bar";
 import Header from "./layouts/header";
@@ -49,5 +50,6 @@ root.render(
 );
 
 if (process.env.SERVICE_WORKER === "true" && "serviceWorker" in navigator) {
-	await navigator.serviceWorker.register("/service-worker.js");
+	const workbox = new Workbox("/service-worker.js");
+	await workbox.register();
 }

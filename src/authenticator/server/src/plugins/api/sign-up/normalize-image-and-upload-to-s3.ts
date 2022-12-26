@@ -1,10 +1,9 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { NAME } from "@oly_op/musicloud-common/build/metadata";
 import { ImageDimensions, ImageSizes, ObjectID } from "@oly_op/musicloud-common/build/types";
 import sharp, { ResizeOptions } from "sharp";
 
-import determineCatalogImagePath from "./determine-catalog-image-path";
-import { ImageInput } from "./types";
+import determineCatalogImagePath from "./determine-catalog-image-path.js";
+import { ImageInput } from "./types.js";
 
 interface BaseInput extends ObjectID {
 	buffer: Buffer;
@@ -44,8 +43,8 @@ const uploadImageToS3 =
 		s3.send(
 			new PutObjectCommand({
 				Body: buffer,
-				Bucket: NAME,
 				ACL: "public-read",
+				Bucket: process.env.AWS_S3_BUCKET_NAME,
 				Key: determineCatalogImagePath(objectID, image),
 			}),
 		);

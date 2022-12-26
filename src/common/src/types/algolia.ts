@@ -11,7 +11,7 @@ import {
 	SongBase,
 	UserBase,
 	UserIDNameBase,
-} from "./objects";
+} from "./objects/index.js";
 
 export type AlgoliaRecordTypeName = Exclude<ObjectTypeNames, "Key" | "Play">;
 

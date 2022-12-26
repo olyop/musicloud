@@ -17,23 +17,23 @@ import { isNull, random, trim } from "lodash-es";
 import { parseBuffer } from "music-metadata";
 import { PoolClient } from "pg";
 
-import { BodyEntry } from "../../types";
+import { BodyEntry } from "../../types.js";
 import {
 	addRecordToSearchIndex,
 	deleteRecordFromSearchIndex,
 	determineCatalogAudioPath,
 	uploadFileToS3,
-} from "../helpers";
-import getArtistID from "./get-artist-id";
-import getGenreID from "./get-genre-id";
+} from "../helpers/index.js";
+import getArtistID from "./get-artist-id.js";
+import getGenreID from "./get-genre-id.js";
 import {
 	INSERT_SONG,
 	INSERT_SONG_ARTIST,
 	INSERT_SONG_FEATURE,
 	INSERT_SONG_GENRE,
 	INSERT_SONG_REMIXER,
-} from "./sql";
-import { Body, Song } from "./types";
+} from "./sql.js";
+import { Body, Song } from "./types.js";
 
 const uploadSong =
 	(client: PoolClient, s3: S3Client, ag: SearchIndex) => async (options: Options) => {
@@ -58,7 +58,7 @@ const uploadSong =
 					duration = 300;
 				}
 			}
-		} catch (error) {
+		} catch {
 			duration = 300;
 		}
 

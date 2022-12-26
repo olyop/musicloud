@@ -8,10 +8,10 @@ import {
 	deleteRecordFromSearchIndex,
 	determineCatalogImageURL,
 	normalizeImageAndUploadToS3,
-} from "../helpers";
-import { coverImageInputs, profileImageInputs } from "./images-inputs";
-import { INSERT_ARTIST } from "./sql";
-import { Route } from "./types";
+} from "../helpers/index.js";
+import { coverImageInputs, profileImageInputs } from "./images-inputs.js";
+import { INSERT_ARTIST } from "./sql.js";
+import { Route } from "./types.js";
 
 export const uploadArtist: FastifyPluginAsync =
 	// eslint-disable-next-line @typescript-eslint/require-await

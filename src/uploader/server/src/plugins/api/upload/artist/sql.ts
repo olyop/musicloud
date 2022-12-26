@@ -1,5 +1,3 @@
-import { readFile } from "node:fs/promises";
+import { importSQL } from "@oly_op/pg-helpers";
 
-export const INSERT_ARTIST = (
-	await readFile(new URL("./insert-artist.sql", import.meta.url))
-).toString();
+export const INSERT_ARTIST = await importSQL(import.meta.url)("insert-artist");

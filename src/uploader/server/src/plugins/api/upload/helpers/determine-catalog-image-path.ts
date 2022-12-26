@@ -1,5 +1,5 @@
-import { ImageInput } from "../../types";
-import { determineCatalogPath } from "./determine-catalog-path";
+import { ImageInput } from "../../types.js";
+import { determineCatalogPath } from "./determine-catalog-path.js";
 
 export const determineCatalogImagePath = (
 	objectID: string,

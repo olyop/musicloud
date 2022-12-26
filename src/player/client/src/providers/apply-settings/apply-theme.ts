@@ -49,8 +49,10 @@ const applyTheme = (theme: SettingsTheme) => {
 		} else {
 			applyLightTheme();
 		}
-	} else {
+	} else if (theme === SettingsTheme.DEFAULT) {
 		applyLightTheme();
+	} else {
+		throw new Error(`Invalid theme: ${theme as string}`);
 	}
 };
 
