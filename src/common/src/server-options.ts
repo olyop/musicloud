@@ -42,13 +42,15 @@ export const FASTIFY_HELMET_OPTIONS: FastifyHelmetOptions = {
 };
 
 export const PG_POOL_OPTIONS: PoolConfig = {
+	min: 10,
 	max: 60,
 	idleTimeoutMillis: ms("30s"),
 	connectionTimeoutMillis: ms("30s"),
 	host: process.env.POSTGRESQL_HOSTNAME,
+	port: Number(process.env.POSTGRESQL_PORT),
 	user: process.env.POSTGRESQL_USERNAME,
-	database: process.env.POSTGRESQL_DATABASE,
 	password: process.env.POSTGRESQL_PASSWORD,
+	database: process.env.POSTGRESQL_DATABASE,
 };
 
 export const ALGOLIA_OPTIONS = [

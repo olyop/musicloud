@@ -12,7 +12,7 @@ import {
 } from "@oly_op/pg-helpers";
 
 import { Playlist, User } from "../../types/index.js";
-import { pgEpochToJS } from "../helpers/index.js";
+import { determineRedisUsersKey, pgEpochToJS, redisHandler } from "../helpers/index.js";
 import resolver from "./resolver.js";
 
 const isf = importSQL(import.meta.url);
@@ -25,7 +25,11 @@ const SELECT_USER_PLAYLISTS_COUNT = await isf("select-playlists-count");
 const SELECT_USER_PLAYLISTS_FILTERED_BY_SONG = await isf("select-playlists-filtered-by-song");
 
 export const dateJoined = resolver(
-	({ parent }) => Promise.resolve(pgEpochToJS(parent.dateJoined)),
+	({ parent, context }) =>
+		redisHandler(context.redis)(
+			determineRedisUsersKey(parent.userID, "date-joined"),
+			Promise.resolve(pgEpochToJS(parent.dateJoined)),
+		),
 	{ parent: false },
 );
 

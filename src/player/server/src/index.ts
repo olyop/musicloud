@@ -17,7 +17,7 @@ import {
 } from "@oly_op/musicloud-common/build/server-options";
 import { ServicesNames } from "@oly_op/musicloud-common/build/types";
 
-import { Context, createContext } from "./context.js";
+import { Context, createContext } from "./context/index.js";
 import resolvers from "./resolvers/index.js";
 import typeDefs from "./type-defs/index.js";
 

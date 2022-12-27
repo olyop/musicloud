@@ -60,6 +60,11 @@ export {
 	getCacheValue,
 	getCacheValueOrExists,
 	redisHandler,
+	redisPlaysTotalKey,
+	redisTopOneHundredSongsKey,
+	redisTopTenSongsKey,
+	redisTrendingAlbumsKey,
+	redisTrendingPlaylistsKey,
 	setCacheValue,
 } from "./redis/index.js";
 export { removeSongFromQueue } from "./remove-song-from-queue/index.js";

@@ -34,13 +34,16 @@ declare namespace NodeJS {
 		AWS_ACCESS_KEY_ID: string;
 		AWS_ACCESS_KEY_SECRET: string;
 
-		POSTGRESQL_DATABASE: string;
+		POSTGRESQL_HOSTNAME: string;
+		POSTGRESQL_PORT: string;
 		POSTGRESQL_USERNAME: string;
 		POSTGRESQL_PASSWORD: string;
-		POSTGRESQL_HOSTNAME: string;
+		POSTGRESQL_DATABASE: string;
 
 		REDIS_HOSTNAME: string;
 		REDIS_PORT: string;
+		REDIS_USERNAME: string;
+		REDIS_PASSWORD: string;
 		REDIS_KEY_PREFIX: string;
 
 		ALGOLIA_SEARCH_INDEX_NAME: string;

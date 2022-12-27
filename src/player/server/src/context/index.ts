@@ -1,22 +1,28 @@
 import { IncomingHttpHeaders } from "node:http";
 
-import { ApolloServerErrorCode } from "@apollo/server/errors";
 import { ApolloFastifyContextFunction } from "@as-integrations/fastify";
 import { S3Client } from "@aws-sdk/client-s3";
 import { CustomServer } from "@oly_op/musicloud-common/build/create-fastify";
-import { IS_PRODUCTION, JWT_ALGORITHM } from "@oly_op/musicloud-common/build/globals";
+import { IS_PRODUCTION } from "@oly_op/musicloud-common/build/globals";
 import { ALGOLIA_OPTIONS, AWS_S3_OPTIONS } from "@oly_op/musicloud-common/build/server-options";
 import { COLUMN_NAMES } from "@oly_op/musicloud-common/build/tables-column-names";
 import { JWTPayload } from "@oly_op/musicloud-common/build/types";
 import { exists } from "@oly_op/pg-helpers";
-import { RedisClientOptions, createClient } from "@redis/client";
+import {
+	RedisClusterOptions,
+	RedisClusterType,
+	RedisFunctions,
+	RedisModules,
+	RedisScripts,
+	createCluster,
+} from "@redis/client";
 import algoliasearch, { AlgoliaSearchOptions, SearchClient, SearchIndex } from "algoliasearch";
-import { createVerifier } from "fast-jwt";
-import { GraphQLError } from "graphql";
 import { isUndefined } from "lodash-es";
+import ms from "ms";
 import { Pool } from "pg";
 
-import { RedisClient } from "./types/index.js";
+import { UnauthorizedError } from "./unauthorized-error.js";
+import { verifyAccessToken } from "./verify-access-token.js";
 
 const algolia = algoliasearch as unknown as (
 	appId: string,
@@ -24,12 +30,15 @@ const algolia = algoliasearch as unknown as (
 	options?: AlgoliaSearchOptions,
 ) => SearchClient;
 
-interface ContextAlgolia {
-	index: SearchIndex;
+export type RedisClient = RedisClusterType<RedisModules, RedisFunctions, RedisScripts>;
+
+export interface ContextAlgolia {
 	client: SearchClient;
+	index: SearchIndex;
 }
 
-type ContextAuthorization = JWTPayload | false;
+export type ContextAuthorization = JWTPayload | false;
+export type ContextGetAuthorizationJWTPayload = (authorization: ContextAuthorization) => JWTPayload;
 
 export interface Context {
 	pg: Pool;
@@ -37,13 +46,8 @@ export interface Context {
 	ag: ContextAlgolia;
 	redis: RedisClient;
 	authorization: ContextAuthorization;
-	getAuthorizationJWTPayload: (authorization: ContextAuthorization) => JWTPayload;
+	getAuthorizationJWTPayload: ContextGetAuthorizationJWTPayload;
 }
-
-const verifyAccessToken = createVerifier({
-	algorithms: [JWT_ALGORITHM],
-	key: () => Promise.resolve(process.env.JWT_TOKEN_SECRET),
-}) as (token: string) => Promise<JWTPayload>;
 
 const determineAuthorization = async (
 	authorization: IncomingHttpHeaders["authorization"],
@@ -78,33 +82,40 @@ const determineAuthorization = async (
 	}
 };
 
-export const UNAUTHORIZED_ERROR = new GraphQLError("Unauthorized", {
-	extensions: {
-		code: ApolloServerErrorCode.GRAPHQL_VALIDATION_FAILED,
-	},
-});
-
-const getAuthorizationJWTPayload = (authorization: ContextAuthorization) => {
+const getAuthorizationJWTPayload: ContextGetAuthorizationJWTPayload = authorization => {
 	if (authorization === false) {
-		throw UNAUTHORIZED_ERROR;
+		throw new UnauthorizedError();
 	} else {
 		return authorization;
 	}
 };
 
-const REDIS_OPTIONS: RedisClientOptions = {
-	url: `redis://${process.env.REDIS_HOSTNAME}:${process.env.REDIS_PORT}`,
+const REDIS_OPTIONS: RedisClusterOptions = {
+	rootNodes: [
+		{
+			url: `redis://${process.env.REDIS_HOSTNAME}:${process.env.REDIS_PORT}`,
+			username: process.env.REDIS_USERNAME,
+			password: process.env.REDIS_PASSWORD,
+			socket: {
+				connectTimeout: ms("1s"),
+				tls: false,
+			},
+		},
+	],
 };
 
 export const createContext = async (): Promise<
 	ApolloFastifyContextFunction<Context, CustomServer>
 > => {
 	const s3 = new S3Client(AWS_S3_OPTIONS);
+
 	const agClient = algolia(...ALGOLIA_OPTIONS);
 	const agIndex = agClient.initIndex(process.env.ALGOLIA_SEARCH_INDEX_NAME);
 	const ag: ContextAlgolia = { client: agClient, index: agIndex };
-	const redis = createClient(REDIS_OPTIONS);
+
+	const redis = createCluster(REDIS_OPTIONS);
 	await redis.connect();
+
 	return async request => ({
 		s3,
 		ag,
@@ -117,3 +128,5 @@ export const createContext = async (): Promise<
 		),
 	});
 };
+
+export { UnauthorizedError };

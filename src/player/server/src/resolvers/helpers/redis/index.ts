@@ -2,25 +2,25 @@ import { isNull } from "lodash-es";
 
 import { RedisClient } from "../../../types/index.js";
 
-const KEY_PREFIX = process.env.REDIS_KEY_PREFIX;
-
-const getGlobalRedisKey = (key: string) => `${KEY_PREFIX}:${key}`;
-
-const determineRedisObjectKey = (typeName: string) => (id: string, key: string) =>
-	`${typeName}:${id}:${key}`;
-
-export const determineRedisKeysKey = determineRedisObjectKey("keys");
-export const determineRedisUsersKey = determineRedisObjectKey("users");
-export const determineRedisPlaysKey = determineRedisObjectKey("plays");
-export const determineRedisSongsKey = determineRedisObjectKey("songs");
-export const determineRedisAlbumsKey = determineRedisObjectKey("albums");
-export const determineRedisGenresKey = determineRedisObjectKey("genres");
-export const determineRedisArtistsKey = determineRedisObjectKey("artists");
-export const determineRedisPlaylistsKey = determineRedisObjectKey("playlists");
+export {
+	determineRedisAlbumsKey,
+	determineRedisArtistsKey,
+	determineRedisGenresKey,
+	determineRedisKeysKey,
+	determineRedisPlaylistsKey,
+	determineRedisPlaysKey,
+	determineRedisSongsKey,
+	determineRedisUsersKey,
+	redisPlaysTotalKey,
+	redisTopOneHundredSongsKey,
+	redisTopTenSongsKey,
+	redisTrendingAlbumsKey,
+	redisTrendingPlaylistsKey,
+} from "./keys.js";
 
 export const existsCacheValue = (redis?: RedisClient) => async (key: string) => {
 	if (redis) {
-		return (await redis.exists(getGlobalRedisKey(key))) === 1;
+		return (await redis.exists(key)) === 1;
 	} else {
 		return false;
 	}
@@ -30,7 +30,7 @@ export const getCacheValue =
 	(redis?: RedisClient) =>
 	async <T>(key: string) => {
 		if (redis) {
-			const value = await redis.get(getGlobalRedisKey(key));
+			const value = await redis.get(key);
 			if (isNull(value)) {
 				return null;
 			} else {
@@ -47,7 +47,7 @@ export const setCacheValue =
 		if (redis) {
 			const keyExists = await existsCacheValue(redis)(key);
 			if (!keyExists) {
-				await redis.set(getGlobalRedisKey(key), JSON.stringify(value), {
+				await redis.set(key, JSON.stringify(value), {
 					EX: expires ? Math.floor(expires / 1000) : undefined,
 				});
 			}
@@ -56,7 +56,7 @@ export const setCacheValue =
 
 export const deleteCacheValue = (redis?: RedisClient) => async (key: string) => {
 	if (redis) {
-		await redis.del(getGlobalRedisKey(key));
+		await redis.del(key);
 	}
 };
 
