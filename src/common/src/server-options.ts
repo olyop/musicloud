@@ -47,7 +47,7 @@ export const PG_POOL_OPTIONS: PoolConfig = {
 	idleTimeoutMillis: ms("30s"),
 	connectionTimeoutMillis: ms("30s"),
 	host: process.env.POSTGRESQL_HOSTNAME,
-	port: Number(process.env.POSTGRESQL_PORT),
+	port: Number.parseInt(process.env.POSTGRESQL_PORT),
 	user: process.env.POSTGRESQL_USERNAME,
 	password: process.env.POSTGRESQL_PASSWORD,
 	database: process.env.POSTGRESQL_DATABASE,

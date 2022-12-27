@@ -81,7 +81,7 @@
 		"@oly_op/bem": "5.1.0",
 		"@oly_op/css-utilities": "2.0.79",
 		"@oly_op/graphql-create-resolver": "2.2.0",
-		"@oly_op/musicloud-common": "1.2.19",
+		"@oly_op/musicloud-common": "1.2.20",
 		"@oly_op/pg-helpers": "7.1.1",
 		"@oly_op/react-button": "5.4.2",
 		"@oly_op/react-head": "1.0.9",
