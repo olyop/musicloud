@@ -19,7 +19,7 @@
 	},
 	"volta": {
 		"npm": "9.2.0",
-		"node": "19.2.0"
+		"node": "19.3.0"
 	},
 	"scripts": {
 		"start": "clear && npm-run-all -p dev:**",
