@@ -75,6 +75,7 @@ const SearchHit: FC<PropTypes> = ({ hit }) => {
 				hideReleased
 				hideInLibrary
 				infoFadeInFromRight
+				className={className}
 				album={
 					{
 						title: hit.title,

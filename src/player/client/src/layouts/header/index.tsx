@@ -5,6 +5,7 @@ import AccountButton from "./account-button";
 import DownloadsMenu from "./downloads-menu";
 import "./index.scss";
 import MenuButton from "./menu-button";
+import NavigationButtons from "./navigation-buttons";
 import OfflineButton from "./offline-button";
 import PageTitle from "./page-title";
 import SearchButton from "./search-button";
@@ -15,6 +16,7 @@ const Header: FC = () => (
 	<header className={bem("", "BorderBottom FlexRowSpaceBetween")}>
 		<div className={bem("left", "FlexRow")}>
 			<MenuButton />
+			<NavigationButtons />
 			<PageTitle />
 		</div>
 		<div className="FlexRowGapQuart PaddingRightHalf">

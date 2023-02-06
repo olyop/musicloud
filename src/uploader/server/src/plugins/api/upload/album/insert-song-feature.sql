@@ -4,6 +4,6 @@ INSERT INTO songs_featurings (
 	artist_id
 ) VALUES (
 	{{ index }},
-	'{{ songID }}',
-	'{{ artistID }}'
+	{{ songID }},
+	{{ artistID }}
 );

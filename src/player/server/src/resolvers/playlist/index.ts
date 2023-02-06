@@ -8,10 +8,12 @@ import {
 	importSQL,
 	query,
 } from "@oly_op/pg-helpers";
+import ms from "ms";
 
 import { Playlist, Song } from "../../types/index.js";
 import createParentResolver from "../create-parent-resolver.js";
 import {
+	determineRedisPlaylistsKey,
 	determineRedisPlaysKey,
 	getObjectDateAddedToLibrary,
 	getObjectInLibrary,
@@ -57,13 +59,15 @@ export const duration = resolver(({ parent, context }) =>
 );
 
 export const songs = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_PLAYLIST_SONGS)({
-		parse: convertTableToCamelCaseOrNull<Song>(),
-		variables: {
-			playlistID: parent.playlistID,
-			columnNames: addPrefix(COLUMN_NAMES.SONG, "songs"),
-		},
-	}),
+	redisHandler(context.redis)(determineRedisPlaylistsKey(parent.playlistID, "songs"), () =>
+		query(context.pg)(SELECT_PLAYLIST_SONGS)({
+			parse: convertTableToCamelCaseOrNull<Song>(),
+			variables: {
+				playlistID: parent.playlistID,
+				columnNames: addPrefix(COLUMN_NAMES.SONG, "songs"),
+			},
+		}),
+	),
 );
 
 export const songsTotal = resolver(({ parent, context }) =>
@@ -76,12 +80,17 @@ export const songsTotal = resolver(({ parent, context }) =>
 );
 
 export const playsTotal = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_PLAYLIST_PLAYS_COUNT)({
-		parse: getResultCountOrNull,
-		variables: {
-			playlistID: parent.playlistID,
-		},
-	}),
+	redisHandler(context.redis)(
+		determineRedisPlaylistsKey(parent.playlistID, "plays"),
+		() =>
+			query(context.pg)(SELECT_PLAYLIST_PLAYS_COUNT)({
+				parse: getResultCountOrNull,
+				variables: {
+					playlistID: parent.playlistID,
+				},
+			}),
+		ms("30m"),
+	),
 );
 
 export const userPlaysTotal = resolver(({ parent, context }) =>

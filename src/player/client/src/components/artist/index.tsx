@@ -1,6 +1,5 @@
 import { createBEM } from "@oly_op/bem";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
-import isNull from "lodash-es/isNull";
 import { createElement, forwardRef } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -16,7 +15,7 @@ import Modal from "./modal";
 
 const bem = createBEM("Artist");
 
-const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
+const ArtistInner = forwardRef<HTMLDivElement, InnerPropTypes>((propTypes, ref) => {
 	const {
 		artist,
 		className,
@@ -28,7 +27,6 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		hideArtistLower = false,
 	} = propTypes;
 
-	const isArtistNull = isNull(artist);
 	const listStyle = useStateListStyle();
 
 	const [shuffleArtist] = useShuffleArtist(artist);
@@ -40,49 +38,39 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 				onClick: shuffleArtist,
 		  };
 
-	const info: InfoOptions | undefined = isArtistNull
-		? undefined
-		: {
-				lowerLeft: hideArtistLower ? undefined : <ArtistLower artist={artist} />,
-				upperLeft: (
-					<ObjectLink
-						link={{
-							text: artist.name,
-							path: createObjectPath("artist", artist.artistID),
-						}}
-					/>
-				),
-		  };
+	const info: InfoOptions = {
+		lowerLeft: hideArtistLower ? undefined : <ArtistLower artist={artist} />,
+		upperLeft: (
+			<ObjectLink
+				link={{
+					text: artist.name,
+					path: createObjectPath("artist", artist.artistID),
+				}}
+			/>
+		),
+	};
 
-	const imageOptions: ImageOptions | undefined = isArtistNull
-		? undefined
-		: {
-				title: artist.name,
-				path: createObjectPath("artist", artist.artistID),
-				url: createCatalogImageURL(
-					artist.artistID,
-					"profile",
-					ImageSizes.MINI,
-					ImageDimensions.SQUARE,
-				),
-		  };
+	const imageOptions: ImageOptions = {
+		title: artist.name,
+		path: createObjectPath("artist", artist.artistID),
+		url: createCatalogImageURL(artist.artistID, "profile", ImageSizes.MINI, ImageDimensions.SQUARE),
+	};
 
-	const modal: ItemModal | undefined =
-		hideModal || isArtistNull
-			? undefined
-			: ({ open, onClose }) => (
-					<Modal open={open} artist={artist} onClose={onClose} hideInLibrary={hideInLibrary} />
-			  );
+	const modal: ItemModal | undefined = hideModal
+		? undefined
+		: ({ open, onClose }) => (
+				<Modal open={open} artist={artist} onClose={onClose} hideInLibrary={hideInLibrary} />
+		  );
 
 	return listStyle === SettingsListStyle.LIST || alwaysList ? (
 		<Item
 			ref={ref}
 			modal={modal}
 			infoOptions={info}
+			className={className}
 			playOptions={playOptions}
 			imageOptions={imageOptions}
 			leftIcon={showIcon ? "person" : undefined}
-			className={bem(className, "PaddingHalf ItemBorder")}
 		/>
 	) : (
 		<div ref={ref} className={bem(className, "Card Elevated")}>
@@ -111,7 +99,13 @@ const Artist = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 	);
 });
 
-interface PropTypes extends ObjectShowIcon {
+const Artist = forwardRef<HTMLDivElement, PropTypes>(({ artist, className, ...propTypes }, ref) => (
+	<div ref={ref} className={className === null ? undefined : className}>
+		{artist && <ArtistInner artist={artist} {...propTypes} />}
+	</div>
+));
+
+interface PropTypesBase extends ObjectShowIcon {
 	hidePlay?: boolean;
 	className?: string;
 	hideModal?: boolean;
@@ -119,6 +113,14 @@ interface PropTypes extends ObjectShowIcon {
 	hideInLibrary?: boolean;
 	artist: ArtistType | null;
 	hideArtistLower?: boolean;
+}
+
+interface InnerPropTypes extends PropTypesBase {
+	artist: ArtistType;
+}
+
+interface PropTypes extends PropTypesBase {
+	artist: ArtistType | null;
 }
 
 export default Artist;

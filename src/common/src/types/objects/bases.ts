@@ -63,6 +63,8 @@ export type ArtistBase = ArtistIDNameBase;
 
 export interface PlaylistIDTitleBase extends PlaylistID, TitleBase {}
 
-export interface PlaylistBase extends DateCreatedBase, PlaylistIDTitleBase {
+export interface PlaylistPrivacyBase {
 	privacy: PlaylistPrivacy;
 }
+
+export interface PlaylistBase extends DateCreatedBase, PlaylistIDTitleBase, PlaylistPrivacyBase {}

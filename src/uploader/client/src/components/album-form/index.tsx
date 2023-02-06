@@ -30,13 +30,18 @@ const AlbumForm: FC = () => {
 			let reset = true;
 			try {
 				setLoading(true);
-				await fetch("/api/upload/album", {
+
+				const response = await fetch("/api/upload/album", {
 					method: "POST",
 					body: createFormData(album, songs),
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("authorization")!}`,
 					},
 				});
+
+				if (!response.ok) {
+					reset = false;
+				}
 			} catch (error) {
 				console.error(error);
 				reset = false;

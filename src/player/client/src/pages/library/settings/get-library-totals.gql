@@ -1,0 +1,9 @@
+query getLibraryTotals {
+	getLibrary {
+		songsTotal
+		albumsTotal
+		genresTotal
+		artistsTotal
+		playlistsTotal
+	}
+}

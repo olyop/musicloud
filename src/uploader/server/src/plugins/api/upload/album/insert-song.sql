@@ -11,8 +11,8 @@ INSERT INTO songs (
 	{{ bpm }},
 	{{ mix }},
 	{{ title }},
-	'{{ keyID }}',
-	'{{ albumID }}',
+	{{ keyID }},
+	{{ albumID }},
 	{{ duration }},
 	{{ discNumber }},
 	{{ trackNumber }}

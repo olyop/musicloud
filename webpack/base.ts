@@ -97,6 +97,7 @@ const baseConfiguration: webpack.Configuration = {
 	},
 	output: {
 		publicPath: "/",
+		pathinfo: IS_PRODUCTION,
 		filename: "index-[fullhash].js",
 	},
 	resolve: {
@@ -110,6 +111,12 @@ const baseConfiguration: webpack.Configuration = {
 	experiments: {
 		topLevelAwait: true,
 	},
+	optimization: IS_DEVELOPMENT ? {
+		removeAvailableModules: false,
+		removeEmptyChunks: false,
+		splitChunks: false,
+		// runtimeChunk: true,
+	} : undefined,
 	module: {
 		rules: [
 			{

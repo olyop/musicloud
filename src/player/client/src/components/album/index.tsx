@@ -21,7 +21,7 @@ import AlbumModal from "./modal";
 
 const bem = createBEM("Album");
 
-const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
+const AlbumInner = forwardRef<HTMLDivElement, InnerPropTypes>((propTypes, ref) => {
 	const {
 		album,
 		className,
@@ -64,7 +64,6 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 			playOptions={playOptions}
 			infoFadeInFromRight={infoFadeInFromRight}
 			leftIcon={showIcon ? "album" : undefined}
-			className={bem(className, "PaddingHalf ItemBorder")}
 			imageOptions={
 				isAlbumNull
 					? undefined
@@ -147,16 +146,31 @@ const Album = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 	);
 });
 
-interface PropTypes extends ObjectShowIcon {
+const Album = forwardRef<HTMLDivElement, PropTypes>(({ album, className, ...propTypes }, ref) => (
+	<div ref={ref} className={className === null ? undefined : className}>
+		{album && (
+			<AlbumInner album={album} {...propTypes} />
+		)}
+	</div>
+));
+
+interface PropTypesBase extends ObjectShowIcon {
 	hidePlay?: boolean;
 	className?: string;
 	hidePlays?: boolean;
 	hideModal?: boolean;
 	alwaysList?: boolean;
 	hideReleased?: boolean;
-	album: AlbumType | null;
 	hideInLibrary?: boolean;
 	infoFadeInFromRight?: boolean;
+}
+
+interface InnerPropTypes extends PropTypesBase {
+	album: AlbumType;
+}
+
+interface PropTypes extends PropTypesBase {
+	album: AlbumType | null;
 }
 
 export default Album;

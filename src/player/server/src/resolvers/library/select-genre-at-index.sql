@@ -20,7 +20,7 @@ WHERE
 	)
 ORDER BY
 	genres.{{ orderByField }} {{ orderByDirection }}
-LIMIT
-	1
 OFFSET
-	{{ atIndex }};
+	{{ atIndex }}
+FETCH
+	FIRST ROW ONLY;

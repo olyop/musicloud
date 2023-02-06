@@ -26,6 +26,7 @@ const DownloadsMenu: FC = () => {
 
 	const [showMenu, setShowMenu] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
+	const [downloadText, setDownloadText] = useState<string | null>(null);
 	const [downloadStatus, setDownloadStatus] = useState<Status | null>(null);
 	const [currentDownload, setCurrentDownload] = useState<SongType | null>(null);
 
@@ -46,6 +47,7 @@ const DownloadsMenu: FC = () => {
 					await downloadLibrary(client)({
 						songsOrderBy,
 						albumsOrderBy,
+						setDownloadText,
 						setCurrentDownload,
 						setDownloadStatus,
 						librarySongsOrderBy,
@@ -54,6 +56,7 @@ const DownloadsMenu: FC = () => {
 					console.error(error);
 				} finally {
 					setShowMenu(false);
+					setDownloadText(null);
 					setIsDownloading(false);
 					setDownloadStatus(null);
 					setCurrentDownload(null);
@@ -62,7 +65,7 @@ const DownloadsMenu: FC = () => {
 		}
 	}, [isDownloading]);
 
-	const downloadText: ReactNode = downloadStatus ? (
+	const downloadStatusText: ReactNode = downloadStatus ? (
 		<Fragment>
 			{downloadStatus[0]}
 			<Fragment> / </Fragment>
@@ -74,9 +77,9 @@ const DownloadsMenu: FC = () => {
 		<Fragment>
 			<Button
 				title="Downloads"
-				text={downloadText}
 				transparent={!showMenu}
 				onClick={handleMenuOpen}
+				text={downloadStatusText}
 				icon={isDownloading ? "loop" : "download_for_offline"}
 				iconClassName={isDownloading ? bem("downloading") : undefined}
 			/>
@@ -88,17 +91,20 @@ const DownloadsMenu: FC = () => {
 				children={
 					<Fragment>
 						<h3 className="HeadingFive">Downloads</h3>
-						{downloadStatus && <p className="ParagraphTwo">{downloadText}</p>}
+						{downloadStatusText && <p className="ParagraphTwo">{downloadStatusText}</p>}
 						{currentDownload ? (
-							<Song
-								hidePlay
-								hideModal
-								hidePlays
-								hideDuration
-								hideInLibrary
-								song={currentDownload}
-								className={bem("content-song")}
-							/>
+							<Fragment>
+								<Song
+									hidePlay
+									hideModal
+									hidePlays
+									hideDuration
+									hideInLibrary
+									song={currentDownload}
+									className={bem("content-song")}
+								/>
+								<p className="ParagraphTwo LightColor">{downloadText}</p>
+							</Fragment>
 						) : (
 							<Fragment>
 								<Button

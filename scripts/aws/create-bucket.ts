@@ -33,6 +33,7 @@ console.log(
 		}),
 	),
 );
+
 console.log(
 	await s3.send(
 		new PutBucketCorsCommand({

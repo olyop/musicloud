@@ -4,6 +4,7 @@ mutation removeSongFromPlaylist($playlistID: UUID!, $index: NonNegativeInt!) {
 		songsTotal
 		songs {
 			songID
+			playlistIndex(playlistID: $playlistID)
 		}
 	}
 }

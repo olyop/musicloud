@@ -3,11 +3,19 @@ import { DocumentNode, useApolloClient } from "@apollo/client";
 import { InterfaceWithInput } from "@oly_op/musicloud-common/build/types";
 import isNull from "lodash-es/isNull";
 import uniqueID from "lodash-es/uniqueId";
+// import ms from "ms";
 import { Ref, useCallback, useEffect, useRef, useState } from "react";
 
 import { UseInViewOptionsOnChange, useHasMounted, useInView } from "../../hooks";
 import { addLoading, removeLoading, useDispatch, useStateOrderBy } from "../../redux";
 import { OrderBy, SettingsOrderBy } from "../../types";
+
+// const sleepTime = ms("30ms");
+
+// const sleep = () =>
+// 	new Promise(resolve => {
+// 		setTimeout(resolve, sleepTime);
+// 	});
 
 const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const { index, itemQuery, renderItem, itemDataToValue, settingsOrderBy } = propTypes;
@@ -16,10 +24,8 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 	const client = useApolloClient();
 	const hasMounted = useHasMounted();
 	const loadingID = useRef(uniqueID());
-
-	const orderBy = useStateOrderBy(settingsOrderBy);
-
 	const cachedItem = useRef<Item | null>(null);
+	const orderBy = useStateOrderBy(settingsOrderBy);
 
 	const [item, setItem] = useState<Item | null>(null);
 
@@ -27,6 +33,8 @@ const FeedItem = <Item, ItemData>(propTypes: PropTypes<Item, ItemData>) => {
 		async (atIndex: number) => {
 			try {
 				dispatch(addLoading(loadingID.current));
+
+				// await sleep();
 
 				const { data } = await client.query<ItemData, FeedItemVars>({
 					query: itemQuery,

@@ -9,7 +9,7 @@ WHERE
 	library_playlists.user_id = {{ userID }}
 ORDER BY
 	{{ orderByField }} {{ orderByDirection }}
-LIMIT
-	1
 OFFSET
-	{{ atIndex }};
+	{{ atIndex }}
+FETCH
+	FIRST ROW ONLY;

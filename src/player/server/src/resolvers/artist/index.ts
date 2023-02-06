@@ -36,8 +36,7 @@ const SELECT_ARTIST_USER_PLAYS_COUNT = await isf("select-user-plays-count");
 const resolver = createParentResolver<Artist>();
 
 export const since = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisArtistsKey(parent.artistID, "since"),
+	redisHandler(context.redis)(determineRedisArtistsKey(parent.artistID, "since"), () =>
 		query(context.pg)(SELECT_ARTIST_SINCE)({
 			parse: pipe(convertFirstRowToCamelCase<Album>(), ({ released }) => released, pgEpochToJS),
 			variables: {
@@ -50,24 +49,34 @@ export const since = resolver(({ parent, context }) =>
 export const songsTotal = resolver(({ parent, context }) =>
 	redisHandler(context.redis)(
 		determineRedisArtistsKey(parent.artistID, "songs-total"),
-		query(context.pg)(SELECT_ARTIST_SONGS_COUNT)({
-			parse: getResultCount,
-			variables: {
-				artistID: parent.artistID,
-			},
-		}),
+		async () => {
+			const value = await query(context.pg)(SELECT_ARTIST_SONGS_COUNT)({
+				parse: getResultCount,
+				variables: {
+					artistID: parent.artistID,
+				},
+			});
+
+			return value === 0 ? null : value;
+		},
+		ms("7d"),
 	),
 );
 
 export const albumsTotal = resolver(({ parent, context }) =>
 	redisHandler(context.redis)(
 		determineRedisArtistsKey(parent.artistID, "albums-total"),
-		query(context.pg)(SELECT_ARTIST_ALBUMS_COUNT)({
-			parse: getResultCount,
-			variables: {
-				artistID: parent.artistID,
-			},
-		}),
+		async () => {
+			const value = await query(context.pg)(SELECT_ARTIST_ALBUMS_COUNT)({
+				parse: getResultCount,
+				variables: {
+					artistID: parent.artistID,
+				},
+			});
+
+			return value === 0 ? null : value;
+		},
+		ms("7d"),
 	),
 );
 
@@ -98,12 +107,13 @@ export const songs = resolver<Song[], OrderByArgs>(({ parent, args, context }) =
 export const playsTotal = resolver(({ parent, context }) =>
 	redisHandler(context.redis)(
 		determineRedisArtistsKey(parent.artistID, "plays-total"),
-		query(context.pg)(SELECT_ARTIST_PLAYS_COUNT)({
-			parse: getResultCountOrNull,
-			variables: {
-				artistID: parent.artistID,
-			},
-		}),
+		() =>
+			query(context.pg)(SELECT_ARTIST_PLAYS_COUNT)({
+				parse: getResultCountOrNull,
+				variables: {
+					artistID: parent.artistID,
+				},
+			}),
 		ms("30m"),
 	),
 );
@@ -111,13 +121,14 @@ export const playsTotal = resolver(({ parent, context }) =>
 export const topTenSongs = resolver(({ parent, context }) =>
 	redisHandler(context.redis)(
 		determineRedisArtistsKey(parent.artistID, "top-ten-songs"),
-		query(context.pg)(SELECT_ARTIST_SONGS_TOP_TEN)({
-			parse: convertTableToCamelCase<Song>(),
-			variables: {
-				artistID: parent.artistID,
-				columnNames: addPrefix(COLUMN_NAMES.SONG, "songs"),
-			},
-		}),
+		() =>
+			query(context.pg)(SELECT_ARTIST_SONGS_TOP_TEN)({
+				parse: convertTableToCamelCase<Song>(),
+				variables: {
+					artistID: parent.artistID,
+					columnNames: addPrefix(COLUMN_NAMES.SONG, "songs"),
+				},
+			}),
 		ms("30m"),
 	),
 );

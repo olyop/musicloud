@@ -8,12 +8,14 @@ import {
 	SongID,
 	UserID,
 } from "@oly_op/musicloud-common/build/types";
+import ms from "ms";
 
 import { Album, Artist, Genre, Play, Playlist, Song, User } from "../../types/index.js";
 import {
 	determineRedisAlbumsKey,
 	determineRedisArtistsKey,
 	determineRedisGenresKey,
+	determineRedisPlaylistsKey,
 	determineRedisPlaysKey,
 	determineRedisSongsKey,
 	determineRedisUsersKey,
@@ -90,18 +92,24 @@ export const getArtistByID = resolver<Artist, ArtistID>(({ args, context }) =>
 	),
 );
 
-export const getPlaylistByID = resolver<Playlist, PlaylistID>(async ({ args, context }) => {
-	const playlist = await getPlaylist(context.pg)({
-		playlistID: args.playlistID,
-	});
+export const getPlaylistByID = resolver<Playlist, PlaylistID>(({ args, context }) =>
+	redisHandler(context.redis)(
+		determineRedisPlaylistsKey(args.playlistID, "row"),
+		async () => {
+			const playlist = await getPlaylist(context.pg)({
+				playlistID: args.playlistID,
+			});
 
-	if (playlist.privacy === PlaylistPrivacy.PRIVATE) {
-		if (playlist.userID === context.getAuthorizationJWTPayload(context.authorization).userID) {
-			return playlist;
-		} else {
-			throw new Error("Unauthorized access to this playlist");
-		}
-	} else {
-		return playlist;
-	}
-});
+			if (playlist.privacy === PlaylistPrivacy.PRIVATE) {
+				if (playlist.userID === context.getAuthorizationJWTPayload(context.authorization).userID) {
+					return playlist;
+				} else {
+					throw new Error("Unauthorized access to this playlist");
+				}
+			} else {
+				return playlist;
+			}
+		},
+		ms("30m"),
+	),
+);

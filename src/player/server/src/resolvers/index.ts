@@ -9,7 +9,6 @@ import {
 	VoidResolver as Void,
 } from "graphql-scalars";
 
-import * as Album from "./album/index.js";
 import * as Artist from "./artist/index.js";
 import * as Genre from "./genre/index.js";
 import * as Library from "./library/index.js";
@@ -20,6 +19,7 @@ import * as Query from "./query/index.js";
 import * as Queue from "./queue/index.js";
 import * as Song from "./song/index.js";
 import * as User from "./user/index.js";
+import { albumResolver as Album } from "./album/index.js";
 
 const resolvers = {
 	Date,

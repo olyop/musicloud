@@ -17,4 +17,4 @@ export {
 	User,
 } from "./objects.js";
 export { ColumnNameOptions, GetObjectsOptions, IndexOptions, TableNameOptions } from "./options.js";
-export { OrderBy, RedisClient } from "./other.js";
+export { OrderBy } from "./other.js";

@@ -53,7 +53,7 @@ declare namespace NodeJS {
 
 		JWT_TOKEN_SECRET: string;
 
-		ADMIN_USER_IDS: string;
+		ADMIN_USER_ID: string;
 
 		TS_NODE_PROJECT?: string;
 	}

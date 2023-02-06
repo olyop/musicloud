@@ -37,22 +37,14 @@ const PlaylistPage: FC = () => {
 	const { userID } = useJWTPayload();
 	const params = useParams<keyof PlaylistID>();
 	const playlistID = addDashesToUUID(params.playlistID!);
-
-	const [share, { shareIcon, shareText }] = useShare();
-
 	const variables: PlaylistID = { playlistID };
 
+	const [share, { shareIcon, shareText }] = useShare();
+	const [shufflePlaylist] = useShufflePlaylist(variables);
 	const [playPlaylist, isPlaying] = usePlayPlaylist(variables);
 
-	const [shufflePlaylist] = useShufflePlaylist(variables);
-
-	const { data, error } = useQuery<GetPlaylistPageData, PlaylistID>(GET_PLAYLIST_PAGE, {
-		variables,
-	});
-
-	const [removeSongFromPlaylist] = useMutation<unknown, RemoveSongFromPlaylistVars>(
-		REMOVE_SONG_FROM_PLAYLIST,
-	);
+	const { data, error } = useQuery<Data, PlaylistID>(GET_PLAYLIST_PAGE, { variables });
+	const [removeSongFromPlaylist] = useMutation<unknown, Vars>(REMOVE_SONG_FROM_PLAYLIST);
 
 	const isUsers = data?.getPlaylistByID.user.userID === userID;
 
@@ -70,7 +62,11 @@ const PlaylistPage: FC = () => {
 		};
 
 	if (error?.message === "Playlist does not exist") {
-		return <p className="ParagraphOneBold Padding">{error.message}</p>;
+		return (
+			<Page>
+				<p className="ParagraphOneBold Padding">{error.message}</p>
+			</Page>
+		);
 	}
 
 	if (data) {
@@ -87,7 +83,7 @@ const PlaylistPage: FC = () => {
 		return (
 			<Head pageTitle={title}>
 				<Page>
-					<div className="ContentPaddingTopBottom FlexColumnGap">
+					<div data-id={playlistID} className="ContentPaddingTopBottom FlexColumnGap">
 						<div>
 							<div key={1} className="FlexRowGapHalf MarginBottomHalf">
 								<h1 className="HeadingFour">{title}</h1>
@@ -158,11 +154,11 @@ const PlaylistPage: FC = () => {
 	}
 };
 
-interface GetPlaylistPageData {
+interface Data {
 	getPlaylistByID: Playlist;
 }
 
-interface RemoveSongFromPlaylistVars extends PlaylistID {
+interface Vars extends PlaylistID {
 	index: number;
 }
 

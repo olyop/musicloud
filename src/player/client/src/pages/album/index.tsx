@@ -72,7 +72,7 @@ const AlbumPage: FC = () => {
 		return (
 			<Head pageTitle={title}>
 				<Page>
-					<div className={bem("", "ContentPaddingTopBottom")}>
+					<div id={albumID} className={bem("", "ContentPaddingTopBottom")}>
 						<img
 							alt={title}
 							crossOrigin="anonymous"

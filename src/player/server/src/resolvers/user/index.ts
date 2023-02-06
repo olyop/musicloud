@@ -10,6 +10,7 @@ import {
 	importSQL,
 	query,
 } from "@oly_op/pg-helpers";
+import ms from "ms";
 
 import { Playlist, User } from "../../types/index.js";
 import { determineRedisUsersKey, pgEpochToJS, redisHandler } from "../helpers/index.js";
@@ -26,8 +27,7 @@ const SELECT_USER_PLAYLISTS_FILTERED_BY_SONG = await isf("select-playlists-filte
 
 export const dateJoined = resolver(
 	({ parent, context }) =>
-		redisHandler(context.redis)(
-			determineRedisUsersKey(parent.userID, "date-joined"),
+		redisHandler(context.redis)(determineRedisUsersKey(parent.userID, "date-joined"), () =>
 			Promise.resolve(pgEpochToJS(parent.dateJoined)),
 		),
 	{ parent: false },
@@ -70,10 +70,15 @@ export const followers = resolver(
 );
 
 export const playsTotal = resolver(({ parent, context }) =>
-	query(context.pg)(SELECT_USER_PLAYS_COUNT)({
-		parse: getResultCountOrNull,
-		variables: { userID: parent.userID },
-	}),
+	redisHandler(context.redis)(
+		determineRedisUsersKey(parent.userID, "plays-total"),
+		() =>
+			query(context.pg)(SELECT_USER_PLAYS_COUNT)({
+				parse: getResultCountOrNull,
+				variables: { userID: parent.userID },
+			}),
+		ms("30m"),
+	),
 );
 
 export const playlists = resolver(({ parent, context }) =>

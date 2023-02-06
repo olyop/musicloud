@@ -1,6 +1,6 @@
+import { Redis } from "ioredis";
 import { isNull } from "lodash-es";
-
-import { RedisClient } from "../../../types/index.js";
+import ms from "ms";
 
 export {
 	determineRedisAlbumsKey,
@@ -18,7 +18,7 @@ export {
 	redisTrendingPlaylistsKey,
 } from "./keys.js";
 
-export const existsCacheValue = (redis?: RedisClient) => async (key: string) => {
+export const existsCacheValue = (redis?: Redis) => async (key: string) => {
 	if (redis) {
 		return (await redis.exists(key)) === 1;
 	} else {
@@ -27,7 +27,7 @@ export const existsCacheValue = (redis?: RedisClient) => async (key: string) => 
 };
 
 export const getCacheValue =
-	(redis?: RedisClient) =>
+	(redis?: Redis) =>
 	async <T>(key: string) => {
 		if (redis) {
 			const value = await redis.get(key);
@@ -43,29 +43,26 @@ export const getCacheValue =
 	};
 
 export const setCacheValue =
-	(redis?: RedisClient) => async (key: string, value: unknown, expires?: number) => {
-		if (redis) {
+	(redis?: Redis) =>
+	async <T = unknown>(key: string, value: T, expires?: number) => {
+		if (redis && !isNull(value)) {
 			const keyExists = await existsCacheValue(redis)(key);
-			if (!keyExists) {
-				await redis.set(key, JSON.stringify(value), {
-					EX: expires ? Math.floor(expires / 1000) : undefined,
-				});
+			if (keyExists && expires) {
+				await redis.set(key, JSON.stringify(value), "PX", expires || ms("7d"));
+			} else {
+				await redis.set(key, JSON.stringify(value));
 			}
 		}
 	};
 
-export const deleteCacheValue = (redis?: RedisClient) => async (key: string) => {
+export const deleteCacheValue = (redis?: Redis) => async (key: string) => {
 	if (redis) {
 		await redis.del(key);
 	}
 };
 
-const isPromise = <T>(promise: unknown): promise is Promise<T> =>
-	// @ts-ignore
-	!!promise && "then" in promise && typeof promise.then === "function";
-
 export const getCacheValueOrExists =
-	(redis?: RedisClient) =>
+	(redis?: Redis) =>
 	async <T>(key: string) => {
 		const value = await getCacheValue(redis)<T>(key);
 		if (isNull(value)) {
@@ -76,14 +73,15 @@ export const getCacheValueOrExists =
 	};
 
 export const redisHandler =
-	(redis?: RedisClient) =>
-	async <T>(key: string, databaseQuery: Promise<T> | (() => Promise<T>), expires?: number) => {
-		const value = await getCacheValueOrExists(redis)<T>(key);
-		if (value === false) {
-			const databaseValue = await (isPromise(databaseQuery) ? databaseQuery : databaseQuery());
+	(redis?: Redis) =>
+	async <T>(key: string, databaseQuery: () => Promise<T>, expires?: number) => {
+		const cacheValue = await getCacheValueOrExists(redis)<T>(key);
+		if (cacheValue === false) {
+			console.log(`cache-miss: ${key}`);
+			const databaseValue = await databaseQuery();
 			await setCacheValue(redis)(key, databaseValue, expires);
 			return databaseValue;
 		} else {
-			return value;
+			return cacheValue;
 		}
 	};

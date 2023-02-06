@@ -29,16 +29,14 @@ const SELECT_ALBUM_SONGS_DURATION_SUM = await isf("select-songs-duration-sum");
 
 const resolver = createParentResolver<Album>();
 
-export const released = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisAlbumsKey(parent.albumID, "released"),
+const released = resolver(({ parent, context }) =>
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "released"), () =>
 		Promise.resolve(pgEpochToJS(parent.released)),
 	),
 );
 
-export const songs = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisAlbumsKey(parent.albumID, "songs"),
+const songs = resolver(({ parent, context }) =>
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "songs"), () =>
 		query(context.pg)(SELECT_ALBUM_SONGS)({
 			parse: convertTableToCamelCase<Song>(),
 			variables: {
@@ -49,9 +47,8 @@ export const songs = resolver(({ parent, context }) =>
 	),
 );
 
-export const duration = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisAlbumsKey(parent.albumID, "duration"),
+const duration = resolver(({ parent, context }) =>
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "duration"), () =>
 		query(context.pg)(SELECT_ALBUM_SONGS_DURATION_SUM)({
 			parse: getResultSum,
 			variables: { albumID: parent.albumID },
@@ -59,9 +56,8 @@ export const duration = resolver(({ parent, context }) =>
 	),
 );
 
-export const songsTotal = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisAlbumsKey(parent.albumID, "songs-total"),
+const songsTotal = resolver(({ parent, context }) =>
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "songs-total"), () =>
 		query(context.pg)(SELECT_ALBUM_SONGS_COUNT)({
 			parse: getResultCount,
 			variables: { albumID: parent.albumID },
@@ -69,9 +65,8 @@ export const songsTotal = resolver(({ parent, context }) =>
 	),
 );
 
-export const artists = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisAlbumsKey(parent.albumID, "artists"),
+const artists = resolver(({ parent, context }) =>
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "artists"), () =>
 		query(context.pg)(SELECT_ALBUM_ARTISTS)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {
@@ -82,9 +77,8 @@ export const artists = resolver(({ parent, context }) =>
 	),
 );
 
-export const remixers = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisAlbumsKey(parent.albumID, "remixers"),
+const remixers = resolver(({ parent, context }) =>
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "remixers"), () =>
 		query(context.pg)(SELECT_ALBUM_REMIXERS)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {
@@ -95,9 +89,8 @@ export const remixers = resolver(({ parent, context }) =>
 	),
 );
 
-export const genres = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisAlbumsKey(parent.albumID, "genres"),
+const genres = resolver(({ parent, context }) =>
+	redisHandler(context.redis)(determineRedisAlbumsKey(parent.albumID, "genres"), () =>
 		query(context.pg)(SELECT_ALBUM_GENRES)({
 			parse: convertTableToCamelCase<Genre>(),
 			variables: {
@@ -108,20 +101,21 @@ export const genres = resolver(({ parent, context }) =>
 	),
 );
 
-export const playsTotal = resolver(({ parent, context }) =>
+const playsTotal = resolver(({ parent, context }) =>
 	redisHandler(context.redis)(
 		determineRedisAlbumsKey(parent.albumID, "plays-total"),
-		query(context.pg)(SELECT_ALBUM_PLAYS_COUNT)({
-			parse: getResultCountOrNull,
-			variables: {
-				albumID: parent.albumID,
-			},
-		}),
+		() =>
+			query(context.pg)(SELECT_ALBUM_PLAYS_COUNT)({
+				parse: getResultCountOrNull,
+				variables: {
+					albumID: parent.albumID,
+				},
+			}),
 		ms("30m"),
 	),
 );
 
-export const userPlaysTotal = resolver(({ parent, context }) =>
+const userPlaysTotal = resolver(({ parent, context }) =>
 	query(context.pg)(SELECT_ALBUM_USER_PLAYS_COUNT)({
 		parse: getResultCountOrNull,
 		variables: {
@@ -131,7 +125,7 @@ export const userPlaysTotal = resolver(({ parent, context }) =>
 	}),
 );
 
-export const inLibrary = resolver(({ parent, context }) =>
+const inLibrary = resolver(({ parent, context }) =>
 	query(context.pg)(SELECT_ALBUM_IS_IN_LIBRARY)({
 		parse: getResultExists,
 		variables: {
@@ -140,3 +134,16 @@ export const inLibrary = resolver(({ parent, context }) =>
 		},
 	}),
 );
+
+export const albumResolver = {
+	released,
+	songs,
+	duration,
+	songsTotal,
+	artists,
+	remixers,
+	genres,
+	playsTotal,
+	userPlaysTotal,
+	inLibrary,
+};

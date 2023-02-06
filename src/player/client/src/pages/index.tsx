@@ -31,7 +31,13 @@ const HomePage: FC = () => {
 								<Albums alwaysList hideOrderBy albums={data.getTrendingAlbums}>
 									{albums =>
 										albums.map(album => (
-											<Album alwaysList album={album} hideInLibrary key={album.albumID} />
+											<Album
+												alwaysList
+												album={album}
+												hideInLibrary
+												key={album.albumID}
+												className="PaddingHalf ItemBorder"
+											/>
 										))
 									}
 								</Albums>

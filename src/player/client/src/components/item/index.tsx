@@ -18,11 +18,13 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		left,
 		modal,
 		style,
+		dataID,
 		onClick,
 		onRemove,
 		leftIcon,
 		className,
 		shareData,
+		dataIndex,
 		playOptions,
 		infoOptions,
 		imageOptions,
@@ -48,7 +50,9 @@ const Item = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 		<div
 			ref={ref}
 			style={style}
+			data-id={dataID}
 			onClick={onClick}
+			data-index={dataIndex}
 			className={bem(className, "")}
 			role={onClick ? "button" : undefined}
 		>

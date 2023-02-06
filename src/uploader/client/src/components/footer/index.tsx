@@ -14,8 +14,9 @@ const Footer: FC = () => (
 		rel="noreferrer"
 		className={bem("", "Elevated")}
 		href={determineServiceURL({ service: ServicesNames.PLAYER })}
-		children={<Button transparent text="Musicloud" icon="arrow_back" className={bem("button")} />}
-	/>
+	>
+		<Button transparent text="Musicloud" icon="arrow_back" className={bem("button")} />
+	</a>
 );
 
 export default Footer;

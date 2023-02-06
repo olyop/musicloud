@@ -51,22 +51,19 @@ export const size = resolver(({ parent, context }) =>
 );
 
 export const key = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisSongsKey(parent.songID, "key"),
+	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "key"), () =>
 		getKey(context.pg)({ keyID: parent.keyID }),
 	),
 );
 
 export const album = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisSongsKey(parent.songID, "album"),
+	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "album"), () =>
 		getAlbum(context.pg)({ albumID: parent.albumID }),
 	),
 );
 
 export const genres = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisSongsKey(parent.songID, "genres"),
+	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "genres"), () =>
 		query(context.pg)(SELECT_SONG_GENRES)({
 			parse: convertTableToCamelCase<Genre>(),
 			variables: {
@@ -78,8 +75,7 @@ export const genres = resolver(({ parent, context }) =>
 );
 
 export const artists = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisSongsKey(parent.songID, "artists"),
+	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "artists"), () =>
 		query(context.pg)(SELECT_SONG_ARTISTS)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {
@@ -91,8 +87,7 @@ export const artists = resolver(({ parent, context }) =>
 );
 
 export const remixers = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisSongsKey(parent.songID, "remixers"),
+	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "remixers"), () =>
 		query(context.pg)(SELECT_SONG_REMIXERS)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {
@@ -104,8 +99,7 @@ export const remixers = resolver(({ parent, context }) =>
 );
 
 export const featuring = resolver(({ parent, context }) =>
-	redisHandler(context.redis)(
-		determineRedisSongsKey(parent.songID, "featuring"),
+	redisHandler(context.redis)(determineRedisSongsKey(parent.songID, "featuring"), () =>
 		query(context.pg)(SELECT_SONG_FEATURING)({
 			parse: convertTableToCamelCase<Artist>(),
 			variables: {

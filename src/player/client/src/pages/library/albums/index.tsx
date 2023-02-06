@@ -10,7 +10,7 @@ import GET_LIBRARY_ALBUM_AT_INDEX from "./get-library-album-at-index.gql";
 import GET_LIBRARY_ALBUMS_TOTAL from "./get-library-albums-total.gql";
 import "./index.scss";
 
-const bem = createBEM("LibraryAlbum");
+const bem = createBEM("LibraryAlbums");
 
 const LibraryAlbums: FC = () => {
 	const listStyle = useStateListStyle();
@@ -29,7 +29,7 @@ const LibraryAlbums: FC = () => {
 						hidePlays
 						album={album}
 						infoFadeInFromRight={!isList}
-						className={bem(isList && "", isList && "PaddingHalf ItemBorder")}
+						className={isList ? bem("list", "PaddingHalf ItemBorder") : bem("grid")}
 					/>
 				)}
 			/>

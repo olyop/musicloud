@@ -1,3 +1,8 @@
-.LibraryArtist {
-	height: calc(var(--button-dimension) + var(--space));
+.LibraryArtists {
+	&__list {
+		min-height: calc(var(--button-dimension) + var(--space));
+	}
+	&__grid {
+		min-height: calc(2 * var(--button-dimension) + var(--space));
+	}
 }

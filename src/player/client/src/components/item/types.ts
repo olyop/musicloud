@@ -51,4 +51,9 @@ interface Other {
 	infoFadeInFromRight?: boolean;
 }
 
-export interface PropTypes extends OnClickPropTypes, ClassNames, Options, Other {}
+interface DataOptions {
+	dataID?: string;
+	dataIndex?: number;
+}
+
+export interface PropTypes extends OnClickPropTypes, ClassNames, Options, Other, DataOptions {}

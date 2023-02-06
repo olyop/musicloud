@@ -16,8 +16,9 @@ import { downloadSongPage } from "./page";
 
 const downloadSongs = (client: ApolloClient<unknown>) => async (options: DownloadOptions) => {
 	const {
-		setCurrentDownload,
+		setDownloadText,
 		setDownloadStatus,
+		setCurrentDownload,
 		librarySongsOrderBy,
 		songsOrderBy,
 		albumsOrderBy,
@@ -54,6 +55,7 @@ const downloadSongs = (client: ApolloClient<unknown>) => async (options: Downloa
 		for (let index = 0; index <= songsTotal; index += 1) {
 			setDownloadStatus([index, songsTotal]);
 
+			setDownloadText("Downloading song metadata");
 			const result = await client.query<GetSongAtIndexData, FeedItemVars>({
 				query: GET_LIBRARY_SONG_AT_INDEX,
 				variables: {
@@ -74,15 +76,24 @@ const downloadSongs = (client: ApolloClient<unknown>) => async (options: Downloa
 					album: { albumID },
 				} = songAtIndex;
 
+				setDownloadText("Downloading song audio");
 				await downloadSongMP3({ songID });
+
+				setDownloadText("Downloading song page");
 				await downloadSongPage(client, { songID });
 
 				if (!albumsAlreadyDownloaded.has(albumID)) {
 					albumsAlreadyDownloaded.add(albumID);
+
+					setDownloadText("Downloading song album cover");
+
 					await downloadSongAlbumCovers({ albumID });
+
+					setDownloadText("Downloading song page");
 					await downloadAlbumPage(client, { albumID });
 				}
 
+				setDownloadText("Downloading song albums & genres");
 				await downloadSongArtistsAndGenres(
 					client,
 					songAtIndex,

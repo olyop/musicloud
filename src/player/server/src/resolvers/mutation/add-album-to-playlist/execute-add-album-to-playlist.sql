@@ -1,1 +1,4 @@
-SELECT add_album_to_playlist({{ albumID }}, {{ playlistID }})
+SELECT
+	*
+FROM
+	add_album_to_playlist_return({{ albumID }}, {{ playlistID }});

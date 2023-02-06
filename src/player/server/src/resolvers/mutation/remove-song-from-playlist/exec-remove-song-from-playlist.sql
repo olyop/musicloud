@@ -1,0 +1,1 @@
+SELECT remove_song_from_playlist_and_return({{ index }}, {{ playlistID }}) as song_id;

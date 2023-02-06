@@ -28,7 +28,15 @@ const ArtistPageAlbums: FC = () => {
 	return (
 		<div className={isList ? "PaddingTopBottom" : undefined}>
 			<Albums albums={data?.getArtistByID.albums} className={className}>
-				{albums => albums.map(album => <Album album={album} key={album.albumID} />)}
+				{albums =>
+					albums.map(album => (
+						<Album
+							album={album}
+							key={album.albumID}
+							className={isList ? "PaddingHalf ItemBorder" : undefined}
+						/>
+					))
+				}
 			</Albums>
 		</div>
 	);

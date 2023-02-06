@@ -41,12 +41,13 @@ export const songsTotal = resolver(({ parent, context }) =>
 export const playsTotal = resolver(({ parent, context }) =>
 	redisHandler(context.redis)(
 		determineRedisGenresKey(parent.genreID, "plays-total"),
-		query(context.pg)(SELECT_GENRE_PLAYS_COUNT)({
-			parse: getResultCountOrNull,
-			variables: {
-				genreID: parent.genreID,
-			},
-		}),
+		() =>
+			query(context.pg)(SELECT_GENRE_PLAYS_COUNT)({
+				parse: getResultCountOrNull,
+				variables: {
+					genreID: parent.genreID,
+				},
+			}),
 		ms("30m"),
 	),
 );

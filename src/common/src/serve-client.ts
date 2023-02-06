@@ -12,7 +12,10 @@ const fileExists = (path: string) =>
 		});
 	});
 
-export const serveClient: FastifyPluginAsync<Options> = async (fastify, { indexPath }) => {
+export const serveClient: FastifyPluginAsync<FastifyServeClientOptions> = async (
+	fastify,
+	{ indexPath },
+) => {
 	const exists = await fileExists(indexPath);
 
 	fastify.setNotFoundHandler((request, reply) => {
@@ -26,6 +29,6 @@ export const serveClient: FastifyPluginAsync<Options> = async (fastify, { indexP
 	});
 };
 
-interface Options {
+export interface FastifyServeClientOptions {
 	indexPath: string;
 }

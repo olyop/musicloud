@@ -47,7 +47,7 @@ export const useQuery = <Data, Vars extends OperationVariables = OperationVariab
 	};
 };
 
-interface Options<Data, Vars> extends QueryHookOptions<Data, Vars> {
+interface Options<Data, Vars extends OperationVariables> extends QueryHookOptions<Data, Vars> {
 	queryID?: string;
 	hideLoading?: boolean;
 }

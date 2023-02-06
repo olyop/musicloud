@@ -2,7 +2,7 @@ import { BEMInput } from "@oly_op/bem";
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 import isNull from "lodash-es/isNull";
 import isUndefined from "lodash-es/isUndefined";
-import { Fragment, Ref, createElement, forwardRef } from "react";
+import { FC, Fragment, Ref, createElement, forwardRef } from "react";
 
 import {
 	createCatalogImageURL,
@@ -13,35 +13,31 @@ import {
 } from "../../helpers";
 import { usePlaySong } from "../../hooks";
 import { useStateShowDuration, useStateShowGenres } from "../../redux";
-import { ClassNameBEMPropTypes, Handler, ObjectShowIcon, Song as SongType } from "../../types";
+import { Handler, ObjectShowIcon, Song as SongType } from "../../types";
 import FeaturingArtists from "../featuring-artists";
 import Item from "../item";
 import ObjectLinks from "../object-links";
 import SongTitle from "../song-title";
 import Modal from "./modal";
 
-const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
-	const {
-		song,
-		index,
-		onJump,
-		onRemove,
-		iconClassName,
-		showIcon = false,
-		hidePlay = false,
-		hideCover = false,
-		hidePlays = false,
-		hideModal = false,
-		shareIcon = false,
-		hideDuration = false,
-		hideInLibrary = false,
-		leftIcon = "audiotrack",
-		hideTrackNumber = false,
-		showDateAddedToPlaylist = false,
-		className = "ItemBorder PaddingHalf",
-	} = propTypes;
-
-	const isSongNull = isNull(song);
+const SongInner: FC<InnerPropTypes> = ({
+	song,
+	index,
+	onJump,
+	onRemove,
+	iconClassName,
+	showIcon = false,
+	hidePlay = false,
+	hideCover = false,
+	hidePlays = false,
+	hideModal = false,
+	shareIcon = false,
+	hideDuration = false,
+	hideInLibrary = false,
+	leftIcon = "audiotrack",
+	hideTrackNumber = false,
+	showDateAddedToPlaylist = false,
+}) => {
 	const showGenres = useStateShowGenres();
 	const showDuration = useStateShowDuration();
 
@@ -49,12 +45,12 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 
 	return (
 		<Item
-			ref={ref}
+			dataIndex={index}
 			onRemove={onRemove}
-			className={className}
+			dataID={song.songID}
 			iconClassName={iconClassName}
 			shareData={
-				!isSongNull && shareIcon
+				shareIcon
 					? {
 							title: song.title,
 							url: createObjectPath("song", song.songID),
@@ -62,17 +58,9 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					: undefined
 			}
 			leftIcon={showIcon ? leftIcon : undefined}
-			left={
-				isSongNull
-					? undefined
-					: isUndefined(index)
-					? hideTrackNumber
-						? undefined
-						: song.trackNumber
-					: index
-			}
+			left={isUndefined(index) ? (hideTrackNumber ? undefined : song.trackNumber) : index}
 			imageOptions={
-				isSongNull || hideCover
+				hideCover
 					? undefined
 					: {
 							title: song.album.title,
@@ -86,9 +74,7 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 					  }
 			}
 			playOptions={
-				isSongNull
-					? undefined
-					: onJump
+				onJump
 					? {
 							onClick: onJump,
 							isPlaying: false,
@@ -100,43 +86,39 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 							onClick: playSong,
 					  }
 			}
-			infoOptions={
-				isSongNull
-					? undefined
-					: {
-							upperLeft: <SongTitle song={song} />,
-							lowerLeft: (
-								<Fragment>
-									<FeaturingArtists song={song} />
-									{showGenres && (
-										<Fragment>
-											<Fragment> &#8226; </Fragment>
-											<ObjectLinks
-												ampersand
-												links={song.genres.map(({ genreID, name }) => ({
-													text: name,
-													path: createObjectPath("genre", genreID),
-												}))}
-											/>
-										</Fragment>
-									)}
-								</Fragment>
-							),
-							rightLeft:
-								showDateAddedToPlaylist && !isNull(song.dateAddedToPlaylist)
-									? formatTimestampToDateTime(song.dateAddedToPlaylist)
-									: hidePlays || isNull(song.playsTotal)
-									? null
-									: formatPlays(song.playsTotal),
-							rightRight: showDuration
-								? hideDuration
-									? null
-									: deserializeDuration(song.duration)
-								: null,
-					  }
-			}
+			infoOptions={{
+				upperLeft: <SongTitle song={song} />,
+				lowerLeft: (
+					<Fragment>
+						<FeaturingArtists song={song} />
+						{showGenres && (
+							<Fragment>
+								<Fragment> &#8226; </Fragment>
+								<ObjectLinks
+									ampersand
+									links={song.genres.map(({ genreID, name }) => ({
+										text: name,
+										path: createObjectPath("genre", genreID),
+									}))}
+								/>
+							</Fragment>
+						)}
+					</Fragment>
+				),
+				rightLeft:
+					showDateAddedToPlaylist && !isNull(song.dateAddedToPlaylist)
+						? formatTimestampToDateTime(song.dateAddedToPlaylist)
+						: hidePlays || isNull(song.playsTotal)
+						? null
+						: formatPlays(song.playsTotal),
+				rightRight: showDuration
+					? hideDuration
+						? null
+						: deserializeDuration(song.duration)
+					: null,
+			}}
 			modal={
-				isSongNull || hideModal
+				hideModal
 					? undefined
 					: ({ open, onClose }) => (
 							<Modal
@@ -151,9 +133,20 @@ const Song = forwardRef<HTMLDivElement, PropTypes>((propTypes, ref) => {
 			}
 		/>
 	);
-});
+};
 
-interface PropTypes extends ObjectShowIcon, ClassNameBEMPropTypes {
+const Song = forwardRef<HTMLDivElement, WrapperPropTypes>(
+	({ song, className, ...propTypes }, ref) => (
+		<div
+			ref={ref}
+			className={className === null ? undefined : className || "PaddingHalf ItemBorder"}
+		>
+			{song && <SongInner song={song} {...propTypes} />}
+		</div>
+	),
+);
+
+interface PropTypes extends ObjectShowIcon {
 	index?: number;
 	onJump?: Handler;
 	leftIcon?: string;
@@ -163,13 +156,21 @@ interface PropTypes extends ObjectShowIcon, ClassNameBEMPropTypes {
 	hideCover?: boolean;
 	hidePlays?: boolean;
 	hideModal?: boolean;
-	song: SongType | null;
 	hideDuration?: boolean;
 	hideInLibrary?: boolean;
 	iconClassName?: BEMInput;
 	ref?: Ref<HTMLDivElement>;
 	hideTrackNumber?: boolean;
 	showDateAddedToPlaylist?: boolean;
+}
+
+interface InnerPropTypes extends PropTypes {
+	song: SongType;
+}
+
+interface WrapperPropTypes extends PropTypes {
+	song: SongType | null;
+	className?: string | null;
 }
 
 export default Song;

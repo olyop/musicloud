@@ -5,7 +5,7 @@ RETURNS
 	void
 LANGUAGE
 	plpgsql
-STABLE
+	VOLATILE
 AS $$
 	DECLARE
 		album_song record;

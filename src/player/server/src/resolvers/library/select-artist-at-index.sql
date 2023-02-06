@@ -9,7 +9,7 @@ WHERE
 	library_artists.user_id = {{ userID }}
 ORDER BY
 	{{ orderByTableName }}.{{ orderByField }} {{ orderByDirection }}
-LIMIT
-	1
 OFFSET
-	{{ atIndex }};
+	{{ atIndex }}
+FETCH
+	FIRST ROW ONLY;

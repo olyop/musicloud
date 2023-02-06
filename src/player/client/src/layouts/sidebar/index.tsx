@@ -167,6 +167,8 @@ const Sidebar: FC = () => {
 							<div className={bem("links-group")}>
 								<a
 									title="Upload"
+									target="_blank"
+									rel="noreferrer"
 									onClick={handleClose}
 									className="BorderBottom PaddingTopBottomHalf"
 									href={determineServiceURL({ accessToken, service: ServicesNames.UPLOADER })}

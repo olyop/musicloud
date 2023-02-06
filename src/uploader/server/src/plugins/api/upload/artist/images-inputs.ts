@@ -1,6 +1,6 @@
 import { ImageDimensions, ImageSizes } from "@oly_op/musicloud-common/build/types";
 
-import { ImageInput } from "../../types";
+import { ImageInput } from "../../types.js";
 
 export const coverImageInputs: ImageInput[] = [
 	{

@@ -11,9 +11,7 @@ AS $$
 		is_in_playlist boolean;
 	BEGIN
 		SELECT EXISTS INTO is_in_playlist (
-			SELECT
-				*
-			FROM
+			SELECT FROM
 				playlists_songs
 			WHERE
 				song_id = song_id_arg AND

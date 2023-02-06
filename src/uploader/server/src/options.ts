@@ -16,8 +16,7 @@ export const FASTIFY_JWT_OPTIONS: FastifyJWTOptions = {
 		});
 
 		if (userExists) {
-			const adminUsers = JSON.parse(process.env.ADMIN_USER_IDS) as string[];
-			return adminUsers.includes(userID);
+			return process.env.ADMIN_USER_ID === userID;
 		} else {
 			return false;
 		}

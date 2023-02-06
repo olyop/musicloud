@@ -1,3 +1,4 @@
+import { createBEM } from "@oly_op/bem";
 import { FC, createElement } from "react";
 
 import Artist from "../../../components/artist";
@@ -20,8 +21,11 @@ const orderBy: OrderByOptions<SettingsOrderByArtists> = {
 	fields: Object.keys(LibraryArtistsOrderByField),
 };
 
+const bem = createBEM("LibraryArtists");
+
 const LibraryArtists: FC = () => {
 	const listStyle = useStateListStyle();
+	const isList = listStyle === SettingsListStyle.LIST;
 	return (
 		<Artists orderBy={orderBy}>
 			<Feed<GetArtistsTotalData, ArtistType, GetArtistAtIndexData>
@@ -34,11 +38,7 @@ const LibraryArtists: FC = () => {
 					<Artist
 						ref={ref}
 						artist={artist}
-						className={
-							listStyle === SettingsListStyle.LIST
-								? "LibraryArtist PaddingHalf ItemBorder"
-								: undefined
-						}
+						className={isList ? bem("list", "PaddingHalf ItemBorder") : bem("grid")}
 					/>
 				)}
 			/>

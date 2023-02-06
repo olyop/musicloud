@@ -168,12 +168,13 @@ export const getPlaylist =
 				columnNames: addPrefix(COLUMN_NAMES.PLAYLIST, "playlists"),
 			},
 		});
+
 		if (isNull(playlist)) {
 			throw new Error("Playlist does not exist");
-		} else {
-			return {
-				...playlist,
-				privacy: playlist.privacy.toUpperCase() as PlaylistPrivacy,
-			};
 		}
+
+		return {
+			...playlist,
+			privacy: playlist.privacy.toUpperCase() as PlaylistPrivacy,
+		};
 	};

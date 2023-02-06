@@ -15,7 +15,7 @@ ORDER BY
 	songs.album_id ASC,
 	songs.disc_number ASC,
 	songs.track_number ASC
-LIMIT
-	1
 OFFSET
-	{{ atIndex }};
+	{{ atIndex }}
+FETCH
+	FIRST ROW ONLY;

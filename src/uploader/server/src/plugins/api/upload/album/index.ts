@@ -17,6 +17,7 @@ import {
 import checkRelationships from "./check-relationships.js";
 import coverInputs from "./cover-inputs.js";
 import getArtistID from "./get-artist-id.js";
+import { parseReleased } from "./parse-released.js";
 import { INSERT_ALBUM, INSERT_ALBUM_ARTIST } from "./sql.js";
 import { List, Route, Song } from "./types.js";
 import uploadSong from "./upload-song.js";
@@ -26,19 +27,16 @@ export const uploadAlbum: FastifyPluginAsync =
 	async fastify => {
 		fastify.post<Route>("/album", { onRequest: fastify.authenticate }, async (request, reply) => {
 			const { body } = request;
-			const { cover, released } = body;
 
 			const albumTitle = trim(body.title);
-
 			const songs = JSON.parse(body.songs) as Song[];
-
+			const released = parseReleased(body.released);
 			const albumArtistsList = JSON.parse(body.artists) as List;
 
 			console.log(`Checking ${albumTitle} relationships`);
-
 			await checkRelationships(fastify.pg.pool)(albumArtistsList, songs);
 
-			console.log(`Start Album Upload: ${albumTitle}`);
+			console.log(`Starting Album Upload: ${albumTitle}`);
 
 			let albumID: string | null = null;
 			const client = await fastify.pg.pool.connect();
@@ -67,7 +65,7 @@ export const uploadAlbum: FastifyPluginAsync =
 				await normalizeImageAndUploadToS3(fastify.s3)({
 					objectID: albumID,
 					images: coverInputs,
-					buffer: cover[0]!.data,
+					buffer: body.cover[0]!.data,
 				});
 
 				const album: AlbumIDTitleBase = {
@@ -80,16 +78,14 @@ export const uploadAlbum: FastifyPluginAsync =
 				const albumArtists: ArtistIDNameBase[] = [];
 
 				for (const artistItem of albumArtistsList) {
-					const { index } = artistItem;
 					const name = trim(artistItem.value);
-
 					const artistID = await getArtistID(client)(name);
 
 					await query(client)(INSERT_ALBUM_ARTIST)({
 						variables: {
-							index,
 							albumID,
 							artistID,
+							index: artistItem.index,
 						},
 					});
 
